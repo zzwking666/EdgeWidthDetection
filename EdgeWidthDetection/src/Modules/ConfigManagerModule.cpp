@@ -8,7 +8,7 @@ bool ConfigManagerModule::build()
 	storeContext = std::make_unique<rw::oso::StorageContext>(rw::oso::StorageType::Xml);
 
 #pragma region readHandleScannerCfg
-	auto loadMainWindowConfig = storeContext->loadSafe(globalPath.CaiHuiPrintInspectionConfigPath.toStdString());
+	auto loadMainWindowConfig = storeContext->loadSafe(globalPath.EdgeWidthDetectionConfigPath.toStdString());
 	if (loadMainWindowConfig)
 	{
 		edgeWidthDetectionConfig = *loadMainWindowConfig;
@@ -28,7 +28,7 @@ bool ConfigManagerModule::build()
 
 void ConfigManagerModule::destroy()
 {
-	storeContext->saveSafe(edgeWidthDetectionConfig, globalPath.CaiHuiPrintInspectionConfigPath.toStdString());
+	storeContext->saveSafe(edgeWidthDetectionConfig, globalPath.EdgeWidthDetectionConfigPath.toStdString());
 	storeContext->saveSafe(setConfig, globalPath.setConfigPath.toStdString());
 	storeContext.reset();
 }

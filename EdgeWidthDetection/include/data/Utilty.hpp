@@ -6,17 +6,17 @@
 inline struct GlobalPath
 {
 public:
-	QString projectHome = R"(D:\zfkjData\CaiHuiPrintInspection\)";
+	QString projectHome = R"(D:\zfkjData\EdgeWidthDetection\)";
 public:
 	QString configRootPath = projectHome + R"(config\)";
 	QString modelRootPath = projectHome + R"(model\)";
-	QString CaiHuiPrintInspectionConfigPath = configRootPath + R"(CaiHuiPrintInspection.xml)";
+	QString EdgeWidthDetectionConfigPath = configRootPath + R"(EdgeWidthDetection.xml)";
 	QString setConfigPath = configRootPath + R"(SetConfig.xml)";
-	QString modelPath = modelRootPath + R"(CaiHuiPrintInspection.engine)";
+	QString modelPath = modelRootPath + R"(EdgeWidthDetection.engine)";
 public:
 	QString imageSaveRootPath = projectHome + R"(savedImages\)";
 public:
-	QString testImgDirPath = R"(D:\ImgStorage\MaiLiDingZi)";
+	QString testImgDirPath = R"(D:\ImgStorage\EdgeWidthDetection)";
 }globalPath;
 
 struct ClassId

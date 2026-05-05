@@ -200,7 +200,7 @@ bool Modules::check()
 #pragma region check config format and exist
 	rw::oso::StorageContext storageContext(rw::oso::StorageType::Xml);
 
-	checkFileExistAndFormat<cdm::EdgeWidthDetectionConfig>(globalPath.CaiHuiPrintInspectionConfigPath, storageContext);
+	checkFileExistAndFormat<cdm::EdgeWidthDetectionConfig>(globalPath.EdgeWidthDetectionConfigPath, storageContext);
 	checkFileExistAndFormat<cdm::SetConfig>(globalPath.setConfigPath, storageContext);
 #pragma endregion
 
