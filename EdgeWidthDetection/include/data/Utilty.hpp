@@ -24,7 +24,7 @@ struct ClassId
 public:
 	static constexpr int minNum = 0;
 
-	static constexpr int dingZi = 0;
+	static constexpr int edge = 0;
 
 	static constexpr int maxNum = 0;
 	static constexpr int indexCount = 1;

@@ -20,8 +20,8 @@ rw::imgPro::EliminationInfoFunc::ClassIdWithConfigMap cdm::ScoreConfigConvert::t
 		result[i] = configBase;
 	}
 
-	result[ClassId::dingZi].isUsingArea = false;
-	result[ClassId::dingZi].isUsingScore = true;
+	result[ClassId::edge].isUsingArea = false;
+	result[ClassId::edge].isUsingScore = true;
 
 	return result;
 }
@@ -37,7 +37,7 @@ rw::imgPro::DefectResultInfoFunc::ClassIdWithConfigMap cdm::ScoreConfigConvert::
 		result[i] = configBase;
 	}
 
-	result[ClassId::dingZi].isEnable = true;
+	result[ClassId::edge].isEnable = true;
 
 	return result;
 }
