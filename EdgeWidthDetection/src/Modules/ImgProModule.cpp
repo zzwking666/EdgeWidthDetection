@@ -272,7 +272,6 @@ void ImgProModule::buildImageProcessingModule(size_t num)
 void ImgProModule::destroyImageProcessingModule()
 {
 	imageProcessingModule1.reset();
-	imageProcessingModule2.reset();
 }
 
 void ImgProModule::buildImageProcessingPreModule(size_t num)
@@ -281,11 +280,6 @@ void ImgProModule::buildImageProcessingPreModule(size_t num)
 	imageProcessingModule1->modelEnginePath = globalPath.modelPath;
 	imageProcessingModule1->index = 1;
 	imageProcessingModule1->BuildModule();
-
-	imageProcessingModule2 = std::make_unique<ImageProcessingModule>(num, this);
-	imageProcessingModule2->modelEnginePath = globalPath.modelPath;
-	imageProcessingModule2->index = 2;
-	imageProcessingModule2->BuildModule();
 }
 
 void ImgProModule::onUpdateImgProContext()

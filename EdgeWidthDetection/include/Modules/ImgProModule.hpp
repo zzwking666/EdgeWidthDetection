@@ -32,7 +32,6 @@ private:
 	void buildImageProcessingPreModule(size_t num);
 public:
 	std::unique_ptr<ImageProcessingModule> imageProcessingModule1{ nullptr };
-	std::unique_ptr<ImageProcessingModule> imageProcessingModule2{ nullptr };
 
 public slots:
 	void onUpdateImgProContext();

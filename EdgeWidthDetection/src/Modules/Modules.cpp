@@ -115,8 +115,6 @@ void Modules::connect()
 #pragma region connect UIModule and imgProModule
 	QObject::connect(imgProModule.imageProcessingModule1.get(), &ImageProcessingModule::imageReady,
 		uiModule._maiLiDingZi, &EdgeWidthDetection::onCameraDisplay);
-	QObject::connect(imgProModule.imageProcessingModule2.get(), &ImageProcessingModule::imageReady,
-		uiModule._maiLiDingZi, &EdgeWidthDetection::onCameraDisplay);
 
 	QObject::connect(uiModule._dlgProductSet,&DlgProductSet::paramsChanged,
 		&imgProModule, &ImgProModule::onUpdateImgProContext);
