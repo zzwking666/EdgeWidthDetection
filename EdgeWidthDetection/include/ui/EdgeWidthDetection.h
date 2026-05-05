@@ -11,7 +11,7 @@
 #include "rqw_RunEnvCheck.hpp"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class CaiHuiPrintInspectionClass; };
+namespace Ui { class EdgeWidthDetectionClass; };
 QT_END_NAMESPACE
 
 class CaiHuiPrintInspection : public QMainWindow
@@ -58,6 +58,6 @@ private:
 	rw::rqw::ClickableLabel* clickableTitle = nullptr;
 	DlgCloseForm* _dlgCloseForm = nullptr;
 private:
-	Ui::CaiHuiPrintInspectionClass* ui;
+	Ui::EdgeWidthDetectionClass* ui;
 	int minimizeCount{ 3 };
 };

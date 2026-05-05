@@ -4,7 +4,7 @@
 #include <QMessageBox>
 #include <QProcess>
 
-#include "ui_CaiHuiPrintInspection.h"
+#include "ui_EdgeWidthDetection.h"
 #include <QPushButton>
 
 #include "DlgProductSet.h"
@@ -16,7 +16,7 @@
 
 CaiHuiPrintInspection::CaiHuiPrintInspection(QWidget* parent)
 	: QMainWindow(parent)
-	, ui(new Ui::CaiHuiPrintInspectionClass())
+	, ui(new Ui::EdgeWidthDetectionClass())
 {
 	ui->setupUi(this);
 

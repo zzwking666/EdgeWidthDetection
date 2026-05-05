@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CaiHuiPrintInspectionClass</class>
- <widget class="QMainWindow" name="CaiHuiPrintInspectionClass">
+ <class>EdgeWidthDetectionClass</class>
+ <widget class="QMainWindow" name="EdgeWidthDetectionClass">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>CaiHuiPrintInspection</string>
+   <string>EdgeWidthDetection</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
