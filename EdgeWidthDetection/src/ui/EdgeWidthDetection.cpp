@@ -79,7 +79,7 @@ void EdgeWidthDetection::build_connect()
 
 void EdgeWidthDetection::build_EdgeWidthDetectionData()
 {
-	auto& maiLiDingZiConfig = Modules::getInstance().configManagerModule.maiLiDingZiConfig;
+	auto& maiLiDingZiConfig = Modules::getInstance().configManagerModule.edgeWidthDetectionConfig;
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	maiLiDingZiConfig.isDebug = false;
 	maiLiDingZiConfig.isDefect = true;		// 默认开启剔废
@@ -267,7 +267,7 @@ void EdgeWidthDetection::rbtn_removeFunc_checked(bool checked)
 
 void EdgeWidthDetection::pbtn_resetProduct_clicked()
 {
-	auto& maiLiDingZiConfig = Modules::getInstance().configManagerModule.maiLiDingZiConfig;
+	auto& maiLiDingZiConfig = Modules::getInstance().configManagerModule.edgeWidthDetectionConfig;
 
 	maiLiDingZiConfig.totalDefectiveVolume = 0;
 
@@ -276,6 +276,6 @@ void EdgeWidthDetection::pbtn_resetProduct_clicked()
 
 void EdgeWidthDetection::ckb_saveImg_checked(bool checked)
 {
-	auto& maiLiDingZiConfig = Modules::getInstance().configManagerModule.maiLiDingZiConfig;
+	auto& maiLiDingZiConfig = Modules::getInstance().configManagerModule.edgeWidthDetectionConfig;
 	maiLiDingZiConfig.isSaveImg = checked;
 }

@@ -1,7 +1,7 @@
 #include <string>
 
 namespace cdm {
-	class MaiLiDingZiConfig
+	class EdgeWidthDetectionConfig
 	{
 	public:
 		totalDefectiveVolume : int :default = 0;

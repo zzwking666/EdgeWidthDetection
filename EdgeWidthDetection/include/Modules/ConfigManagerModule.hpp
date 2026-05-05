@@ -4,7 +4,7 @@
 #include<QObject>
 #include "oso_StorageContext.hpp"
 #include "SetConfig.hpp"
-#include "MaiLiDingZi.hpp"
+#include "EdgeWidthDetection.hpp"
 
 class ConfigManagerModule
 	: public QObject, public IModule<bool>
@@ -18,6 +18,6 @@ public:
 public:
 	std::unique_ptr<rw::oso::StorageContext> storeContext{ nullptr };
 public:
-	cdm::MaiLiDingZiConfig maiLiDingZiConfig{};
+	cdm::EdgeWidthDetectionConfig edgeWidthDetectionConfig{};
 	cdm::SetConfig setConfig{};
 };

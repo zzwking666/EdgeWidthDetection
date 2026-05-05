@@ -136,7 +136,7 @@ void ImageProcessor::save_image(rw::rqw::ImageInfo& imageInfo, const QImage& ima
 void ImageProcessor::save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage& image)
 {
 	auto& imageSaveEngine = Modules::getInstance().imgSaveModule.imageSaveEngine;
-	auto& config = Modules::getInstance().configManagerModule.maiLiDingZiConfig;
+	auto& config = Modules::getInstance().configManagerModule.edgeWidthDetectionConfig;
 
 	if (config.isSaveImg)
 	{

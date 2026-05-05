@@ -11,7 +11,7 @@ bool ConfigManagerModule::build()
 	auto loadMainWindowConfig = storeContext->loadSafe(globalPath.CaiHuiPrintInspectionConfigPath.toStdString());
 	if (loadMainWindowConfig)
 	{
-		maiLiDingZiConfig = *loadMainWindowConfig;
+		edgeWidthDetectionConfig = *loadMainWindowConfig;
 	}
 #pragma endregion
 
@@ -28,7 +28,7 @@ bool ConfigManagerModule::build()
 
 void ConfigManagerModule::destroy()
 {
-	storeContext->saveSafe(maiLiDingZiConfig, globalPath.CaiHuiPrintInspectionConfigPath.toStdString());
+	storeContext->saveSafe(edgeWidthDetectionConfig, globalPath.CaiHuiPrintInspectionConfigPath.toStdString());
 	storeContext->saveSafe(setConfig, globalPath.setConfigPath.toStdString());
 	storeContext.reset();
 }

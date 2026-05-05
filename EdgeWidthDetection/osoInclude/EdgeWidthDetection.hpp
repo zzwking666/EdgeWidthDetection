@@ -4,19 +4,19 @@
 #include <string>
 
 namespace cdm {
-    class MaiLiDingZiConfig
+    class EdgeWidthDetectionConfig
     {
     public:
-        MaiLiDingZiConfig() = default;
-        ~MaiLiDingZiConfig() = default;
+        EdgeWidthDetectionConfig() = default;
+        ~EdgeWidthDetectionConfig() = default;
 
-        MaiLiDingZiConfig(const rw::oso::ObjectStoreAssembly& assembly);
-        MaiLiDingZiConfig(const MaiLiDingZiConfig& obj);
+        EdgeWidthDetectionConfig(const rw::oso::ObjectStoreAssembly& assembly);
+        EdgeWidthDetectionConfig(const EdgeWidthDetectionConfig& obj);
 
-        MaiLiDingZiConfig& operator=(const MaiLiDingZiConfig& obj);
+        EdgeWidthDetectionConfig& operator=(const EdgeWidthDetectionConfig& obj);
         operator rw::oso::ObjectStoreAssembly() const;
-        bool operator==(const MaiLiDingZiConfig& obj) const;
-        bool operator!=(const MaiLiDingZiConfig& obj) const;
+        bool operator==(const EdgeWidthDetectionConfig& obj) const;
+        bool operator!=(const EdgeWidthDetectionConfig& obj) const;
 
     public:
         int totalDefectiveVolume{ 0 };
@@ -25,12 +25,12 @@ namespace cdm {
         bool isSaveImg{ false };
     };
 
-    inline MaiLiDingZiConfig::MaiLiDingZiConfig(const rw::oso::ObjectStoreAssembly& assembly)
+    inline EdgeWidthDetectionConfig::EdgeWidthDetectionConfig(const rw::oso::ObjectStoreAssembly& assembly)
     {
         auto isAccountAssembly = assembly.getName();
-        if (isAccountAssembly != "$class$MaiLiDingZiConfig$")
+        if (isAccountAssembly != "$class$EdgeWidthDetectionConfig$")
         {
-            throw std::runtime_error("Assembly is not $class$MaiLiDingZiConfig$");
+            throw std::runtime_error("Assembly is not $class$EdgeWidthDetectionConfig$");
         }
         auto totalDefectiveVolumeItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$totalDefectiveVolume$"));
         if (!totalDefectiveVolumeItem) {
@@ -54,7 +54,7 @@ namespace cdm {
         isSaveImg = isSaveImgItem->getValueAsBool();
     }
 
-    inline MaiLiDingZiConfig::MaiLiDingZiConfig(const MaiLiDingZiConfig& obj)
+    inline EdgeWidthDetectionConfig::EdgeWidthDetectionConfig(const EdgeWidthDetectionConfig& obj)
     {
         totalDefectiveVolume = obj.totalDefectiveVolume;
         isDebug = obj.isDebug;
@@ -62,7 +62,7 @@ namespace cdm {
         isSaveImg = obj.isSaveImg;
     }
 
-    inline MaiLiDingZiConfig& MaiLiDingZiConfig::operator=(const MaiLiDingZiConfig& obj)
+    inline EdgeWidthDetectionConfig& EdgeWidthDetectionConfig::operator=(const EdgeWidthDetectionConfig& obj)
     {
         if (this != &obj) {
             totalDefectiveVolume = obj.totalDefectiveVolume;
@@ -73,10 +73,10 @@ namespace cdm {
         return *this;
     }
 
-    inline MaiLiDingZiConfig::operator rw::oso::ObjectStoreAssembly() const
+    inline EdgeWidthDetectionConfig::operator rw::oso::ObjectStoreAssembly() const
     {
         rw::oso::ObjectStoreAssembly assembly;
-        assembly.setName("$class$MaiLiDingZiConfig$");
+        assembly.setName("$class$EdgeWidthDetectionConfig$");
         auto totalDefectiveVolumeItem = std::make_shared<rw::oso::ObjectStoreItem>();
         totalDefectiveVolumeItem->setName("$variable$totalDefectiveVolume$");
         totalDefectiveVolumeItem->setValueFromInt(totalDefectiveVolume);
@@ -96,12 +96,12 @@ namespace cdm {
         return assembly;
     }
 
-    inline bool MaiLiDingZiConfig::operator==(const MaiLiDingZiConfig& obj) const
+    inline bool EdgeWidthDetectionConfig::operator==(const EdgeWidthDetectionConfig& obj) const
     {
         return totalDefectiveVolume == obj.totalDefectiveVolume && isDebug == obj.isDebug && isDefect == obj.isDefect && isSaveImg == obj.isSaveImg;
     }
 
-    inline bool MaiLiDingZiConfig::operator!=(const MaiLiDingZiConfig& obj) const
+    inline bool EdgeWidthDetectionConfig::operator!=(const EdgeWidthDetectionConfig& obj) const
     {
         return !(*this == obj);
     }

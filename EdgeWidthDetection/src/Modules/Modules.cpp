@@ -5,7 +5,7 @@
 
 #include "DlgProductSet.h"
 #include "EdgeWidthDetection.h"
-#include "MaiLiDingZi.hpp"
+#include "EdgeWidthDetection.hpp"
 #include "rqw_RunEnvCheck.hpp"
 #include "SetConfig.hpp"
 #include "Utilty.hpp"
@@ -200,7 +200,7 @@ bool Modules::check()
 #pragma region check config format and exist
 	rw::oso::StorageContext storageContext(rw::oso::StorageType::Xml);
 
-	checkFileExistAndFormat<cdm::MaiLiDingZiConfig>(globalPath.CaiHuiPrintInspectionConfigPath, storageContext);
+	checkFileExistAndFormat<cdm::EdgeWidthDetectionConfig>(globalPath.CaiHuiPrintInspectionConfigPath, storageContext);
 	checkFileExistAndFormat<cdm::SetConfig>(globalPath.setConfigPath, storageContext);
 #pragma endregion
 
