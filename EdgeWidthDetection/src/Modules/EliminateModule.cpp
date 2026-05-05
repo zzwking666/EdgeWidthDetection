@@ -4,7 +4,6 @@ bool EliminateModule::build()
 {
 	detachDefectThreadPreProcess = std::make_unique<DetachDefectThread>(this);
 	productPriorityQueue1 = std::make_unique<rw::dsl::ThreadSafeHeap<bool, rw::dsl::HeapType::MinHeap>>(50);
-	productPriorityQueue2 = std::make_unique<rw::dsl::ThreadSafeHeap<bool, rw::dsl::HeapType::MinHeap>>(50);
 
 	return true;
 }
@@ -18,10 +17,6 @@ void EliminateModule::destroy()
 	if (productPriorityQueue1)
 	{
 		productPriorityQueue1.reset();
-	}
-	if (productPriorityQueue2)
-	{
-		productPriorityQueue2.reset();
 	}
 }
 

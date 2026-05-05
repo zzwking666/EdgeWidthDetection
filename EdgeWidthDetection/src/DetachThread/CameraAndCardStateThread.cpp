@@ -43,7 +43,6 @@ void CameraAndCardStateThread::run()
 void CameraAndCardStateThread::check_cameraState()
 {
 	check_cameraState1();
-	check_cameraState2();
 }
 
 void CameraAndCardStateThread::check_cameraState1()
@@ -71,35 +70,6 @@ void CameraAndCardStateThread::check_cameraState1()
 		emit buildCamera(1);
 		emit startMonitor(1);
 		emit updateCameraLabelState(1, false);
-		isUpdateState = false;
-	}
-}
-
-void CameraAndCardStateThread::check_cameraState2()
-{
-	auto& camera2 = Modules::getInstance().cameraModule.camera2;
-	static bool isUpdateState = false;
-
-	if (runtimeCounts != 0) {
-		return;
-	}
-
-	if (camera2) {
-		if (camera2->getConnectState()) {
-			if (!isUpdateState) {
-				emit updateCameraLabelState(2, true);
-				isUpdateState = true;
-			}
-		}
-		else {
-			emit destroyCamera(2);
-			emit updateCameraLabelState(2, false);
-		}
-	}
-	else {
-		emit buildCamera(2);
-		emit startMonitor(2);
-		emit updateCameraLabelState(2, false);
 		isUpdateState = false;
 	}
 }

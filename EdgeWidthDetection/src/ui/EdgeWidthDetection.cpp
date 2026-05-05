@@ -152,16 +152,6 @@ void EdgeWidthDetection::updateCameraLabelState(int cameraIndex, bool state)
 			ui->label_camera1State->setStyleSheet(QString("QLabel{color:rgb(230, 0, 0);font-size: 18px;font - weight: bold;padding: 5px 5px;} "));
 		}
 		break;
-	case 2:
-		if (state) {
-			ui->label_camera2State->setText("连接成功");
-			ui->label_camera2State->setStyleSheet(QString("QLabel{color:rgb(0, 230, 0);font-size: 18px;font - weight: bold;padding: 5px 5px;} "));
-		}
-		else {
-			ui->label_camera2State->setText("连接失败");
-			ui->label_camera2State->setStyleSheet(QString("QLabel{color:rgb(230, 0, 0);font-size: 18px;font - weight: bold;padding: 5px 5px;} "));
-		}
-		break;
 	default:
 		break;
 	}
@@ -178,10 +168,6 @@ void EdgeWidthDetection::onCameraDisplay(size_t index, QPixmap image)
 	if (1 == index)
 	{
 		ui->label_imgDisplay_1->setPixmap(image.scaled(ui->label_imgDisplay_1->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-	}
-	else if (2 == index)
-	{
-		ui->label_imgDisplay_2->setPixmap(image.scaled(ui->label_imgDisplay_2->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 	}
 }
 

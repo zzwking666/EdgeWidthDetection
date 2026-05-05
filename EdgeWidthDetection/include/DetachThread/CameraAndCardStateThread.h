@@ -22,7 +22,6 @@ protected:
 private:
 	void check_cameraState();
 	void check_cameraState1();
-	void check_cameraState2();
 signals:
 	void updateCameraLabelState(int cameraIndex, bool state);
 signals:

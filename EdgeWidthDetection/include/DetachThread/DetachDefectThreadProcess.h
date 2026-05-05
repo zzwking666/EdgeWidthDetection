@@ -25,7 +25,6 @@ public:
 	void stopThread();
 
 	void processQueue1(std::unique_ptr<rw::dsl::ThreadSafeHeap<bool>>& queue);
-	void processQueue2(std::unique_ptr<rw::dsl::ThreadSafeHeap<bool>>& queue);
 
 protected:
 	void run() override;

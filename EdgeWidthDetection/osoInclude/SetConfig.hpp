@@ -29,13 +29,6 @@ namespace cdm {
         double baoguang1{ 0 };
         double zengyi1{ 0 };
         double xiangsudangliang1{ 0 };
-        double shangxianwei2{ 0 };
-        double xiaxianwei2{ 0 };
-        double zuoxianwei2{ 0 };
-        double youxianwei2{ 0 };
-        double baoguang2{ 0 };
-        double zengyi2{ 0 };
-        double xiangsudangliang2{ 0 };
     };
 
     inline SetConfig::SetConfig(const rw::oso::ObjectStoreAssembly& assembly)
@@ -95,41 +88,6 @@ namespace cdm {
             throw std::runtime_error("$variable$xiangsudangliang1 is not found");
         }
         xiangsudangliang1 = xiangsudangliang1Item->getValueAsDouble();
-        auto shangxianwei2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$shangxianwei2$"));
-        if (!shangxianwei2Item) {
-            throw std::runtime_error("$variable$shangxianwei2 is not found");
-        }
-        shangxianwei2 = shangxianwei2Item->getValueAsDouble();
-        auto xiaxianwei2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$xiaxianwei2$"));
-        if (!xiaxianwei2Item) {
-            throw std::runtime_error("$variable$xiaxianwei2 is not found");
-        }
-        xiaxianwei2 = xiaxianwei2Item->getValueAsDouble();
-        auto zuoxianwei2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$zuoxianwei2$"));
-        if (!zuoxianwei2Item) {
-            throw std::runtime_error("$variable$zuoxianwei2 is not found");
-        }
-        zuoxianwei2 = zuoxianwei2Item->getValueAsDouble();
-        auto youxianwei2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$youxianwei2$"));
-        if (!youxianwei2Item) {
-            throw std::runtime_error("$variable$youxianwei2 is not found");
-        }
-        youxianwei2 = youxianwei2Item->getValueAsDouble();
-        auto baoguang2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$baoguang2$"));
-        if (!baoguang2Item) {
-            throw std::runtime_error("$variable$baoguang2 is not found");
-        }
-        baoguang2 = baoguang2Item->getValueAsDouble();
-        auto zengyi2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$zengyi2$"));
-        if (!zengyi2Item) {
-            throw std::runtime_error("$variable$zengyi2 is not found");
-        }
-        zengyi2 = zengyi2Item->getValueAsDouble();
-        auto xiangsudangliang2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$xiangsudangliang2$"));
-        if (!xiangsudangliang2Item) {
-            throw std::runtime_error("$variable$xiangsudangliang2 is not found");
-        }
-        xiangsudangliang2 = xiangsudangliang2Item->getValueAsDouble();
     }
 
     inline SetConfig::SetConfig(const SetConfig& obj)
@@ -144,13 +102,6 @@ namespace cdm {
         baoguang1 = obj.baoguang1;
         zengyi1 = obj.zengyi1;
         xiangsudangliang1 = obj.xiangsudangliang1;
-        shangxianwei2 = obj.shangxianwei2;
-        xiaxianwei2 = obj.xiaxianwei2;
-        zuoxianwei2 = obj.zuoxianwei2;
-        youxianwei2 = obj.youxianwei2;
-        baoguang2 = obj.baoguang2;
-        zengyi2 = obj.zengyi2;
-        xiangsudangliang2 = obj.xiangsudangliang2;
     }
 
     inline SetConfig& SetConfig::operator=(const SetConfig& obj)
@@ -166,13 +117,6 @@ namespace cdm {
             baoguang1 = obj.baoguang1;
             zengyi1 = obj.zengyi1;
             xiangsudangliang1 = obj.xiangsudangliang1;
-            shangxianwei2 = obj.shangxianwei2;
-            xiaxianwei2 = obj.xiaxianwei2;
-            zuoxianwei2 = obj.zuoxianwei2;
-            youxianwei2 = obj.youxianwei2;
-            baoguang2 = obj.baoguang2;
-            zengyi2 = obj.zengyi2;
-            xiangsudangliang2 = obj.xiangsudangliang2;
         }
         return *this;
     }
@@ -221,40 +165,12 @@ namespace cdm {
         xiangsudangliang1Item->setName("$variable$xiangsudangliang1$");
         xiangsudangliang1Item->setValueFromDouble(xiangsudangliang1);
         assembly.addItem(xiangsudangliang1Item);
-        auto shangxianwei2Item = std::make_shared<rw::oso::ObjectStoreItem>();
-        shangxianwei2Item->setName("$variable$shangxianwei2$");
-        shangxianwei2Item->setValueFromDouble(shangxianwei2);
-        assembly.addItem(shangxianwei2Item);
-        auto xiaxianwei2Item = std::make_shared<rw::oso::ObjectStoreItem>();
-        xiaxianwei2Item->setName("$variable$xiaxianwei2$");
-        xiaxianwei2Item->setValueFromDouble(xiaxianwei2);
-        assembly.addItem(xiaxianwei2Item);
-        auto zuoxianwei2Item = std::make_shared<rw::oso::ObjectStoreItem>();
-        zuoxianwei2Item->setName("$variable$zuoxianwei2$");
-        zuoxianwei2Item->setValueFromDouble(zuoxianwei2);
-        assembly.addItem(zuoxianwei2Item);
-        auto youxianwei2Item = std::make_shared<rw::oso::ObjectStoreItem>();
-        youxianwei2Item->setName("$variable$youxianwei2$");
-        youxianwei2Item->setValueFromDouble(youxianwei2);
-        assembly.addItem(youxianwei2Item);
-        auto baoguang2Item = std::make_shared<rw::oso::ObjectStoreItem>();
-        baoguang2Item->setName("$variable$baoguang2$");
-        baoguang2Item->setValueFromDouble(baoguang2);
-        assembly.addItem(baoguang2Item);
-        auto zengyi2Item = std::make_shared<rw::oso::ObjectStoreItem>();
-        zengyi2Item->setName("$variable$zengyi2$");
-        zengyi2Item->setValueFromDouble(zengyi2);
-        assembly.addItem(zengyi2Item);
-        auto xiangsudangliang2Item = std::make_shared<rw::oso::ObjectStoreItem>();
-        xiangsudangliang2Item->setName("$variable$xiangsudangliang2$");
-        xiangsudangliang2Item->setValueFromDouble(xiangsudangliang2);
-        assembly.addItem(xiangsudangliang2Item);
         return assembly;
     }
 
     inline bool SetConfig::operator==(const SetConfig& obj) const
     {
-        return xiangjiguangdianpingbishijian == obj.xiangjiguangdianpingbishijian && shuchuxinhaoyanshi == obj.shuchuxinhaoyanshi && shuchuxinhaochixushijian == obj.shuchuxinhaochixushijian && shangxianwei1 == obj.shangxianwei1 && xiaxianwei1 == obj.xiaxianwei1 && zuoxianwei1 == obj.zuoxianwei1 && youxianwei1 == obj.youxianwei1 && baoguang1 == obj.baoguang1 && zengyi1 == obj.zengyi1 && xiangsudangliang1 == obj.xiangsudangliang1 && shangxianwei2 == obj.shangxianwei2 && xiaxianwei2 == obj.xiaxianwei2 && zuoxianwei2 == obj.zuoxianwei2 && youxianwei2 == obj.youxianwei2 && baoguang2 == obj.baoguang2 && zengyi2 == obj.zengyi2 && xiangsudangliang2 == obj.xiangsudangliang2;
+        return xiangjiguangdianpingbishijian == obj.xiangjiguangdianpingbishijian && shuchuxinhaoyanshi == obj.shuchuxinhaoyanshi && shuchuxinhaochixushijian == obj.shuchuxinhaochixushijian && shangxianwei1 == obj.shangxianwei1 && xiaxianwei1 == obj.xiaxianwei1 && zuoxianwei1 == obj.zuoxianwei1 && youxianwei1 == obj.youxianwei1 && baoguang1 == obj.baoguang1 && zengyi1 == obj.zengyi1 && xiangsudangliang1 == obj.xiangsudangliang1;
     }
 
     inline bool SetConfig::operator!=(const SetConfig& obj) const

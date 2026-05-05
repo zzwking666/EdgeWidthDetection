@@ -63,10 +63,6 @@ void ImgProModule::buildImgProContextPreProcess()
 				{
 					currentPixToWorld = setConfig.xiangsudangliang1;
 				}
-				else if (2 == ImgProcessIndex)
-				{
-					currentPixToWorld = setConfig.xiangsudangliang2;
-				}
 				context.customFields["CurrentPixToWorld"] = currentPixToWorld;
 			}
 
@@ -93,13 +89,6 @@ void ImgProModule::buildImgProContextPreProcess()
 					limitBottom = static_cast<int>(setConfig.xiaxianwei1);
 					limitLeft = static_cast<int>(setConfig.zuoxianwei1);
 					limitRight = static_cast<int>(setConfig.youxianwei1);
-				}
-				else if (2 == ImgProcessIndex)
-				{
-					limitTop = static_cast<int>(setConfig.shangxianwei2);
-					limitBottom = static_cast<int>(setConfig.xiaxianwei2);
-					limitLeft = static_cast<int>(setConfig.zuoxianwei2);
-					limitRight = static_cast<int>(setConfig.youxianwei2);
 				}
 
 				context.customFields["LimitTop"] = limitTop;

@@ -24,28 +24,9 @@
         </property>
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
-          <layout class="QVBoxLayout" name="verticalLayout_2" stretch="3,3">
+          <layout class="QVBoxLayout" name="verticalLayout_2" stretch="3">
            <item>
             <widget class="QLabel" name="label_imgDisplay_1">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>999</width>
-               <height>999</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_imgDisplay_2">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                <horstretch>0</horstretch>
@@ -170,7 +151,7 @@ QPushButton:pressed {
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1">
                <item>
-                <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1,1,1">
+                <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1,1">
                  <item>
                   <widget class="QLabel" name="label_cameraStateTitle">
                    <property name="styleSheet">
@@ -229,47 +210,6 @@ QPushButton:pressed {
                      </property>
                      <property name="text">
                       <string>1.</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <layout class="QGridLayout" name="gLayout_cameraStates_2" columnminimumwidth="1,9">
-                   <property name="spacing">
-                    <number>0</number>
-                   </property>
-                   <item row="0" column="1">
-                    <widget class="QLabel" name="label_camera2State">
-                     <property name="styleSheet">
-                      <string notr="true">QLabel {
-       font-size: 18px;        
-       font-weight: bold;        
-		padding: 5px 5px;  
-    }</string>
-                     </property>
-                     <property name="text">
-                      <string>TextLabel</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="0">
-                    <widget class="QLabel" name="label_2">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QLabel {
-       font-size: 18px;        
-       font-weight: bold;        
-		padding: 5px 5px;  
-    }</string>
-                     </property>
-                     <property name="text">
-                      <string>2.</string>
                      </property>
                     </widget>
                    </item>

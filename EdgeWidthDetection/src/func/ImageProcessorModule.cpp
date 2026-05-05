@@ -122,7 +122,6 @@ void ImageProcessor::run_OpenRemoveFunc_emitErrorInfo(bool isbad)
 		}
 		else if (2 == imageProcessingModuleIndex)
 		{
-			Modules::getInstance().eliminateModule.productPriorityQueue2->push(true);
 			++Modules::getInstance().runtimeInfoModule.statisticalInfo.wasteCount;
 		}
 	}

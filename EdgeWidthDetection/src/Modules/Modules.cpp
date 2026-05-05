@@ -105,8 +105,6 @@ void Modules::connect()
 #pragma region connect camera and imgProModule
 	QObject::connect(&cameraModule, &CameraModule::frameCaptured1,
 		Modules::getInstance().imgProModule.imageProcessingModule1.get(), &ImageProcessingModule::onFrameCaptured, Qt::DirectConnection);
-	QObject::connect(&cameraModule, &CameraModule::frameCaptured2,
-		Modules::getInstance().imgProModule.imageProcessingModule2.get(), &ImageProcessingModule::onFrameCaptured, Qt::DirectConnection);
 #pragma endregion
 
 #pragma region connect UIModule and ReconnectModule
