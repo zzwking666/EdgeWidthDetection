@@ -2,7 +2,7 @@
 #include <QtWidgets/QApplication>
 
 #include "Modules.hpp"
-#include "CaiHuiPrintInspection.h"
+#include "EdgeWidthDetection.h"
 
 int main(int argc, char* argv[])
 {

@@ -1,4 +1,4 @@
-#include "CaiHuiPrintInspection.h"
+#include "EdgeWidthDetection.h"
 
 #include <QDir>
 #include <QMessageBox>
