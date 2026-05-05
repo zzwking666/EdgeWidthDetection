@@ -96,14 +96,22 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	auto maskImg = imgPro.getMaskImg(frame.image);
 	auto defectResult = imgPro.getDefectResultInfo();
 
-	bool isBad = false;
+	int width = 0.0;
 
-	if (0 == defectResult.disableDefects.size())
+	if (defectResult.disableDefects.size() == 1)
 	{
-		isBad = true;
+		if (imgPro.context().customFields.find("width") != imgPro.context().customFields.end())
+		{
+			width = std::any_cast<int>(imgPro.context().customFields["width"]);
+		}
 	}
 
-	run_OpenRemoveFunc_emitErrorInfo(isBad);
+	QStringList textList;
+	textList.append(QString::number(width) + "mm");
+	std::vector<rw::imgPro::Color> colors;
+	colors.push_back(rw::imgPro::Color::Blue);
+
+	rw::imgPro::ImagePainter::drawTextOnImageWithFontSize(maskImg, textList, colors, 50);
 
 	emit imageReady(frame.index,QPixmap::fromImage(maskImg));
 

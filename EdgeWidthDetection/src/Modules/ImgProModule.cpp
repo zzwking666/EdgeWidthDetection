@@ -195,8 +195,8 @@ void ImgProModule::buildImgProContextPreProcess()
 		rw::imgPro::DefectResultInfo& defectResultInfo,
 		rw::imgPro::ImageProcessContext& context)
 		{
-
-
+			// 默认只取第一个结果
+			context.customFields["width"] = processResult[0].width;
 		};
 #pragma endregion
 
@@ -254,6 +254,7 @@ void ImgProModule::buildImgProContextPreProcess()
 #pragma region build running time text
 	imageProcessContext_PreProcess.runTextCfg.isDisProcessImgTime = false;
 	imageProcessContext_PreProcess.runTextCfg.isDrawExtraText = false;
+	imageProcessContext_PreProcess.runTextCfg.isDisOperatorTime = false;
 #pragma endregion
 }
 
