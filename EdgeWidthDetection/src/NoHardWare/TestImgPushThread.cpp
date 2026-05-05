@@ -120,30 +120,6 @@ void TestImgPushThread::readImg(size_t s)
 	}
 }
 
-void TestImgPushThread::readImg2(size_t s)
-{
-	auto& isPushImg = Modules::getInstance().test_module.testImgPush;
-	if (!isPushImg.load())
-	{
-		return;
-	}
-
-	if (s % _pushImgTime == 0 && !imgCache2.isEmpty())
-	{
-		std::random_device rd;
-		std::mt19937 gen(rd());
-		std::uniform_int_distribution<> dis(0, imgCache2.size() - 1);
-
-		int randomIndex = dis(gen);
-
-		rw::rqw::MatInfo selectedImg{};
-
-		selectedImg.mat = imgCache2[randomIndex].clone();
-
-		emit imgReady2(selectedImg, 2);
-	}
-}
-
 void TestImgPushThread::run()
 {
 	static size_t s = 0;
@@ -151,7 +127,6 @@ void TestImgPushThread::run()
 		QThread::msleep(1);
 		++s;
 		readImg(s);
-		readImg2(s);
 		if (s == 1000000)
 		{
 			s = 0;

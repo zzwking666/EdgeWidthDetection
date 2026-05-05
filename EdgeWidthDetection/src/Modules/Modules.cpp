@@ -149,8 +149,6 @@ void Modules::connect()
 #ifdef BUILD_WITHOUT_HARDWARE
 	QObject::connect(test_module.testImgPushThread.get(), &TestImgPushThread::imgReady,
 		imgProModule.imageProcessingModule1.get(), &ImageProcessingModule::onFrameCaptured, Qt::DirectConnection);
-	QObject::connect(test_module.testImgPushThread.get(), &TestImgPushThread::imgReady2,
-		imgProModule.imageProcessingModule2.get(), &ImageProcessingModule::onFrameCaptured, Qt::DirectConnection);
 	#endif
 }
 

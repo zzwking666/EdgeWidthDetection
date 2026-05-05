@@ -36,10 +36,8 @@ public:
 	void stopThread();
 signals:
 	void imgReady(rw::rqw::MatInfo matInfo, size_t index);
-	void imgReady2(rw::rqw::MatInfo matInfo, size_t index);
 public:
 	void readImg(size_t s);
-	void readImg2(size_t s);
 protected:
 	void run() override;
 private:

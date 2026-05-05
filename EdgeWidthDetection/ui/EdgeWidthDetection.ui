@@ -170,6 +170,9 @@ QPushButton:pressed {
                  </item>
                  <item>
                   <layout class="QGridLayout" name="gLayout_cameraStates" columnminimumwidth="1,9">
+                   <property name="bottomMargin">
+                    <number>20</number>
+                   </property>
                    <property name="spacing">
                     <number>0</number>
                    </property>
