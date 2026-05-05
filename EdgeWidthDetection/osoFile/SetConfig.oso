@@ -23,7 +23,5 @@ namespace cdm {
 		baoguang2 : double : default = 0;
 		zengyi2 : double : default = 0;
 		xiangsudangliang2 : double : default = 0;
-
-		changeLanguageIndex : int : default = 0;
 	};
 }

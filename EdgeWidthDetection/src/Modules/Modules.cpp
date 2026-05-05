@@ -125,8 +125,7 @@ void Modules::connect()
 #pragma endregion
 
 #pragma region connect UIModules
-	QObject::connect(uiModule._dlgProductSet, &DlgProductSet::emit_changeLanguage,
-		uiModule._maiLiDingZi, &EdgeWidthDetection::changeLanguage);
+	
 #pragma endregion
 
 #pragma region connect camera and ReconnectModule

@@ -54,9 +54,6 @@ void DlgProductSet::read_config()
 	ui->btn_zengyi2->setText(QString::number(setConfig.zengyi2));
 	ui->btn_xiangsudangliang2->setText(QString::number(setConfig.xiangsudangliang2));
 
-	ui->cbox_changeLanguage->setCurrentIndex(setConfig.changeLanguageIndex);
-	changeLanguage(setConfig.changeLanguageIndex);
-
 	ui->tabWidget->setCurrentIndex(0);
 }
 
@@ -84,95 +81,6 @@ void DlgProductSet::build_connect()
 	connect(ui->btn_baoguang2, &QPushButton::clicked, this, &DlgProductSet::btn_baoguang2_clicked);
 	connect(ui->btn_zengyi2, &QPushButton::clicked, this, &DlgProductSet::btn_zengyi2_clicked);
 	connect(ui->btn_xiangsudangliang2, &QPushButton::clicked, this, &DlgProductSet::btn_xiangsudangliang2_clicked);
-	connect(ui->cbox_changeLanguage, &QComboBox::currentIndexChanged, this, &DlgProductSet::changeLanguage);
-}
-
-void DlgProductSet::changeLanguage(int index)
-{
-	// 中文
-	if (0 == index)
-	{
-		ui->lb_xiangjiguangdianpingbishijian->setText("相机光电屏蔽时间");
-		ui->lb_xiangsudangliang1->setText("像素当量");
-
-		ui->lb_shangxianwei1->setText("上限位");
-		ui->lb_xiaxianwei1->setText("下限位");
-		ui->lb_baoguang1->setText("曝光");
-		ui->lb_zengyi1->setText("增益");
-
-		ui->lb_changeLanguage->setText("切换语言");
-
-		ui->lb_xiangjiguangdianpingbishijianUnit->setText("ms");
-
-		ui->lb_shangxianweiUnit1->setText("Pix");
-		ui->lb_xiaxianweiUnit1->setText("Pix");
-		ui->lb_xiangsudangliangUnit1->setText("mm/Pix");
-
-		ui->lb_shangxianwei2->setText("上限位");
-		ui->lb_xiaxianwei2->setText("下限位");
-		ui->lb_baoguang2->setText("曝光");
-		ui->lb_zengyi2->setText("增益");
-		ui->lb_shangxianweiUnit2->setText("Pix");
-		ui->lb_xiaxianweiUnit2->setText("Pix");
-		ui->lb_xiangsudangliang2->setText("像素当量");
-		ui->lb_xiangsudangliangUnit2->setText("mm/Pix");
-
-		ui->btn_testTrigger1_1->setText("测试触发1");
-		ui->btn_testTrigger2_1->setText("测试触发2");
-		ui->btn_testTrigger1_2->setText("测试触发1");
-		ui->btn_testTrigger2_2->setText("测试触发2");
-
-		ui->tabWidget->setTabText(0, "一相机");
-		ui->tabWidget->setTabText(1, "二相机");
-		ui->tabWidget->setTabText(2, "分数界面内容可选显示");
-	}
-	// 英文
-	else if (1 == index)
-	{
-		// 参数页（顶部）
-		ui->lb_xiangjiguangdianpingbishijian->setText("Camera sensor mask time");
-		ui->lb_xiangsudangliang1->setText("Pixel size");
-
-		// 相机参数通用 label（tab 内 Camera 1）
-		ui->lb_shangxianwei1->setText("Upper limit");
-		ui->lb_xiaxianwei1->setText("Lower limit");
-		ui->lb_baoguang1->setText("Exposure");
-		ui->lb_zengyi1->setText("Gain");
-
-		// 语言切换
-		ui->lb_changeLanguage->setText("Language");
-
-		ui->lb_xiangjiguangdianpingbishijianUnit->setText("ms");
-
-		ui->lb_shangxianweiUnit1->setText("px");
-		ui->lb_xiaxianweiUnit1->setText("px");
-		ui->lb_xiangsudangliangUnit1->setText("mm/px");
-
-		// Camera 2 tab 内那套 label（注意 ui 里是 _2/_3/_4 命名）
-		ui->lb_shangxianwei2->setText("Upper limit");
-		ui->lb_xiaxianwei2->setText("Lower limit");
-		ui->lb_baoguang2->setText("Exposure");
-		ui->lb_zengyi2->setText("Gain");
-		ui->lb_shangxianweiUnit2->setText("px");
-		ui->lb_xiaxianweiUnit2->setText("px");
-		ui->lb_xiangsudangliang2->setText("Pixel size");
-		ui->lb_xiangsudangliangUnit2->setText("mm/px");
-
-		// 测试触发
-		ui->btn_testTrigger1_1->setText("Test trigger 1");
-		ui->btn_testTrigger2_1->setText("Test trigger 2");
-		ui->btn_testTrigger1_2->setText("Test trigger 1");
-		ui->btn_testTrigger2_2->setText("Test trigger 2");
-
-		// Tab 标题
-		ui->tabWidget->setTabText(0, "Camera 1");
-		ui->tabWidget->setTabText(1, "Camera 2");
-		ui->tabWidget->setTabText(2, "Score page items");
-	}
-
-	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-	setConfig.changeLanguageIndex = index;
-	emit emit_changeLanguage(index);
 }
 
 void DlgProductSet::btn_close_clicked()

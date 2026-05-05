@@ -30,7 +30,7 @@ public slots:
 public:
 	void build_ui();
 	void build_connect();
-	void build_CaiHuiPrintInspectionData();
+	void build_EdgeWidthDetectionData();
 	void ini_clickableTitle();
 	void build_DlgCloseForm();
 public:
@@ -38,7 +38,6 @@ public:
 public:
 	void build_camera();
 public slots:
-	void changeLanguage(int index);
 public slots:
 	void updateCameraLabelState(int cameraIndex, bool state);
 

@@ -22,10 +22,6 @@ public:
 
 signals:
 	void paramsChanged();
-
-	void emit_changeLanguage(int index);
-public slots:
-	void changeLanguage(int index);
 private slots:
 	void btn_close_clicked();
 
