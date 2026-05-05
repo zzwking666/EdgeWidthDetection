@@ -4,7 +4,7 @@
 #include <QObject>
 #include "IModule.hpp"
 
-class CaiHuiPrintInspection;
+class EdgeWidthDetection;
 class DlgProductSet;
 
 class UIModule
@@ -20,5 +20,5 @@ public:
 
 public:
 	DlgProductSet* _dlgProductSet = nullptr;
-	CaiHuiPrintInspection* _maiLiDingZi = nullptr;
+	EdgeWidthDetection* _maiLiDingZi = nullptr;
 };

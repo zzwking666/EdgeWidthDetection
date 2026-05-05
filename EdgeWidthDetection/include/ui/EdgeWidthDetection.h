@@ -14,13 +14,13 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class EdgeWidthDetectionClass; };
 QT_END_NAMESPACE
 
-class CaiHuiPrintInspection : public QMainWindow
+class EdgeWidthDetection : public QMainWindow
 {
 	Q_OBJECT
 
 public:
-	CaiHuiPrintInspection(QWidget* parent = nullptr);
-	~CaiHuiPrintInspection();
+	EdgeWidthDetection(QWidget* parent = nullptr);
+	~EdgeWidthDetection();
 #ifdef BUILD_WITHOUT_HARDWARE
 public:
 	QCheckBox* cBox_testPushImg{ nullptr };

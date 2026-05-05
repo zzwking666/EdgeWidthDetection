@@ -14,7 +14,7 @@
 #include "Utilty.hpp"
 
 
-CaiHuiPrintInspection::CaiHuiPrintInspection(QWidget* parent)
+EdgeWidthDetection::EdgeWidthDetection(QWidget* parent)
 	: QMainWindow(parent)
 	, ui(new Ui::EdgeWidthDetectionClass())
 {
@@ -23,7 +23,7 @@ CaiHuiPrintInspection::CaiHuiPrintInspection(QWidget* parent)
 	initializeComponents();
 }
 
-CaiHuiPrintInspection::~CaiHuiPrintInspection()
+EdgeWidthDetection::~EdgeWidthDetection()
 {
 	Modules::getInstance().stop();
 	Modules::getInstance().destroy();
@@ -31,7 +31,7 @@ CaiHuiPrintInspection::~CaiHuiPrintInspection()
 }
 
 #ifdef BUILD_WITHOUT_HARDWARE
-void CaiHuiPrintInspection::cBox_testPushImg_checked(bool checked)
+void EdgeWidthDetection::cBox_testPushImg_checked(bool checked)
 {
 	if (checked)
 	{
@@ -44,7 +44,7 @@ void CaiHuiPrintInspection::cBox_testPushImg_checked(bool checked)
 }
 #endif
 
-void CaiHuiPrintInspection::build_ui()
+void EdgeWidthDetection::build_ui()
 {
 	build_CaiHuiPrintInspectionData();
 	build_DlgCloseForm();
@@ -54,30 +54,30 @@ void CaiHuiPrintInspection::build_ui()
 	cBox_testPushImg->setText("图像推送状态");
 	ui->gBox_infor->layout()->addWidget(cBox_testPushImg);
 	QObject::connect(cBox_testPushImg, &QCheckBox::clicked,
-		this, &CaiHuiPrintInspection::cBox_testPushImg_checked);
+		this, &EdgeWidthDetection::cBox_testPushImg_checked);
 #endif
 }
 
-void CaiHuiPrintInspection::build_connect()
+void EdgeWidthDetection::build_connect()
 {
 	QObject::connect(ui->pbtn_exit, &QPushButton::clicked,
-		this, &CaiHuiPrintInspection::pbtn_exit_clicked);
+		this, &EdgeWidthDetection::pbtn_exit_clicked);
 	QObject::connect(ui->pbtn_set, &QPushButton::clicked,
-		this, &CaiHuiPrintInspection::pbtn_set_clicked);
+		this, &EdgeWidthDetection::pbtn_set_clicked);
 	QObject::connect(ui->rbtn_debug, &QRadioButton::clicked,
-		this, &CaiHuiPrintInspection::rbtn_debug_checked);
+		this, &EdgeWidthDetection::rbtn_debug_checked);
 	QObject::connect(ui->rbtn_removeFunc, &QRadioButton::clicked,
-		this, &CaiHuiPrintInspection::rbtn_removeFunc_checked);
+		this, &EdgeWidthDetection::rbtn_removeFunc_checked);
 	QObject::connect(ui->pbtn_resetProduct, &QPushButton::clicked,
-		this, &CaiHuiPrintInspection::pbtn_resetProduct_clicked);
+		this, &EdgeWidthDetection::pbtn_resetProduct_clicked);
 	QObject::connect(ui->ckb_saveImg, &QCheckBox::clicked,
-		this, &CaiHuiPrintInspection::ckb_saveImg_checked);
+		this, &EdgeWidthDetection::ckb_saveImg_checked);
 	// 连接显示标题
 	QObject::connect(clickableTitle, &rw::rqw::ClickableLabel::clicked,
-		this, &CaiHuiPrintInspection::lb_title_clicked);
+		this, &EdgeWidthDetection::lb_title_clicked);
 }
 
-void CaiHuiPrintInspection::build_CaiHuiPrintInspectionData()
+void EdgeWidthDetection::build_CaiHuiPrintInspectionData()
 {
 	auto& maiLiDingZiConfig = Modules::getInstance().configManagerModule.maiLiDingZiConfig;
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
@@ -95,7 +95,7 @@ void CaiHuiPrintInspection::build_CaiHuiPrintInspectionData()
 	changeLanguage(setConfig.changeLanguageIndex);
 }
 
-void CaiHuiPrintInspection::ini_clickableTitle()
+void EdgeWidthDetection::ini_clickableTitle()
 {
 	// 初始化标题label
 	clickableTitle = new rw::rqw::ClickableLabel(this);
@@ -106,12 +106,12 @@ void CaiHuiPrintInspection::ini_clickableTitle()
 	clickableTitle->setStyleSheet("QLabel {font-size: 30px;font-weight: bold;color: rgb(255, 255, 255);padding: 5px 5px;border-bottom: 2px solid #cccccc;}");
 }
 
-void CaiHuiPrintInspection::build_DlgCloseForm()
+void EdgeWidthDetection::build_DlgCloseForm()
 {
 	_dlgCloseForm = new DlgCloseForm(this);
 }
 
-void CaiHuiPrintInspection::initializeComponents()
+void EdgeWidthDetection::initializeComponents()
 {
 	build_ui();
 
@@ -123,7 +123,7 @@ void CaiHuiPrintInspection::initializeComponents()
 #endif
 }
 
-void CaiHuiPrintInspection::build_camera()
+void EdgeWidthDetection::build_camera()
 {
 	auto& cameraModules = Modules::getInstance().cameraModule;
 	auto errors = cameraModules.getBuildResults();
@@ -138,7 +138,7 @@ void CaiHuiPrintInspection::build_camera()
 	}
 }
 
-void CaiHuiPrintInspection::changeLanguage(int index)
+void EdgeWidthDetection::changeLanguage(int index)
 {
 	// 中文
 	if (0 == index)
@@ -181,7 +181,7 @@ void CaiHuiPrintInspection::changeLanguage(int index)
 	}
 }
 
-void CaiHuiPrintInspection::updateCameraLabelState(int cameraIndex, bool state)
+void EdgeWidthDetection::updateCameraLabelState(int cameraIndex, bool state)
 {
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	switch (cameraIndex)
@@ -239,13 +239,13 @@ void CaiHuiPrintInspection::updateCameraLabelState(int cameraIndex, bool state)
 	}
 }
 
-void CaiHuiPrintInspection::onUpdateStatisticalInfoUI()
+void EdgeWidthDetection::onUpdateStatisticalInfoUI()
 {
 	auto& statisticalInfo = Modules::getInstance().runtimeInfoModule.statisticalInfo;
 	ui->label_wasteProductsValue->setText(QString::number(statisticalInfo.wasteCount.load()));
 }
 
-void CaiHuiPrintInspection::onCameraDisplay(size_t index, QPixmap image)
+void EdgeWidthDetection::onCameraDisplay(size_t index, QPixmap image)
 {
 	if (1 == index)
 	{
@@ -257,7 +257,7 @@ void CaiHuiPrintInspection::onCameraDisplay(size_t index, QPixmap image)
 	}
 }
 
-void CaiHuiPrintInspection::lb_title_clicked()
+void EdgeWidthDetection::lb_title_clicked()
 {
 	if (0 != minimizeCount)
 	{
@@ -272,7 +272,7 @@ void CaiHuiPrintInspection::lb_title_clicked()
 
 }
 
-void CaiHuiPrintInspection::pbtn_exit_clicked()
+void EdgeWidthDetection::pbtn_exit_clicked()
 {
 #ifdef NDEBUG
 	if (_dlgCloseForm)
@@ -284,7 +284,7 @@ void CaiHuiPrintInspection::pbtn_exit_clicked()
 #endif
 }
 
-void CaiHuiPrintInspection::pbtn_set_clicked()
+void EdgeWidthDetection::pbtn_set_clicked()
 {
 	auto& _dlgProductSet = Modules::getInstance().uiModule._dlgProductSet;
 	_dlgProductSet->setFixedSize(this->width(), this->height());
@@ -292,7 +292,7 @@ void CaiHuiPrintInspection::pbtn_set_clicked()
 	_dlgProductSet->exec();
 }
 
-void CaiHuiPrintInspection::rbtn_debug_checked(bool checked)
+void EdgeWidthDetection::rbtn_debug_checked(bool checked)
 {
 	auto isRuning = ui->rbtn_removeFunc->isChecked();
 
@@ -316,7 +316,7 @@ void CaiHuiPrintInspection::rbtn_debug_checked(bool checked)
 	}
 }
 
-void CaiHuiPrintInspection::rbtn_removeFunc_checked(bool checked)
+void EdgeWidthDetection::rbtn_removeFunc_checked(bool checked)
 {
 	auto& runningState = Modules::getInstance().runtimeInfoModule.runningState;
 	auto& camera1 = Modules::getInstance().cameraModule.camera1;
@@ -337,7 +337,7 @@ void CaiHuiPrintInspection::rbtn_removeFunc_checked(bool checked)
 	}
 }
 
-void CaiHuiPrintInspection::pbtn_resetProduct_clicked()
+void EdgeWidthDetection::pbtn_resetProduct_clicked()
 {
 	auto& maiLiDingZiConfig = Modules::getInstance().configManagerModule.maiLiDingZiConfig;
 
@@ -346,7 +346,7 @@ void CaiHuiPrintInspection::pbtn_resetProduct_clicked()
 	onUpdateStatisticalInfoUI();
 }
 
-void CaiHuiPrintInspection::ckb_saveImg_checked(bool checked)
+void EdgeWidthDetection::ckb_saveImg_checked(bool checked)
 {
 	auto& maiLiDingZiConfig = Modules::getInstance().configManagerModule.maiLiDingZiConfig;
 	maiLiDingZiConfig.isSaveImg = checked;
