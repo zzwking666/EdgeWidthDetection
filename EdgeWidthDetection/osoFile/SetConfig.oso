@@ -12,8 +12,13 @@ namespace cdm {
 		xiaxianwei1 : double : default = 0;
 		zuoxianwei1 : double : default = 0;
 		youxianwei1 : double : default = 0;
-		baoguang1 : double : default = 0;
-		zengyi1 : double : default = 0;
 		xiangsudangliang1 : double : default = 0;
+
+		zengyi : double : default = 0;
+		qiangguang : double : default = 0;
+		zhongguang : double : default = 0;
+		ruoguang : double : default = 0;
+
+		lastChooseLight : int : default = 0;
 	};
 }

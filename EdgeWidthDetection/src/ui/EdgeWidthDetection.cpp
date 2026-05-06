@@ -7,6 +7,8 @@
 #include "ui_EdgeWidthDetection.h"
 #include <QPushButton>
 #include <QButtonGroup>
+#include <fmt/ranges.h>
+
 #include "DlgProductSet.h"
 #include "Modules.hpp"
 #include "NumberKeyboard.h"
@@ -72,6 +74,12 @@ void EdgeWidthDetection::build_connect()
 		this, &EdgeWidthDetection::pbtn_resetProduct_clicked);
 	QObject::connect(ui->ckb_saveImg, &QCheckBox::clicked,
 		this, &EdgeWidthDetection::ckb_saveImg_checked);
+	QObject::connect(ui->rbtn_ruoguang, &QRadioButton::clicked,
+		this, &EdgeWidthDetection::rbtn_ruoguang_checked);
+	QObject::connect(ui->rbtn_zhongguang, &QRadioButton::clicked,
+		this, &EdgeWidthDetection::rbtn_zhongguang_checked);
+	QObject::connect(ui->rbtn_qiangguang, &QRadioButton::clicked,
+		this, &EdgeWidthDetection::rbtn_qiangguang_checked);
 	// 连接显示标题
 	QObject::connect(clickableTitle, &rw::rqw::ClickableLabel::clicked,
 		this, &EdgeWidthDetection::lb_title_clicked);
@@ -104,6 +112,26 @@ void EdgeWidthDetection::build_EdgeWidthDetectionData()
 	groupB->addButton(ui->rbtn_ruoguang);
 	groupB->addButton(ui->rbtn_zhongguang);
 	groupB->addButton(ui->rbtn_qiangguang);
+
+	switch (setConfig.lastChooseLight)
+	{
+	case 0:
+		ui->rbtn_ruoguang->setChecked(true);
+		rbtn_ruoguang_checked(true);
+		break;
+	case 1:
+		ui->rbtn_zhongguang->setChecked(true);
+		rbtn_zhongguang_checked(true);
+		break;
+	case 2:
+		ui->rbtn_qiangguang->setChecked(true);
+		rbtn_qiangguang_checked(true);
+		break;
+	default:
+		ui->rbtn_ruoguang->setChecked(true);
+		rbtn_ruoguang_checked(true);
+		break;
+	}
 }
 
 void EdgeWidthDetection::ini_clickableTitle()
@@ -270,6 +298,40 @@ void EdgeWidthDetection::pbtn_resetProduct_clicked()
 	maiLiDingZiConfig.totalDefectiveVolume = 0;
 
 	onUpdateStatisticalInfoUI();
+}
+
+void EdgeWidthDetection::rbtn_ruoguang_checked(bool checked)
+{
+	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+	auto& camera1 = Modules::getInstance().cameraModule.camera1;
+
+	if (camera1)
+	{
+		camera1->setExposureTime(setConfig.ruoguang);
+	}
+	setConfig.lastChooseLight = 0;
+}
+
+void EdgeWidthDetection::rbtn_zhongguang_checked(bool checked)
+{
+	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+	auto& camera1 = Modules::getInstance().cameraModule.camera1;
+	if (camera1)
+	{
+		camera1->setExposureTime(setConfig.zhongguang);
+	}
+	setConfig.lastChooseLight = 1;
+}
+
+void EdgeWidthDetection::rbtn_qiangguang_checked(bool checked)
+{
+	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+	auto& camera1 = Modules::getInstance().cameraModule.camera1;
+	if (camera1)
+	{
+		camera1->setExposureTime(setConfig.qiangguang);
+	}
+	setConfig.lastChooseLight = 2;
 }
 
 void EdgeWidthDetection::ckb_saveImg_checked(bool checked)

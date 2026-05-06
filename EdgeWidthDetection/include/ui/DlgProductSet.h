@@ -36,8 +36,10 @@ private slots:
 	void btn_xiaxianwei1_clicked();
 	void btn_zuoxianwei1_clicked();
 	void btn_youxianwei1_clicked();
-	void btn_baoguang1_clicked();
-	void btn_zengyi1_clicked();
+	void btn_zengyi_clicked();
+	void btn_qiangguang_clicked();
+	void btn_zhongguang_clicked();
+	void btn_ruoguang_clicked();
 	void btn_xiangsudangliang1_clicked();
 
 public:

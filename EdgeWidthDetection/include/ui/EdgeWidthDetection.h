@@ -38,7 +38,6 @@ public:
 public:
 	void build_camera();
 public slots:
-public slots:
 	void updateCameraLabelState(int cameraIndex, bool state);
 
 	void onUpdateStatisticalInfoUI();
@@ -52,6 +51,11 @@ private slots:
 	void rbtn_debug_checked(bool checked);
 	void rbtn_removeFunc_checked(bool checked);
 	void pbtn_resetProduct_clicked();
+
+	void rbtn_ruoguang_checked(bool checked);
+	void rbtn_zhongguang_checked(bool checked);
+	void rbtn_qiangguang_checked(bool checked);
+
 	void ckb_saveImg_checked(bool checked);
 private:
 	rw::rqw::ClickableLabel* clickableTitle = nullptr;
