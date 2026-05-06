@@ -6,7 +6,7 @@
 
 #include "ui_EdgeWidthDetection.h"
 #include <QPushButton>
-
+#include <QButtonGroup>
 #include "DlgProductSet.h"
 #include "Modules.hpp"
 #include "NumberKeyboard.h"
@@ -92,6 +92,18 @@ void EdgeWidthDetection::build_EdgeWidthDetectionData()
 	rbtn_removeFunc_checked(true);
 
 	ini_clickableTitle();
+
+	// button分类
+	auto* groupA = new QButtonGroup(this); // 2个一组
+	groupA->setExclusive(true);
+	groupA->addButton(ui->rbtn_debug);
+	groupA->addButton(ui->rbtn_removeFunc);
+
+	auto* groupB = new QButtonGroup(this); // 3个一组
+	groupB->setExclusive(true);
+	groupB->addButton(ui->rbtn_ruoguang);
+	groupB->addButton(ui->rbtn_zhongguang);
+	groupB->addButton(ui->rbtn_qiangguang);
 }
 
 void EdgeWidthDetection::ini_clickableTitle()

@@ -249,38 +249,40 @@ QGroupBox::title {
           <property name="title">
            <string/>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout" stretch="1,2,2,1,1,1">
-           <item>
-            <layout class="QHBoxLayout" name="hLayout_info" stretch="1,1">
+          <layout class="QGridLayout" name="gridLayout_4">
+           <item row="0" column="0">
+            <layout class="QVBoxLayout" name="verticalLayout_4" stretch="1,1,1,1,1,1,1">
              <item>
-              <widget class="QLabel" name="label_info">
-               <property name="styleSheet">
-                <string notr="true">QLabel {
+              <layout class="QHBoxLayout" name="hLayout_info" stretch="1,1">
+               <item>
+                <widget class="QLabel" name="label_info">
+                 <property name="styleSheet">
+                  <string notr="true">QLabel {
        font-size: 24px;        
        font-weight: bold;        
        color:  rgb(141, 141, 141);       
        padding: 5px 5px;     
        border-bottom: 2px solid #cccccc; 
     }</string>
-               </property>
-               <property name="text">
-                <string>统计信息</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pbtn_resetProduct">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton {
+                 </property>
+                 <property name="text">
+                  <string>统计信息</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pbtn_resetProduct">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton {
     padding: 6px 14px;
     border: 2px solid #CCC;
     border-radius: 4px;
@@ -298,59 +300,61 @@ QPushButton:pressed {
     border-color: #777;
     background-color: #EEE;
 }</string>
-               </property>
-               <property name="text">
-                <string>产量清零</string>
-               </property>
-              </widget>
+                 </property>
+                 <property name="text">
+                  <string>产量清零</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="hLayout_wasteProducts" stretch="1,2">
              <item>
-              <widget class="QLabel" name="label_wasteProducts">
-               <property name="styleSheet">
-                <string notr="true">QLabel {
+              <layout class="QHBoxLayout" name="hLayout_wasteProducts" stretch="1,2">
+               <item>
+                <widget class="QLabel" name="label_wasteProducts">
+                 <property name="styleSheet">
+                  <string notr="true">QLabel {
        font-size: 24px;        
        font-weight: bold;        
        color:  rgb(141, 141, 141);       
        padding: 5px 5px;     
        border-bottom: 2px solid #cccccc; 
     }</string>
-               </property>
-               <property name="text">
-                <string>废品总量</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_wasteProductsValue">
-               <property name="styleSheet">
-                <string notr="true">QLabel {
+                 </property>
+                 <property name="text">
+                  <string>废品总量</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_wasteProductsValue">
+                 <property name="styleSheet">
+                  <string notr="true">QLabel {
        font-size: 24px;        
        font-weight: bold;        
        color:   rgb(255, 0, 0);      
        padding: 5px 5px;     
        border-bottom: 2px solid #cccccc; 
     }</string>
-               </property>
-               <property name="text">
-                <string>0</string>
-               </property>
-              </widget>
+                 </property>
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
              <item>
-              <widget class="QRadioButton" name="rbtn_debug">
-               <property name="styleSheet">
-                <string notr="true">QRadioButton {
+              <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_4">
+                 <item>
+                  <widget class="QRadioButton" name="rbtn_debug">
+                   <property name="styleSheet">
+                    <string notr="true">QRadioButton {
     spacing: 8px;
     font-size: 20px;
     color: #333;
@@ -406,20 +410,20 @@ QRadioButton::indicator:pressed {
         stop:1 transparent
     );
 }</string>
-               </property>
-               <property name="text">
-                <string>调试模式</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="hLayout_remove">
-             <item>
-              <widget class="QRadioButton" name="rbtn_removeFunc">
-               <property name="styleSheet">
-                <string notr="true">QRadioButton {
+                   </property>
+                   <property name="text">
+                    <string>调试模式</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="hLayout_remove">
+                 <item>
+                  <widget class="QRadioButton" name="rbtn_removeFunc">
+                   <property name="styleSheet">
+                    <string notr="true">QRadioButton {
     spacing: 8px;
     font-size: 20px;
     color: #333;
@@ -481,25 +485,233 @@ QRadioButton::indicator:pressed {
         stop:1 transparent
     );
 }</string>
-               </property>
-               <property name="text">
-                <string>剔除功能</string>
+                   </property>
+                   <property name="text">
+                    <string>剔除功能</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="Line" name="line_3">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
                </property>
               </widget>
              </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="Line" name="line">
-             <property name="orientation">
-              <enum>Qt::Orientation::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QCheckBox" name="ckb_saveImg">
-             <property name="styleSheet">
-              <string notr="true">QCheckBox {
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,1,1">
+               <item>
+                <widget class="QRadioButton" name="rbtn_ruoguang">
+                 <property name="styleSheet">
+                  <string notr="true">QRadioButton {
+    spacing: 8px;
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;        
+    color:  rgb(0, 0, 0);       
+
+}
+
+/* 未选中状态 */
+QRadioButton::indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    border: 2px solid #999;
+    background: #ffffff;
+}
+
+/* 悬停效果 */
+QRadioButton::indicator:hover {
+    border: 2px solid #666;
+}
+
+/* 选中状态 */
+QRadioButton::indicator:checked {
+    border: 2px solid #2196F3;
+}
+
+/* 选中时的内圆 */
+QRadioButton::indicator:checked {
+    background-color: qradialgradient(
+        cx:0.5, cy:0.5,
+        radius:0.4,
+        fx:0.5, fy:0.5,
+        stop:0 #2196F3,
+        stop:1 transparent
+    );
+}
+
+/* 禁用状态 */
+QRadioButton::indicator:disabled {
+    border: 2px solid #ccc;
+    background: #eee;
+}
+
+/* 点击动画效果 */
+QRadioButton::indicator:pressed {
+    border: 2px solid #1565C0;
+    background-color: qradialgradient(
+        cx:0.5, cy:0.5,
+        radius:0.5,
+        fx:0.5, fy:0.5,
+        stop:0 #BBDEFB,
+        stop:1 transparent
+    );
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>弱光</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="rbtn_zhongguang">
+                 <property name="styleSheet">
+                  <string notr="true">QRadioButton {
+    spacing: 8px;
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;        
+    color:  rgb(0, 0, 0);       
+
+}
+
+/* 未选中状态 */
+QRadioButton::indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    border: 2px solid #999;
+    background: #ffffff;
+}
+
+/* 悬停效果 */
+QRadioButton::indicator:hover {
+    border: 2px solid #666;
+}
+
+/* 选中状态 */
+QRadioButton::indicator:checked {
+    border: 2px solid #2196F3;
+}
+
+/* 选中时的内圆 */
+QRadioButton::indicator:checked {
+    background-color: qradialgradient(
+        cx:0.5, cy:0.5,
+        radius:0.4,
+        fx:0.5, fy:0.5,
+        stop:0 #2196F3,
+        stop:1 transparent
+    );
+}
+
+/* 禁用状态 */
+QRadioButton::indicator:disabled {
+    border: 2px solid #ccc;
+    background: #eee;
+}
+
+/* 点击动画效果 */
+QRadioButton::indicator:pressed {
+    border: 2px solid #1565C0;
+    background-color: qradialgradient(
+        cx:0.5, cy:0.5,
+        radius:0.5,
+        fx:0.5, fy:0.5,
+        stop:0 #BBDEFB,
+        stop:1 transparent
+    );
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>中光</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="rbtn_qiangguang">
+                 <property name="styleSheet">
+                  <string notr="true">QRadioButton {
+    spacing: 8px;
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;        
+    color:  rgb(0, 0, 0);       
+
+}
+
+/* 未选中状态 */
+QRadioButton::indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    border: 2px solid #999;
+    background: #ffffff;
+}
+
+/* 悬停效果 */
+QRadioButton::indicator:hover {
+    border: 2px solid #666;
+}
+
+/* 选中状态 */
+QRadioButton::indicator:checked {
+    border: 2px solid #2196F3;
+}
+
+/* 选中时的内圆 */
+QRadioButton::indicator:checked {
+    background-color: qradialgradient(
+        cx:0.5, cy:0.5,
+        radius:0.4,
+        fx:0.5, fy:0.5,
+        stop:0 #2196F3,
+        stop:1 transparent
+    );
+}
+
+/* 禁用状态 */
+QRadioButton::indicator:disabled {
+    border: 2px solid #ccc;
+    background: #eee;
+}
+
+/* 点击动画效果 */
+QRadioButton::indicator:pressed {
+    border: 2px solid #1565C0;
+    background-color: qradialgradient(
+        cx:0.5, cy:0.5,
+        radius:0.5,
+        fx:0.5, fy:0.5,
+        stop:0 #BBDEFB,
+        stop:1 transparent
+    );
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>强光</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="Line" name="line">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="ckb_saveImg">
+               <property name="styleSheet">
+                <string notr="true">QCheckBox {
     spacing: 8px;
     font-size: 20px;
     font-weight: bold;
@@ -563,11 +775,13 @@ QCheckBox:checked {
     color: #2196F3;
     font-weight: 500;
 }</string>
-             </property>
-             <property name="text">
-              <string>存图功能</string>
-             </property>
-            </widget>
+               </property>
+               <property name="text">
+                <string>存图功能</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>
