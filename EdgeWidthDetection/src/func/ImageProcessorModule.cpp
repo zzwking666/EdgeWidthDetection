@@ -96,13 +96,15 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	auto maskImg = imgPro.getMaskImg(frame.image);
 	auto defectResult = imgPro.getDefectResultInfo();
 
-	int width = 0.0;
+	double width = 0.0;
 
 	if (defectResult.disableDefects.size() == 1)
 	{
 		if (imgPro.context().customFields.find("width") != imgPro.context().customFields.end())
 		{
-			width = std::any_cast<int>(imgPro.context().customFields["width"]);
+			auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+			auto pixToWorld = setConfig.xiangsudangliang1;
+			width = std::any_cast<int>(imgPro.context().customFields["width"]) * pixToWorld;
 		}
 	}
 
