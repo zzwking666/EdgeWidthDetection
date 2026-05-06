@@ -1,5 +1,6 @@
 #include <QMessageBox>
 #include <QtWidgets/QApplication>
+#include <windows.h>
 
 #include "Modules.hpp"
 #include "EdgeWidthDetection.h"
@@ -7,6 +8,9 @@
 int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
+
+	SetConsoleOutputCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
 
 	if (!Modules::check())
 	{
