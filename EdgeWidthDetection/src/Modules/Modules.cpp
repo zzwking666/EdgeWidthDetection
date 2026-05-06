@@ -47,6 +47,9 @@ bool Modules::build()
 	// 构建图像保存模块
 	imgSaveModule.build();
 
+	// 构建PLC控制模块
+	plcController.build();
+
 #ifdef BUILD_WITHOUT_HARDWARE
 	test_module.build();
 #endif
@@ -59,6 +62,7 @@ void Modules::destroy()
 #ifdef BUILD_WITHOUT_HARDWARE
 	test_module.destroy();
 #endif
+	plcController.destroy();
 	runtimeInfoModule.destroy();
 	imgProModule.destroy();
 	cameraModule.destroy();
@@ -79,7 +83,7 @@ void Modules::start()
 	imgProModule.start();
 	cameraModule.start();
 	reconnectModule.start();
-
+	plcController.start();
 #ifdef BUILD_WITHOUT_HARDWARE
 	test_module.start();
 #endif
@@ -90,6 +94,7 @@ void Modules::stop()
 #ifdef BUILD_WITHOUT_HARDWARE
 	test_module.stop();
 #endif
+	plcController.stop();
 	reconnectModule.stop();
 	cameraModule.stop();
 	imgProModule.stop();

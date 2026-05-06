@@ -6,6 +6,26 @@
 #include <Windows.h>
 #include <ShlObj.h>
 
+void PlcController::build()
+{
+	build_plcController();
+}
+
+void PlcController::destroy()
+{
+	destroy_plcController();
+}
+
+void PlcController::start()
+{
+
+}
+
+void PlcController::stop()
+{
+
+}
+
 void PlcController::build_plcController()
 {
 	rw::hoem::ModbusDeviceRtuCfg config;

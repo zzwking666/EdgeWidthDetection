@@ -14,6 +14,7 @@
 #include "rqw_RunEnvCheck.hpp"
 #include "TestModule.hpp"
 #include "WarningModule.hpp"
+#include "PlcController.hpp"
 
 class Modules
 	:public IModule<bool>
@@ -56,6 +57,7 @@ public:
 	ImgSaveModule imgSaveModule;
 	ImgProModule imgProModule;
 	EliminateModule eliminateModule;
+	PlcController plcController;
 #ifdef BUILD_WITHOUT_HARDWARE
 public:
 	TestModule test_module;
