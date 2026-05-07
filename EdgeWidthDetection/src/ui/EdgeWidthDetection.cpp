@@ -258,7 +258,7 @@ void EdgeWidthDetection::rbtn_debug_checked(bool checked)
 			if (camera1)
 			{
 				camera1->setTriggerState(false);
-				camera1->setFrameRate(5);
+				camera1->setFrameRate(2);
 			}
 		}
 		else {

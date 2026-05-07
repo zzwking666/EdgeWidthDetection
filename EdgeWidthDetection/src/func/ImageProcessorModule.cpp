@@ -87,6 +87,9 @@ void ImageProcessor::run_debug(MatInfo& frame)
 	auto defectResult = imgPro.getDefectResultInfo();
 
 	emit imageReady(imageProcessingModuleIndex, QPixmap::fromImage(maskImg));
+
+	rw::rqw::ImageInfo imageInfo(rw::rqw::cvMatToQImage(frame.image));
+	save_image(imageInfo, maskImg);
 }
 
 void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
@@ -146,11 +149,20 @@ void ImageProcessor::save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage
 {
 	auto& imageSaveEngine = Modules::getInstance().imgSaveModule.imageSaveEngine;
 	auto& config = Modules::getInstance().configManagerModule.edgeWidthDetectionConfig;
+	auto& runningState = Modules::getInstance().runtimeInfoModule.runningState;
 
 	if (config.isSaveImg)
 	{
-		imageInfo.classify = "NG";
-		imageSaveEngine->pushImage(imageInfo);
+		if (runningState == RunningState::OpenRemoveFunc)
+		{
+			imageInfo.classify = "OpenRemoveFunc";
+			imageSaveEngine->pushImage(imageInfo);
+		}
+		else if (runningState == RunningState::Debug)
+		{
+			imageInfo.classify = "Debug";
+			imageSaveEngine->pushImage(imageInfo);
+		}
 	}
 }
 
