@@ -196,7 +196,10 @@ void ImgProModule::buildImgProContextPreProcess()
 		rw::imgPro::ImageProcessContext& context)
 		{
 			// 默认只取第一个结果
-			context.customFields["width"] = processResult[0].width;
+			if (!processResult.empty())
+			{
+				context.customFields["width"] = processResult[0].width;
+			}
 		};
 #pragma endregion
 
