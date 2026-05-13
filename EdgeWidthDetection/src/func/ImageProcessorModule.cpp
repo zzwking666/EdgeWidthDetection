@@ -250,6 +250,11 @@ void ImageProcessingModule::onFrameCaptured(rw::rqw::MatInfo matInfo, size_t ind
 	}
 
 	QMutexLocker locker(&_mutex);
+	// 队列最多只有一张
+	if (_queue.size() >= 1)
+	{
+		return;
+	}
 	MatInfo mat;
 	mat.image = matInfo.mat;
 	mat.index = index;
