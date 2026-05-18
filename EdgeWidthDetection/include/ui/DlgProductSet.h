@@ -30,6 +30,7 @@ private slots:
 	void btn_shuchuxinhaochixushijian_clicked();
 	void cbox_changeSaveImgMode_clicked();
 	void btn_score_clicked();
+	void ckb_autoSaveImg_clicked();
 
 	void btn_testTrigger1_1_clicked();
 	void btn_testTrigger2_1_clicked();
@@ -39,12 +40,16 @@ private slots:
 	void btn_zuoxianwei1_clicked();
 	void btn_youxianwei1_clicked();
 	void btn_zengyi_clicked();
+	void btn_xiangsudangliang1_clicked();
+	void btn_debugFrame_clicked();
+	void btn_openRemoveFrame_clicked();
+
 	void btn_qiangguang_clicked();
 	void btn_zhongguang_clicked();
 	void btn_ruoguang_clicked();
-	void btn_xiangsudangliang1_clicked();
-	void ckb_autoSaveImg_clicked();
 
+	void btn_paizhaowanchengxinhaodizhi_clicked();
+	void btn_kuanduxierudizhi_clicked();
 public:
 	Ui::DlgProductSetClass* ui;
 };

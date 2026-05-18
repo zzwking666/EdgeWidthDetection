@@ -30,10 +30,14 @@ namespace cdm {
         double zuoxianwei1{ 0 };
         double youxianwei1{ 0 };
         double xiangsudangliang1{ 0 };
+        int debugFrame{ 0 };
+        int openRemoveFrame{ 0 };
         double zengyi{ 0 };
         double qiangguang{ 0 };
         double zhongguang{ 0 };
         double ruoguang{ 0 };
+        int paizhaowanchengxinhaodizhi{ 0 };
+        int kuanduxierudizhi{ 0 };
         int lastChooseLight{ 0 };
     };
 
@@ -99,6 +103,16 @@ namespace cdm {
             throw std::runtime_error("$variable$xiangsudangliang1 is not found");
         }
         xiangsudangliang1 = xiangsudangliang1Item->getValueAsDouble();
+        auto debugFrameItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$debugFrame$"));
+        if (!debugFrameItem) {
+            throw std::runtime_error("$variable$debugFrame is not found");
+        }
+        debugFrame = debugFrameItem->getValueAsInt();
+        auto openRemoveFrameItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$openRemoveFrame$"));
+        if (!openRemoveFrameItem) {
+            throw std::runtime_error("$variable$openRemoveFrame is not found");
+        }
+        openRemoveFrame = openRemoveFrameItem->getValueAsInt();
         auto zengyiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$zengyi$"));
         if (!zengyiItem) {
             throw std::runtime_error("$variable$zengyi is not found");
@@ -119,6 +133,16 @@ namespace cdm {
             throw std::runtime_error("$variable$ruoguang is not found");
         }
         ruoguang = ruoguangItem->getValueAsDouble();
+        auto paizhaowanchengxinhaodizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$paizhaowanchengxinhaodizhi$"));
+        if (!paizhaowanchengxinhaodizhiItem) {
+            throw std::runtime_error("$variable$paizhaowanchengxinhaodizhi is not found");
+        }
+        paizhaowanchengxinhaodizhi = paizhaowanchengxinhaodizhiItem->getValueAsInt();
+        auto kuanduxierudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$kuanduxierudizhi$"));
+        if (!kuanduxierudizhiItem) {
+            throw std::runtime_error("$variable$kuanduxierudizhi is not found");
+        }
+        kuanduxierudizhi = kuanduxierudizhiItem->getValueAsInt();
         auto lastChooseLightItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$lastChooseLight$"));
         if (!lastChooseLightItem) {
             throw std::runtime_error("$variable$lastChooseLight is not found");
@@ -139,10 +163,14 @@ namespace cdm {
         zuoxianwei1 = obj.zuoxianwei1;
         youxianwei1 = obj.youxianwei1;
         xiangsudangliang1 = obj.xiangsudangliang1;
+        debugFrame = obj.debugFrame;
+        openRemoveFrame = obj.openRemoveFrame;
         zengyi = obj.zengyi;
         qiangguang = obj.qiangguang;
         zhongguang = obj.zhongguang;
         ruoguang = obj.ruoguang;
+        paizhaowanchengxinhaodizhi = obj.paizhaowanchengxinhaodizhi;
+        kuanduxierudizhi = obj.kuanduxierudizhi;
         lastChooseLight = obj.lastChooseLight;
     }
 
@@ -160,10 +188,14 @@ namespace cdm {
             zuoxianwei1 = obj.zuoxianwei1;
             youxianwei1 = obj.youxianwei1;
             xiangsudangliang1 = obj.xiangsudangliang1;
+            debugFrame = obj.debugFrame;
+            openRemoveFrame = obj.openRemoveFrame;
             zengyi = obj.zengyi;
             qiangguang = obj.qiangguang;
             zhongguang = obj.zhongguang;
             ruoguang = obj.ruoguang;
+            paizhaowanchengxinhaodizhi = obj.paizhaowanchengxinhaodizhi;
+            kuanduxierudizhi = obj.kuanduxierudizhi;
             lastChooseLight = obj.lastChooseLight;
         }
         return *this;
@@ -217,6 +249,14 @@ namespace cdm {
         xiangsudangliang1Item->setName("$variable$xiangsudangliang1$");
         xiangsudangliang1Item->setValueFromDouble(xiangsudangliang1);
         assembly.addItem(xiangsudangliang1Item);
+        auto debugFrameItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        debugFrameItem->setName("$variable$debugFrame$");
+        debugFrameItem->setValueFromInt(debugFrame);
+        assembly.addItem(debugFrameItem);
+        auto openRemoveFrameItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        openRemoveFrameItem->setName("$variable$openRemoveFrame$");
+        openRemoveFrameItem->setValueFromInt(openRemoveFrame);
+        assembly.addItem(openRemoveFrameItem);
         auto zengyiItem = std::make_shared<rw::oso::ObjectStoreItem>();
         zengyiItem->setName("$variable$zengyi$");
         zengyiItem->setValueFromDouble(zengyi);
@@ -233,6 +273,14 @@ namespace cdm {
         ruoguangItem->setName("$variable$ruoguang$");
         ruoguangItem->setValueFromDouble(ruoguang);
         assembly.addItem(ruoguangItem);
+        auto paizhaowanchengxinhaodizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        paizhaowanchengxinhaodizhiItem->setName("$variable$paizhaowanchengxinhaodizhi$");
+        paizhaowanchengxinhaodizhiItem->setValueFromInt(paizhaowanchengxinhaodizhi);
+        assembly.addItem(paizhaowanchengxinhaodizhiItem);
+        auto kuanduxierudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        kuanduxierudizhiItem->setName("$variable$kuanduxierudizhi$");
+        kuanduxierudizhiItem->setValueFromInt(kuanduxierudizhi);
+        assembly.addItem(kuanduxierudizhiItem);
         auto lastChooseLightItem = std::make_shared<rw::oso::ObjectStoreItem>();
         lastChooseLightItem->setName("$variable$lastChooseLight$");
         lastChooseLightItem->setValueFromInt(lastChooseLight);
@@ -242,7 +290,7 @@ namespace cdm {
 
     inline bool SetConfig::operator==(const SetConfig& obj) const
     {
-        return xiangjiguangdianpingbishijian == obj.xiangjiguangdianpingbishijian && shuchuxinhaoyanshi == obj.shuchuxinhaoyanshi && shuchuxinhaochixushijian == obj.shuchuxinhaochixushijian && saveImgMode == obj.saveImgMode && score == obj.score && autoSaveImg == obj.autoSaveImg && shangxianwei1 == obj.shangxianwei1 && xiaxianwei1 == obj.xiaxianwei1 && zuoxianwei1 == obj.zuoxianwei1 && youxianwei1 == obj.youxianwei1 && xiangsudangliang1 == obj.xiangsudangliang1 && zengyi == obj.zengyi && qiangguang == obj.qiangguang && zhongguang == obj.zhongguang && ruoguang == obj.ruoguang && lastChooseLight == obj.lastChooseLight;
+        return xiangjiguangdianpingbishijian == obj.xiangjiguangdianpingbishijian && shuchuxinhaoyanshi == obj.shuchuxinhaoyanshi && shuchuxinhaochixushijian == obj.shuchuxinhaochixushijian && saveImgMode == obj.saveImgMode && score == obj.score && autoSaveImg == obj.autoSaveImg && shangxianwei1 == obj.shangxianwei1 && xiaxianwei1 == obj.xiaxianwei1 && zuoxianwei1 == obj.zuoxianwei1 && youxianwei1 == obj.youxianwei1 && xiangsudangliang1 == obj.xiangsudangliang1 && debugFrame == obj.debugFrame && openRemoveFrame == obj.openRemoveFrame && zengyi == obj.zengyi && qiangguang == obj.qiangguang && zhongguang == obj.zhongguang && ruoguang == obj.ruoguang && paizhaowanchengxinhaodizhi == obj.paizhaowanchengxinhaodizhi && kuanduxierudizhi == obj.kuanduxierudizhi && lastChooseLight == obj.lastChooseLight;
     }
 
     inline bool SetConfig::operator!=(const SetConfig& obj) const

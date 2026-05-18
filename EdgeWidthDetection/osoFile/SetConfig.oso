@@ -16,11 +16,16 @@ namespace cdm {
 		zuoxianwei1 : double : default = 0;
 		youxianwei1 : double : default = 0;
 		xiangsudangliang1 : double : default = 0;
+		debugFrame : int : default = 0;
+		openRemoveFrame : int : default = 0;
 
 		zengyi : double : default = 0;
 		qiangguang : double : default = 0;
 		zhongguang : double : default = 0;
 		ruoguang : double : default = 0;
+
+		paizhaowanchengxinhaodizhi : int : default = 0;
+		kuanduxierudizhi : int : default = 0;
 
 		lastChooseLight : int : default = 0;
 	};
