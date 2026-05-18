@@ -56,6 +56,7 @@ void DlgProductSet::read_config()
 	ui->btn_ruoguang->setText(QString::number(setConfig.ruoguang));
 
 	// modbus地址
+	ui->cbox_registerAttribute->setCurrentIndex(setConfig.registerAttribute);
 	ui->btn_paizhaowanchengxinhaodizhi->setText(QString::number(setConfig.paizhaowanchengxinhaodizhi));
 	ui->btn_kuanduxierudizhi->setText(QString::number(setConfig.kuanduxierudizhi));
 
@@ -83,6 +84,7 @@ void DlgProductSet::build_connect()
 	connect(ui->btn_qiangguang, &QPushButton::clicked, this, &DlgProductSet::btn_qiangguang_clicked);
 	connect(ui->btn_zhongguang, &QPushButton::clicked, this, &DlgProductSet::btn_zhongguang_clicked);
 	connect(ui->btn_ruoguang, &QPushButton::clicked, this, &DlgProductSet::btn_ruoguang_clicked);
+	connect(ui->cbox_registerAttribute, &QComboBox::currentIndexChanged, this, &DlgProductSet::cbox_registerAttribute_clicked);
 	connect(ui->btn_paizhaowanchengxinhaodizhi, &QPushButton::clicked, this, &DlgProductSet::btn_paizhaowanchengxinhaodizhi_clicked);
 	connect(ui->btn_kuanduxierudizhi, &QPushButton::clicked, this, &DlgProductSet::btn_kuanduxierudizhi_clicked);
 	connect(ui->ckb_autoSaveImg, &QCheckBox::clicked, this, &DlgProductSet::ckb_autoSaveImg_clicked);
@@ -367,6 +369,12 @@ void DlgProductSet::btn_ruoguang_clicked()
 		ui->btn_ruoguang->setText(value);
 		setConfig.ruoguang = value.toDouble();
 	}
+}
+
+void DlgProductSet::cbox_registerAttribute_clicked()
+{
+	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+	setConfig.registerAttribute = ui->cbox_registerAttribute->currentIndex();
 }
 
 void DlgProductSet::btn_paizhaowanchengxinhaodizhi_clicked()

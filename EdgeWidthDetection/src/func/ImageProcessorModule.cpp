@@ -108,6 +108,9 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 		{
 			auto pixToWorld = setConfig.xiangsudangliang1;
 			width = std::any_cast<int>(imgPro.context().customFields["width"]) * pixToWorld;
+
+			// 写入Plc
+			writePlcController(width * 100);
 		}
 	}
 
@@ -176,6 +179,30 @@ void ImageProcessor::save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage
 		//	imageInfo.classify = "Debug";
 		//	imageSaveEngine->pushImage(imageInfo);
 		//}
+	}
+}
+
+void ImageProcessor::writePlcController(double width)
+{
+	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
+	if (0 == setConfig.registerAttribute)
+	{
+		// 16位寄存器
+		plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(setConfig.paizhaowanchengxinhaodizhi), static_cast<uint16_t>(1));
+		plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(setConfig.kuanduxierudizhi), static_cast<uint16_t>(width));
+	}
+	else if (1 == setConfig.registerAttribute)
+	{
+		// 32位寄存器大端
+		plcControllerScheduler->writeUInt32RegisterAsync(static_cast<uint16_t>(setConfig.paizhaowanchengxinhaodizhi), static_cast<uint32_t>(1), rw::hoem::Endianness::BigEndian);
+		plcControllerScheduler->writeUInt32RegisterAsync(static_cast<uint16_t>(setConfig.kuanduxierudizhi), static_cast<uint32_t>(width), rw::hoem::Endianness::BigEndian);
+	}
+	else if (2 == setConfig.registerAttribute)
+	{
+		// 32位寄存器小端
+		plcControllerScheduler->writeUInt32RegisterAsync(static_cast<uint16_t>(setConfig.paizhaowanchengxinhaodizhi), static_cast<uint32_t>(1), rw::hoem::Endianness::LittleEndian);
+		plcControllerScheduler->writeUInt32RegisterAsync(static_cast<uint16_t>(setConfig.kuanduxierudizhi), static_cast<uint32_t>(width), rw::hoem::Endianness::LittleEndian);
 	}
 }
 

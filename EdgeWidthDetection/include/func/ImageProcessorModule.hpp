@@ -42,6 +42,9 @@ private:
 	void save_image(rw::rqw::ImageInfo& imageInfo, const QImage& image);
 	void save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage& image);
 private:
+	// plc
+	void writePlcController(double width);
+private:
 	std::unique_ptr<rw::imgPro::ImageProcess> _imgProcess;
 public:
 	// 构建模型引擎
