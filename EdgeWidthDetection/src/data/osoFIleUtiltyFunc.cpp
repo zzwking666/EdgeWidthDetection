@@ -3,7 +3,7 @@
 #include "Utilty.hpp"
 
 rw::imgPro::EliminationInfoFunc::ClassIdWithConfigMap cdm::ScoreConfigConvert::toClassIdWithEliConfigMap(
-	double areaFactor, double scoreFactor)
+	double areaFactor, double scoreFactor, SetConfig& setConfig)
 {
 	rw::imgPro::EliminationInfoFunc::ClassIdWithConfigMap result{};
 
@@ -22,6 +22,7 @@ rw::imgPro::EliminationInfoFunc::ClassIdWithConfigMap cdm::ScoreConfigConvert::t
 
 	result[ClassId::edge].isUsingArea = false;
 	result[ClassId::edge].isUsingScore = true;
+	result[ClassId::edge].scoreRange = std::make_pair(0, static_cast<double>(setConfig.score));
 
 	return result;
 }

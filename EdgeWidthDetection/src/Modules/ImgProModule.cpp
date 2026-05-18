@@ -70,7 +70,7 @@ void ImgProModule::buildImgProContextPreProcess()
 			{
 				if (imgProIsUpdate[stationIdx])
 				{
-					context.eliminationCfg = cdm::ScoreConfigConvert::toClassIdWithEliConfigMap(currentPixToWorld * currentPixToWorld, 100);
+					context.eliminationCfg = cdm::ScoreConfigConvert::toClassIdWithEliConfigMap(currentPixToWorld * currentPixToWorld, 100, setConfig);
 					context.defectCfg = cdm::ScoreConfigConvert::toClassIdWithDefConfigMap();
 					imgProIsUpdate[stationIdx] = false;
 				}

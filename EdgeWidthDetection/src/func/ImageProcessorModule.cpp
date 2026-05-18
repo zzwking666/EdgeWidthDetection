@@ -94,6 +94,7 @@ void ImageProcessor::run_debug(MatInfo& frame)
 
 void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 {
+	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	auto& imgPro = *_imgProcess;
 	imgPro(frame.image);
 	auto maskImg = imgPro.getMaskImg(frame.image);
@@ -105,7 +106,6 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	{
 		if (imgPro.context().customFields.find("width") != imgPro.context().customFields.end())
 		{
-			auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 			auto pixToWorld = setConfig.xiangsudangliang1;
 			width = std::any_cast<int>(imgPro.context().customFields["width"]) * pixToWorld;
 		}
@@ -120,8 +120,21 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 
 	emit imageReady(frame.index,QPixmap::fromImage(maskImg));
 
-	rw::rqw::ImageInfo imageInfo(rw::rqw::cvMatToQImage(frame.image));
-	save_image(imageInfo, maskImg);
+	// 全部保存
+	if (0 == setConfig.saveImgMode)
+	{
+		rw::rqw::ImageInfo imageInfo(rw::rqw::cvMatToQImage(frame.image));
+		save_image(imageInfo, maskImg);
+	}
+	// 只保存有识别到的
+	else if (1 == setConfig.saveImgMode)
+	{
+		if (defectResult.disableDefects.size() > 0)
+		{
+			rw::rqw::ImageInfo imageInfo(rw::rqw::cvMatToQImage(frame.image));
+			save_image(imageInfo, maskImg);
+		}
+	}
 }
 
 void ImageProcessor::run_OpenRemoveFunc_emitErrorInfo(bool isbad)

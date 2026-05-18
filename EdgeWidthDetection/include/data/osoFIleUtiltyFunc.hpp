@@ -8,7 +8,7 @@ namespace cdm
 {
 	struct ScoreConfigConvert
 	{
-		static rw::imgPro::EliminationInfoFunc::ClassIdWithConfigMap toClassIdWithEliConfigMap(double areaFactor, double scoreFactor);
+		static rw::imgPro::EliminationInfoFunc::ClassIdWithConfigMap toClassIdWithEliConfigMap(double areaFactor, double scoreFactor, SetConfig& setConfig);
 		static rw::imgPro::DefectResultInfoFunc::ClassIdWithConfigMap toClassIdWithDefConfigMap();
 	};
 }
