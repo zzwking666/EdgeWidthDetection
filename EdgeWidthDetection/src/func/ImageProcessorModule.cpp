@@ -102,7 +102,7 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 
 	double width = 0.0;
 
-	if (defectResult.disableDefects.size() == 1)
+	if (defectResult.defects.size() == 1)
 	{
 		if (imgPro.context().customFields.find("width") != imgPro.context().customFields.end())
 		{
@@ -186,6 +186,13 @@ void ImageProcessor::writePlcController(double width)
 {
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
+	
+	if (!plcControllerScheduler)
+	{
+		qDebug() << "PLC disConnect!";
+		return;
+	}
+
 	if (0 == setConfig.registerAttribute)
 	{
 		// 16位寄存器

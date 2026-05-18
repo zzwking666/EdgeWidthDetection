@@ -101,25 +101,22 @@ void ImgProModule::buildImgProContextPreProcess()
 			{
 				if (RunningState::Debug == runningState)
 				{
-					context.defectDrawCfg.textLocate = rw::imgPro::ConfigDrawRect::TextLocate::LeftTopIn;
-
-					context.defectDrawCfg.isDrawDefects = true;
-					context.defectDrawCfg.isDrawDisableDefects = true;
-					context.defectDrawCfg.isDisAreaText = true;
-					context.defectDrawCfg.isDisScoreText = true;
-
-					context.runTextCfg.isDrawExtraText = false;
 
 				}
 				else if (RunningState::OpenRemoveFunc == runningState)
 				{
-					context.defectDrawCfg.isDrawDefects = true;
-					context.defectDrawCfg.isDrawDisableDefects = true;
-					context.defectDrawCfg.isDisAreaText = true;
-					context.defectDrawCfg.isDisScoreText = true;
-
-					context.runTextCfg.isDrawExtraText = false;
+					
 				}
+
+				context.defectDrawCfg.isDrawDefects = true;
+				context.defectDrawCfg.isDrawDisableDefects = true;
+				context.defectDrawCfg.isDisAreaText = false;
+				context.defectDrawCfg.isDisScoreText = true;
+
+				context.defectDrawCfg.classIdWithConfigMap[0].defectColorBad = rw::rqw::RQWColor::Green;
+				context.defectDrawCfg.classIdWithConfigMap[0].defectColorGood = rw::rqw::RQWColor::Red;
+
+				context.runTextCfg.isDrawExtraText = false;
 			}
 		};
 #pragma endregion
