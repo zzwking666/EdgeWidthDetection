@@ -24,6 +24,7 @@ namespace cdm {
         double shuchuxinhaochixushijian{ 0 };
         int saveImgMode{ 0 };
         int score{ 0 };
+        bool autoSaveImg{ false };
         double shangxianwei1{ 0 };
         double xiaxianwei1{ 0 };
         double zuoxianwei1{ 0 };
@@ -68,6 +69,11 @@ namespace cdm {
             throw std::runtime_error("$variable$score is not found");
         }
         score = scoreItem->getValueAsInt();
+        auto autoSaveImgItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$autoSaveImg$"));
+        if (!autoSaveImgItem) {
+            throw std::runtime_error("$variable$autoSaveImg is not found");
+        }
+        autoSaveImg = autoSaveImgItem->getValueAsBool();
         auto shangxianwei1Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$shangxianwei1$"));
         if (!shangxianwei1Item) {
             throw std::runtime_error("$variable$shangxianwei1 is not found");
@@ -127,6 +133,7 @@ namespace cdm {
         shuchuxinhaochixushijian = obj.shuchuxinhaochixushijian;
         saveImgMode = obj.saveImgMode;
         score = obj.score;
+        autoSaveImg = obj.autoSaveImg;
         shangxianwei1 = obj.shangxianwei1;
         xiaxianwei1 = obj.xiaxianwei1;
         zuoxianwei1 = obj.zuoxianwei1;
@@ -147,6 +154,7 @@ namespace cdm {
             shuchuxinhaochixushijian = obj.shuchuxinhaochixushijian;
             saveImgMode = obj.saveImgMode;
             score = obj.score;
+            autoSaveImg = obj.autoSaveImg;
             shangxianwei1 = obj.shangxianwei1;
             xiaxianwei1 = obj.xiaxianwei1;
             zuoxianwei1 = obj.zuoxianwei1;
@@ -185,6 +193,10 @@ namespace cdm {
         scoreItem->setName("$variable$score$");
         scoreItem->setValueFromInt(score);
         assembly.addItem(scoreItem);
+        auto autoSaveImgItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        autoSaveImgItem->setName("$variable$autoSaveImg$");
+        autoSaveImgItem->setValueFromBool(autoSaveImg);
+        assembly.addItem(autoSaveImgItem);
         auto shangxianwei1Item = std::make_shared<rw::oso::ObjectStoreItem>();
         shangxianwei1Item->setName("$variable$shangxianwei1$");
         shangxianwei1Item->setValueFromDouble(shangxianwei1);
@@ -230,7 +242,7 @@ namespace cdm {
 
     inline bool SetConfig::operator==(const SetConfig& obj) const
     {
-        return xiangjiguangdianpingbishijian == obj.xiangjiguangdianpingbishijian && shuchuxinhaoyanshi == obj.shuchuxinhaoyanshi && shuchuxinhaochixushijian == obj.shuchuxinhaochixushijian && saveImgMode == obj.saveImgMode && score == obj.score && shangxianwei1 == obj.shangxianwei1 && xiaxianwei1 == obj.xiaxianwei1 && zuoxianwei1 == obj.zuoxianwei1 && youxianwei1 == obj.youxianwei1 && xiangsudangliang1 == obj.xiangsudangliang1 && zengyi == obj.zengyi && qiangguang == obj.qiangguang && zhongguang == obj.zhongguang && ruoguang == obj.ruoguang && lastChooseLight == obj.lastChooseLight;
+        return xiangjiguangdianpingbishijian == obj.xiangjiguangdianpingbishijian && shuchuxinhaoyanshi == obj.shuchuxinhaoyanshi && shuchuxinhaochixushijian == obj.shuchuxinhaochixushijian && saveImgMode == obj.saveImgMode && score == obj.score && autoSaveImg == obj.autoSaveImg && shangxianwei1 == obj.shangxianwei1 && xiaxianwei1 == obj.xiaxianwei1 && zuoxianwei1 == obj.zuoxianwei1 && youxianwei1 == obj.youxianwei1 && xiangsudangliang1 == obj.xiangsudangliang1 && zengyi == obj.zengyi && qiangguang == obj.qiangguang && zhongguang == obj.zhongguang && ruoguang == obj.ruoguang && lastChooseLight == obj.lastChooseLight;
     }
 
     inline bool SetConfig::operator!=(const SetConfig& obj) const

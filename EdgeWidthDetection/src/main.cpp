@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 	Modules::getInstance().build();
 
 	EdgeWidthDetection w;
-	Modules::getInstance().uiModule._maiLiDingZi = &w;
+	Modules::getInstance().uiModule._edgeWidthDetection = &w;
 	Modules::getInstance().connect();
 	Modules::getInstance().start();
 

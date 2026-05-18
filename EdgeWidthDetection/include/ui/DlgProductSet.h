@@ -43,6 +43,7 @@ private slots:
 	void btn_zhongguang_clicked();
 	void btn_ruoguang_clicked();
 	void btn_xiangsudangliang1_clicked();
+	void ckb_autoSaveImg_clicked();
 
 public:
 	Ui::DlgProductSetClass* ui;

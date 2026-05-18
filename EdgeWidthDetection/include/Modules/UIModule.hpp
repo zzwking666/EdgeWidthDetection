@@ -20,5 +20,5 @@ public:
 
 public:
 	DlgProductSet* _dlgProductSet = nullptr;
-	EdgeWidthDetection* _maiLiDingZi = nullptr;
+	EdgeWidthDetection* _edgeWidthDetection = nullptr;
 };

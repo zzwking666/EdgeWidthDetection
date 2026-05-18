@@ -1163,7 +1163,36 @@ QLabel.icon {
                  </layout>
                 </item>
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_43" stretch=""/>
+                 <layout class="QHBoxLayout" name="horizontalLayout_43">
+                  <item>
+                   <widget class="QCheckBox" name="ckb_autoSaveImg">
+                    <property name="styleSheet">
+                     <string notr="true">QCheckBox {
+    color: #444444;
+    font-size: 18px;
+    font-weight: bold;
+    spacing: 10px;
+}
+
+QCheckBox::indicator {
+    width: 22px;
+    height: 22px;
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 3px;
+    background-color: rgb(0, 0, 0);
+}
+
+QCheckBox::indicator:checked {
+    background-color: rgb(0, 200, 0);
+    border: 2px solid rgb(255, 255, 255);
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>是否开机自动存图</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
                 </item>
                </layout>
               </item>

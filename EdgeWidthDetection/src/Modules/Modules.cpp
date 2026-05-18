@@ -114,12 +114,12 @@ void Modules::connect()
 
 #pragma region connect UIModule and ReconnectModule
 	QObject::connect(reconnectModule.monitorCameraAndCardStateThread.get(), &CameraAndCardStateThread::updateCameraLabelState,
-		uiModule._maiLiDingZi, &EdgeWidthDetection::updateCameraLabelState);
+		uiModule._edgeWidthDetection, &EdgeWidthDetection::updateCameraLabelState);
 #pragma endregion
 
 #pragma region connect UIModule and imgProModule
 	QObject::connect(imgProModule.imageProcessingModule1.get(), &ImageProcessingModule::imageReady,
-		uiModule._maiLiDingZi, &EdgeWidthDetection::onCameraDisplay);
+		uiModule._edgeWidthDetection, &EdgeWidthDetection::onCameraDisplay);
 
 	QObject::connect(uiModule._dlgProductSet,&DlgProductSet::paramsChanged,
 		&imgProModule, &ImgProModule::onUpdateImgProContext);
@@ -148,7 +148,7 @@ void Modules::connect()
 
 #pragma region connect UIModule and RuntimeInfoModule
 	QObject::connect(runtimeInfoModule.detachUtiltyThread.get(), &DetachUtiltyThread::updateStatisticalInfo,
-		uiModule._maiLiDingZi, &EdgeWidthDetection::onUpdateStatisticalInfoUI, Qt::QueuedConnection);
+		uiModule._edgeWidthDetection, &EdgeWidthDetection::onUpdateStatisticalInfoUI, Qt::QueuedConnection);
 #pragma endregion
 
 #ifdef BUILD_WITHOUT_HARDWARE
