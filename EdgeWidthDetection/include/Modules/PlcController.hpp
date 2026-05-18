@@ -24,6 +24,6 @@ public:
 	void destroy_plcController();
 
 private:
-	bool loadConfigFromFile(std::string& device, int& baud);
+	bool loadConfigFromFile(std::string& ip, int& port);
 	std::string getDesktopPath();
 };

@@ -101,11 +101,6 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	auto defectResult = imgPro.getDefectResultInfo();
 	auto processResult = imgPro.getContext().getProcessResult();
 
-	for (const auto& result : processResult)
-	{
-		
-	}
-
 	double width = 0.0;
 
 	if (defectResult.defects.size() == 1)
@@ -117,6 +112,8 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 
 			// 写入Plc
 			writePlcController(width * 100);
+
+			drawImg(maskImg, processResult);
 		}
 	}
 
@@ -186,6 +183,44 @@ void ImageProcessor::save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage
 		//	imageSaveEngine->pushImage(imageInfo);
 		//}
 	}
+}
+
+void ImageProcessor::drawImg(QImage& qimage, const std::vector<rw::DetectionRectangleInfo>& processResult)
+{
+	QPainter painter(&qimage);
+	painter.setRenderHint(QPainter::Antialiasing, true);
+	QPen pen(QColor(0, 255, 0)); // 绿色
+	pen.setWidth(2);
+	painter.setPen(pen);
+
+	for (const auto& result : processResult)
+	{
+		const QPoint lt(result.leftTop.first, result.leftTop.second);
+		const QPoint rt(result.rightTop.first, result.rightTop.second);
+		const QPoint lb(result.leftBottom.first, result.leftBottom.second);
+		const QPoint rb(result.rightBottom.first, result.rightBottom.second);
+
+		const double topLen = QLineF(lt, rt).length();
+		const double bottomLen = QLineF(lb, rb).length();
+		const double leftLen = QLineF(lt, lb).length();
+		const double rightLen = QLineF(rt, rb).length();
+
+		const double widthGroupA = (topLen + bottomLen) * 0.5; // 上下边
+		const double widthGroupB = (leftLen + rightLen) * 0.5; // 左右边
+
+		if (widthGroupA <= widthGroupB) {
+			// 画短边：上、下
+			painter.drawLine(lt, rt);
+			painter.drawLine(lb, rb);
+		}
+		else {
+			// 画短边：左、右
+			painter.drawLine(lt, lb);
+			painter.drawLine(rt, rb);
+		}
+	}
+
+	painter.end();
 }
 
 void ImageProcessor::writePlcController(double width)

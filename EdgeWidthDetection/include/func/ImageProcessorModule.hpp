@@ -42,6 +42,9 @@ private:
 	void save_image(rw::rqw::ImageInfo& imageInfo, const QImage& image);
 	void save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage& image);
 private:
+	// 在图像上面绘制短边(宽)
+	void drawImg(QImage& qimage, const std::vector<rw::DetectionRectangleInfo>& processResult);
+private:
 	// plc
 	void writePlcController(double width);
 private:
