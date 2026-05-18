@@ -158,11 +158,11 @@ void ImageProcessor::save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage
 			imageInfo.classify = "OpenRemoveFunc";
 			imageSaveEngine->pushImage(imageInfo);
 		}
-		else if (runningState == RunningState::Debug)
-		{
-			imageInfo.classify = "Debug";
-			imageSaveEngine->pushImage(imageInfo);
-		}
+		//else if (runningState == RunningState::Debug)
+		//{
+		//	imageInfo.classify = "Debug";
+		//	imageSaveEngine->pushImage(imageInfo);
+		//}
 	}
 }
 
