@@ -99,6 +99,12 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	imgPro(frame.image);
 	auto maskImg = imgPro.getMaskImg(frame.image);
 	auto defectResult = imgPro.getDefectResultInfo();
+	auto processResult = imgPro.getContext().getProcessResult();
+
+	for (const auto& result : processResult)
+	{
+		
+	}
 
 	double width = 0.0;
 

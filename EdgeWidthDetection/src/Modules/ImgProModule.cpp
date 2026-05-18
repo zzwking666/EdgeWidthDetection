@@ -108,8 +108,8 @@ void ImgProModule::buildImgProContextPreProcess()
 					
 				}
 
-				context.defectDrawCfg.isDrawDefects = true;
-				context.defectDrawCfg.isDrawDisableDefects = true;
+				context.defectDrawCfg.isDrawDefects = false;
+				context.defectDrawCfg.isDrawDisableDefects = false;
 				context.defectDrawCfg.isDisAreaText = false;
 				context.defectDrawCfg.isDisScoreText = true;
 
