@@ -8,6 +8,7 @@ namespace cdm {
 		shuchuxinhaoyanshi : double : default = 0;
 		shuchuxinhaochixushijian : double : default = 0;
 		saveImgMode : int : default = 0;
+		score : int : default = 0;
 
 		shangxianwei1 : double : default = 0;
 		xiaxianwei1 : double : default = 0;

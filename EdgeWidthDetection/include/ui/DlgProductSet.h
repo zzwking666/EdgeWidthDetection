@@ -29,6 +29,7 @@ private slots:
 	void btn_shuchuxinhaoyanshi_clicked();
 	void btn_shuchuxinhaochixushijian_clicked();
 	void cbox_changeSaveImgMode_clicked();
+	void btn_score_clicked();
 
 	void btn_testTrigger1_1_clicked();
 	void btn_testTrigger2_1_clicked();

@@ -37,6 +37,7 @@ void DlgProductSet::read_config()
 	ui->btn_shuchuxinhaoyanshi->setText(QString::number(setConfig.shuchuxinhaoyanshi));
 	ui->btn_shuchuxinhaochixushijian->setText(QString::number(setConfig.shuchuxinhaochixushijian));
 	ui->cbox_changeSaveImgMode->setCurrentIndex(setConfig.saveImgMode);
+	ui->btn_score->setText(QString::number(setConfig.score));
 
 	// 相机参数
 	ui->btn_shangxianwei1->setText(QString::number(setConfig.shangxianwei1));
@@ -61,6 +62,7 @@ void DlgProductSet::build_connect()
 	connect(ui->btn_shuchuxinhaoyanshi, &QPushButton::clicked, this, &DlgProductSet::btn_shuchuxinhaoyanshi_clicked);
 	connect(ui->btn_shuchuxinhaochixushijian, &QPushButton::clicked, this, &DlgProductSet::btn_shuchuxinhaochixushijian_clicked);
 	connect(ui->cbox_changeSaveImgMode, &QComboBox::currentIndexChanged, this, &DlgProductSet::cbox_changeSaveImgMode_clicked);
+	connect(ui->btn_score, &QPushButton::clicked, this, &DlgProductSet::btn_score_clicked);
 	connect(ui->btn_testTrigger1_1, &QPushButton::clicked, this, &DlgProductSet::btn_testTrigger1_1_clicked);
 	connect(ui->btn_testTrigger2_1, &QPushButton::clicked, this, &DlgProductSet::btn_testTrigger2_1_clicked);
 	connect(ui->btn_shangxianwei1, &QPushButton::clicked, this, &DlgProductSet::btn_shangxianwei1_clicked);
@@ -141,7 +143,25 @@ void DlgProductSet::cbox_changeSaveImgMode_clicked()
 {
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	setConfig.saveImgMode = ui->cbox_changeSaveImgMode->currentIndex();
-	qDebug() << "saveImgMode:" << setConfig.saveImgMode;
+}
+
+void DlgProductSet::btn_score_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0 || value.toDouble() > 100)
+		{
+			QMessageBox::warning(this, "提示", "请输入0到100之间的数值");
+			return;
+		}
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		ui->btn_score->setText(value);
+		setConfig.score = value.toInt();
+	}
 }
 
 void DlgProductSet::btn_testTrigger1_1_clicked()
