@@ -36,6 +36,7 @@ void DlgProductSet::read_config()
 	ui->btn_xiangjiguangdianpingbishijian->setText(QString::number(setConfig.xiangjiguangdianpingbishijian));
 	ui->btn_shuchuxinhaoyanshi->setText(QString::number(setConfig.shuchuxinhaoyanshi));
 	ui->btn_shuchuxinhaochixushijian->setText(QString::number(setConfig.shuchuxinhaochixushijian));
+	ui->cbox_changeSaveImgMode->setCurrentIndex(setConfig.saveImgMode);
 
 	// 相机参数
 	ui->btn_shangxianwei1->setText(QString::number(setConfig.shangxianwei1));
@@ -59,6 +60,7 @@ void DlgProductSet::build_connect()
 	connect(ui->btn_xiangjiguangdianpingbishijian, &QPushButton::clicked, this, &DlgProductSet::btn_xiangjiguangdianpingbishijian_clicked);
 	connect(ui->btn_shuchuxinhaoyanshi, &QPushButton::clicked, this, &DlgProductSet::btn_shuchuxinhaoyanshi_clicked);
 	connect(ui->btn_shuchuxinhaochixushijian, &QPushButton::clicked, this, &DlgProductSet::btn_shuchuxinhaochixushijian_clicked);
+	connect(ui->cbox_changeSaveImgMode, &QComboBox::currentIndexChanged, this, &DlgProductSet::cbox_changeSaveImgMode_clicked);
 	connect(ui->btn_testTrigger1_1, &QPushButton::clicked, this, &DlgProductSet::btn_testTrigger1_1_clicked);
 	connect(ui->btn_testTrigger2_1, &QPushButton::clicked, this, &DlgProductSet::btn_testTrigger2_1_clicked);
 	connect(ui->btn_shangxianwei1, &QPushButton::clicked, this, &DlgProductSet::btn_shangxianwei1_clicked);
@@ -133,6 +135,13 @@ void DlgProductSet::btn_shuchuxinhaochixushijian_clicked()
 		ui->btn_shuchuxinhaochixushijian->setText(value);
 		setConfig.shuchuxinhaochixushijian = value.toDouble();
 	}
+}
+
+void DlgProductSet::cbox_changeSaveImgMode_clicked()
+{
+	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+	setConfig.saveImgMode = ui->cbox_changeSaveImgMode->currentIndex();
+	qDebug() << "saveImgMode:" << setConfig.saveImgMode;
 }
 
 void DlgProductSet::btn_testTrigger1_1_clicked()
