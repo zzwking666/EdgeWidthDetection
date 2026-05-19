@@ -205,16 +205,17 @@ void ImageProcessor::drawImg(QImage& qimage, const std::vector<rw::DetectionRect
 		const double leftLen = QLineF(lt, lb).length();
 		const double rightLen = QLineF(rt, rb).length();
 
-		const double widthGroupA = (topLen + bottomLen) * 0.5; // 上下边
-		const double widthGroupB = (leftLen + rightLen) * 0.5; // 左右边
+		// 两组对边平均长度
+		const double groupA = (topLen + bottomLen) * 0.5; // 上下
+		const double groupB = (leftLen + rightLen) * 0.5; // 左右
 
-		if (widthGroupA <= widthGroupB) {
-			// 画短边：上、下
+		if (groupA >= groupB) {
+			// 画长边：上、下
 			painter.drawLine(lt, rt);
 			painter.drawLine(lb, rb);
 		}
 		else {
-			// 画短边：左、右
+			// 画长边：左、右
 			painter.drawLine(lt, lb);
 			painter.drawLine(rt, rb);
 		}

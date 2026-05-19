@@ -266,7 +266,7 @@ void EdgeWidthDetection::rbtn_debug_checked(bool checked)
 			if (camera1)
 			{
 				camera1->setTriggerState(false);
-				camera1->setFrameRate(2);
+				//camera1->setFrameRate(2);
 			}
 		}
 		else {
@@ -287,9 +287,8 @@ void EdgeWidthDetection::rbtn_removeFunc_checked(bool checked)
 		runningState = RunningState::OpenRemoveFunc;
 		if (camera1)
 		{
-			camera1->setTriggerState(true);
-			camera1->setTriggerSource(rw::rqw::TriggerSource::Line0);
-			camera1->setFrameRate(50);
+			camera1->setTriggerState(false);
+			//camera1->setFrameRate(2);
 		}
 		ui->rbtn_debug->setChecked(false);
 	}

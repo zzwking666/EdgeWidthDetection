@@ -195,7 +195,14 @@ void ImgProModule::buildImgProContextPreProcess()
 			// 默认只取第一个结果
 			if (!processResult.empty())
 			{
-				context.customFields["width"] = processResult[0].width;
+				if (processResult[0].width < processResult[0].height)
+				{
+					context.customFields["width"] = processResult[0].width;
+				}
+				else
+				{
+					context.customFields["width"] = processResult[0].height;
+				}
 			}
 		};
 #pragma endregion
