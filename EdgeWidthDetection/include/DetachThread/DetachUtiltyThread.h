@@ -19,6 +19,9 @@ protected:
 	void run() override;
 signals:
 	void updateStatisticalInfo();
+	void updatePLCWarnningInfo(uint16_t result);
+private:
+	void readPLCWarnningInfo();
 private:
 	std::atomic<bool> running; // 使用原子变量保证线程安全
 };

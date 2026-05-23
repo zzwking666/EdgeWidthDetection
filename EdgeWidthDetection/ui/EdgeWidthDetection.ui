@@ -869,7 +869,7 @@ QGroupBox::title {
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
-            <widget class="QLabel" name="label_companyInfo">
+            <widget class="QLabel" name="label_warnningInfo">
              <property name="styleSheet">
               <string notr="true">QLabel {
        font-size: 18px;        

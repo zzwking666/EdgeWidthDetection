@@ -211,6 +211,18 @@ void EdgeWidthDetection::onUpdateStatisticalInfoUI()
 	ui->label_wasteProductsValue->setText(QString::number(statisticalInfo.wasteCount.load()));
 }
 
+void EdgeWidthDetection::onUpdatePLCWarnningInfoUI(uint16_t warnningInfo)
+{
+	if (0 == warnningInfo)
+	{
+		ui->label_warnningInfo->setText("无报警");
+	}
+	else if (1 == warnningInfo)
+	{
+		ui->label_warnningInfo->setText("到达限位报警");
+	}
+}
+
 void EdgeWidthDetection::onCameraDisplay(size_t index, QPixmap image)
 {
 	if (1 == index)

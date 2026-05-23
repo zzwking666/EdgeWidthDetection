@@ -26,14 +26,70 @@ void DetachUtiltyThread::stopThread()
 
 void DetachUtiltyThread::run()
 {
-	static size_t s = 0;
 	while (running) {
 		QThread::sleep(1);
 		emit updateStatisticalInfo();
-		++s;
-		if (s == 300)
+		readPLCWarnningInfo();
+	}
+}
+
+void DetachUtiltyThread::readPLCWarnningInfo()
+{
+	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
+	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+
+	if (!plcControllerScheduler) {
+		return;
+	}
+
+	if (0 == setConfig.registerAttribute)
+	{
+		auto fut = plcControllerScheduler->readUInt16RegisterAsync(
+			static_cast<uint16_t>(ModBusAddress::readPLCbaojingxinxiAddress)
+		);
+
+		if (fut.get().second)
 		{
-			s = 0;
+			auto getResult = fut.get().first;
+			emit updatePLCWarnningInfo(static_cast<uint16_t>(getResult));
+		}
+		else
+		{
+			qDebug() << "读取16位PLC报警信息失败";
+		}
+	}
+	else if (1 == setConfig.registerAttribute)
+	{
+		auto fut = plcControllerScheduler->readUInt32RegisterAsync(
+			static_cast<uint16_t>(ModBusAddress::readPLCbaojingxinxiAddress),
+			rw::hoem::Endianness::BigEndian
+		);
+
+		if (fut.get().second)
+		{
+			auto getResult = fut.get().first;
+			emit updatePLCWarnningInfo(static_cast<uint16_t>(getResult));
+		}
+		else
+		{
+			qDebug() << "读取32位大端PLC报警信息失败";
+		}
+	}
+	else if (2 == setConfig.registerAttribute)
+	{
+		auto fut = plcControllerScheduler->readUInt32RegisterAsync(
+			static_cast<uint16_t>(ModBusAddress::readPLCbaojingxinxiAddress),
+			rw::hoem::Endianness::LittleEndian
+		);
+
+		if (fut.get().second)
+		{
+			auto getResult = fut.get().first;
+			emit updatePLCWarnningInfo(static_cast<uint16_t>(getResult));
+		}
+		else
+		{
+			qDebug() << "读取32位小端PLC报警信息失败";
 		}
 	}
 }
