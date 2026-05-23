@@ -238,20 +238,17 @@ void ImageProcessor::writePlcController(double width)
 	if (0 == setConfig.registerAttribute)
 	{
 		// 16位寄存器
-		plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(setConfig.paizhaowanchengxinhaodizhi), static_cast<uint16_t>(1));
-		plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(setConfig.kuanduxierudizhi), static_cast<uint16_t>(width));
+		plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(ModBusAddress::outPutWidthAddress), static_cast<uint16_t>(width));
 	}
 	else if (1 == setConfig.registerAttribute)
 	{
 		// 32位寄存器大端
-		plcControllerScheduler->writeUInt32RegisterAsync(static_cast<uint16_t>(setConfig.paizhaowanchengxinhaodizhi), static_cast<uint32_t>(1), rw::hoem::Endianness::BigEndian);
-		plcControllerScheduler->writeUInt32RegisterAsync(static_cast<uint16_t>(setConfig.kuanduxierudizhi), static_cast<uint32_t>(width), rw::hoem::Endianness::BigEndian);
+		plcControllerScheduler->writeUInt32RegisterAsync(static_cast<uint16_t>(ModBusAddress::outPutWidthAddress), static_cast<uint32_t>(width), rw::hoem::Endianness::BigEndian);
 	}
 	else if (2 == setConfig.registerAttribute)
 	{
 		// 32位寄存器小端
-		plcControllerScheduler->writeUInt32RegisterAsync(static_cast<uint16_t>(setConfig.paizhaowanchengxinhaodizhi), static_cast<uint32_t>(1), rw::hoem::Endianness::LittleEndian);
-		plcControllerScheduler->writeUInt32RegisterAsync(static_cast<uint16_t>(setConfig.kuanduxierudizhi), static_cast<uint32_t>(width), rw::hoem::Endianness::LittleEndian);
+		plcControllerScheduler->writeUInt32RegisterAsync(static_cast<uint16_t>(ModBusAddress::outPutWidthAddress), static_cast<uint32_t>(width), rw::hoem::Endianness::LittleEndian);
 	}
 }
 

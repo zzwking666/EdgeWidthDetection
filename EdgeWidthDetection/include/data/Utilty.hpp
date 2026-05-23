@@ -40,7 +40,7 @@ struct Utility
 
 struct ModBusAddress
 {
-	static int outPutAddress;
+	static int outPutWidthAddress;
 	static int readAddress;
 };
 
