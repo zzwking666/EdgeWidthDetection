@@ -3838,12 +3838,12 @@ QLabel.icon {
 }</string>
                      </property>
                      <property name="text">
-                      <string>拍照完成信号地址</string>
+                      <string>补偿速度写入地址</string>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="btn_paizhaowanchengxinhaodizhi">
+                    <widget class="QPushButton" name="btn_buchangsuduxierudizhi">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                        <horstretch>0</horstretch>
@@ -3967,12 +3967,12 @@ QLabel.icon {
 }</string>
                      </property>
                      <property name="text">
-                      <string>宽度写入地址</string>
+                      <string>补偿量写入地址</string>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="btn_kuanduxierudizhi">
+                    <widget class="QPushButton" name="btn_buchangliangxierudizhi">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                        <horstretch>0</horstretch>

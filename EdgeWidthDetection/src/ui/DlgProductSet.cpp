@@ -57,8 +57,8 @@ void DlgProductSet::read_config()
 
 	// modbus地址
 	ui->cbox_registerAttribute->setCurrentIndex(setConfig.registerAttribute);
-	ui->btn_paizhaowanchengxinhaodizhi->setText(QString::number(setConfig.paizhaowanchengxinhaodizhi));
-	ui->btn_kuanduxierudizhi->setText(QString::number(setConfig.kuanduxierudizhi));
+	ui->btn_buchangsuduxierudizhi->setText(QString::number(setConfig.buchangsuduxierudizhi));
+	ui->btn_buchangliangxierudizhi->setText(QString::number(setConfig.buchangliangxierudizhi));
 
 	ui->tabWidget->setCurrentIndex(0);
 }
@@ -85,8 +85,8 @@ void DlgProductSet::build_connect()
 	connect(ui->btn_zhongguang, &QPushButton::clicked, this, &DlgProductSet::btn_zhongguang_clicked);
 	connect(ui->btn_ruoguang, &QPushButton::clicked, this, &DlgProductSet::btn_ruoguang_clicked);
 	connect(ui->cbox_registerAttribute, &QComboBox::currentIndexChanged, this, &DlgProductSet::cbox_registerAttribute_clicked);
-	connect(ui->btn_paizhaowanchengxinhaodizhi, &QPushButton::clicked, this, &DlgProductSet::btn_paizhaowanchengxinhaodizhi_clicked);
-	connect(ui->btn_kuanduxierudizhi, &QPushButton::clicked, this, &DlgProductSet::btn_kuanduxierudizhi_clicked);
+	connect(ui->btn_buchangsuduxierudizhi, &QPushButton::clicked, this, &DlgProductSet::btn_buchangsuduxierudizhi_clicked);
+	connect(ui->btn_buchangliangxierudizhi, &QPushButton::clicked, this, &DlgProductSet::btn_buchangliangxierudizhi_clicked);
 	connect(ui->ckb_autoSaveImg, &QCheckBox::clicked, this, &DlgProductSet::ckb_autoSaveImg_clicked);
 }
 
@@ -377,7 +377,7 @@ void DlgProductSet::cbox_registerAttribute_clicked()
 	setConfig.registerAttribute = ui->cbox_registerAttribute->currentIndex();
 }
 
-void DlgProductSet::btn_paizhaowanchengxinhaodizhi_clicked()
+void DlgProductSet::btn_buchangsuduxierudizhi_clicked()
 {
 	NumberKeyboard numKeyBord;
 	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
@@ -391,12 +391,13 @@ void DlgProductSet::btn_paizhaowanchengxinhaodizhi_clicked()
 			return;
 		}
 		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-		ui->btn_paizhaowanchengxinhaodizhi->setText(value);
-		setConfig.paizhaowanchengxinhaodizhi = value.toInt();
+		ui->btn_buchangsuduxierudizhi->setText(value);
+		setConfig.buchangsuduxierudizhi = value.toInt();
+		ModBusAddress::outPutSpeedAddress = value.toInt();
 	}
 }
 
-void DlgProductSet::btn_kuanduxierudizhi_clicked()
+void DlgProductSet::btn_buchangliangxierudizhi_clicked()
 {
 	NumberKeyboard numKeyBord;
 	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
@@ -410,8 +411,9 @@ void DlgProductSet::btn_kuanduxierudizhi_clicked()
 			return;
 		}
 		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-		ui->btn_kuanduxierudizhi->setText(value);
-		setConfig.kuanduxierudizhi = value.toInt();
+		ui->btn_buchangliangxierudizhi->setText(value);
+		setConfig.buchangliangxierudizhi = value.toInt();
+		ModBusAddress::outPutWidthAddress = value.toInt();
 	}
 }
 

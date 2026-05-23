@@ -25,8 +25,8 @@ namespace cdm {
 		ruoguang : double : default = 0;
 
 		registerAttribute : int : default = 0;
-		paizhaowanchengxinhaodizhi : int : default = 0;
-		kuanduxierudizhi : int : default = 0;
+		buchangsuduxierudizhi : int : default = 0;
+		buchangliangxierudizhi : int : default = 0;
 
 		lastChooseLight : int : default = 0;
 	};
