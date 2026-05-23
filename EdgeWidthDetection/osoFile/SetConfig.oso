@@ -27,6 +27,7 @@ namespace cdm {
 		registerAttribute : int : default = 0;
 		buchangsuduxierudizhi : int : default = 0;
 		buchangliangxierudizhi : int : default = 0;
+		huodePLCbaojingxinxidizhi : int : default = 0;
 
 		lastChooseLight : int : default = 0;
 	};

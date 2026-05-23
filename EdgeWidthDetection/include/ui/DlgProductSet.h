@@ -51,6 +51,7 @@ private slots:
 	void cbox_registerAttribute_clicked();
 	void btn_buchangsuduxierudizhi_clicked();
 	void btn_buchangliangxierudizhi_clicked();
+	void btn_huodePLCbaojingxinxidizhi_clicked();
 public:
 	Ui::DlgProductSetClass* ui;
 };

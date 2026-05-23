@@ -42,7 +42,7 @@ struct ModBusAddress
 {
 	static int outPutWidthAddress;
 	static int outPutSpeedAddress;
-	static int readAddress;
+	static int readPLCbaojingxinxiAddress;
 };
 
 // 图片信息
