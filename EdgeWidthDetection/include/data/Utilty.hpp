@@ -38,6 +38,12 @@ struct Utility
 	static QString cameraIp2;
 };
 
+struct ModBusAddress
+{
+	static int outPutAddress;
+	static int readAddress;
+};
+
 // 图片信息
 struct MatInfo {
 	cv::Mat image;	// 图片内容
