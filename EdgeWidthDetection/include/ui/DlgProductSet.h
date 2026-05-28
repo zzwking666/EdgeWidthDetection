@@ -48,7 +48,6 @@ private slots:
 	void btn_zhongguang_clicked();
 	void btn_ruoguang_clicked();
 
-	void cbox_registerAttribute_clicked();
 	void btn_buchangsuduxierudizhi_clicked();
 	void btn_buchangliangxierudizhi_clicked();
 	void btn_huodePLCbaojingxinxidizhi_clicked();

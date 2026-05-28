@@ -36,7 +36,6 @@ namespace cdm {
         double qiangguang{ 0 };
         double zhongguang{ 0 };
         double ruoguang{ 0 };
-        int registerAttribute{ 0 };
         int buchangsuduxierudizhi{ 0 };
         int buchangliangxierudizhi{ 0 };
         int huodePLCbaojingxinxidizhi{ 0 };
@@ -135,11 +134,6 @@ namespace cdm {
             throw std::runtime_error("$variable$ruoguang is not found");
         }
         ruoguang = ruoguangItem->getValueAsDouble();
-        auto registerAttributeItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$registerAttribute$"));
-        if (!registerAttributeItem) {
-            throw std::runtime_error("$variable$registerAttribute is not found");
-        }
-        registerAttribute = registerAttributeItem->getValueAsInt();
         auto buchangsuduxierudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$buchangsuduxierudizhi$"));
         if (!buchangsuduxierudizhiItem) {
             throw std::runtime_error("$variable$buchangsuduxierudizhi is not found");
@@ -181,7 +175,6 @@ namespace cdm {
         qiangguang = obj.qiangguang;
         zhongguang = obj.zhongguang;
         ruoguang = obj.ruoguang;
-        registerAttribute = obj.registerAttribute;
         buchangsuduxierudizhi = obj.buchangsuduxierudizhi;
         buchangliangxierudizhi = obj.buchangliangxierudizhi;
         huodePLCbaojingxinxidizhi = obj.huodePLCbaojingxinxidizhi;
@@ -208,7 +201,6 @@ namespace cdm {
             qiangguang = obj.qiangguang;
             zhongguang = obj.zhongguang;
             ruoguang = obj.ruoguang;
-            registerAttribute = obj.registerAttribute;
             buchangsuduxierudizhi = obj.buchangsuduxierudizhi;
             buchangliangxierudizhi = obj.buchangliangxierudizhi;
             huodePLCbaojingxinxidizhi = obj.huodePLCbaojingxinxidizhi;
@@ -289,10 +281,6 @@ namespace cdm {
         ruoguangItem->setName("$variable$ruoguang$");
         ruoguangItem->setValueFromDouble(ruoguang);
         assembly.addItem(ruoguangItem);
-        auto registerAttributeItem = std::make_shared<rw::oso::ObjectStoreItem>();
-        registerAttributeItem->setName("$variable$registerAttribute$");
-        registerAttributeItem->setValueFromInt(registerAttribute);
-        assembly.addItem(registerAttributeItem);
         auto buchangsuduxierudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
         buchangsuduxierudizhiItem->setName("$variable$buchangsuduxierudizhi$");
         buchangsuduxierudizhiItem->setValueFromInt(buchangsuduxierudizhi);
@@ -314,7 +302,7 @@ namespace cdm {
 
     inline bool SetConfig::operator==(const SetConfig& obj) const
     {
-        return xiangjiguangdianpingbishijian == obj.xiangjiguangdianpingbishijian && shuchuxinhaoyanshi == obj.shuchuxinhaoyanshi && shuchuxinhaochixushijian == obj.shuchuxinhaochixushijian && saveImgMode == obj.saveImgMode && score == obj.score && autoSaveImg == obj.autoSaveImg && shangxianwei1 == obj.shangxianwei1 && xiaxianwei1 == obj.xiaxianwei1 && zuoxianwei1 == obj.zuoxianwei1 && youxianwei1 == obj.youxianwei1 && xiangsudangliang1 == obj.xiangsudangliang1 && debugFrame == obj.debugFrame && openRemoveFrame == obj.openRemoveFrame && zengyi == obj.zengyi && qiangguang == obj.qiangguang && zhongguang == obj.zhongguang && ruoguang == obj.ruoguang && registerAttribute == obj.registerAttribute && buchangsuduxierudizhi == obj.buchangsuduxierudizhi && buchangliangxierudizhi == obj.buchangliangxierudizhi && huodePLCbaojingxinxidizhi == obj.huodePLCbaojingxinxidizhi && lastChooseLight == obj.lastChooseLight;
+        return xiangjiguangdianpingbishijian == obj.xiangjiguangdianpingbishijian && shuchuxinhaoyanshi == obj.shuchuxinhaoyanshi && shuchuxinhaochixushijian == obj.shuchuxinhaochixushijian && saveImgMode == obj.saveImgMode && score == obj.score && autoSaveImg == obj.autoSaveImg && shangxianwei1 == obj.shangxianwei1 && xiaxianwei1 == obj.xiaxianwei1 && zuoxianwei1 == obj.zuoxianwei1 && youxianwei1 == obj.youxianwei1 && xiangsudangliang1 == obj.xiangsudangliang1 && debugFrame == obj.debugFrame && openRemoveFrame == obj.openRemoveFrame && zengyi == obj.zengyi && qiangguang == obj.qiangguang && zhongguang == obj.zhongguang && ruoguang == obj.ruoguang && buchangsuduxierudizhi == obj.buchangsuduxierudizhi && buchangliangxierudizhi == obj.buchangliangxierudizhi && huodePLCbaojingxinxidizhi == obj.huodePLCbaojingxinxidizhi && lastChooseLight == obj.lastChooseLight;
     }
 
     inline bool SetConfig::operator!=(const SetConfig& obj) const

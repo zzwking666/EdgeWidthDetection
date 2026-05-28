@@ -56,7 +56,6 @@ void DlgProductSet::read_config()
 	ui->btn_ruoguang->setText(QString::number(setConfig.ruoguang));
 
 	// modbus地址
-	ui->cbox_registerAttribute->setCurrentIndex(setConfig.registerAttribute);
 	ui->btn_buchangsuduxierudizhi->setText(QString::number(setConfig.buchangsuduxierudizhi));
 	ui->btn_buchangliangxierudizhi->setText(QString::number(setConfig.buchangliangxierudizhi));
 	ui->btn_huodePLCbaojingxinxidizhi->setText(QString::number(setConfig.huodePLCbaojingxinxidizhi));
@@ -85,7 +84,6 @@ void DlgProductSet::build_connect()
 	connect(ui->btn_qiangguang, &QPushButton::clicked, this, &DlgProductSet::btn_qiangguang_clicked);
 	connect(ui->btn_zhongguang, &QPushButton::clicked, this, &DlgProductSet::btn_zhongguang_clicked);
 	connect(ui->btn_ruoguang, &QPushButton::clicked, this, &DlgProductSet::btn_ruoguang_clicked);
-	connect(ui->cbox_registerAttribute, &QComboBox::currentIndexChanged, this, &DlgProductSet::cbox_registerAttribute_clicked);
 	connect(ui->btn_buchangsuduxierudizhi, &QPushButton::clicked, this, &DlgProductSet::btn_buchangsuduxierudizhi_clicked);
 	connect(ui->btn_buchangliangxierudizhi, &QPushButton::clicked, this, &DlgProductSet::btn_buchangliangxierudizhi_clicked);
 	connect(ui->btn_huodePLCbaojingxinxidizhi, &QPushButton::clicked, this, &DlgProductSet::btn_huodePLCbaojingxinxidizhi_clicked);
@@ -371,12 +369,6 @@ void DlgProductSet::btn_ruoguang_clicked()
 		ui->btn_ruoguang->setText(value);
 		setConfig.ruoguang = value.toDouble();
 	}
-}
-
-void DlgProductSet::cbox_registerAttribute_clicked()
-{
-	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-	setConfig.registerAttribute = ui->cbox_registerAttribute->currentIndex();
 }
 
 void DlgProductSet::btn_buchangsuduxierudizhi_clicked()

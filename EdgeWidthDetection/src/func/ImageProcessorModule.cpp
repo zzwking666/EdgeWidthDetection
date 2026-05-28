@@ -124,7 +124,7 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 
 	rw::imgPro::ImagePainter::drawTextOnImageWithFontSize(maskImg, textList, colors, 50);
 
-	emit imageReady(frame.index,QPixmap::fromImage(maskImg));
+	emit imageReady(frame.index, QPixmap::fromImage(maskImg));
 
 	// 全部保存
 	if (0 == setConfig.saveImgMode)
@@ -228,28 +228,14 @@ void ImageProcessor::writePlcController(double width)
 {
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
-	
+
 	if (!plcControllerScheduler)
 	{
 		qDebug() << "PLC disConnect!";
 		return;
 	}
 
-	if (0 == setConfig.registerAttribute)
-	{
-		// 16位寄存器
-		plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(ModBusAddress::outPutWidthAddress), static_cast<uint16_t>(width));
-	}
-	else if (1 == setConfig.registerAttribute)
-	{
-		// 32位寄存器大端
-		plcControllerScheduler->writeUInt32RegisterAsync(static_cast<uint16_t>(ModBusAddress::outPutWidthAddress), static_cast<uint32_t>(width), rw::hoem::Endianness::BigEndian);
-	}
-	else if (2 == setConfig.registerAttribute)
-	{
-		// 32位寄存器小端
-		plcControllerScheduler->writeUInt32RegisterAsync(static_cast<uint16_t>(ModBusAddress::outPutWidthAddress), static_cast<uint32_t>(width), rw::hoem::Endianness::LittleEndian);
-	}
+	plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(ModBusAddress::outPutWidthAddress), static_cast<uint16_t>(width));
 }
 
 void ImageProcessor::buildObbModelEngine(const QString& enginePath)

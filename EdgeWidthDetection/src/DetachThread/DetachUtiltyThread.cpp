@@ -2,8 +2,7 @@
 #include "Modules.hpp"
 
 DetachUtiltyThread::DetachUtiltyThread(QObject* parent)
-	: QThread(parent), running(false) {
-}
+	: QThread(parent), running(false) {}
 
 DetachUtiltyThread::~DetachUtiltyThread()
 {
@@ -42,54 +41,17 @@ void DetachUtiltyThread::readPLCWarnningInfo()
 		return;
 	}
 
-	if (0 == setConfig.registerAttribute)
-	{
-		auto fut = plcControllerScheduler->readUInt16RegisterAsync(
-			static_cast<uint16_t>(ModBusAddress::readPLCbaojingxinxiAddress)
-		);
+	auto fut = plcControllerScheduler->readUInt16RegisterAsync(
+		static_cast<uint16_t>(ModBusAddress::readPLCbaojingxinxiAddress)
+	);
 
-		if (fut.get().second)
-		{
-			auto getResult = fut.get().first;
-			emit updatePLCWarnningInfo(static_cast<uint16_t>(getResult));
-		}
-		else
-		{
-			qDebug() << "读取16位PLC报警信息失败";
-		}
+	if (fut.get().second)
+	{
+		auto getResult = fut.get().first;
+		emit updatePLCWarnningInfo(static_cast<uint16_t>(getResult));
 	}
-	else if (1 == setConfig.registerAttribute)
+	else
 	{
-		auto fut = plcControllerScheduler->readUInt32RegisterAsync(
-			static_cast<uint16_t>(ModBusAddress::readPLCbaojingxinxiAddress),
-			rw::hoem::Endianness::BigEndian
-		);
-
-		if (fut.get().second)
-		{
-			auto getResult = fut.get().first;
-			emit updatePLCWarnningInfo(static_cast<uint16_t>(getResult));
-		}
-		else
-		{
-			qDebug() << "读取32位大端PLC报警信息失败";
-		}
-	}
-	else if (2 == setConfig.registerAttribute)
-	{
-		auto fut = plcControllerScheduler->readUInt32RegisterAsync(
-			static_cast<uint16_t>(ModBusAddress::readPLCbaojingxinxiAddress),
-			rw::hoem::Endianness::LittleEndian
-		);
-
-		if (fut.get().second)
-		{
-			auto getResult = fut.get().first;
-			emit updatePLCWarnningInfo(static_cast<uint16_t>(getResult));
-		}
-		else
-		{
-			qDebug() << "读取32位小端PLC报警信息失败";
-		}
+		qDebug() << "读取16位PLC报警信息失败";
 	}
 }

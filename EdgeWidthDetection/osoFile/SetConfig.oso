@@ -24,7 +24,6 @@ namespace cdm {
 		zhongguang : double : default = 0;
 		ruoguang : double : default = 0;
 
-		registerAttribute : int : default = 0;
 		buchangsuduxierudizhi : int : default = 0;
 		buchangliangxierudizhi : int : default = 0;
 		huodePLCbaojingxinxidizhi : int : default = 0;
