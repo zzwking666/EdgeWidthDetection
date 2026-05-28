@@ -3,6 +3,7 @@
 #include <QThread>
 #include <atomic>
 #include"rqw_LabelWarning.h"
+#include "Utilty.hpp"
 
 class DetachPLCListenThread : public QThread
 {
@@ -18,7 +19,7 @@ public:
 protected:
 	void run() override;
 signals:
-	void updatePLCInfo(uint16_t result);
+	void updatePLCInfo(QVector<PlcReadItem> result);
 private:
 	void readPLCInfo();
 private:

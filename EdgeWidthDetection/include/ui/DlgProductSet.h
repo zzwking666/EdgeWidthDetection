@@ -2,6 +2,8 @@
 
 #include <QDialog>
 
+#include "Utilty.hpp"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class DlgProductSetClass; };
@@ -22,6 +24,8 @@ public:
 
 signals:
 	void paramsChanged();
+public slots:
+	void onUpdatePLCInfo(QVector<PlcReadItem> datas);
 private slots:
 	void btn_close_clicked();
 

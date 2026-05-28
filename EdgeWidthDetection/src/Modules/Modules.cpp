@@ -151,6 +151,12 @@ void Modules::connect()
 		uiModule._edgeWidthDetection, &EdgeWidthDetection::onUpdateStatisticalInfoUI, Qt::QueuedConnection);
 	QObject::connect(runtimeInfoModule.detachUtiltyThread.get(), &DetachUtiltyThread::updatePLCWarnningInfo,
 		uiModule._edgeWidthDetection, &EdgeWidthDetection::onUpdatePLCWarnningInfoUI, Qt::QueuedConnection);
+
+#pragma endregion
+
+#pragma region connect UIModule and RuntimeInfoModule
+	QObject::connect(plcController.plcListenThread.get(), &DetachPLCListenThread::updatePLCInfo,
+		uiModule._dlgProductSet, &DlgProductSet::onUpdatePLCInfo);
 #pragma endregion
 
 #ifdef BUILD_WITHOUT_HARDWARE

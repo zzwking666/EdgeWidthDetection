@@ -117,6 +117,48 @@ void DlgProductSet::build_connect()
 	connect(ui->tabWidget, &QTabWidget::currentChanged, this, &DlgProductSet::tabWidget_indexChanged);
 }
 
+void DlgProductSet::onUpdatePLCInfo(QVector<PlcReadItem> datas)
+{
+	auto applyValue = [](QPushButton* btn, const PlcReadItem& item)
+		{
+			if (item.ok)
+			{
+				btn->setText(QString::number(item.value));
+			}
+			else
+			{
+				btn->setText("读取失败");
+			}
+		};
+
+	for (const auto& item : datas)
+	{
+		switch (item.index)
+		{
+		case PlcReadIndex::shicekuandu:
+			applyValue(ui->btn_shicekuanduduqushuzhi, item);
+			break;
+		case PlcReadIndex::shedingbiaozhunzhi:
+			applyValue(ui->btn_shedingbiaozhunzhiduqushuzhi, item);
+			break;
+		case PlcReadIndex::changdujiange:
+			applyValue(ui->btn_changdujiangeduqushuzhi, item);
+			break;
+		case PlcReadIndex::paizhaochangdujiange:
+			applyValue(ui->btn_paizhaochangdujiangeduqushuzhi, item);
+			break;
+		case PlcReadIndex::bujinyiquanmaichongshu:
+			applyValue(ui->btn_bujinyiquanmaichongshuduqushuzhi, item);
+			break;
+		case PlcReadIndex::luoju:
+			applyValue(ui->btn_luojuduqushuzhi, item);
+			break;
+		default:
+			break;
+		}
+	}
+}
+
 void DlgProductSet::btn_close_clicked()
 {
 	emit paramsChanged();

@@ -50,6 +50,23 @@ struct ModBusAddress
 	static int readPLCbaojingxinxiAddress;
 };
 
+struct PlcReadItem
+{
+	uint16_t value;
+	bool ok;
+	int index;
+};
+
+struct PlcReadIndex
+{
+	static constexpr int shicekuandu = 1;            // 实测宽度
+	static constexpr int shedingbiaozhunzhi = 2;     // 设定标准值
+	static constexpr int changdujiange = 3;          // 长度间隔
+	static constexpr int paizhaochangdujiange = 4;   // 拍照长度间隔
+	static constexpr int bujinyiquanmaichongshu = 5; // 步进一圈脉冲数
+	static constexpr int luoju = 6;                  // 螺距
+};
+
 // 图片信息
 struct MatInfo {
 	cv::Mat image;	// 图片内容
