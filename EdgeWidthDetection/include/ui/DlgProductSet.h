@@ -48,7 +48,32 @@ private slots:
 	void btn_zhongguang_clicked();
 	void btn_ruoguang_clicked();
 
+	// 读取PLC
+	void btn_shicekuanduduqudizhi_clicked();
+	void btn_shedingbiaozhunzhiduqudizhi_clicked();
+	void btn_changdujiangeduqudizhi_clicked();
+	void btn_paizhaochangdujiangeduqudizhi_clicked();
+	void btn_bujinyiquanmaichongshuduqudizhi_clicked();
+	void btn_luojuduqudizhi_clicked();
 	void btn_huodePLCbaojingxinxidizhi_clicked();
+	// 写入PLC
+	void btn_shicekuanduxierushuzhi_clicked();
+	void btn_shedingbiaozhunzhixierushuzhi_clicked();
+	void btn_changdujiangexierushuzhi_clicked();
+	void btn_paizhaochangdujiangexierushuzhi_clicked();
+	void btn_bujinyiquanmaichongshuxierushuzhi_clicked();
+	void btn_luojuxierushuzhi_clicked();
+
+	void btn_writeshicekuandu_clicked();
+	void btn_writeshedingbiaozhunzhi_clicked();
+	void btn_writechangdujiange_clicked();
+	void btn_writepaizhaochangdujiange_clicked();
+	void btn_writebujinyiquanmaichongshu_clicked();
+	void btn_writeluojuxierushuzhi_clicked();
+
+	void tabWidget_indexChanged(int index);
+private:
+	bool checkIsPLCAddressSame(int newAddress, const QString& currentKey);
 public:
 	Ui::DlgProductSetClass* ui;
 };

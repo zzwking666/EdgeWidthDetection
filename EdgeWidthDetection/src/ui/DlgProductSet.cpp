@@ -56,9 +56,16 @@ void DlgProductSet::read_config()
 	ui->btn_ruoguang->setText(QString::number(setConfig.ruoguang));
 
 	// modbus地址
+	ui->btn_shicekuanduduqudizhi->setText(QString::number(setConfig.shicekuanduduqudizhi));
+	ui->btn_shedingbiaozhunzhiduqudizhi->setText(QString::number(setConfig.shedingbiaozhunzhiduqudizhi));
+	ui->btn_changdujiangeduqudizhi->setText(QString::number(setConfig.changdujiangeduqudizhi));
+	ui->btn_paizhaochangdujiangeduqudizhi->setText(QString::number(setConfig.paizhaochangdujiangeduqudizhi));
+	ui->btn_bujinyiquanmaichongshuduqudizhi->setText(QString::number(setConfig.bujinyiquanmaichongshuduqudizhi));
+	ui->btn_luojuduqudizhi->setText(QString::number(setConfig.luojuduqudizhi));
 	ui->btn_huodePLCbaojingxinxidizhi->setText(QString::number(setConfig.huodePLCbaojingxinxidizhi));
 
 	ui->tabWidget->setCurrentIndex(0);
+	ui->tabWidget_PLC->setCurrentIndex(0);
 }
 
 void DlgProductSet::build_connect()
@@ -82,13 +89,44 @@ void DlgProductSet::build_connect()
 	connect(ui->btn_qiangguang, &QPushButton::clicked, this, &DlgProductSet::btn_qiangguang_clicked);
 	connect(ui->btn_zhongguang, &QPushButton::clicked, this, &DlgProductSet::btn_zhongguang_clicked);
 	connect(ui->btn_ruoguang, &QPushButton::clicked, this, &DlgProductSet::btn_ruoguang_clicked);
+	
+	// 读取PLC
+	connect(ui->btn_shicekuanduduqudizhi, &QPushButton::clicked, this, &DlgProductSet::btn_shicekuanduduqudizhi_clicked);
+	connect(ui->btn_shedingbiaozhunzhiduqudizhi, &QPushButton::clicked, this, &DlgProductSet::btn_shedingbiaozhunzhiduqudizhi_clicked);
+	connect(ui->btn_changdujiangeduqudizhi, &QPushButton::clicked, this, &DlgProductSet::btn_changdujiangeduqudizhi_clicked);
+	connect(ui->btn_paizhaochangdujiangeduqudizhi, &QPushButton::clicked, this, &DlgProductSet::btn_paizhaochangdujiangeduqudizhi_clicked);
+	connect(ui->btn_bujinyiquanmaichongshuduqudizhi, &QPushButton::clicked, this, &DlgProductSet::btn_bujinyiquanmaichongshuduqudizhi_clicked);
+	connect(ui->btn_luojuduqudizhi, &QPushButton::clicked, this, &DlgProductSet::btn_luojuduqudizhi_clicked);
 	connect(ui->btn_huodePLCbaojingxinxidizhi, &QPushButton::clicked, this, &DlgProductSet::btn_huodePLCbaojingxinxidizhi_clicked);
+	// 写入PLC
+	connect(ui->btn_shicekuanduxierushuzhi, &QPushButton::clicked, this, &DlgProductSet::btn_shicekuanduxierushuzhi_clicked);
+	connect(ui->btn_shedingbiaozhunzhixierushuzhi, &QPushButton::clicked, this, &DlgProductSet::btn_shedingbiaozhunzhixierushuzhi_clicked);
+	connect(ui->btn_changdujiangexierushuzhi, &QPushButton::clicked, this, &DlgProductSet::btn_changdujiangexierushuzhi_clicked);
+	connect(ui->btn_paizhaochangdujiangexierushuzhi, &QPushButton::clicked, this, &DlgProductSet::btn_paizhaochangdujiangexierushuzhi_clicked);
+	connect(ui->btn_bujinyiquanmaichongshuxierushuzhi, &QPushButton::clicked, this, &DlgProductSet::btn_bujinyiquanmaichongshuxierushuzhi_clicked);
+	connect(ui->btn_luojuxierushuzhi, &QPushButton::clicked, this, &DlgProductSet::btn_luojuxierushuzhi_clicked);
+
+	connect(ui->btn_writeshicekuandu, &QPushButton::clicked, this, &DlgProductSet::btn_writeshicekuandu_clicked);
+	connect(ui->btn_writeshedingbiaozhunzhi, &QPushButton::clicked, this, &DlgProductSet::btn_writeshedingbiaozhunzhi_clicked);
+	connect(ui->btn_writechangdujiange, &QPushButton::clicked, this, &DlgProductSet::btn_writechangdujiange_clicked);
+	connect(ui->btn_writepaizhaochangdujiange, &QPushButton::clicked, this, &DlgProductSet::btn_writepaizhaochangdujiange_clicked);
+	connect(ui->btn_writebujinyiquanmaichongshu, &QPushButton::clicked, this, &DlgProductSet::btn_writebujinyiquanmaichongshu_clicked);
+	connect(ui->btn_writeluojuxierushuzhi, &QPushButton::clicked, this, &DlgProductSet::btn_writeluojuxierushuzhi_clicked);
+
 	connect(ui->ckb_autoSaveImg, &QCheckBox::clicked, this, &DlgProductSet::ckb_autoSaveImg_clicked);
+	connect(ui->tabWidget, &QTabWidget::currentChanged, this, &DlgProductSet::tabWidget_indexChanged);
 }
 
 void DlgProductSet::btn_close_clicked()
 {
 	emit paramsChanged();
+
+	auto& plcListenThread = Modules::getInstance().plcController.plcListenThread;
+	if (plcListenThread)
+	{
+		plcListenThread->stopThread();
+	}
+
 	this->close();
 }
 
@@ -367,6 +405,169 @@ void DlgProductSet::btn_ruoguang_clicked()
 	}
 }
 
+void DlgProductSet::btn_shicekuanduduqudizhi_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+
+		const int newAddress = value.toInt();
+		if (!checkIsPLCAddressSame(newAddress, "shice"))
+		{
+			return;
+		}
+
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		ui->btn_shicekuanduduqudizhi->setText(value);
+		setConfig.shicekuanduduqudizhi = value.toInt();
+		ModBusAddress::shicekuanduAddress = value.toInt();
+	}
+}
+
+void DlgProductSet::btn_shedingbiaozhunzhiduqudizhi_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+
+		const int newAddress = value.toInt();
+		if (!checkIsPLCAddressSame(newAddress, "biaozhun"))
+		{
+			return;
+		}
+
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		ui->btn_shedingbiaozhunzhiduqudizhi->setText(value);
+		setConfig.shedingbiaozhunzhiduqudizhi = value.toInt();
+		ModBusAddress::shedingbiaozhunzhiAddress = value.toInt();
+	}
+}
+
+void DlgProductSet::btn_changdujiangeduqudizhi_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+
+		const int newAddress = value.toInt();
+		if (!checkIsPLCAddressSame(newAddress, "changdu"))
+		{
+			return;
+		}
+
+
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		ui->btn_changdujiangeduqudizhi->setText(value);
+		setConfig.changdujiangeduqudizhi = value.toInt();
+		ModBusAddress::changdujiangeAddress = value.toInt();
+	}
+}
+
+void DlgProductSet::btn_paizhaochangdujiangeduqudizhi_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+
+		const int newAddress = value.toInt();
+		if (!checkIsPLCAddressSame(newAddress, "paizhao"))
+		{
+			return;
+		}
+
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		ui->btn_paizhaochangdujiangeduqudizhi->setText(value);
+		setConfig.paizhaochangdujiangeduqudizhi = value.toInt();
+		ModBusAddress::paizhaochangdujiangeAddress = value.toInt();
+	}
+}
+
+void DlgProductSet::btn_bujinyiquanmaichongshuduqudizhi_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+
+		const int newAddress = value.toInt();
+		if (!checkIsPLCAddressSame(newAddress, "maichong"))
+		{
+			return;
+		}
+
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		ui->btn_bujinyiquanmaichongshuduqudizhi->setText(value);
+		setConfig.bujinyiquanmaichongshuduqudizhi = value.toInt();
+		ModBusAddress::bujinyiquanmaichongshuAddress = value.toInt();
+	}
+}
+
+void DlgProductSet::btn_luojuduqudizhi_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+
+		const int newAddress = value.toInt();
+		if (!checkIsPLCAddressSame(newAddress, "luoju"))
+		{
+			return;
+		}
+
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		ui->btn_luojuduqudizhi->setText(value);
+		setConfig.luojuduqudizhi = value.toInt();
+		ModBusAddress::luojuAddress = value.toInt();
+	}
+}
+
 void DlgProductSet::btn_huodePLCbaojingxinxidizhi_clicked()
 {
 	NumberKeyboard numKeyBord;
@@ -380,11 +581,299 @@ void DlgProductSet::btn_huodePLCbaojingxinxidizhi_clicked()
 			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
 			return;
 		}
+
+		const int newAddress = value.toInt();
+		if (!checkIsPLCAddressSame(newAddress, "gaojing"))
+		{
+			return;
+		}
+
 		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 		ui->btn_huodePLCbaojingxinxidizhi->setText(value);
 		setConfig.huodePLCbaojingxinxidizhi = value.toInt();
 		ModBusAddress::readPLCbaojingxinxiAddress = value.toInt();
 	}
+}
+
+void DlgProductSet::btn_shicekuanduxierushuzhi_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+		ui->btn_shicekuanduxierushuzhi->setText(value);
+	}
+}
+
+void DlgProductSet::btn_shedingbiaozhunzhixierushuzhi_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+		ui->btn_shedingbiaozhunzhixierushuzhi->setText(value);
+	}
+}
+
+void DlgProductSet::btn_changdujiangexierushuzhi_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+		ui->btn_changdujiangexierushuzhi->setText(value);
+	}
+}
+
+void DlgProductSet::btn_paizhaochangdujiangexierushuzhi_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+		ui->btn_paizhaochangdujiangexierushuzhi->setText(value);
+	}
+}
+
+void DlgProductSet::btn_bujinyiquanmaichongshuxierushuzhi_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+		ui->btn_bujinyiquanmaichongshuxierushuzhi->setText(value);
+	}
+}
+
+void DlgProductSet::btn_luojuxierushuzhi_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+		ui->btn_luojuxierushuzhi->setText(value);
+	}
+}
+
+void DlgProductSet::btn_writeshicekuandu_clicked()
+{
+	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
+
+	if (plcControllerScheduler)
+	{
+		uint16_t writeData = ui->btn_shicekuanduxierushuzhi->text().toUInt();
+		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::shicekuanduAddress, writeData);
+
+		if (fut.get())
+		{
+			QMessageBox::information(this,"提示", "实测宽度写入成功");
+		}
+		else
+		{
+			QMessageBox::information(this, "警告", "实测宽度写入失败");
+		}
+	}
+}
+
+void DlgProductSet::btn_writeshedingbiaozhunzhi_clicked()
+{
+	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
+
+	if (plcControllerScheduler)
+	{
+		uint16_t writeData = ui->btn_shedingbiaozhunzhixierushuzhi->text().toUInt();
+		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::shedingbiaozhunzhiAddress, writeData);
+
+		if (fut.get())
+		{
+			QMessageBox::information(this, "提示", "设定标准值写入成功");
+		}
+		else
+		{
+			QMessageBox::information(this, "警告", "设定标准值写入失败");
+		}
+	}
+}
+
+void DlgProductSet::btn_writechangdujiange_clicked()
+{
+	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
+
+	if (plcControllerScheduler)
+	{
+		uint16_t writeData = ui->btn_changdujiangexierushuzhi->text().toUInt();
+		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::changdujiangeAddress, writeData);
+
+		if (fut.get())
+		{
+			QMessageBox::information(this, "提示", "长度间隔写入成功");
+		}
+		else
+		{
+			QMessageBox::information(this, "警告", "长度间隔写入失败");
+		}
+	}
+}
+
+void DlgProductSet::btn_writepaizhaochangdujiange_clicked()
+{
+	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
+
+	if (plcControllerScheduler)
+	{
+		uint16_t writeData = ui->btn_paizhaochangdujiangexierushuzhi->text().toUInt();
+		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::paizhaochangdujiangeAddress, writeData);
+
+		if (fut.get())
+		{
+			QMessageBox::information(this, "提示", "拍照长度间隔写入成功");
+		}
+		else
+		{
+			QMessageBox::information(this, "警告", "拍照长度间隔写入失败");
+		}
+	}
+}
+
+void DlgProductSet::btn_writebujinyiquanmaichongshu_clicked()
+{
+	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
+
+	if (plcControllerScheduler)
+	{
+		uint16_t writeData = ui->btn_bujinyiquanmaichongshuxierushuzhi->text().toUInt();
+		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::bujinyiquanmaichongshuAddress, writeData);
+
+		if (fut.get())
+		{
+			QMessageBox::information(this, "提示", "步进一圈脉冲数写入成功");
+		}
+		else
+		{
+			QMessageBox::information(this, "警告", "步进一圈脉冲数写入失败");
+		}
+	}
+}
+
+void DlgProductSet::btn_writeluojuxierushuzhi_clicked()
+{
+	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
+
+	if (plcControllerScheduler)
+	{
+		uint16_t writeData = ui->btn_luojuxierushuzhi->text().toUInt();
+		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::luojuAddress, writeData);
+
+		if (fut.get())
+		{
+			QMessageBox::information(this, "提示", "螺距写入成功");
+		}
+		else
+		{
+			QMessageBox::information(this, "警告", "螺距写入失败");
+		}
+	}
+}
+
+void DlgProductSet::tabWidget_indexChanged(int index)
+{
+	if (2 == index)
+	{
+		auto& plcListenThread = Modules::getInstance().plcController.plcListenThread;
+		if (plcListenThread)
+		{
+			plcListenThread->startThread();
+		}
+	}
+	else
+	{
+		auto& plcListenThread = Modules::getInstance().plcController.plcListenThread;
+		if (plcListenThread)
+		{
+			plcListenThread->stopThread();
+		}
+	}
+}
+
+bool DlgProductSet::checkIsPLCAddressSame(int newAddress, const QString& currentKey)
+{
+	const auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+
+	struct AddrItem
+	{
+		QString key;
+		QString name;
+		int value;
+	};
+
+	const AddrItem items[] = {
+		{ "shice",      "实测宽度读取地址",         setConfig.shicekuanduduqudizhi },
+		{ "biaozhun",   "设定标准值读取地址",       setConfig.shedingbiaozhunzhiduqudizhi },
+		{ "changdu",    "长度间隔读取地址",         setConfig.changdujiangeduqudizhi },
+		{ "paizhao",    "拍照长度间隔读取地址",     setConfig.paizhaochangdujiangeduqudizhi },
+		{ "maichong",   "步进一圈脉冲数读取地址",   setConfig.bujinyiquanmaichongshuduqudizhi },
+		{ "luoju",      "螺距读取地址",             setConfig.luojuduqudizhi },
+		{ "baojing",    "获取PLC报警信息地址",      setConfig.huodePLCbaojingxinxidizhi }
+	};
+
+	for (const auto& item : items)
+	{
+		if (item.key == currentKey)
+		{
+			continue; // 跳过当前正在设置的这一项
+		}
+		if (item.value == newAddress)
+		{
+			QMessageBox::warning(this, "提示",
+				QString("地址重复：与“%1”冲突（地址=%2），请重新设置。")
+				.arg(item.name).arg(newAddress));
+			return false;
+		}
+	}
+
+	return true;
 }
 
 void DlgProductSet::btn_xiangsudangliang1_clicked()
