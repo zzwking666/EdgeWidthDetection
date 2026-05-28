@@ -16,6 +16,7 @@ namespace rw
 			LOG_INFO("Build modbus by tcp, ip \"{}\",port \"{}\" ...", cfg.ip, cfg.port);
 
 			_modbusContext = modbus_new_tcp(cfg.ip.c_str(), cfg.port);
+			modbus_set_debug(_modbusContext, 1);
 			if (_modbusContext == nullptr) {
 				LOG_ERROR("Failed to create Modbus context");
 
