@@ -4,6 +4,8 @@
 
 #include "Modules.hpp"
 #include "EdgeWidthDetection.h"
+#include "imgPro_Logger.hpp"
+#include "lgm_Logger.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -11,6 +13,9 @@ int main(int argc, char* argv[])
 
 	SetConsoleOutputCP(CP_UTF8);
 	SetConsoleCP(CP_UTF8);
+
+	rw::lgm::LoggerCfg logger;
+	rw::lgm::iniLogger(logger);
 
 	if (!Modules::check())
 	{
