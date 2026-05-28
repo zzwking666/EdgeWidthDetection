@@ -9,21 +9,29 @@
 void PlcController::build()
 {
 	build_plcController();
+	build_plcListenThread();
 }
 
 void PlcController::destroy()
 {
+	destroy_plcListenThread();
 	destroy_plcController();
 }
 
 void PlcController::start()
 {
-
-}
+	if (plcListenThread)
+	{
+		plcListenThread->startThread();
+	}
+}	
 
 void PlcController::stop()
 {
-
+	if (plcListenThread)
+	{
+		plcListenThread->stopThread();
+	}
 }
 
 void PlcController::build_plcController()
@@ -64,6 +72,19 @@ void PlcController::destroy_plcController()
 	if (plcController)
 	{
 		plcController.reset();
+	}
+}
+
+void PlcController::build_plcListenThread()
+{
+	plcListenThread = std::make_shared<DetachPLCListenThread>();
+}
+
+void PlcController::destroy_plcListenThread()
+{
+	if (plcListenThread)
+	{
+		plcListenThread.reset();
 	}
 }
 

@@ -3,6 +3,7 @@
 #include <memory>
 #include <QObject>
 
+#include "DetachPLCListenThread.h"
 #include "hoem_ModbusDevice.hpp"
 #include "hoem_ModbusDeviceScheduler.hpp"
 #include "IModule.hpp"
@@ -23,6 +24,10 @@ public:
 	void build_plcController();
 	void destroy_plcController();
 
+	std::shared_ptr<DetachPLCListenThread> plcListenThread{};
+
+	void build_plcListenThread();
+	void destroy_plcListenThread();
 private:
 	bool loadConfigFromFile(std::string& ip, int& port);
 	std::string getDesktopPath();

@@ -28,8 +28,6 @@ void DetachPLCListenThread::stopThread()
 
 void DetachPLCListenThread::run()
 {
-	QThread::run();
-
 	while (running)
 	{
 		QThread::sleep(1);
