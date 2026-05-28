@@ -235,7 +235,7 @@ void ImageProcessor::writePlcController(double width)
 		return;
 	}
 
-	plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(ModBusAddress::outPutWidthAddress), static_cast<uint16_t>(width));
+	plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(ModBusAddress::shicekuanduAddress), static_cast<uint16_t>(width));
 }
 
 void ImageProcessor::buildObbModelEngine(const QString& enginePath)

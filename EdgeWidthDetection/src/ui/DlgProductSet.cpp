@@ -56,8 +56,6 @@ void DlgProductSet::read_config()
 	ui->btn_ruoguang->setText(QString::number(setConfig.ruoguang));
 
 	// modbus地址
-	ui->btn_buchangsuduxierudizhi->setText(QString::number(setConfig.buchangsuduxierudizhi));
-	ui->btn_buchangliangxierudizhi->setText(QString::number(setConfig.buchangliangxierudizhi));
 	ui->btn_huodePLCbaojingxinxidizhi->setText(QString::number(setConfig.huodePLCbaojingxinxidizhi));
 
 	ui->tabWidget->setCurrentIndex(0);
@@ -84,8 +82,6 @@ void DlgProductSet::build_connect()
 	connect(ui->btn_qiangguang, &QPushButton::clicked, this, &DlgProductSet::btn_qiangguang_clicked);
 	connect(ui->btn_zhongguang, &QPushButton::clicked, this, &DlgProductSet::btn_zhongguang_clicked);
 	connect(ui->btn_ruoguang, &QPushButton::clicked, this, &DlgProductSet::btn_ruoguang_clicked);
-	connect(ui->btn_buchangsuduxierudizhi, &QPushButton::clicked, this, &DlgProductSet::btn_buchangsuduxierudizhi_clicked);
-	connect(ui->btn_buchangliangxierudizhi, &QPushButton::clicked, this, &DlgProductSet::btn_buchangliangxierudizhi_clicked);
 	connect(ui->btn_huodePLCbaojingxinxidizhi, &QPushButton::clicked, this, &DlgProductSet::btn_huodePLCbaojingxinxidizhi_clicked);
 	connect(ui->ckb_autoSaveImg, &QCheckBox::clicked, this, &DlgProductSet::ckb_autoSaveImg_clicked);
 }
@@ -368,46 +364,6 @@ void DlgProductSet::btn_ruoguang_clicked()
 		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 		ui->btn_ruoguang->setText(value);
 		setConfig.ruoguang = value.toDouble();
-	}
-}
-
-void DlgProductSet::btn_buchangsuduxierudizhi_clicked()
-{
-	NumberKeyboard numKeyBord;
-	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
-	auto isAccept = numKeyBord.exec();
-	if (isAccept == QDialog::Accepted)
-	{
-		auto value = numKeyBord.getValue();
-		if (value.toDouble() < 0)
-		{
-			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
-			return;
-		}
-		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-		ui->btn_buchangsuduxierudizhi->setText(value);
-		setConfig.buchangsuduxierudizhi = value.toInt();
-		ModBusAddress::outPutSpeedAddress = value.toInt();
-	}
-}
-
-void DlgProductSet::btn_buchangliangxierudizhi_clicked()
-{
-	NumberKeyboard numKeyBord;
-	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
-	auto isAccept = numKeyBord.exec();
-	if (isAccept == QDialog::Accepted)
-	{
-		auto value = numKeyBord.getValue();
-		if (value.toDouble() < 0)
-		{
-			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
-			return;
-		}
-		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-		ui->btn_buchangliangxierudizhi->setText(value);
-		setConfig.buchangliangxierudizhi = value.toInt();
-		ModBusAddress::outPutWidthAddress = value.toInt();
 	}
 }
 
