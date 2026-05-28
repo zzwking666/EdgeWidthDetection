@@ -39,6 +39,11 @@ void DetachPLCListenThread::readPLCInfo()
 {
 	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
 
+	if (!plcControllerScheduler)
+	{
+		return;
+	}
+
 	QVector<PlcReadItem> datas{};
 
 	// 实测宽度
