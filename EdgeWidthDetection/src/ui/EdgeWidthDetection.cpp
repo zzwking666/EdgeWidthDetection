@@ -272,13 +272,14 @@ void EdgeWidthDetection::rbtn_debug_checked(bool checked)
 
 	auto& runningState = Modules::getInstance().runtimeInfoModule.runningState;
 	auto& camera1 = Modules::getInstance().cameraModule.camera1;
+	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	if (!isRuning) {
 		if (checked) {
 			runningState = RunningState::Debug;
 			if (camera1)
 			{
 				camera1->setTriggerState(false);
-				//camera1->setFrameRate(2);
+				camera1->setFrameRate(setConfig.debugFrame);
 			}
 		}
 		else {
@@ -294,13 +295,14 @@ void EdgeWidthDetection::rbtn_removeFunc_checked(bool checked)
 {
 	auto& runningState = Modules::getInstance().runtimeInfoModule.runningState;
 	auto& camera1 = Modules::getInstance().cameraModule.camera1;
+	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	if (checked)
 	{
 		runningState = RunningState::OpenRemoveFunc;
 		if (camera1)
 		{
-			camera1->setTriggerState(false);
-			//camera1->setFrameRate(2);
+			camera1->setTriggerState(true);
+			camera1->setFrameRate(setConfig.openRemoveFrame);
 		}
 		ui->rbtn_debug->setChecked(false);
 	}

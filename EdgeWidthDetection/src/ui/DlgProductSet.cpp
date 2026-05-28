@@ -123,7 +123,7 @@ void DlgProductSet::onUpdatePLCInfo(QVector<PlcReadItem> datas)
 		{
 			if (item.ok)
 			{
-				btn->setText(QString::number(item.value));
+				btn->setText(QString::number(item.value / 100));
 			}
 			else
 			{
@@ -746,7 +746,7 @@ void DlgProductSet::btn_writeshicekuandu_clicked()
 	if (plcControllerScheduler)
 	{
 		uint16_t writeData = ui->btn_shicekuanduxierushuzhi->text().toUInt();
-		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::shicekuanduAddress, writeData);
+		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::shicekuanduAddress, writeData * 100);
 
 		if (fut.get())
 		{
@@ -766,7 +766,7 @@ void DlgProductSet::btn_writeshedingbiaozhunzhi_clicked()
 	if (plcControllerScheduler)
 	{
 		uint16_t writeData = ui->btn_shedingbiaozhunzhixierushuzhi->text().toUInt();
-		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::shedingbiaozhunzhiAddress, writeData);
+		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::shedingbiaozhunzhiAddress, writeData * 100);
 
 		if (fut.get())
 		{
@@ -786,7 +786,7 @@ void DlgProductSet::btn_writechangdujiange_clicked()
 	if (plcControllerScheduler)
 	{
 		uint16_t writeData = ui->btn_changdujiangexierushuzhi->text().toUInt();
-		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::changdujiangeAddress, writeData);
+		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::changdujiangeAddress, writeData * 100);
 
 		if (fut.get())
 		{
@@ -806,7 +806,7 @@ void DlgProductSet::btn_writepaizhaochangdujiange_clicked()
 	if (plcControllerScheduler)
 	{
 		uint16_t writeData = ui->btn_paizhaochangdujiangexierushuzhi->text().toUInt();
-		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::paizhaochangdujiangeAddress, writeData);
+		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::paizhaochangdujiangeAddress, writeData * 100);
 
 		if (fut.get())
 		{
@@ -826,7 +826,7 @@ void DlgProductSet::btn_writebujinyiquanmaichongshu_clicked()
 	if (plcControllerScheduler)
 	{
 		uint16_t writeData = ui->btn_bujinyiquanmaichongshuxierushuzhi->text().toUInt();
-		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::bujinyiquanmaichongshuAddress, writeData);
+		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::bujinyiquanmaichongshuAddress, writeData * 100);
 
 		if (fut.get())
 		{
@@ -846,7 +846,7 @@ void DlgProductSet::btn_writeluojuxierushuzhi_clicked()
 	if (plcControllerScheduler)
 	{
 		uint16_t writeData = ui->btn_luojuxierushuzhi->text().toUInt();
-		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::luojuAddress, writeData);
+		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::luojuAddress, writeData * 100);
 
 		if (fut.get())
 		{
