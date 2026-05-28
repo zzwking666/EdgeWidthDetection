@@ -40,8 +40,13 @@ struct Utility
 
 struct ModBusAddress
 {
-	static int outPutWidthAddress;
-	static int outPutSpeedAddress;
+	static int shicekuanduAddress;
+	static int shedingbiaozhunzhiAddress;
+	static int changdujiangeAddress;
+	static int paizhaochangdujiangeAddress;
+	static int bujinyiquanmaichongshuAddress;
+	static int luojuAddress;
+
 	static int readPLCbaojingxinxiAddress;
 };
 
