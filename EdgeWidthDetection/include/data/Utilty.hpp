@@ -40,14 +40,23 @@ struct Utility
 
 struct ModBusAddress
 {
-	static int shicekuanduAddress;
-	static int shedingbiaozhunzhiAddress;
-	static int changdujiangeAddress;
-	static int paizhaochangdujiangeAddress;
+	static int shiceyahenkuanduAddress;
+	static int shedingyahenbiaozhunkuanduzhiAddress;
+	static int paizhaojiangejuliAddress;
+	static int daizichangdubiaozhunAddress;
+	static int jimiqiyiquanmaichongshuAddress;
+	static int jimiqiyiquanzhouchangAddress;
 	static int bujinyiquanmaichongshuAddress;
-	static int luojuAddress;
+	static int bujinluojuAddress;
+	static int daoyidongbuchangAddress;
+	static int zidongdaoyidongzuidajuliAddress;
+	static int daojiakeyidongdezuidajuliAddress;
+	static int daoyidongsudumaichongpinlvAddress;
 
 	static int readPLCbaojingxinxiAddress;
+	static int readPLCkeyipaizhaoxinhaoAddress;
+	static int readPLCtingzhipaizhaoxinhaoAddress;
+	static int readPLCdaizishicechangduAddress;
 };
 
 struct PlcReadItem

@@ -470,7 +470,7 @@ void DlgProductSet::btn_shicekuanduduqudizhi_clicked()
 		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 		ui->btn_shicekuanduduqudizhi->setText(value);
 		setConfig.shicekuanduduqudizhi = value.toInt();
-		ModBusAddress::shicekuanduAddress = value.toInt();
+		ModBusAddress::shiceyahenkuanduAddress = value.toInt();
 	}
 }
 
@@ -497,7 +497,7 @@ void DlgProductSet::btn_shedingbiaozhunzhiduqudizhi_clicked()
 		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 		ui->btn_shedingbiaozhunzhiduqudizhi->setText(value);
 		setConfig.shedingbiaozhunzhiduqudizhi = value.toInt();
-		ModBusAddress::shedingbiaozhunzhiAddress = value.toInt();
+		ModBusAddress::shedingyahenbiaozhunkuanduzhiAddress = value.toInt();
 	}
 }
 
@@ -552,7 +552,7 @@ void DlgProductSet::btn_paizhaochangdujiangeduqudizhi_clicked()
 		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 		ui->btn_paizhaochangdujiangeduqudizhi->setText(value);
 		setConfig.paizhaochangdujiangeduqudizhi = value.toInt();
-		ModBusAddress::paizhaochangdujiangeAddress = value.toInt();
+		ModBusAddress::paizhaojiangejuliAddress = value.toInt();
 	}
 }
 
@@ -606,7 +606,7 @@ void DlgProductSet::btn_luojuduqudizhi_clicked()
 		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 		ui->btn_luojuduqudizhi->setText(value);
 		setConfig.luojuduqudizhi = value.toInt();
-		ModBusAddress::luojuAddress = value.toInt();
+		ModBusAddress::bujinluojuAddress = value.toInt();
 	}
 }
 
@@ -746,7 +746,7 @@ void DlgProductSet::btn_writeshicekuandu_clicked()
 	if (plcControllerScheduler)
 	{
 		uint16_t writeData = ui->btn_shicekuanduxierushuzhi->text().toUInt();
-		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::shicekuanduAddress, writeData * 100);
+		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::shiceyahenkuanduAddress, writeData * 100);
 
 		if (fut.get())
 		{
@@ -766,7 +766,7 @@ void DlgProductSet::btn_writeshedingbiaozhunzhi_clicked()
 	if (plcControllerScheduler)
 	{
 		uint16_t writeData = ui->btn_shedingbiaozhunzhixierushuzhi->text().toUInt();
-		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::shedingbiaozhunzhiAddress, writeData * 100);
+		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::shedingyahenbiaozhunkuanduzhiAddress, writeData * 100);
 
 		if (fut.get())
 		{
@@ -806,7 +806,7 @@ void DlgProductSet::btn_writepaizhaochangdujiange_clicked()
 	if (plcControllerScheduler)
 	{
 		uint16_t writeData = ui->btn_paizhaochangdujiangexierushuzhi->text().toUInt();
-		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::paizhaochangdujiangeAddress, writeData * 100);
+		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::paizhaojiangejuliAddress, writeData * 100);
 
 		if (fut.get())
 		{
@@ -846,7 +846,7 @@ void DlgProductSet::btn_writeluojuxierushuzhi_clicked()
 	if (plcControllerScheduler)
 	{
 		uint16_t writeData = ui->btn_luojuxierushuzhi->text().toUInt();
-		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::luojuAddress, writeData * 100);
+		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::bujinluojuAddress, writeData * 100);
 
 		if (fut.get())
 		{

@@ -48,14 +48,14 @@ void DetachPLCListenThread::readPLCInfo()
 
 	// 实测宽度
 	auto shicekuanduFUT = plcControllerScheduler->readUInt16RegisterAsync(
-		ModBusAddress::shicekuanduAddress);
+		ModBusAddress::shiceyahenkuanduAddress);
 
 	auto ret = shicekuanduFUT.get(); // 只 get 一次
 	datas.push_back(PlcReadItem{ ret.first, ret.second, 1 });
 
 	// 设定标准值
 	auto shedingbiaozhunzhiFUT = plcControllerScheduler->readUInt16RegisterAsync(
-		ModBusAddress::shedingbiaozhunzhiAddress);
+		ModBusAddress::shedingyahenbiaozhunkuanduzhiAddress);
 
 	ret = shedingbiaozhunzhiFUT.get(); // 只 get 一次
 	datas.push_back(PlcReadItem{ ret.first, ret.second, 2 });
@@ -69,7 +69,7 @@ void DetachPLCListenThread::readPLCInfo()
 
 	// 拍照长度间隔
 	auto paizhaochangdujiangeFUT = plcControllerScheduler->readUInt16RegisterAsync(
-		ModBusAddress::paizhaochangdujiangeAddress);
+		ModBusAddress::paizhaojiangejuliAddress);
 
 	ret = paizhaochangdujiangeFUT.get(); // 只 get 一次
 	datas.push_back(PlcReadItem{ ret.first, ret.second, 4 });
@@ -83,7 +83,7 @@ void DetachPLCListenThread::readPLCInfo()
 
 	// 螺距
 	auto luojuFUT = plcControllerScheduler->readUInt16RegisterAsync(
-		ModBusAddress::luojuAddress);
+		ModBusAddress::bujinluojuAddress);
 
 	ret = luojuFUT.get(); // 只 get 一次
 	datas.push_back(PlcReadItem{ ret.first, ret.second, 6 });
