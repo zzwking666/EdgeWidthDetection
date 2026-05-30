@@ -36,13 +36,22 @@ namespace cdm {
         double qiangguang{ 0 };
         double zhongguang{ 0 };
         double ruoguang{ 0 };
-        int shicekuanduduqudizhi{ 0 };
-        int shedingbiaozhunzhiduqudizhi{ 0 };
-        int changdujiangeduqudizhi{ 0 };
-        int paizhaochangdujiangeduqudizhi{ 0 };
+        int shiceyahenkuanduduqudizhi{ 0 };
+        int shedingyahenbiaozhunzhiduqudizhi{ 0 };
+        int paizhaojiangejuliduqudizhi{ 0 };
+        int daizichangdubiaozhunduqudizhi{ 0 };
+        int jimiqiyiquanmaichongshuduqudizhi{ 0 };
+        int jimiqiyiquanzhouchangduqudizhi{ 0 };
         int bujinyiquanmaichongshuduqudizhi{ 0 };
-        int luojuduqudizhi{ 0 };
+        int bujinluojuduqudizhi{ 0 };
+        int daoyidongbuchangduqudizhi{ 0 };
+        int zidongdaoyidongzuidajuliduqudizhi{ 0 };
+        int daojiakeyidongdezuidajuliduqudizhi{ 0 };
+        int daoyidongsudumaichongpinlvduqudizhi{ 0 };
         int huodePLCbaojingxinxidizhi{ 0 };
+        int keyipaizhaoxinhaodizhi{ 0 };
+        int tingzhipaizhaoxinhaodizhi{ 0 };
+        int daizishicechangdudizhi{ 0 };
         int lastChooseLight{ 0 };
     };
 
@@ -138,41 +147,86 @@ namespace cdm {
             throw std::runtime_error("$variable$ruoguang is not found");
         }
         ruoguang = ruoguangItem->getValueAsDouble();
-        auto shicekuanduduqudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$shicekuanduduqudizhi$"));
-        if (!shicekuanduduqudizhiItem) {
-            throw std::runtime_error("$variable$shicekuanduduqudizhi is not found");
+        auto shiceyahenkuanduduqudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$shiceyahenkuanduduqudizhi$"));
+        if (!shiceyahenkuanduduqudizhiItem) {
+            throw std::runtime_error("$variable$shiceyahenkuanduduqudizhi is not found");
         }
-        shicekuanduduqudizhi = shicekuanduduqudizhiItem->getValueAsInt();
-        auto shedingbiaozhunzhiduqudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$shedingbiaozhunzhiduqudizhi$"));
-        if (!shedingbiaozhunzhiduqudizhiItem) {
-            throw std::runtime_error("$variable$shedingbiaozhunzhiduqudizhi is not found");
+        shiceyahenkuanduduqudizhi = shiceyahenkuanduduqudizhiItem->getValueAsInt();
+        auto shedingyahenbiaozhunzhiduqudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$shedingyahenbiaozhunzhiduqudizhi$"));
+        if (!shedingyahenbiaozhunzhiduqudizhiItem) {
+            throw std::runtime_error("$variable$shedingyahenbiaozhunzhiduqudizhi is not found");
         }
-        shedingbiaozhunzhiduqudizhi = shedingbiaozhunzhiduqudizhiItem->getValueAsInt();
-        auto changdujiangeduqudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$changdujiangeduqudizhi$"));
-        if (!changdujiangeduqudizhiItem) {
-            throw std::runtime_error("$variable$changdujiangeduqudizhi is not found");
+        shedingyahenbiaozhunzhiduqudizhi = shedingyahenbiaozhunzhiduqudizhiItem->getValueAsInt();
+        auto paizhaojiangejuliduqudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$paizhaojiangejuliduqudizhi$"));
+        if (!paizhaojiangejuliduqudizhiItem) {
+            throw std::runtime_error("$variable$paizhaojiangejuliduqudizhi is not found");
         }
-        changdujiangeduqudizhi = changdujiangeduqudizhiItem->getValueAsInt();
-        auto paizhaochangdujiangeduqudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$paizhaochangdujiangeduqudizhi$"));
-        if (!paizhaochangdujiangeduqudizhiItem) {
-            throw std::runtime_error("$variable$paizhaochangdujiangeduqudizhi is not found");
+        paizhaojiangejuliduqudizhi = paizhaojiangejuliduqudizhiItem->getValueAsInt();
+        auto daizichangdubiaozhunduqudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$daizichangdubiaozhunduqudizhi$"));
+        if (!daizichangdubiaozhunduqudizhiItem) {
+            throw std::runtime_error("$variable$daizichangdubiaozhunduqudizhi is not found");
         }
-        paizhaochangdujiangeduqudizhi = paizhaochangdujiangeduqudizhiItem->getValueAsInt();
+        daizichangdubiaozhunduqudizhi = daizichangdubiaozhunduqudizhiItem->getValueAsInt();
+        auto jimiqiyiquanmaichongshuduqudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$jimiqiyiquanmaichongshuduqudizhi$"));
+        if (!jimiqiyiquanmaichongshuduqudizhiItem) {
+            throw std::runtime_error("$variable$jimiqiyiquanmaichongshuduqudizhi is not found");
+        }
+        jimiqiyiquanmaichongshuduqudizhi = jimiqiyiquanmaichongshuduqudizhiItem->getValueAsInt();
+        auto jimiqiyiquanzhouchangduqudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$jimiqiyiquanzhouchangduqudizhi$"));
+        if (!jimiqiyiquanzhouchangduqudizhiItem) {
+            throw std::runtime_error("$variable$jimiqiyiquanzhouchangduqudizhi is not found");
+        }
+        jimiqiyiquanzhouchangduqudizhi = jimiqiyiquanzhouchangduqudizhiItem->getValueAsInt();
         auto bujinyiquanmaichongshuduqudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$bujinyiquanmaichongshuduqudizhi$"));
         if (!bujinyiquanmaichongshuduqudizhiItem) {
             throw std::runtime_error("$variable$bujinyiquanmaichongshuduqudizhi is not found");
         }
         bujinyiquanmaichongshuduqudizhi = bujinyiquanmaichongshuduqudizhiItem->getValueAsInt();
-        auto luojuduqudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$luojuduqudizhi$"));
-        if (!luojuduqudizhiItem) {
-            throw std::runtime_error("$variable$luojuduqudizhi is not found");
+        auto bujinluojuduqudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$bujinluojuduqudizhi$"));
+        if (!bujinluojuduqudizhiItem) {
+            throw std::runtime_error("$variable$bujinluojuduqudizhi is not found");
         }
-        luojuduqudizhi = luojuduqudizhiItem->getValueAsInt();
+        bujinluojuduqudizhi = bujinluojuduqudizhiItem->getValueAsInt();
+        auto daoyidongbuchangduqudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$daoyidongbuchangduqudizhi$"));
+        if (!daoyidongbuchangduqudizhiItem) {
+            throw std::runtime_error("$variable$daoyidongbuchangduqudizhi is not found");
+        }
+        daoyidongbuchangduqudizhi = daoyidongbuchangduqudizhiItem->getValueAsInt();
+        auto zidongdaoyidongzuidajuliduqudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$zidongdaoyidongzuidajuliduqudizhi$"));
+        if (!zidongdaoyidongzuidajuliduqudizhiItem) {
+            throw std::runtime_error("$variable$zidongdaoyidongzuidajuliduqudizhi is not found");
+        }
+        zidongdaoyidongzuidajuliduqudizhi = zidongdaoyidongzuidajuliduqudizhiItem->getValueAsInt();
+        auto daojiakeyidongdezuidajuliduqudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$daojiakeyidongdezuidajuliduqudizhi$"));
+        if (!daojiakeyidongdezuidajuliduqudizhiItem) {
+            throw std::runtime_error("$variable$daojiakeyidongdezuidajuliduqudizhi is not found");
+        }
+        daojiakeyidongdezuidajuliduqudizhi = daojiakeyidongdezuidajuliduqudizhiItem->getValueAsInt();
+        auto daoyidongsudumaichongpinlvduqudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$daoyidongsudumaichongpinlvduqudizhi$"));
+        if (!daoyidongsudumaichongpinlvduqudizhiItem) {
+            throw std::runtime_error("$variable$daoyidongsudumaichongpinlvduqudizhi is not found");
+        }
+        daoyidongsudumaichongpinlvduqudizhi = daoyidongsudumaichongpinlvduqudizhiItem->getValueAsInt();
         auto huodePLCbaojingxinxidizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$huodePLCbaojingxinxidizhi$"));
         if (!huodePLCbaojingxinxidizhiItem) {
             throw std::runtime_error("$variable$huodePLCbaojingxinxidizhi is not found");
         }
         huodePLCbaojingxinxidizhi = huodePLCbaojingxinxidizhiItem->getValueAsInt();
+        auto keyipaizhaoxinhaodizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$keyipaizhaoxinhaodizhi$"));
+        if (!keyipaizhaoxinhaodizhiItem) {
+            throw std::runtime_error("$variable$keyipaizhaoxinhaodizhi is not found");
+        }
+        keyipaizhaoxinhaodizhi = keyipaizhaoxinhaodizhiItem->getValueAsInt();
+        auto tingzhipaizhaoxinhaodizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$tingzhipaizhaoxinhaodizhi$"));
+        if (!tingzhipaizhaoxinhaodizhiItem) {
+            throw std::runtime_error("$variable$tingzhipaizhaoxinhaodizhi is not found");
+        }
+        tingzhipaizhaoxinhaodizhi = tingzhipaizhaoxinhaodizhiItem->getValueAsInt();
+        auto daizishicechangdudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$daizishicechangdudizhi$"));
+        if (!daizishicechangdudizhiItem) {
+            throw std::runtime_error("$variable$daizishicechangdudizhi is not found");
+        }
+        daizishicechangdudizhi = daizishicechangdudizhiItem->getValueAsInt();
         auto lastChooseLightItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$lastChooseLight$"));
         if (!lastChooseLightItem) {
             throw std::runtime_error("$variable$lastChooseLight is not found");
@@ -199,13 +253,22 @@ namespace cdm {
         qiangguang = obj.qiangguang;
         zhongguang = obj.zhongguang;
         ruoguang = obj.ruoguang;
-        shicekuanduduqudizhi = obj.shicekuanduduqudizhi;
-        shedingbiaozhunzhiduqudizhi = obj.shedingbiaozhunzhiduqudizhi;
-        changdujiangeduqudizhi = obj.changdujiangeduqudizhi;
-        paizhaochangdujiangeduqudizhi = obj.paizhaochangdujiangeduqudizhi;
+        shiceyahenkuanduduqudizhi = obj.shiceyahenkuanduduqudizhi;
+        shedingyahenbiaozhunzhiduqudizhi = obj.shedingyahenbiaozhunzhiduqudizhi;
+        paizhaojiangejuliduqudizhi = obj.paizhaojiangejuliduqudizhi;
+        daizichangdubiaozhunduqudizhi = obj.daizichangdubiaozhunduqudizhi;
+        jimiqiyiquanmaichongshuduqudizhi = obj.jimiqiyiquanmaichongshuduqudizhi;
+        jimiqiyiquanzhouchangduqudizhi = obj.jimiqiyiquanzhouchangduqudizhi;
         bujinyiquanmaichongshuduqudizhi = obj.bujinyiquanmaichongshuduqudizhi;
-        luojuduqudizhi = obj.luojuduqudizhi;
+        bujinluojuduqudizhi = obj.bujinluojuduqudizhi;
+        daoyidongbuchangduqudizhi = obj.daoyidongbuchangduqudizhi;
+        zidongdaoyidongzuidajuliduqudizhi = obj.zidongdaoyidongzuidajuliduqudizhi;
+        daojiakeyidongdezuidajuliduqudizhi = obj.daojiakeyidongdezuidajuliduqudizhi;
+        daoyidongsudumaichongpinlvduqudizhi = obj.daoyidongsudumaichongpinlvduqudizhi;
         huodePLCbaojingxinxidizhi = obj.huodePLCbaojingxinxidizhi;
+        keyipaizhaoxinhaodizhi = obj.keyipaizhaoxinhaodizhi;
+        tingzhipaizhaoxinhaodizhi = obj.tingzhipaizhaoxinhaodizhi;
+        daizishicechangdudizhi = obj.daizishicechangdudizhi;
         lastChooseLight = obj.lastChooseLight;
     }
 
@@ -229,13 +292,22 @@ namespace cdm {
             qiangguang = obj.qiangguang;
             zhongguang = obj.zhongguang;
             ruoguang = obj.ruoguang;
-            shicekuanduduqudizhi = obj.shicekuanduduqudizhi;
-            shedingbiaozhunzhiduqudizhi = obj.shedingbiaozhunzhiduqudizhi;
-            changdujiangeduqudizhi = obj.changdujiangeduqudizhi;
-            paizhaochangdujiangeduqudizhi = obj.paizhaochangdujiangeduqudizhi;
+            shiceyahenkuanduduqudizhi = obj.shiceyahenkuanduduqudizhi;
+            shedingyahenbiaozhunzhiduqudizhi = obj.shedingyahenbiaozhunzhiduqudizhi;
+            paizhaojiangejuliduqudizhi = obj.paizhaojiangejuliduqudizhi;
+            daizichangdubiaozhunduqudizhi = obj.daizichangdubiaozhunduqudizhi;
+            jimiqiyiquanmaichongshuduqudizhi = obj.jimiqiyiquanmaichongshuduqudizhi;
+            jimiqiyiquanzhouchangduqudizhi = obj.jimiqiyiquanzhouchangduqudizhi;
             bujinyiquanmaichongshuduqudizhi = obj.bujinyiquanmaichongshuduqudizhi;
-            luojuduqudizhi = obj.luojuduqudizhi;
+            bujinluojuduqudizhi = obj.bujinluojuduqudizhi;
+            daoyidongbuchangduqudizhi = obj.daoyidongbuchangduqudizhi;
+            zidongdaoyidongzuidajuliduqudizhi = obj.zidongdaoyidongzuidajuliduqudizhi;
+            daojiakeyidongdezuidajuliduqudizhi = obj.daojiakeyidongdezuidajuliduqudizhi;
+            daoyidongsudumaichongpinlvduqudizhi = obj.daoyidongsudumaichongpinlvduqudizhi;
             huodePLCbaojingxinxidizhi = obj.huodePLCbaojingxinxidizhi;
+            keyipaizhaoxinhaodizhi = obj.keyipaizhaoxinhaodizhi;
+            tingzhipaizhaoxinhaodizhi = obj.tingzhipaizhaoxinhaodizhi;
+            daizishicechangdudizhi = obj.daizishicechangdudizhi;
             lastChooseLight = obj.lastChooseLight;
         }
         return *this;
@@ -313,34 +385,70 @@ namespace cdm {
         ruoguangItem->setName("$variable$ruoguang$");
         ruoguangItem->setValueFromDouble(ruoguang);
         assembly.addItem(ruoguangItem);
-        auto shicekuanduduqudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
-        shicekuanduduqudizhiItem->setName("$variable$shicekuanduduqudizhi$");
-        shicekuanduduqudizhiItem->setValueFromInt(shicekuanduduqudizhi);
-        assembly.addItem(shicekuanduduqudizhiItem);
-        auto shedingbiaozhunzhiduqudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
-        shedingbiaozhunzhiduqudizhiItem->setName("$variable$shedingbiaozhunzhiduqudizhi$");
-        shedingbiaozhunzhiduqudizhiItem->setValueFromInt(shedingbiaozhunzhiduqudizhi);
-        assembly.addItem(shedingbiaozhunzhiduqudizhiItem);
-        auto changdujiangeduqudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
-        changdujiangeduqudizhiItem->setName("$variable$changdujiangeduqudizhi$");
-        changdujiangeduqudizhiItem->setValueFromInt(changdujiangeduqudizhi);
-        assembly.addItem(changdujiangeduqudizhiItem);
-        auto paizhaochangdujiangeduqudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
-        paizhaochangdujiangeduqudizhiItem->setName("$variable$paizhaochangdujiangeduqudizhi$");
-        paizhaochangdujiangeduqudizhiItem->setValueFromInt(paizhaochangdujiangeduqudizhi);
-        assembly.addItem(paizhaochangdujiangeduqudizhiItem);
+        auto shiceyahenkuanduduqudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        shiceyahenkuanduduqudizhiItem->setName("$variable$shiceyahenkuanduduqudizhi$");
+        shiceyahenkuanduduqudizhiItem->setValueFromInt(shiceyahenkuanduduqudizhi);
+        assembly.addItem(shiceyahenkuanduduqudizhiItem);
+        auto shedingyahenbiaozhunzhiduqudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        shedingyahenbiaozhunzhiduqudizhiItem->setName("$variable$shedingyahenbiaozhunzhiduqudizhi$");
+        shedingyahenbiaozhunzhiduqudizhiItem->setValueFromInt(shedingyahenbiaozhunzhiduqudizhi);
+        assembly.addItem(shedingyahenbiaozhunzhiduqudizhiItem);
+        auto paizhaojiangejuliduqudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        paizhaojiangejuliduqudizhiItem->setName("$variable$paizhaojiangejuliduqudizhi$");
+        paizhaojiangejuliduqudizhiItem->setValueFromInt(paizhaojiangejuliduqudizhi);
+        assembly.addItem(paizhaojiangejuliduqudizhiItem);
+        auto daizichangdubiaozhunduqudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        daizichangdubiaozhunduqudizhiItem->setName("$variable$daizichangdubiaozhunduqudizhi$");
+        daizichangdubiaozhunduqudizhiItem->setValueFromInt(daizichangdubiaozhunduqudizhi);
+        assembly.addItem(daizichangdubiaozhunduqudizhiItem);
+        auto jimiqiyiquanmaichongshuduqudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        jimiqiyiquanmaichongshuduqudizhiItem->setName("$variable$jimiqiyiquanmaichongshuduqudizhi$");
+        jimiqiyiquanmaichongshuduqudizhiItem->setValueFromInt(jimiqiyiquanmaichongshuduqudizhi);
+        assembly.addItem(jimiqiyiquanmaichongshuduqudizhiItem);
+        auto jimiqiyiquanzhouchangduqudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        jimiqiyiquanzhouchangduqudizhiItem->setName("$variable$jimiqiyiquanzhouchangduqudizhi$");
+        jimiqiyiquanzhouchangduqudizhiItem->setValueFromInt(jimiqiyiquanzhouchangduqudizhi);
+        assembly.addItem(jimiqiyiquanzhouchangduqudizhiItem);
         auto bujinyiquanmaichongshuduqudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
         bujinyiquanmaichongshuduqudizhiItem->setName("$variable$bujinyiquanmaichongshuduqudizhi$");
         bujinyiquanmaichongshuduqudizhiItem->setValueFromInt(bujinyiquanmaichongshuduqudizhi);
         assembly.addItem(bujinyiquanmaichongshuduqudizhiItem);
-        auto luojuduqudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
-        luojuduqudizhiItem->setName("$variable$luojuduqudizhi$");
-        luojuduqudizhiItem->setValueFromInt(luojuduqudizhi);
-        assembly.addItem(luojuduqudizhiItem);
+        auto bujinluojuduqudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        bujinluojuduqudizhiItem->setName("$variable$bujinluojuduqudizhi$");
+        bujinluojuduqudizhiItem->setValueFromInt(bujinluojuduqudizhi);
+        assembly.addItem(bujinluojuduqudizhiItem);
+        auto daoyidongbuchangduqudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        daoyidongbuchangduqudizhiItem->setName("$variable$daoyidongbuchangduqudizhi$");
+        daoyidongbuchangduqudizhiItem->setValueFromInt(daoyidongbuchangduqudizhi);
+        assembly.addItem(daoyidongbuchangduqudizhiItem);
+        auto zidongdaoyidongzuidajuliduqudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        zidongdaoyidongzuidajuliduqudizhiItem->setName("$variable$zidongdaoyidongzuidajuliduqudizhi$");
+        zidongdaoyidongzuidajuliduqudizhiItem->setValueFromInt(zidongdaoyidongzuidajuliduqudizhi);
+        assembly.addItem(zidongdaoyidongzuidajuliduqudizhiItem);
+        auto daojiakeyidongdezuidajuliduqudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        daojiakeyidongdezuidajuliduqudizhiItem->setName("$variable$daojiakeyidongdezuidajuliduqudizhi$");
+        daojiakeyidongdezuidajuliduqudizhiItem->setValueFromInt(daojiakeyidongdezuidajuliduqudizhi);
+        assembly.addItem(daojiakeyidongdezuidajuliduqudizhiItem);
+        auto daoyidongsudumaichongpinlvduqudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        daoyidongsudumaichongpinlvduqudizhiItem->setName("$variable$daoyidongsudumaichongpinlvduqudizhi$");
+        daoyidongsudumaichongpinlvduqudizhiItem->setValueFromInt(daoyidongsudumaichongpinlvduqudizhi);
+        assembly.addItem(daoyidongsudumaichongpinlvduqudizhiItem);
         auto huodePLCbaojingxinxidizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
         huodePLCbaojingxinxidizhiItem->setName("$variable$huodePLCbaojingxinxidizhi$");
         huodePLCbaojingxinxidizhiItem->setValueFromInt(huodePLCbaojingxinxidizhi);
         assembly.addItem(huodePLCbaojingxinxidizhiItem);
+        auto keyipaizhaoxinhaodizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        keyipaizhaoxinhaodizhiItem->setName("$variable$keyipaizhaoxinhaodizhi$");
+        keyipaizhaoxinhaodizhiItem->setValueFromInt(keyipaizhaoxinhaodizhi);
+        assembly.addItem(keyipaizhaoxinhaodizhiItem);
+        auto tingzhipaizhaoxinhaodizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        tingzhipaizhaoxinhaodizhiItem->setName("$variable$tingzhipaizhaoxinhaodizhi$");
+        tingzhipaizhaoxinhaodizhiItem->setValueFromInt(tingzhipaizhaoxinhaodizhi);
+        assembly.addItem(tingzhipaizhaoxinhaodizhiItem);
+        auto daizishicechangdudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        daizishicechangdudizhiItem->setName("$variable$daizishicechangdudizhi$");
+        daizishicechangdudizhiItem->setValueFromInt(daizishicechangdudizhi);
+        assembly.addItem(daizishicechangdudizhiItem);
         auto lastChooseLightItem = std::make_shared<rw::oso::ObjectStoreItem>();
         lastChooseLightItem->setName("$variable$lastChooseLight$");
         lastChooseLightItem->setValueFromInt(lastChooseLight);
@@ -350,7 +458,7 @@ namespace cdm {
 
     inline bool SetConfig::operator==(const SetConfig& obj) const
     {
-        return xiangjiguangdianpingbishijian == obj.xiangjiguangdianpingbishijian && shuchuxinhaoyanshi == obj.shuchuxinhaoyanshi && shuchuxinhaochixushijian == obj.shuchuxinhaochixushijian && saveImgMode == obj.saveImgMode && score == obj.score && autoSaveImg == obj.autoSaveImg && shangxianwei1 == obj.shangxianwei1 && xiaxianwei1 == obj.xiaxianwei1 && zuoxianwei1 == obj.zuoxianwei1 && youxianwei1 == obj.youxianwei1 && xiangsudangliang1 == obj.xiangsudangliang1 && debugFrame == obj.debugFrame && openRemoveFrame == obj.openRemoveFrame && zengyi == obj.zengyi && qiangguang == obj.qiangguang && zhongguang == obj.zhongguang && ruoguang == obj.ruoguang && shicekuanduduqudizhi == obj.shicekuanduduqudizhi && shedingbiaozhunzhiduqudizhi == obj.shedingbiaozhunzhiduqudizhi && changdujiangeduqudizhi == obj.changdujiangeduqudizhi && paizhaochangdujiangeduqudizhi == obj.paizhaochangdujiangeduqudizhi && bujinyiquanmaichongshuduqudizhi == obj.bujinyiquanmaichongshuduqudizhi && luojuduqudizhi == obj.luojuduqudizhi && huodePLCbaojingxinxidizhi == obj.huodePLCbaojingxinxidizhi && lastChooseLight == obj.lastChooseLight;
+        return xiangjiguangdianpingbishijian == obj.xiangjiguangdianpingbishijian && shuchuxinhaoyanshi == obj.shuchuxinhaoyanshi && shuchuxinhaochixushijian == obj.shuchuxinhaochixushijian && saveImgMode == obj.saveImgMode && score == obj.score && autoSaveImg == obj.autoSaveImg && shangxianwei1 == obj.shangxianwei1 && xiaxianwei1 == obj.xiaxianwei1 && zuoxianwei1 == obj.zuoxianwei1 && youxianwei1 == obj.youxianwei1 && xiangsudangliang1 == obj.xiangsudangliang1 && debugFrame == obj.debugFrame && openRemoveFrame == obj.openRemoveFrame && zengyi == obj.zengyi && qiangguang == obj.qiangguang && zhongguang == obj.zhongguang && ruoguang == obj.ruoguang && shiceyahenkuanduduqudizhi == obj.shiceyahenkuanduduqudizhi && shedingyahenbiaozhunzhiduqudizhi == obj.shedingyahenbiaozhunzhiduqudizhi && paizhaojiangejuliduqudizhi == obj.paizhaojiangejuliduqudizhi && daizichangdubiaozhunduqudizhi == obj.daizichangdubiaozhunduqudizhi && jimiqiyiquanmaichongshuduqudizhi == obj.jimiqiyiquanmaichongshuduqudizhi && jimiqiyiquanzhouchangduqudizhi == obj.jimiqiyiquanzhouchangduqudizhi && bujinyiquanmaichongshuduqudizhi == obj.bujinyiquanmaichongshuduqudizhi && bujinluojuduqudizhi == obj.bujinluojuduqudizhi && daoyidongbuchangduqudizhi == obj.daoyidongbuchangduqudizhi && zidongdaoyidongzuidajuliduqudizhi == obj.zidongdaoyidongzuidajuliduqudizhi && daojiakeyidongdezuidajuliduqudizhi == obj.daojiakeyidongdezuidajuliduqudizhi && daoyidongsudumaichongpinlvduqudizhi == obj.daoyidongsudumaichongpinlvduqudizhi && huodePLCbaojingxinxidizhi == obj.huodePLCbaojingxinxidizhi && keyipaizhaoxinhaodizhi == obj.keyipaizhaoxinhaodizhi && tingzhipaizhaoxinhaodizhi == obj.tingzhipaizhaoxinhaodizhi && daizishicechangdudizhi == obj.daizishicechangdudizhi && lastChooseLight == obj.lastChooseLight;
     }
 
     inline bool SetConfig::operator!=(const SetConfig& obj) const

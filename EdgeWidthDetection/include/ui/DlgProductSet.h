@@ -52,28 +52,52 @@ private slots:
 	void btn_zhongguang_clicked();
 	void btn_ruoguang_clicked();
 
-	// 读取PLC
-	void btn_shicekuanduduqudizhi_clicked();
-	void btn_shedingbiaozhunzhiduqudizhi_clicked();
-	void btn_changdujiangeduqudizhi_clicked();
-	void btn_paizhaochangdujiangeduqudizhi_clicked();
+	// 设置与读取地址
+	void btn_shiceyahenkuanduduqudizhi_clicked();
+	void btn_shedingyahenbiaozhunzhiduqudizhi_clicked();
+	void btn_paizhaojiangejuliduqudizhi_clicked();
+	void btn_daizichangdubiaozhunduqudizhi_clicked();
+	void btn_jimiqiyiquanmaichongshuduqudizhi_clicked();
+	void btn_jimiqiyiquanzhouchangduqudizhi_clicked();
 	void btn_bujinyiquanmaichongshuduqudizhi_clicked();
-	void btn_luojuduqudizhi_clicked();
-	void btn_huodePLCbaojingxinxidizhi_clicked();
-	// 写入PLC
-	void btn_shicekuanduxierushuzhi_clicked();
-	void btn_shedingbiaozhunzhixierushuzhi_clicked();
-	void btn_changdujiangexierushuzhi_clicked();
-	void btn_paizhaochangdujiangexierushuzhi_clicked();
-	void btn_bujinyiquanmaichongshuxierushuzhi_clicked();
-	void btn_luojuxierushuzhi_clicked();
 
-	void btn_writeshicekuandu_clicked();
-	void btn_writeshedingbiaozhunzhi_clicked();
-	void btn_writechangdujiange_clicked();
-	void btn_writepaizhaochangdujiange_clicked();
-	void btn_writebujinyiquanmaichongshu_clicked();
-	void btn_writeluojuxierushuzhi_clicked();
+	void btn_bujinluojuduqudizhi_clicked();
+	void btn_daoyidongbuchangduqudizhi_clicked();
+	void btn_zidongdaoyidongzuidajuliduqudizhi_clicked();
+	void btn_daojiakeyidongdezuidajuliduqudizhi_clicked();
+	void btn_daoyidongsudumaichongpinlvduqudizhi_clicked();
+
+	void btn_huodePLCbaojingxinxidizhi_clicked();
+	void btn_keyipaizhaoxinhaodizhi_clicked();
+	void btn_tingzhipaizhaoxinhaodizhi_clicked();
+	void btn_daizishicechangdudizhi_clicked();
+
+	// 写入PLC
+	void btn_shiceyahenkuanduxierushuzhi_clicked();
+	void btn_shedingyahenbiaozhunkuanduzhixierushuzhi_clicked();
+	void btn_paizhaojiangejulixierushuzhi_clicked();
+	void btn_daizichangdubiaozhunxierushuzhi_clicked();
+	void btn_jimiqiyiquanmaichongshuxierushuzhi_clicked();
+	void btn_jimiqiyiquanzhouchangxierushuzhi_clicked();
+	void btn_bujinyiquanmaichongshuxierushuzhi_clicked();
+	void btn_bujinluojuxierushuzhi_clicked();
+	void btn_daoyidongbuchangxierushuzhi_clicked();
+	void btn_zidongdaoyidongzuidajulixierushuzhi_clicked();
+	void btn_daojiakeyidongdezuidajulixierushuzhi_clicked();
+	void btn_daoyidongsudumaichongpinlvxierushuzhi_clicked();
+
+	void btn_writeshiceyahenkuanduxierushuzhi_clicked();
+	void btn_writeshedingyahenbiaozhunkuanduzhixierushuzhi_clicked();
+	void btn_writepaizhaojiangejulixierushuzhi_clicked();
+	void btn_writedaizichangdubiaozhunxierushuzhi_clicked();
+	void btn_writejimiqiyiquanmaichongshuxierushuzhi_clicked();
+	void btn_writejimiqiyiquanzhouchangxierushuzhi_clicked();
+	void btn_writebujinyiquanmaichongshuxierushuzhi_clicked();
+	void btn_writebujinluojuxierushuzhi_clicked();
+	void btn_writedaoyidongbuchangxierushuzhi_clicked();
+	void btn_writezidongdaoyidongzuidajulixierushuzhi_clicked();
+	void btn_writedaojiakeyidongdezuidajulixierushuzhi_clicked();
+	void btn_writedaoyidongsudumaichongpinlvxierushuzhi_clicked();
 
 	void tabWidget_indexChanged(int index);
 private:

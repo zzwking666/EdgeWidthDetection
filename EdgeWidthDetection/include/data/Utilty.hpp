@@ -68,12 +68,23 @@ struct PlcReadItem
 
 struct PlcReadIndex
 {
-	static constexpr int shicekuandu = 1;            // 实测宽度
-	static constexpr int shedingbiaozhunzhi = 2;     // 设定标准值
-	static constexpr int changdujiange = 3;          // 长度间隔
-	static constexpr int paizhaochangdujiange = 4;   // 拍照长度间隔
-	static constexpr int bujinyiquanmaichongshu = 5; // 步进一圈脉冲数
-	static constexpr int luoju = 6;                  // 螺距
+	static constexpr int shiceyahenkuandu = 1;				 // 实测压痕宽度
+	static constexpr int shedingyahenbiaozhunzhi = 2;		 // 设定压痕标准值
+	static constexpr int paizhaojiangejuli = 3;				 // 拍照间隔距离
+	static constexpr int daizichangdubiaozhun = 4;			 // 袋子长度标准
+	static constexpr int jimiqiyiquanmaichongshu = 5;		 // 计米器一圈脉冲数
+	static constexpr int jimiqiyiquanzhouchang = 6;			 // 计米器一圈周长
+	static constexpr int bujinyiquanmaichongshu = 7;		 // 步进一圈脉冲数
+	static constexpr int bujinluoju = 8;					 // 步进螺距
+	static constexpr int daoyidongbuchang = 9;				 // 刀移动补偿长度
+	static constexpr int zidongdaoyidongzuidajuli = 10;		 // 自动刀移动最大距离
+	static constexpr int daojiakeyidongdezuidajuli = 11;	 // 刀架可移动的最大距离
+	static constexpr int daoyidongsudumaichongpinlv = 12;	 // 刀移动速度脉冲频率
+
+	static constexpr int readPLCbaojingxinxi = 13;			 // PLC报警信息
+	static constexpr int readPLCkeyipaizhaoxinhao = 14;      // PLC开机拍照信号
+	static constexpr int readPLCtingzhipaizhaoxinhao = 15;   // PLC停止拍照信号
+	static constexpr int readPLCdaizishicechangdu = 16;      // PLC袋子实测长度
 };
 
 // 图片信息

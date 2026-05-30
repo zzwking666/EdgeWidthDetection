@@ -24,13 +24,23 @@ namespace cdm {
 		zhongguang : double : default = 0;
 		ruoguang : double : default = 0;
 
-		shicekuanduduqudizhi : int : default = 0;
-		shedingbiaozhunzhiduqudizhi : int : default = 0;
-		changdujiangeduqudizhi : int : default = 0;
-		paizhaochangdujiangeduqudizhi : int : default = 0;
+		shiceyahenkuanduduqudizhi : int : default = 0;
+		shedingyahenbiaozhunzhiduqudizhi : int : default = 0;
+		paizhaojiangejuliduqudizhi : int : default = 0;
+		daizichangdubiaozhunduqudizhi : int : default = 0;
+		jimiqiyiquanmaichongshuduqudizhi : int : default = 0;
+		jimiqiyiquanzhouchangduqudizhi : int : default = 0;
 		bujinyiquanmaichongshuduqudizhi : int : default = 0;
-		luojuduqudizhi : int : default = 0;
+		bujinluojuduqudizhi : int : default = 0;
+		daoyidongbuchangduqudizhi : int : default = 0;
+		zidongdaoyidongzuidajuliduqudizhi : int : default = 0;
+		daojiakeyidongdezuidajuliduqudizhi : int : default = 0;
+		daoyidongsudumaichongpinlvduqudizhi : int : default = 0;
+
 		huodePLCbaojingxinxidizhi : int : default = 0;
+		keyipaizhaoxinhaodizhi : int : default = 0;
+		tingzhipaizhaoxinhaodizhi : int : default = 0;
+		daizishicechangdudizhi : int : default = 0;
 
 		lastChooseLight : int : default = 0;
 	};

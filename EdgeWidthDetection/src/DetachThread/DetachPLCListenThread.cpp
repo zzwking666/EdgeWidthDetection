@@ -60,13 +60,6 @@ void DetachPLCListenThread::readPLCInfo()
 	ret = shedingbiaozhunzhiFUT.get(); // 只 get 一次
 	datas.push_back(PlcReadItem{ ret.first, ret.second, 2 });
 
-	// 长度间隔
-	auto changdujiangeFUT = plcControllerScheduler->readUInt16RegisterAsync(
-		ModBusAddress::changdujiangeAddress);
-
-	ret = changdujiangeFUT.get(); // 只 get 一次
-	datas.push_back(PlcReadItem{ ret.first, ret.second, 3 });
-
 	// 拍照长度间隔
 	auto paizhaochangdujiangeFUT = plcControllerScheduler->readUInt16RegisterAsync(
 		ModBusAddress::paizhaojiangejuliAddress);
