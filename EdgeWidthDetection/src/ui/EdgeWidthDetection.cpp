@@ -164,6 +164,8 @@ void EdgeWidthDetection::initializeComponents()
 
 	build_camera();
 
+	build_plcController();
+
 	build_connect();
 
 #ifndef BUILD_WITHOUT_HARDWARE
@@ -185,11 +187,27 @@ void EdgeWidthDetection::build_camera()
 	}
 }
 
+void EdgeWidthDetection::build_plcController()
+{
+	auto& plcController = Modules::getInstance().plcController;
+	auto build_Result = plcController.getBuildResult();
+	updateCameraLabelState(0, build_Result);
+}
+
 void EdgeWidthDetection::updateCameraLabelState(int cameraIndex, bool state)
 {
-	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	switch (cameraIndex)
 	{
+	case 0:
+		if (state) {
+			ui->label_plc1State->setText("连接成功");
+			ui->label_plc1State->setStyleSheet(QString("QLabel{color:rgb(0, 230, 0);font-size: 18px;font - weight: bold;padding: 5px 5px;} "));
+		}
+		else {
+			ui->label_plc1State->setText("连接失败");
+			ui->label_plc1State->setStyleSheet(QString("QLabel{color:rgb(230, 0, 0);font-size: 18px;font - weight: bold;padding: 5px 5px;} "));
+		}
+		break;
 	case 1:
 		if (state) {
 			ui->label_camera1State->setText("连接成功");

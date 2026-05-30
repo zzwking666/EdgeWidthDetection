@@ -46,41 +46,30 @@ void DetachPLCListenThread::readPLCInfo()
 
 	QVector<PlcReadItem> datas{};
 
-	// 实测宽度
-	auto shicekuanduFUT = plcControllerScheduler->readUInt16RegisterAsync(
-		ModBusAddress::shiceyahenkuanduAddress);
+	auto appendReadItem = [&](int address, int index)
+		{
+			auto fut = plcControllerScheduler->readUInt16RegisterAsync(address);
+			auto ret = fut.get();
+			datas.push_back(PlcReadItem{ ret.first, ret.second, index });
+		};
 
-	auto ret = shicekuanduFUT.get(); // 只 get 一次
-	datas.push_back(PlcReadItem{ ret.first, ret.second, 1 });
+	appendReadItem(ModBusAddress::shiceyahenkuanduAddress, PlcReadIndex::shiceyahenkuandu);
+	appendReadItem(ModBusAddress::shedingyahenbiaozhunkuanduzhiAddress, PlcReadIndex::shedingyahenbiaozhunzhi);
+	appendReadItem(ModBusAddress::paizhaojiangejuliAddress, PlcReadIndex::paizhaojiangejuli);
+	appendReadItem(ModBusAddress::daizichangdubiaozhunAddress, PlcReadIndex::daizichangdubiaozhun);
+	appendReadItem(ModBusAddress::jimiqiyiquanmaichongshuAddress, PlcReadIndex::jimiqiyiquanmaichongshu);
+	appendReadItem(ModBusAddress::jimiqiyiquanzhouchangAddress, PlcReadIndex::jimiqiyiquanzhouchang);
+	appendReadItem(ModBusAddress::bujinyiquanmaichongshuAddress, PlcReadIndex::bujinyiquanmaichongshu);
+	appendReadItem(ModBusAddress::bujinluojuAddress, PlcReadIndex::bujinluoju);
+	appendReadItem(ModBusAddress::daoyidongbuchangAddress, PlcReadIndex::daoyidongbuchang);
+	appendReadItem(ModBusAddress::zidongdaoyidongzuidajuliAddress, PlcReadIndex::zidongdaoyidongzuidajuli);
+	appendReadItem(ModBusAddress::daojiakeyidongdezuidajuliAddress, PlcReadIndex::daojiakeyidongdezuidajuli);
+	appendReadItem(ModBusAddress::daoyidongsudumaichongpinlvAddress, PlcReadIndex::daoyidongsudumaichongpinlv);
 
-	// 设定标准值
-	auto shedingbiaozhunzhiFUT = plcControllerScheduler->readUInt16RegisterAsync(
-		ModBusAddress::shedingyahenbiaozhunkuanduzhiAddress);
-
-	ret = shedingbiaozhunzhiFUT.get(); // 只 get 一次
-	datas.push_back(PlcReadItem{ ret.first, ret.second, 2 });
-
-	// 拍照长度间隔
-	auto paizhaochangdujiangeFUT = plcControllerScheduler->readUInt16RegisterAsync(
-		ModBusAddress::paizhaojiangejuliAddress);
-
-	ret = paizhaochangdujiangeFUT.get(); // 只 get 一次
-	datas.push_back(PlcReadItem{ ret.first, ret.second, 4 });
-
-	// 步进一圈脉冲数
-	auto bujinyiquanmaichongshuFUT = plcControllerScheduler->readUInt16RegisterAsync(
-		ModBusAddress::bujinyiquanmaichongshuAddress);
-
-	ret = bujinyiquanmaichongshuFUT.get(); // 只 get 一次
-	datas.push_back(PlcReadItem{ ret.first, ret.second, 5 });
-
-	// 螺距
-	auto luojuFUT = plcControllerScheduler->readUInt16RegisterAsync(
-		ModBusAddress::bujinluojuAddress);
-
-	ret = luojuFUT.get(); // 只 get 一次
-	datas.push_back(PlcReadItem{ ret.first, ret.second, 6 });
-
+	appendReadItem(ModBusAddress::readPLCbaojingxinxiAddress, PlcReadIndex::readPLCbaojingxinxi);
+	appendReadItem(ModBusAddress::readPLCkeyipaizhaoxinhaoAddress, PlcReadIndex::readPLCkeyipaizhaoxinhao);
+	appendReadItem(ModBusAddress::readPLCtingzhipaizhaoxinhaoAddress, PlcReadIndex::readPLCtingzhipaizhaoxinhao);
+	appendReadItem(ModBusAddress::readPLCdaizishicechangduAddress, PlcReadIndex::readPLCdaizishicechangdu);
 
 	emit updatePLCInfo(datas);
 }

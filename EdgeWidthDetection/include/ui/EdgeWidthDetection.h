@@ -37,6 +37,8 @@ public:
 	void initializeComponents();
 public:
 	void build_camera();
+public:
+	void build_plcController();
 public slots:
 	void updateCameraLabelState(int cameraIndex, bool state);
 

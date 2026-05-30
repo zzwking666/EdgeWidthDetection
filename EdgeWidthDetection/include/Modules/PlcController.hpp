@@ -28,7 +28,11 @@ public:
 
 	void build_plcListenThread();
 	void destroy_plcListenThread();
+public:
+	bool getBuildResult() { return _buildResult; };
 private:
 	bool loadConfigFromFile(std::string& ip, int& port);
 	std::string getDesktopPath();
+
+	bool _buildResult{ false };
 };

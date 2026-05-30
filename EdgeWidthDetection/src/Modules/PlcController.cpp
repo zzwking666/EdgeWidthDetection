@@ -64,6 +64,7 @@ void PlcController::build_plcController()
 	{
 		plcControllerScheduler = std::make_shared<rw::hoem::ModbusDeviceScheduler>(plcController);
 		std::cout << "PLC connected successfully." << std::endl;
+		_buildResult = true;
 	}
 }
 
