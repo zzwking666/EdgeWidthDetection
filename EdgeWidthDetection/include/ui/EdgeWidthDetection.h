@@ -45,6 +45,7 @@ public slots:
 	void onUpdateStatisticalInfoUI();
 
 	void onUpdatePLCWarnningInfoUI(uint16_t warnningInfo);
+	void onUpdatePLCdaizishicechangduInfoUI(uint16_t warnningInfo);
 
 	void onCameraDisplay(size_t index, QPixmap image);
 

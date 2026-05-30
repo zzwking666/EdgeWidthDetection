@@ -241,6 +241,11 @@ void EdgeWidthDetection::onUpdatePLCWarnningInfoUI(uint16_t warnningInfo)
 	}
 }
 
+void EdgeWidthDetection::onUpdatePLCdaizishicechangduInfoUI(uint16_t warnningInfo)
+{
+	ui->lb_daizishicechangdu->setText(QString::number(warnningInfo));
+}
+
 void EdgeWidthDetection::onCameraDisplay(size_t index, QPixmap image)
 {
 	if (1 == index)

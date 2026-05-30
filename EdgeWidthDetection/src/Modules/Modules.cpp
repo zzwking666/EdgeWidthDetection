@@ -151,7 +151,8 @@ void Modules::connect()
 		uiModule._edgeWidthDetection, &EdgeWidthDetection::onUpdateStatisticalInfoUI, Qt::QueuedConnection);
 	QObject::connect(runtimeInfoModule.detachUtiltyThread.get(), &DetachUtiltyThread::updatePLCWarnningInfo,
 		uiModule._edgeWidthDetection, &EdgeWidthDetection::onUpdatePLCWarnningInfoUI, Qt::QueuedConnection);
-
+	QObject::connect(runtimeInfoModule.detachUtiltyThread.get(), &DetachUtiltyThread::updatePLCdaizishicechangduInfo,
+		uiModule._edgeWidthDetection, &EdgeWidthDetection::onUpdatePLCdaizishicechangduInfoUI, Qt::QueuedConnection);
 #pragma endregion
 
 #pragma region connect UIModule and RuntimeInfoModule
