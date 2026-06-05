@@ -45,10 +45,10 @@ void DetachUtiltyThread::readPLCWarnningInfo()
 		static_cast<uint16_t>(ModBusAddress::readPLCbaojingxinxiAddress)
 	);
 
-	if (fut.get().second)
+	auto result = fut.get();
+	if (result.second)
 	{
-		auto getResult = fut.get().first;
-		emit updatePLCWarnningInfo(static_cast<uint16_t>(getResult));
+		emit updatePLCWarnningInfo(static_cast<uint16_t>(result.first));
 	}
 	else
 	{
@@ -68,10 +68,10 @@ void DetachUtiltyThread::readPLCdaizishicechangduInfo()
 		static_cast<uint16_t>(ModBusAddress::readPLCdaizishicechangduAddress)
 	);
 
-	if (fut.get().second)
+	auto result = fut.get();
+	if (result.second)
 	{
-		auto getResult = fut.get().first;
-		emit updatePLCdaizishicechangduInfo(static_cast<uint16_t>(getResult));
+		emit updatePLCdaizishicechangduInfo(static_cast<uint16_t>(result.first));
 	}
 	else
 	{

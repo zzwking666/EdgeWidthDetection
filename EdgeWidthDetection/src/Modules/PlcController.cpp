@@ -70,6 +70,10 @@ void PlcController::build_plcController()
 
 void PlcController::destroy_plcController()
 {
+	if (plcControllerScheduler)
+	{
+		plcControllerScheduler.reset();
+	}
 	if (plcController)
 	{
 		plcController.reset();
