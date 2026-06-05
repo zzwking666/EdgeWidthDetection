@@ -187,7 +187,7 @@ void DlgProductSet::onUpdatePLCInfo(QVector<PlcReadItem> datas)
 			applyValue(ui->btn_jimiqiyiquanmaichongshuduqushuzhi, item);
 			break;
 		case PlcReadIndex::jimiqiyiquanzhouchang:
-			applyValue(ui->btn_jimiqiyiquanzhouchangduqudizhi, item);
+			applyValue(ui->btn_jimiqiyiquanzhouchangduqushuzhi, item);
 			break;
 		case PlcReadIndex::bujinyiquanmaichongshu:
 			applyValue(ui->btn_bujinyiquanmaichongshuduqushuzhi, item);
@@ -208,16 +208,16 @@ void DlgProductSet::onUpdatePLCInfo(QVector<PlcReadItem> datas)
 			applyValue(ui->btn_daoyidongsudumaichongpinlvduqushuzhi, item);
 			break;
 		case PlcReadIndex::readPLCbaojingxinxi:
-			applyValue(ui->btn_huodePLCbaojingxinxidizhi, item);
+			applyValue(ui->btn_huodePLCbaojingxinxishuzhi, item);
 			break;
 		case PlcReadIndex::readPLCkeyipaizhaoxinhao:
-			applyValue(ui->btn_keyipaizhaoxinhaodizhi, item);
+			applyValue(ui->btn_keyipaizhaoxinhaoshuzhi, item);
 			break;
 		case PlcReadIndex::readPLCtingzhipaizhaoxinhao:
-			applyValue(ui->btn_tingzhipaizhaoxinhaodizhi, item);
+			applyValue(ui->btn_tingzhipaizhaoxinhaoshuzhi, item);
 			break;
 		case PlcReadIndex::readPLCdaizishicechangdu:
-			applyValue(ui->btn_daizishicechangdudizhi, item);
+			applyValue(ui->btn_daizishicechangdushuzhi, item);
 			break;
 		default:
 			break;
