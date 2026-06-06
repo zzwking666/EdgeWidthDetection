@@ -7,21 +7,16 @@ bool ConfigManagerModule::build()
 {
 	storeContext = std::make_unique<rw::oso::StorageContext>(rw::oso::StorageType::Xml);
 
-#pragma region readHandleScannerCfg
-	auto loadMainWindowConfig = storeContext->loadSafe(globalPath.EdgeWidthDetectionConfigPath.toStdString());
-	if (loadMainWindowConfig)
-	{
-		edgeWidthDetectionConfig = *loadMainWindowConfig;
-	}
-#pragma endregion
-
-#pragma region readsetCfg
-	loadMainWindowConfig = storeContext->loadSafe(globalPath.setConfigPath.toStdString());
-	if (loadMainWindowConfig)
-	{
-		setConfig = *loadMainWindowConfig;
-	}
-#pragma endregion
+    if (!loadConfigSafe(globalPath.EdgeWidthDetectionConfigPath,
+        edgeWidthDetectionConfig, "EdgeWidthDetectionConfig"))
+    {
+        qWarning() << "使用默认 EdgeWidthDetection 配置";
+    }
+    if (!loadConfigSafe(globalPath.setConfigPath,
+        setConfig, "SetConfig"))
+    {
+        qWarning() << "使用默认 SetConfig";
+    }
 
 	return true;
 }
