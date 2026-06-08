@@ -174,7 +174,11 @@ void ImageProcessor::save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage
 	{
 		if (runningState == RunningState::OpenRemoveFunc)
 		{
-			imageInfo.classify = "OpenRemoveFunc";
+			imageInfo.classify = "OpenRemoveFuncNg";
+			imageSaveEngine->pushImage(imageInfo);
+
+			imageInfo.classify = "OpenRemoveFuncMask";
+			imageInfo.image = image;
 			imageSaveEngine->pushImage(imageInfo);
 		}
 		//else if (runningState == RunningState::Debug)
