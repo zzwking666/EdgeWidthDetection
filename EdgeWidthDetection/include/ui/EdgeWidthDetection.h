@@ -9,6 +9,7 @@
 #include "DlgCloseForm.h"
 #include "oso_StorageContext.hpp"
 #include "rqw_RunEnvCheck.hpp"
+#include "PictureViewerThumbnails.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class EdgeWidthDetectionClass; };
@@ -56,6 +57,7 @@ private slots:
 	void rbtn_debug_checked(bool checked);
 	void rbtn_removeFunc_checked(bool checked);
 	void pbtn_resetProduct_clicked();
+	void pbtn_openSaveLocation_clicked();
 
 	void rbtn_ruoguang_checked(bool checked);
 	void rbtn_zhongguang_checked(bool checked);
@@ -65,6 +67,7 @@ private slots:
 private:
 	rw::rqw::ClickableLabel* clickableTitle = nullptr;
 	DlgCloseForm* _dlgCloseForm = nullptr;
+	PictureViewerThumbnails* _picturesViewer = nullptr;
 private:
 	Ui::EdgeWidthDetectionClass* ui;
 	int minimizeCount{ 3 };

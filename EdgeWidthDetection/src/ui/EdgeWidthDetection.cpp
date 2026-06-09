@@ -72,6 +72,8 @@ void EdgeWidthDetection::build_connect()
 		this, &EdgeWidthDetection::rbtn_removeFunc_checked);
 	QObject::connect(ui->pbtn_resetProduct, &QPushButton::clicked,
 		this, &EdgeWidthDetection::pbtn_resetProduct_clicked);
+	QObject::connect(ui->pbtn_openSaveLocation, &QPushButton::clicked,
+		this, &EdgeWidthDetection::pbtn_openSaveLocation_clicked);
 	QObject::connect(ui->ckb_saveImg, &QCheckBox::clicked,
 		this, &EdgeWidthDetection::ckb_saveImg_checked);
 	QObject::connect(ui->rbtn_ruoguang, &QRadioButton::clicked,
@@ -106,6 +108,9 @@ void EdgeWidthDetection::build_EdgeWidthDetectionData()
 	ui->rbtn_removeFunc->setChecked(maiLiDingZiConfig.isDefect);
 
 	rbtn_removeFunc_checked(true);
+
+	// 初始化图像查看器
+	_picturesViewer = new PictureViewerThumbnails(this);
 
 	ini_clickableTitle();
 
@@ -264,6 +269,8 @@ void EdgeWidthDetection::lb_title_clicked()
 	{
 		// 最小化主窗体
 		this->showMinimized();
+		if (_picturesViewer && _picturesViewer->isVisible())
+			_picturesViewer->showMinimized();
 		minimizeCount = 3; // 重置最小化计数器
 	}
 
@@ -342,6 +349,21 @@ void EdgeWidthDetection::pbtn_resetProduct_clicked()
 	maiLiDingZiConfig.totalDefectiveVolume = 0;
 
 	onUpdateStatisticalInfoUI();
+}
+
+void EdgeWidthDetection::pbtn_openSaveLocation_clicked()
+{
+	auto& imageSaveEngine = Modules::getInstance().imgSaveModule.imageSaveEngine;
+	QString imageSavePath = imageSaveEngine->getRootPath();
+
+	// 取上一级目录
+	QDir dir(imageSavePath);
+	dir.cdUp();
+	QString parentPath = dir.absolutePath();
+
+	_picturesViewer->setRootPath(parentPath);
+	_picturesViewer->setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	_picturesViewer->show();
 }
 
 void EdgeWidthDetection::rbtn_ruoguang_checked(bool checked)
