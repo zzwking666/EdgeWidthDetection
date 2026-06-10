@@ -75,6 +75,24 @@ void DlgProductSet::read_config()
 	ui->btn_tingzhipaizhaoxinhaodizhi->setText(QString::number(setConfig.tingzhipaizhaoxinhaodizhi));
 	ui->btn_daizishicechangdudizhi->setText(QString::number(setConfig.daizishicechangdudizhi));
 
+	// 同步更新 ModBusAddress 静态变量
+	ModBusAddress::shiceyahenkuanduAddress = setConfig.shiceyahenkuanduduqudizhi;
+	ModBusAddress::shedingyahenbiaozhunkuanduzhiAddress = setConfig.shedingyahenbiaozhunzhiduqudizhi;
+	ModBusAddress::paizhaojiangejuliAddress = setConfig.paizhaojiangejuliduqudizhi;
+	ModBusAddress::daizichangdubiaozhunAddress = setConfig.daizichangdubiaozhunduqudizhi;
+	ModBusAddress::jimiqiyiquanmaichongshuAddress = setConfig.jimiqiyiquanmaichongshuduqudizhi;
+	ModBusAddress::jimiqiyiquanzhouchangAddress = setConfig.jimiqiyiquanzhouchangduqudizhi;
+	ModBusAddress::bujinyiquanmaichongshuAddress = setConfig.bujinyiquanmaichongshuduqudizhi;
+	ModBusAddress::bujinluojuAddress = setConfig.bujinluojuduqudizhi;
+	ModBusAddress::daoyidongbuchangAddress = setConfig.daoyidongbuchangduqudizhi;
+	ModBusAddress::zidongdaoyidongzuidajuliAddress = setConfig.zidongdaoyidongzuidajuliduqudizhi;
+	ModBusAddress::daojiakeyidongdezuidajuliAddress = setConfig.daojiakeyidongdezuidajuliduqudizhi;
+	ModBusAddress::daoyidongsudumaichongpinlvAddress = setConfig.daoyidongsudumaichongpinlvduqudizhi;
+	ModBusAddress::readPLCbaojingxinxiAddress = setConfig.huodePLCbaojingxinxidizhi;
+	ModBusAddress::readPLCkeyipaizhaoxinhaoAddress = setConfig.keyipaizhaoxinhaodizhi;
+	ModBusAddress::readPLCtingzhipaizhaoxinhaoAddress = setConfig.tingzhipaizhaoxinhaodizhi;
+	ModBusAddress::readPLCdaizishicechangduAddress = setConfig.daizishicechangdudizhi;
+
 	ui->tabWidget->setCurrentIndex(0);
 	ui->tabWidget_PLC->setCurrentIndex(0);
 }
