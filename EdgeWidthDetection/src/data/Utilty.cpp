@@ -1,7 +1,7 @@
 #include "Utilty.hpp"
 
-QString Utility::cameraIp1 = "1";
-QString Utility::cameraIp2 = "2";
+QString Utility::cameraIp1 = "2";
+QString Utility::cameraIp2 = "3";
 
 int ModBusAddress::shiceyahenkuanduAddress = 0;
 int ModBusAddress::shedingyahenbiaozhunkuanduzhiAddress = 0;
