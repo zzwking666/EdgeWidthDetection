@@ -102,12 +102,8 @@ void DlgProductSet::read_config()
 
 void DlgProductSet::save_config()
 {
-	auto& configManager = Modules::getInstance().configManagerModule;
-	if (configManager.storeContext)
-	{
-		auto& setConfig = configManager.setConfig;
-		configManager.storeContext->saveSafe(setConfig, globalPath.setConfigPath.toStdString());
-	}
+	// 使用多代备份 + 写入后验证的安全保存，防止断电导致配置文件损坏
+	Modules::getInstance().configManagerModule.saveConfigSafe();
 }
 
 void DlgProductSet::closeEvent(QCloseEvent* event)

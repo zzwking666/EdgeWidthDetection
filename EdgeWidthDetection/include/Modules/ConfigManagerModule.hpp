@@ -28,23 +28,55 @@ public:
 public:
 	template<class ConfigType>
 	bool loadConfigSafe(const QString& path, ConfigType& outConfig, const QString& configName);
+public:
+	/// 安全保存 SetConfig，含多代备份轮转与写入后验证，防止断电损坏
+	bool saveConfigSafe();
+	/// 安全保存 EdgeWidthDetectionConfig
+	bool saveEdgeWidthDetectionConfigSafe();
+	/// 带验证的安全保存核心（静态，可被初始化检查复用）
+	static bool saveAssemblyRobust(const rw::oso::ObjectStoreAssembly& assembly,
+		const std::filesystem::path& filePath,
+		const rw::oso::StorageContext& context,
+		const QString& configName);
+private:
+	/// 多代备份轮转（.bak → .bak2 → .bak3）
+	static void rotateBackups(const std::filesystem::path& filePath, int maxBackups = 3);
 };
 
 template <class ConfigType>
 bool ConfigManagerModule::loadConfigSafe(const QString& path, ConfigType& outConfig, const QString& configName)
 {
-	if (!QFile::exists(path))
+	// 尝试加载：主文件 → .bak（loadSafe 已内置）→ .bak2 → .bak3
+	auto tryLoad = [this](const QString& p) -> std::shared_ptr<rw::oso::ObjectStoreAssembly>
 	{
-		qWarning() << configName << "配置文件不存在:" << path;
-		return false;
-	}
+		if (!QFile::exists(p))
+			return nullptr;
+		return storeContext->loadSafe(p.toStdString());
+	};
 
-	auto loadData = storeContext->loadSafe(path.toStdString());
+	auto loadData = tryLoad(path);
 	if (!loadData)
 	{
-		qWarning() << configName << "配置文件加载失败，删除:" << path;
-		QFile::remove(path);
-		return false;
+		// loadSafe 已尝试过主文件和 .bak，这里继续尝试更老的备份
+		const std::filesystem::path filePath = path.toStdString();
+		for (int i = 2; i <= 3; ++i)
+		{
+			auto bakPath = QString::fromStdString(filePath.string() + ".bak" + std::to_string(i));
+			loadData = tryLoad(bakPath);
+			if (loadData)
+			{
+				qWarning() << configName << "从备份" << bakPath << "恢复";
+				// 使用稳健保存将恢复的数据写回主文件
+				ConfigManagerModule::saveAssemblyRobust(*loadData, filePath, *storeContext, configName);
+				break;
+			}
+		}
+
+		if (!loadData)
+		{
+			qWarning() << configName << "所有备份均无法加载:" << path;
+			return false;
+		}
 	}
 
 	try
@@ -60,7 +92,7 @@ bool ConfigManagerModule::loadConfigSafe(const QString& path, ConfigType& outCon
 		rw::oso::ObjectStoreAssembly newAssembly = ConfigType();
 		rw::oso::AssemblyMergeTool::Merge(newAssembly, oldAssembly);
 
-		if (storeContext->saveSafe(newAssembly, path.toStdString()))
+		if (ConfigManagerModule::saveAssemblyRobust(newAssembly, path.toStdString(), *storeContext, configName))
 		{
 			qDebug() << configName << "配置文件更新成功:" << path;
 

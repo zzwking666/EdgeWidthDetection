@@ -77,17 +77,17 @@ void Modules::checkFileExistAndFormat(const QString& path, const rw::oso::Storag
 			auto mergeAssembly = rw::oso::AssemblyMergeTool::Merge(TypeCanToAssembly(), *assembly, isMerge);
 			if (isMerge)
 			{
-				context.saveSafe(mergeAssembly, path.toStdString());
+				ConfigManagerModule::saveAssemblyRobust(mergeAssembly, path.toStdString(), context, "Config");
 			}
 			else
 			{
-				context.saveSafe(TypeCanToAssembly(), path.toStdString());
+				ConfigManagerModule::saveAssemblyRobust(TypeCanToAssembly(), path.toStdString(), context, "Config");
 			}
 		}
 	}
 	else
 	{
-		context.saveSafe(TypeCanToAssembly(), path.toStdString());
+		ConfigManagerModule::saveAssemblyRobust(TypeCanToAssembly(), path.toStdString(), context, "Config");
 	}
 }
 
