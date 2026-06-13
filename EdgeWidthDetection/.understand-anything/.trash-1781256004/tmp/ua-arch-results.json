@@ -1,0 +1,419 @@
+{
+  "scriptCompleted": true,
+  "directoryGroups": {
+    ".understand-anything": [
+      "file:.understand-anything/.understandignore",
+      "config:.understand-anything/config.json"
+    ],
+    "CMakeLists.txt": [
+      "document:CMakeLists.txt"
+    ],
+    "include": [
+      "file:include/data/osoFIleUtiltyFunc.hpp",
+      "file:include/data/Utilty.hpp",
+      "file:include/DetachThread/CameraAndCardStateThread.h",
+      "file:include/DetachThread/DetachDefectThreadProcess.h",
+      "file:include/DetachThread/DetachPLCListenThread.h",
+      "file:include/DetachThread/DetachUtiltyThread.h",
+      "file:include/func/ImageProcessorModule.hpp",
+      "file:include/Modules/CameraModule.hpp",
+      "file:include/Modules/ConfigManagerModule.hpp",
+      "file:include/Modules/EliminateModule.hpp",
+      "file:include/Modules/IModule.hpp",
+      "file:include/Modules/ImgProModule.hpp",
+      "file:include/Modules/ImgSaveModule.hpp",
+      "file:include/Modules/Modules.hpp",
+      "file:include/Modules/PlcController.hpp",
+      "file:include/Modules/ReconnectModule.hpp",
+      "file:include/Modules/RuntimeInfoModule.hpp",
+      "file:include/Modules/TestModule.hpp",
+      "file:include/Modules/UIModule.hpp",
+      "file:include/Modules/WarningModule.hpp",
+      "file:include/NoHardWare/TestImgPushThread.hpp",
+      "file:include/ui/DlgProductSet.h",
+      "file:include/ui/EdgeWidthDetection.h"
+    ],
+    "osoFile": [
+      "schema:osoFile/EdgeWidthDetection.oso",
+      "schema:osoFile/SetConfig.oso"
+    ],
+    "osoInclude": [
+      "file:osoInclude/EdgeWidthDetection.hpp",
+      "file:osoInclude/SetConfig.hpp"
+    ],
+    "qrc": [
+      "config:qrc/QiXinShiJinDanXiangJi.qrc"
+    ],
+    "src": [
+      "file:src/CMakeLists.txt",
+      "file:src/main.cpp",
+      "file:src/data/osoFIleUtiltyFunc.cpp",
+      "file:src/data/Utilty.cpp",
+      "file:src/DetachThread/CameraAndCardStateThread.cpp",
+      "file:src/DetachThread/DetachDefectThreadProcess.cpp",
+      "file:src/DetachThread/DetachPLCListenThread.cpp",
+      "file:src/DetachThread/DetachUtiltyThread.cpp",
+      "file:src/func/ImageProcessorModule.cpp",
+      "file:src/Modules/CameraModule.cpp",
+      "file:src/Modules/ConfigManagerModule.cpp",
+      "file:src/Modules/EliminateModule.cpp",
+      "file:src/Modules/IModule.cpp",
+      "file:src/Modules/ImgProModule.cpp",
+      "file:src/Modules/ImgSaveModule.cpp",
+      "file:src/Modules/Modules.cpp",
+      "file:src/Modules/PlcController.cpp",
+      "file:src/Modules/ReconnectModule.cpp",
+      "file:src/Modules/RuntimeInfoModule.cpp",
+      "file:src/Modules/TestModule.cpp",
+      "file:src/Modules/UIModule.cpp",
+      "file:src/Modules/WarningModule.cpp",
+      "file:src/NoHardWare/TestImgPushThread.cpp",
+      "file:src/ui/DlgProductSet.cpp",
+      "file:src/ui/EdgeWidthDetection.cpp"
+    ],
+    "ui": [
+      "file:ui/DlgProductSet.ui",
+      "file:ui/EdgeWidthDetection.ui"
+    ]
+  },
+  "nodeTypeGroups": {
+    "file": [
+      "file:.understand-anything/.understandignore",
+      "file:include/data/osoFIleUtiltyFunc.hpp",
+      "file:include/data/Utilty.hpp",
+      "file:include/DetachThread/CameraAndCardStateThread.h",
+      "file:include/DetachThread/DetachDefectThreadProcess.h",
+      "file:include/DetachThread/DetachPLCListenThread.h",
+      "file:include/DetachThread/DetachUtiltyThread.h",
+      "file:include/func/ImageProcessorModule.hpp",
+      "file:include/Modules/CameraModule.hpp",
+      "file:include/Modules/ConfigManagerModule.hpp",
+      "file:include/Modules/EliminateModule.hpp",
+      "file:include/Modules/IModule.hpp",
+      "file:include/Modules/ImgProModule.hpp",
+      "file:include/Modules/ImgSaveModule.hpp",
+      "file:include/Modules/Modules.hpp",
+      "file:include/Modules/PlcController.hpp",
+      "file:include/Modules/ReconnectModule.hpp",
+      "file:include/Modules/RuntimeInfoModule.hpp",
+      "file:include/Modules/TestModule.hpp",
+      "file:include/Modules/UIModule.hpp",
+      "file:include/Modules/WarningModule.hpp",
+      "file:include/NoHardWare/TestImgPushThread.hpp",
+      "file:include/ui/DlgProductSet.h",
+      "file:include/ui/EdgeWidthDetection.h",
+      "file:osoInclude/EdgeWidthDetection.hpp",
+      "file:osoInclude/SetConfig.hpp",
+      "file:src/CMakeLists.txt",
+      "file:src/main.cpp",
+      "file:src/data/osoFIleUtiltyFunc.cpp",
+      "file:src/data/Utilty.cpp",
+      "file:src/DetachThread/CameraAndCardStateThread.cpp",
+      "file:src/DetachThread/DetachDefectThreadProcess.cpp",
+      "file:src/DetachThread/DetachPLCListenThread.cpp",
+      "file:src/DetachThread/DetachUtiltyThread.cpp",
+      "file:src/func/ImageProcessorModule.cpp",
+      "file:src/Modules/CameraModule.cpp",
+      "file:src/Modules/ConfigManagerModule.cpp",
+      "file:src/Modules/EliminateModule.cpp",
+      "file:src/Modules/IModule.cpp",
+      "file:src/Modules/ImgProModule.cpp",
+      "file:src/Modules/ImgSaveModule.cpp",
+      "file:src/Modules/Modules.cpp",
+      "file:src/Modules/PlcController.cpp",
+      "file:src/Modules/ReconnectModule.cpp",
+      "file:src/Modules/RuntimeInfoModule.cpp",
+      "file:src/Modules/TestModule.cpp",
+      "file:src/Modules/UIModule.cpp",
+      "file:src/Modules/WarningModule.cpp",
+      "file:src/NoHardWare/TestImgPushThread.cpp",
+      "file:src/ui/DlgProductSet.cpp",
+      "file:src/ui/EdgeWidthDetection.cpp",
+      "file:ui/DlgProductSet.ui",
+      "file:ui/EdgeWidthDetection.ui"
+    ],
+    "config": [
+      "config:.understand-anything/config.json",
+      "config:qrc/QiXinShiJinDanXiangJi.qrc"
+    ],
+    "document": [
+      "document:CMakeLists.txt"
+    ],
+    "schema": [
+      "schema:osoFile/EdgeWidthDetection.oso",
+      "schema:osoFile/SetConfig.oso"
+    ]
+  },
+  "crossCategoryEdges": [
+    {
+      "fromType": "file",
+      "toType": "file",
+      "edgeType": "imports",
+      "count": 20
+    }
+  ],
+  "interGroupImports": [
+    {
+      "from": "include",
+      "to": "include",
+      "count": 25
+    },
+    {
+      "from": "src",
+      "to": "include",
+      "count": 74
+    },
+    {
+      "from": "src",
+      "to": "osoInclude",
+      "count": 8
+    }
+  ],
+  "intraGroupDensity": {
+    ".understand-anything": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "CMakeLists.txt": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "include": {
+      "internalEdges": 25,
+      "totalEdges": 99,
+      "density": 0.25252525252525254
+    },
+    "osoFile": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "osoInclude": {
+      "internalEdges": 0,
+      "totalEdges": 8,
+      "density": 0
+    },
+    "qrc": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "src": {
+      "internalEdges": 0,
+      "totalEdges": 82,
+      "density": 0
+    },
+    "ui": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    }
+  },
+  "patternMatches": {
+    ".understand-anything": null,
+    "CMakeLists.txt": null,
+    "include": "modules",
+    "osoFile": "config",
+    "osoInclude": "config",
+    "qrc": "assets",
+    "src": "modules",
+    "ui": "ui"
+  },
+  "deploymentTopology": {
+    "hasDockerfile": false,
+    "hasCompose": false,
+    "hasK8s": false,
+    "hasTerraform": false,
+    "hasCI": false,
+    "infraFiles": [
+      "CMakeLists.txt",
+      "src/CMakeLists.txt"
+    ]
+  },
+  "dataPipeline": {
+    "schemaFiles": [
+      "schema:osoFile/EdgeWidthDetection.oso",
+      "schema:osoFile/SetConfig.oso"
+    ],
+    "migrationFiles": [],
+    "dataModelFiles": [
+      "file:osoInclude/EdgeWidthDetection.hpp",
+      "file:osoInclude/SetConfig.hpp"
+    ],
+    "apiHandlerFiles": [
+      "file:include/Modules/UIModule.hpp",
+      "file:include/ui/DlgProductSet.h",
+      "file:include/ui/EdgeWidthDetection.h",
+      "file:src/Modules/UIModule.cpp",
+      "file:src/ui/DlgProductSet.cpp",
+      "file:src/ui/EdgeWidthDetection.cpp",
+      "file:ui/DlgProductSet.ui",
+      "file:ui/EdgeWidthDetection.ui"
+    ]
+  },
+  "docCoverage": {
+    "groupsWithDocs": 1,
+    "totalGroups": 8,
+    "coverageRatio": 0.125,
+    "undocumentedGroups": [
+      ".understand-anything",
+      "include",
+      "osoFile",
+      "osoInclude",
+      "qrc",
+      "src",
+      "ui"
+    ]
+  },
+  "dependencyDirection": [
+    {
+      "dependent": "src",
+      "dependsOn": "include"
+    },
+    {
+      "dependent": "src",
+      "dependsOn": "osoInclude"
+    }
+  ],
+  "fileStats": {
+    "totalFileNodes": 58,
+    "filesPerGroup": {
+      ".understand-anything": 2,
+      "CMakeLists.txt": 1,
+      "include": 23,
+      "osoFile": 2,
+      "osoInclude": 2,
+      "qrc": 1,
+      "src": 25,
+      "ui": 2
+    },
+    "nodeTypeCounts": {
+      "file": 53,
+      "config": 2,
+      "document": 1,
+      "schema": 2
+    }
+  },
+  "fileFanIn": {
+    "file:.understand-anything/.understandignore": 0,
+    "config:.understand-anything/config.json": 0,
+    "document:CMakeLists.txt": 0,
+    "file:include/data/osoFIleUtiltyFunc.hpp": 5,
+    "file:include/data/Utilty.hpp": 20,
+    "file:include/DetachThread/CameraAndCardStateThread.h": 2,
+    "file:include/DetachThread/DetachDefectThreadProcess.h": 2,
+    "file:include/DetachThread/DetachPLCListenThread.h": 2,
+    "file:include/DetachThread/DetachUtiltyThread.h": 2,
+    "file:include/func/ImageProcessorModule.hpp": 2,
+    "file:include/Modules/CameraModule.hpp": 3,
+    "file:include/Modules/ConfigManagerModule.hpp": 5,
+    "file:include/Modules/EliminateModule.hpp": 2,
+    "file:include/Modules/IModule.hpp": 12,
+    "file:include/Modules/ImgProModule.hpp": 5,
+    "file:include/Modules/ImgSaveModule.hpp": 2,
+    "file:include/Modules/Modules.hpp": 17,
+    "file:include/Modules/PlcController.hpp": 2,
+    "file:include/Modules/ReconnectModule.hpp": 2,
+    "file:include/Modules/RuntimeInfoModule.hpp": 2,
+    "file:include/Modules/TestModule.hpp": 3,
+    "file:include/Modules/UIModule.hpp": 2,
+    "file:include/Modules/WarningModule.hpp": 2,
+    "file:include/NoHardWare/TestImgPushThread.hpp": 2,
+    "file:include/ui/DlgProductSet.h": 1,
+    "file:include/ui/EdgeWidthDetection.h": 2,
+    "schema:osoFile/EdgeWidthDetection.oso": 0,
+    "schema:osoFile/SetConfig.oso": 0,
+    "file:osoInclude/EdgeWidthDetection.hpp": 4,
+    "file:osoInclude/SetConfig.hpp": 4,
+    "config:qrc/QiXinShiJinDanXiangJi.qrc": 0,
+    "file:src/CMakeLists.txt": 0,
+    "file:src/main.cpp": 0,
+    "file:src/data/osoFIleUtiltyFunc.cpp": 0,
+    "file:src/data/Utilty.cpp": 0,
+    "file:src/DetachThread/CameraAndCardStateThread.cpp": 0,
+    "file:src/DetachThread/DetachDefectThreadProcess.cpp": 0,
+    "file:src/DetachThread/DetachPLCListenThread.cpp": 0,
+    "file:src/DetachThread/DetachUtiltyThread.cpp": 0,
+    "file:src/func/ImageProcessorModule.cpp": 0,
+    "file:src/Modules/CameraModule.cpp": 0,
+    "file:src/Modules/ConfigManagerModule.cpp": 0,
+    "file:src/Modules/EliminateModule.cpp": 0,
+    "file:src/Modules/IModule.cpp": 0,
+    "file:src/Modules/ImgProModule.cpp": 0,
+    "file:src/Modules/ImgSaveModule.cpp": 0,
+    "file:src/Modules/Modules.cpp": 0,
+    "file:src/Modules/PlcController.cpp": 0,
+    "file:src/Modules/ReconnectModule.cpp": 0,
+    "file:src/Modules/RuntimeInfoModule.cpp": 0,
+    "file:src/Modules/TestModule.cpp": 0,
+    "file:src/Modules/UIModule.cpp": 0,
+    "file:src/Modules/WarningModule.cpp": 0,
+    "file:src/NoHardWare/TestImgPushThread.cpp": 0,
+    "file:src/ui/DlgProductSet.cpp": 0,
+    "file:src/ui/EdgeWidthDetection.cpp": 0,
+    "file:ui/DlgProductSet.ui": 0,
+    "file:ui/EdgeWidthDetection.ui": 0
+  },
+  "fileFanOut": {
+    "file:.understand-anything/.understandignore": 0,
+    "config:.understand-anything/config.json": 0,
+    "document:CMakeLists.txt": 0,
+    "file:include/data/osoFIleUtiltyFunc.hpp": 0,
+    "file:include/data/Utilty.hpp": 1,
+    "file:include/DetachThread/CameraAndCardStateThread.h": 0,
+    "file:include/DetachThread/DetachDefectThreadProcess.h": 1,
+    "file:include/DetachThread/DetachPLCListenThread.h": 0,
+    "file:include/DetachThread/DetachUtiltyThread.h": 0,
+    "file:include/func/ImageProcessorModule.hpp": 0,
+    "file:include/Modules/CameraModule.hpp": 1,
+    "file:include/Modules/ConfigManagerModule.hpp": 1,
+    "file:include/Modules/EliminateModule.hpp": 1,
+    "file:include/Modules/IModule.hpp": 0,
+    "file:include/Modules/ImgProModule.hpp": 1,
+    "file:include/Modules/ImgSaveModule.hpp": 1,
+    "file:include/Modules/Modules.hpp": 12,
+    "file:include/Modules/PlcController.hpp": 1,
+    "file:include/Modules/ReconnectModule.hpp": 1,
+    "file:include/Modules/RuntimeInfoModule.hpp": 1,
+    "file:include/Modules/TestModule.hpp": 2,
+    "file:include/Modules/UIModule.hpp": 1,
+    "file:include/Modules/WarningModule.hpp": 0,
+    "file:include/NoHardWare/TestImgPushThread.hpp": 0,
+    "file:include/ui/DlgProductSet.h": 0,
+    "file:include/ui/EdgeWidthDetection.h": 0,
+    "schema:osoFile/EdgeWidthDetection.oso": 0,
+    "schema:osoFile/SetConfig.oso": 0,
+    "file:osoInclude/EdgeWidthDetection.hpp": 0,
+    "file:osoInclude/SetConfig.hpp": 0,
+    "config:qrc/QiXinShiJinDanXiangJi.qrc": 0,
+    "file:src/CMakeLists.txt": 0,
+    "file:src/main.cpp": 3,
+    "file:src/data/osoFIleUtiltyFunc.cpp": 1,
+    "file:src/data/Utilty.cpp": 5,
+    "file:src/DetachThread/CameraAndCardStateThread.cpp": 3,
+    "file:src/DetachThread/DetachDefectThreadProcess.cpp": 4,
+    "file:src/DetachThread/DetachPLCListenThread.cpp": 3,
+    "file:src/DetachThread/DetachUtiltyThread.cpp": 3,
+    "file:src/func/ImageProcessorModule.cpp": 1,
+    "file:src/Modules/CameraModule.cpp": 4,
+    "file:src/Modules/ConfigManagerModule.cpp": 6,
+    "file:src/Modules/EliminateModule.cpp": 3,
+    "file:src/Modules/IModule.cpp": 1,
+    "file:src/Modules/ImgProModule.cpp": 4,
+    "file:src/Modules/ImgSaveModule.cpp": 4,
+    "file:src/Modules/Modules.cpp": 2,
+    "file:src/Modules/PlcController.cpp": 6,
+    "file:src/Modules/ReconnectModule.cpp": 3,
+    "file:src/Modules/RuntimeInfoModule.cpp": 5,
+    "file:src/Modules/TestModule.cpp": 3,
+    "file:src/Modules/UIModule.cpp": 10,
+    "file:src/Modules/WarningModule.cpp": 5,
+    "file:src/NoHardWare/TestImgPushThread.cpp": 3,
+    "file:src/ui/DlgProductSet.cpp": 0,
+    "file:src/ui/EdgeWidthDetection.cpp": 0,
+    "file:ui/DlgProductSet.ui": 0,
+    "file:ui/EdgeWidthDetection.ui": 0
+  }
+}

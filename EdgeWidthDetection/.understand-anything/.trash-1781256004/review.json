@@ -1,0 +1,32 @@
+{
+  "issues": [],
+  "warnings": [
+    "Node 'config:.understand-anything/.understandignore' has no edges (orphan)",
+    "Node 'config:.understand-anything/config.json' has no edges (orphan)"
+  ],
+  "stats": {
+    "totalNodes": 135,
+    "totalEdges": 286,
+    "totalLayers": 8,
+    "tourSteps": 12,
+    "nodeTypes": {
+      "file": 51,
+      "class": 27,
+      "function": 51,
+      "config": 3,
+      "document": 1,
+      "schema": 2
+    },
+    "edgeTypes": {
+      "contains": 77,
+      "exports": 69,
+      "imports": 110,
+      "depends_on": 10,
+      "calls": 9,
+      "defines_schema": 2,
+      "related": 3,
+      "configures": 1,
+      "inherits": 5
+    }
+  }
+}

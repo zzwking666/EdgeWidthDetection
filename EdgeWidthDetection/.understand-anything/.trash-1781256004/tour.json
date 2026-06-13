@@ -1,0 +1,86 @@
+[
+  {
+    "order": 1,
+    "title": "项目概览与构建体系",
+    "description": "顶层 CMakeLists.txt 定义了项目全局构建配置，声明 Qt6 依赖、C++17 标准和子目录组织。main.cpp 是程序入口点，创建全局 Modules 单例后进入 Qt 事件循环 —— 从这里可以看清系统的启动时序。src/CMakeLists.txt 则细化了源文件列表和链接库，区分了硬件模式与无硬件模式两种构建预设。",
+    "nodeIds": ["document:CMakeLists.txt", "file:src/main.cpp", "file:src/CMakeLists.txt"],
+    "languageLesson": "CMake Presets 允许定义多套构建配置（如 vs2022-NoHardware 和 vs2022），开发者通过 --preset 参数一键切换。本项目利用 cmake 变量 BUILD_WITHOUT_HARDWARE 控制是否编译硬件驱动，TestModule 会替代真实相机在无硬件模式下推送测试图像。"
+  },
+  {
+    "order": 2,
+    "title": "核心框架：模块生命周期接口与全局单例",
+    "description": "IModule.hpp 定义了所有功能模块的统一契约 —— 这是一个 C++ 模板接口，包含 build()、destroy()、start()、stop() 四个生命周期方法。Modules.hpp/.cpp 是全局单例中枢，持有所有子模块实例，在 build() 中按依赖顺序初始化它们（配置最先，UI 最后），在 connect() 中完成跨模块 Qt 信号槽连接，对外提供统一的 start() / stop() 控制。",
+    "nodeIds": ["file:include/Modules/IModule.hpp", "file:include/Modules/Modules.hpp", "file:src/Modules/Modules.cpp"],
+    "languageLesson": "C++ 模板接口模式 —— IModule 使用模板参数 TBuildError 让每个模块自定义 build() 的返回类型：bool 表示简单成败，std::vector<BuildError> 用于多错误场景（如 CameraModule 按相机报告错误），void 表示无错误。这是对传统虚函数接口的零开销抽象替代。"
+  },
+  {
+    "order": 3,
+    "title": "全局数据定义",
+    "description": "Utilty.hpp 是整个项目的数据字典 —— 定义了 GlobalPath（所有目录路径）、ModBusAddress（PLC 寄存器地址映射）、PlcReadIndex（PLC 读取寄存器索引枚举）等全局共享的数据结构。几乎所有模块都通过 #include 引用此头文件（fan-in 排名第二，达 10），是系统各组件间数据交换的通用语言。",
+    "nodeIds": ["file:include/data/Utilty.hpp", "file:src/data/Utilty.cpp"],
+    "languageLesson": "全局数据结构的前向声明与头文件管理 —— 将跨模块共享的类型集中在单一头文件中，配合 #pragma once 保护，避免了循环依赖。Utilty.cpp 实现了路径初始化逻辑，包括从 Windows 注册表读取安装目录、创建运行时所需子目录等平台相关操作。"
+  },
+  {
+    "order": 4,
+    "title": "配置系统：OSO DSL 定义与代码生成",
+    "description": "项目的配置结构不是手写 C++，而是通过 .oso DSL 文件定义的。EdgeWidthDetection.oso 定义主配置（相机参数、检测阈值等），SetConfig.oso 定义产品设置（不同产品的检测标准）。构建系统通过 SerializedCodeGenerator 将这些 .oso 文件自动编译为 osoInclude/ 下的 C++ 类，实现配置结构的类型安全访问。",
+    "nodeIds": ["schema:osoFile/EdgeWidthDetection.oso", "schema:osoFile/SetConfig.oso", "file:osoInclude/EdgeWidthDetection.hpp", "file:osoInclude/SetConfig.hpp"],
+    "languageLesson": "DSL 驱动代码生成（DSL-driven code generation）—— .oso 文件使用简洁的声明式语法定义配置字段（字段名 : 类型 : default = 默认值），构建时自动生成对应的 C++ 类和 XML 序列化/反序列化代码。新增配置字段只需编辑 .oso 文件并重新构建，无需手动维护序列化逻辑。"
+  },
+  {
+    "order": 5,
+    "title": "配置管理模块",
+    "description": "ConfigManagerModule 是 Step 4 配置体系的运行时入口。它提供 loadConfigSafe<T>() 模板方法，在加载 XML 配置文件时自动处理版本兼容问题：如果 XML 缺少新增字段，模板会捕获异常，通过 AssemblyMergeTool 将旧数据与新的默认值合并后保存，然后重试加载。这保证了配置文件可以随版本平滑演进。",
+    "nodeIds": ["file:include/Modules/ConfigManagerModule.hpp", "file:src/Modules/ConfigManagerModule.cpp"],
+    "languageLesson": "版本兼容的配置加载 —— loadConfigSafe<T> 使用「尝试-合并-重试」模式：先解析 XML，若抛出 std::runtime_error（字段缺失），则调用 AssemblyMergeTool::Merge 将默认配置与旧数据合并，保存合并后的文件，再重试解析。这样即使 .oso 新增了字段，已有的 XML 配置文件无需手动迁移。"
+  },
+  {
+    "order": 6,
+    "title": "图像处理管线",
+    "description": "ImageProcessorModule 是边缘宽度检测的核心算法引擎，管理图像预处理（去噪、ROI 裁剪）和模型推理（支持 ONNX / CUDA / TensorRT 多种推理后端）的完整管线。ImgProModule 作为 IModule 适配层将其接入系统生命周期，在 build() 中配置管线参数并初始化推理引擎。",
+    "nodeIds": ["file:include/func/ImageProcessorModule.hpp", "file:src/func/ImageProcessorModule.cpp", "file:include/Modules/ImgProModule.hpp", "file:src/Modules/ImgProModule.cpp"],
+    "languageLesson": "Qt::DirectConnection 在图像处理中的运用 —— 相机线程发出的 frameCaptured 信号通过 Qt::DirectConnection 直接连接到 ImgProModule 的处理槽函数，这意味着图像处理逻辑在相机线程中同步执行，避免了线程切换开销。这是因为图像处理需要尽可能低的延迟，而 Qt::QueuedConnection 的事件队列传递会引入不可接受的延迟。"
+  },
+  {
+    "order": 7,
+    "title": "工业相机采集与图像保存",
+    "description": "CameraModule 管理海康威视（MVS SDK）和度申（DS SDK）工业相机的初始化、帧采集和断线重连。每个相机独立运行在 CameraPassiveThread 中，采集到帧后通过 Qt 信号发出。ImgSaveModule 通过 ImageSaveEngine 实现异步图像保存，支持多线程并行写入，确保图像存储不阻塞采集管线。",
+    "nodeIds": ["file:include/Modules/CameraModule.hpp", "file:src/Modules/CameraModule.cpp", "file:include/Modules/ImgSaveModule.hpp", "file:src/Modules/ImgSaveModule.cpp"],
+    "languageLesson": "生产者-消费者模式在相机系统中的双重体现 —— 相机线程（生产者）通过信号驱动图像处理模块（消费者），同时图像保存引擎作为另一个消费者异步消费处理结果。ImageSaveEngine 内部使用线程池并行写入磁盘，通过可配置线程数平衡 IO 吞吐与 CPU 占用。"
+  },
+  {
+    "order": 8,
+    "title": "PLC 工业通信与后台监听",
+    "description": "PlcController 封装了基于 Modbus 协议的 PLC 读写操作，通过 hoem（RW_UL 工具库的 Modbus 抽象层）与现场 PLC 设备通信。DetachPLCListenThread 在后台线程中持续轮询 PLC 寄存器，将检测触发信号、产线状态等实时数据传递给系统其他模块，是实现「检测-判定-剔除」闭环的关键桥梁。",
+    "nodeIds": ["file:include/Modules/PlcController.hpp", "file:src/Modules/PlcController.cpp", "file:include/DetachThread/DetachPLCListenThread.h", "file:src/DetachThread/DetachPLCListenThread.cpp"],
+    "languageLesson": "Modbus 协议在工业自动化中的应用 —— Modbus 是基于主从架构的串行通信协议，PLC 作为从站暴露一组保持寄存器（Holding Registers）。PlcController 通过地址映射表（定义在 Step 3 的 Utilty.hpp 中）将寄存器地址转换为有意义的业务变量，DetachPLCListenThread 按固定周期轮询这些寄存器实现实时状态同步。"
+  },
+  {
+    "order": 9,
+    "title": "运行时状态监控与连接重连",
+    "description": "RuntimeInfoModule 追踪系统全局运行状态（调试/运行/停止），管理废品计数统计并通过 DetachUtiltyThread 轮询 PLC 信息。CameraAndCardStateThread 独立监控相机和板卡在线状态，当检测到断连时通知 ReconnectModule 触发自动重连流程，确保产线 7x24 连续运行不中断。",
+    "nodeIds": ["file:include/Modules/RuntimeInfoModule.hpp", "file:src/Modules/RuntimeInfoModule.cpp", "file:include/DetachThread/DetachUtiltyThread.h", "file:src/DetachThread/DetachUtiltyThread.cpp", "file:include/Modules/ReconnectModule.hpp"],
+    "languageLesson": "Qt::QueuedConnection 与跨线程 UI 更新 —— DetachUtiltyThread 运行在独立线程中，当它需要更新 UI（如刷新废品计数显示）时，必须使用 Qt::QueuedConnection 将信号投递到主线程的事件队列。这保证了 Qt 控件只在主线程中被修改，避免了线程安全问题。"
+  },
+  {
+    "order": 10,
+    "title": "缺陷剔除判定",
+    "description": "EliminateModule 负责产品质量的最终判定 —— 当图像处理管线检测到边缘宽度超标时，它通过优先级队列管理多个产品的剔除决策时序。DetachDefectThreadProcess 在独立线程中异步执行判定逻辑，根据检测结果向 PLC 发送剔除信号，由下游执行机构（气吹/推杆）将不合格品从产线上移除。",
+    "nodeIds": ["file:include/Modules/EliminateModule.hpp", "file:src/Modules/EliminateModule.cpp", "file:include/DetachThread/DetachDefectThreadProcess.h", "file:src/DetachThread/DetachDefectThreadProcess.cpp"],
+    "languageLesson": "优先级队列在缺陷剔除中的应用 —— 产线上可能同时有多个产品进入检测区域，EliminateModule 使用优先级队列确保先进入的产品先判定、先剔除，避免时序混乱。DetachDefectThreadProcess 作为独立判定线程，不阻塞主检测管线，保证实时性。"
+  },
+  {
+    "order": 11,
+    "title": "UI 表现层",
+    "description": "UIModule 管理主窗口 EdgeWidthDetection 和产品设置对话框 DlgProductSet 的生命周期。主窗口通过 Qt Designer 生成的 .ui 文件定义布局，展示双相机实时画面、检测结果和运行统计。产品设置对话框允许产线操作员针对不同产品型号调整检测参数，修改后的配置通过 ConfigManagerModule 持久化保存。",
+    "nodeIds": ["file:include/Modules/UIModule.hpp", "file:src/Modules/UIModule.cpp", "file:include/ui/EdgeWidthDetection.h", "file:src/ui/EdgeWidthDetection.cpp", "file:ui/EdgeWidthDetection.ui"],
+    "languageLesson": "Qt Designer .ui 文件与代码分离 —— .ui 文件是 XML 格式的界面布局描述，由 Qt 的 UIC 工具在构建时编译为 C++ 代码。这种分离让 UI 布局可被 Designer 可视化编辑，而业务逻辑写在 .cpp 文件中，二者由 .h 头文件桥接。项目规范要求模块间信号槽连接集中在 Modules::connect() 中，而非分散在各 UI 类内部。"
+  },
+  {
+    "order": 12,
+    "title": "无硬件开发与测试模式",
+    "description": "当 BUILD_WITHOUT_HARDWARE 编译选项启用时，TestModule 替代 CameraModule 接管图像源角色。TestImgPushThread 从磁盘按序读取测试图像，通过相同 Qt 信号接口推送给图像处理管线，使得开发人员在没有工业相机、PLC 和 CUDA GPU 的普通 PC 上也能进行 UI 开发和算法调试。这套机制是日常开发中最常用的模式。",
+    "nodeIds": ["file:include/Modules/TestModule.hpp", "file:src/Modules/TestModule.cpp", "file:include/NoHardWare/TestImgPushThread.hpp", "file:src/NoHardWare/TestImgPushThread.cpp"],
+    "languageLesson": "策略模式与编译时多态 —— TestModule 和 CameraModule 都实现 IModule 接口并通过相同的 Qt 信号接口输出图像帧，Modules 单例根据编译宏条件性实例化其中之一。这是策略模式（Strategy Pattern）在编译时的应用：运行时无需任何 if/else 分支，编译器直接生成对应模式的代码路径。"
+  }
+]

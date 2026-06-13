@@ -1,0 +1,368 @@
+{
+  "scriptCompleted": true,
+  "files": [
+    {
+      "path": ".understand-anything/.understandignore",
+      "language": "unknown",
+      "sizeLines": 12,
+      "fileCategory": "code"
+    },
+    {
+      "path": ".understand-anything/config.json",
+      "language": "json",
+      "sizeLines": 1,
+      "fileCategory": "config"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "language": "txt",
+      "sizeLines": 102,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "include/data/osoFIleUtiltyFunc.hpp",
+      "language": "cpp",
+      "sizeLines": 14,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/data/Utilty.hpp",
+      "language": "cpp",
+      "sizeLines": 96,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/DetachThread/CameraAndCardStateThread.h",
+      "language": "c",
+      "sizeLines": 34,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/DetachThread/DetachDefectThreadProcess.h",
+      "language": "c",
+      "sizeLines": 33,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/DetachThread/DetachPLCListenThread.h",
+      "language": "c",
+      "sizeLines": 27,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/DetachThread/DetachUtiltyThread.h",
+      "language": "c",
+      "sizeLines": 29,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/func/ImageProcessorModule.hpp",
+      "language": "cpp",
+      "sizeLines": 100,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/Modules/CameraModule.hpp",
+      "language": "cpp",
+      "sizeLines": 50,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/Modules/ConfigManagerModule.hpp",
+      "language": "cpp",
+      "sizeLines": 84,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/Modules/EliminateModule.hpp",
+      "language": "cpp",
+      "sizeLines": 21,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/Modules/ImgProModule.hpp",
+      "language": "cpp",
+      "sizeLines": 37,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/Modules/ImgSaveModule.hpp",
+      "language": "cpp",
+      "sizeLines": 21,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/Modules/IModule.hpp",
+      "language": "cpp",
+      "sizeLines": 15,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/Modules/Modules.hpp",
+      "language": "cpp",
+      "sizeLines": 93,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/Modules/PlcController.hpp",
+      "language": "cpp",
+      "sizeLines": 38,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/Modules/ReconnectModule.hpp",
+      "language": "cpp",
+      "sizeLines": 19,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/Modules/RuntimeInfoModule.hpp",
+      "language": "cpp",
+      "sizeLines": 34,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/Modules/TestModule.hpp",
+      "language": "cpp",
+      "sizeLines": 24,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/Modules/UIModule.hpp",
+      "language": "cpp",
+      "sizeLines": 24,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/Modules/WarningModule.hpp",
+      "language": "cpp",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/NoHardWare/TestImgPushThread.hpp",
+      "language": "cpp",
+      "sizeLines": 47,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/ui/DlgProductSet.h",
+      "language": "c",
+      "sizeLines": 108,
+      "fileCategory": "code"
+    },
+    {
+      "path": "include/ui/EdgeWidthDetection.h",
+      "language": "c",
+      "sizeLines": 73,
+      "fileCategory": "code"
+    },
+    {
+      "path": "osoFile/EdgeWidthDetection.oso",
+      "language": "oso",
+      "sizeLines": 11,
+      "fileCategory": "code"
+    },
+    {
+      "path": "osoFile/SetConfig.oso",
+      "language": "oso",
+      "sizeLines": 46,
+      "fileCategory": "code"
+    },
+    {
+      "path": "osoInclude/EdgeWidthDetection.hpp",
+      "language": "cpp",
+      "sizeLines": 110,
+      "fileCategory": "code"
+    },
+    {
+      "path": "osoInclude/SetConfig.hpp",
+      "language": "cpp",
+      "sizeLines": 470,
+      "fileCategory": "code"
+    },
+    {
+      "path": "qrc/QiXinShiJinDanXiangJi.qrc",
+      "language": "qrc",
+      "sizeLines": 6,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/data/osoFIleUtiltyFunc.cpp",
+      "language": "cpp",
+      "sizeLines": 44,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/data/Utilty.cpp",
+      "language": "cpp",
+      "sizeLines": 29,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/DetachThread/CameraAndCardStateThread.cpp",
+      "language": "cpp",
+      "sizeLines": 74,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/DetachThread/DetachDefectThreadProcess.cpp",
+      "language": "cpp",
+      "sizeLines": 73,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/DetachThread/DetachPLCListenThread.cpp",
+      "language": "cpp",
+      "sizeLines": 74,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/DetachThread/DetachUtiltyThread.cpp",
+      "language": "cpp",
+      "sizeLines": 80,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/func/ImageProcessorModule.cpp",
+      "language": "cpp",
+      "sizeLines": 340,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/main.cpp",
+      "language": "cpp",
+      "sizeLines": 40,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/Modules/CameraModule.cpp",
+      "language": "cpp",
+      "sizeLines": 165,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/Modules/ConfigManagerModule.cpp",
+      "language": "cpp",
+      "sizeLines": 39,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/Modules/EliminateModule.cpp",
+      "language": "cpp",
+      "sizeLines": 38,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/Modules/ImgProModule.cpp",
+      "language": "cpp",
+      "sizeLines": 297,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/Modules/ImgSaveModule.cpp",
+      "language": "cpp",
+      "sizeLines": 97,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/Modules/IModule.cpp",
+      "language": "cpp",
+      "sizeLines": 1,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/Modules/Modules.cpp",
+      "language": "cpp",
+      "sizeLines": 225,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/Modules/PlcController.cpp",
+      "language": "cpp",
+      "sizeLines": 175,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/Modules/ReconnectModule.cpp",
+      "language": "cpp",
+      "sizeLines": 28,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/Modules/RuntimeInfoModule.cpp",
+      "language": "cpp",
+      "sizeLines": 23,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/Modules/TestModule.cpp",
+      "language": "cpp",
+      "sizeLines": 22,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/Modules/UIModule.cpp",
+      "language": "cpp",
+      "sizeLines": 25,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/Modules/WarningModule.cpp",
+      "language": "cpp",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/NoHardWare/TestImgPushThread.cpp",
+      "language": "cpp",
+      "sizeLines": 139,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ui/DlgProductSet.cpp",
+      "language": "cpp",
+      "sizeLines": 1588,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ui/EdgeWidthDetection.cpp",
+      "language": "cpp",
+      "sizeLines": 407,
+      "fileCategory": "code"
+    },
+    {
+      "path": "ui/DlgProductSet.ui",
+      "language": "ui",
+      "sizeLines": 9821,
+      "fileCategory": "code"
+    },
+    {
+      "path": "ui/EdgeWidthDetection.ui",
+      "language": "ui",
+      "sizeLines": 1042,
+      "fileCategory": "code"
+    }
+  ],
+  "totalFiles": 57,
+  "filteredByIgnore": 0,
+  "estimatedComplexity": "moderate",
+  "stats": {
+    "filesScanned": 57,
+    "byCategory": {
+      "code": 55,
+      "config": 1,
+      "docs": 1
+    },
+    "byLanguage": {
+      "unknown": 1,
+      "json": 1,
+      "txt": 1,
+      "cpp": 43,
+      "c": 6,
+      "oso": 2,
+      "qrc": 1,
+      "ui": 2
+    }
+  }
+}

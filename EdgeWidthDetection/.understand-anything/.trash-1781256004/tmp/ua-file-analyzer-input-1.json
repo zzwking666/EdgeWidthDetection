@@ -1,0 +1,21 @@
+{
+  "projectRoot": "D:/Projects/EdgeWidthDetection/EdgeWidthDetection",
+  "batchFiles": [
+    {"path": "include/Modules/ConfigManagerModule.hpp", "language": "cpp", "sizeLines": 84, "fileCategory": "code"},
+    {"path": "include/Modules/ImgProModule.hpp", "language": "cpp", "sizeLines": 37, "fileCategory": "code"},
+    {"path": "include/Modules/Modules.hpp", "language": "cpp", "sizeLines": 93, "fileCategory": "code"},
+    {"path": "include/Modules/CameraModule.hpp", "language": "cpp", "sizeLines": 50, "fileCategory": "code"},
+    {"path": "include/Modules/EliminateModule.hpp", "language": "cpp", "sizeLines": 21, "fileCategory": "code"},
+    {"path": "include/func/ImageProcessorModule.hpp", "language": "cpp", "sizeLines": 69, "fileCategory": "code"},
+    {"path": "include/data/Utilty.hpp", "language": "cpp", "sizeLines": 100, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "include/Modules/CameraModule.hpp": [],
+    "include/Modules/ImgProModule.hpp": ["include/Modules/IModule.hpp"],
+    "include/Modules/EliminateModule.hpp": ["include/Modules/IModule.hpp"],
+    "include/Modules/Modules.hpp": ["include/Modules/CameraModule.hpp", "include/Modules/ConfigManagerModule.hpp", "include/Modules/EliminateModule.hpp", "include/Modules/IModule.hpp", "include/Modules/ImgProModule.hpp", "include/Modules/ImgSaveModule.hpp", "include/Modules/PlcController.hpp", "include/Modules/ReconnectModule.hpp", "include/Modules/RuntimeInfoModule.hpp", "include/Modules/UIModule.hpp", "include/Modules/WarningModule.hpp", "include/Modules/TestModule.hpp"],
+    "include/Modules/ConfigManagerModule.hpp": ["include/Modules/IModule.hpp"],
+    "include/func/ImageProcessorModule.hpp": [],
+    "include/data/Utilty.hpp": ["include/data/osoFIleUtiltyFunc.hpp"]
+  }
+}

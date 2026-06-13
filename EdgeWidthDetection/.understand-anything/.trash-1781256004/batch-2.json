@@ -1,0 +1,218 @@
+{
+  "nodes": [
+    {
+      "id": "file:include/Modules/CameraModule.hpp",
+      "type": "file",
+      "name": "CameraModule.hpp",
+      "filePath": "include/Modules/CameraModule.hpp",
+      "summary": "相机模块头文件，定义CameraModule类（继承QObject和IModule），声明BuildError枚举、相机生命周期管理及帧采集的Qt信号槽接口，支持海康威视/度申多相机场景。",
+      "tags": ["camera", "hardware-interface", "signal-slot", "image-acquisition", "module"],
+      "complexity": "moderate",
+      "languageNotes": "通过Qt信号槽（frameCaptured1信号）实现跨线程帧数据传递；BuildError使用std::vector支持按相机索引报告多个构建错误。"
+    },
+    {
+      "id": "file:include/Modules/EliminateModule.hpp",
+      "type": "file",
+      "name": "EliminateModule.hpp",
+      "filePath": "include/Modules/EliminateModule.hpp",
+      "summary": "缺陷剔除模块头文件，定义EliminateModule类（继承QObject和IModule），持有产品判定优先级队列和异步缺陷处理线程，负责根据检测结果决定产品是否剔除。",
+      "tags": ["defect-elimination", "priority-queue", "quality-control", "module"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:include/Modules/IModule.hpp",
+      "type": "file",
+      "name": "IModule.hpp",
+      "filePath": "include/Modules/IModule.hpp",
+      "summary": "模块接口模板基类，定义所有功能模块的统一生命周期接口build/destroy/start/stop，通过模板参数TBuildError支持不同的构建错误返回类型（bool、void或vector）。",
+      "tags": ["interface", "template", "lifecycle", "module-pattern", "abstract"],
+      "complexity": "simple",
+      "languageNotes": "使用C++模板实现编译时多态；TBuildError默认为bool，各模块按需实例化为void（ImgSaveModule）或std::vector<BuildError>（CameraModule）等变体。"
+    },
+    {
+      "id": "file:include/DetachThread/DetachDefectThreadProcess.h",
+      "type": "file",
+      "name": "DetachDefectThreadProcess.h",
+      "filePath": "include/DetachThread/DetachDefectThreadProcess.h",
+      "summary": "异步缺陷处理线程头文件，定义DetachDefectThread类（继承QThread），在独立线程中处理产品剔除判定队列，使用原子变量保证线程安全。",
+      "tags": ["async-thread", "defect-processing", "qt-thread", "thread-safety"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:include/Modules/ImgSaveModule.hpp",
+      "type": "file",
+      "name": "ImgSaveModule.hpp",
+      "filePath": "include/Modules/ImgSaveModule.hpp",
+      "summary": "图像保存模块头文件，定义ImgSaveModule类（继承QObject和IModule<void>），封装ImageSaveEngine实现多线程异步图像持久化存储，通过静态常量配置保存参数。",
+      "tags": ["image-saving", "async-io", "module", "persistence"],
+      "complexity": "simple",
+      "languageNotes": "build()返回void（TBuildError=void）表示构建阶段无错误返回；静态常量cimgSaveThreadNum(4)和cimgSaveQuality(80)硬编码线程数与JPEG质量。"
+    },
+    {
+      "id": "file:include/DetachThread/DetachPLCListenThread.h",
+      "type": "file",
+      "name": "DetachPLCListenThread.h",
+      "filePath": "include/DetachThread/DetachPLCListenThread.h",
+      "summary": "PLC监听线程头文件，定义DetachPLCListenThread类（继承QThread），在独立线程中周期性轮询读取Modbus PLC寄存器数据，通过updatePLCInfo信号将结果传递至UI层。",
+      "tags": ["plc-communication", "async-thread", "modbus", "polling"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:include/Modules/CameraModule.hpp:CameraModule",
+      "type": "class",
+      "name": "CameraModule",
+      "filePath": "include/Modules/CameraModule.hpp",
+      "lineRange": [14, 50],
+      "summary": "相机模块核心类，管理海康威视/度申相机生命周期，通过CameraPassiveThread采集图像并以Qt信号frameCaptured1将帧数据发射至下游图像处理模块。",
+      "tags": ["camera", "lifecycle", "image-acquisition", "signal-driven", "hardware"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:include/Modules/EliminateModule.hpp:EliminateModule",
+      "type": "class",
+      "name": "EliminateModule",
+      "filePath": "include/Modules/EliminateModule.hpp",
+      "lineRange": [7, 22],
+      "summary": "缺陷剔除核心类，持有产品优先级队列ThreadSafeHeap和异步缺陷处理线程DetachDefectThread，控制产品剔除判定的启停与生命周期。",
+      "tags": ["defect-elimination", "async-processing", "priority-queue"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:include/DetachThread/DetachDefectThreadProcess.h:DetachDefectThread",
+      "type": "class",
+      "name": "DetachDefectThread",
+      "filePath": "include/DetachThread/DetachDefectThreadProcess.h",
+      "lineRange": [12, 33],
+      "summary": "异步缺陷剔除线程类，在独立QThread::run中调用processQueue1处理产品优先级队列，使用std::atomic_bool管理线程安全的运行与完成状态。",
+      "tags": ["async-thread", "defect-processing", "thread-safety", "qt"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:include/Modules/ImgSaveModule.hpp:ImgSaveModule",
+      "type": "class",
+      "name": "ImgSaveModule",
+      "filePath": "include/Modules/ImgSaveModule.hpp",
+      "lineRange": [8, 21],
+      "summary": "图像保存核心类，封装rw::rqw::ImageSaveEngine实现4线程异步图像写入磁盘，通过静态常量cimgSaveQuality配置JPEG压缩质量。",
+      "tags": ["image-saving", "async-io", "persistence"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:include/DetachThread/DetachPLCListenThread.h:DetachPLCListenThread",
+      "type": "class",
+      "name": "DetachPLCListenThread",
+      "filePath": "include/DetachThread/DetachPLCListenThread.h",
+      "lineRange": [8, 27],
+      "summary": "Modbus PLC监听线程类，在独立线程中循环调用readPLCInfo读取PLC寄存器数据，通过Qt信号updatePLCInfo将QVector<PlcReadItem>结果跨线程传递至UI。",
+      "tags": ["plc-communication", "polling", "qt-signal", "async-thread", "modbus"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:include/Modules/ImgSaveModule.hpp",
+      "target": "file:include/Modules/IModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:include/DetachThread/DetachDefectThreadProcess.h",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:include/Modules/CameraModule.hpp",
+      "target": "class:include/Modules/CameraModule.hpp:CameraModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:include/Modules/EliminateModule.hpp",
+      "target": "class:include/Modules/EliminateModule.hpp:EliminateModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:include/DetachThread/DetachDefectThreadProcess.h",
+      "target": "class:include/DetachThread/DetachDefectThreadProcess.h:DetachDefectThread",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:include/Modules/ImgSaveModule.hpp",
+      "target": "class:include/Modules/ImgSaveModule.hpp:ImgSaveModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:include/DetachThread/DetachPLCListenThread.h",
+      "target": "class:include/DetachThread/DetachPLCListenThread.h:DetachPLCListenThread",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:include/Modules/CameraModule.hpp",
+      "target": "class:include/Modules/CameraModule.hpp:CameraModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:include/Modules/EliminateModule.hpp",
+      "target": "class:include/Modules/EliminateModule.hpp:EliminateModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:include/DetachThread/DetachDefectThreadProcess.h",
+      "target": "class:include/DetachThread/DetachDefectThreadProcess.h:DetachDefectThread",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:include/Modules/ImgSaveModule.hpp",
+      "target": "class:include/Modules/ImgSaveModule.hpp:ImgSaveModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:include/DetachThread/DetachPLCListenThread.h",
+      "target": "class:include/DetachThread/DetachPLCListenThread.h:DetachPLCListenThread",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:include/Modules/CameraModule.hpp:CameraModule",
+      "target": "file:include/Modules/IModule.hpp",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "class:include/Modules/EliminateModule.hpp:EliminateModule",
+      "target": "file:include/Modules/IModule.hpp",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "class:include/Modules/EliminateModule.hpp:EliminateModule",
+      "target": "file:include/DetachThread/DetachDefectThreadProcess.h",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

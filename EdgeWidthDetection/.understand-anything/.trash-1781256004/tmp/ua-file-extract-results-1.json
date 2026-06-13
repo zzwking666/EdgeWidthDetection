@@ -1,0 +1,777 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 7,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "include/Modules/ConfigManagerModule.hpp",
+      "language": "cpp",
+      "fileCategory": "code",
+      "totalLines": 84,
+      "nonEmptyLines": 74,
+      "classes": [
+        {
+          "name": "ConfigManagerModule",
+          "startLine": 13,
+          "endLine": 31,
+          "methods": [
+            "destroy",
+            "start",
+            "stop"
+          ],
+          "properties": [
+            "public",
+            "storeContext",
+            "edgeWidthDetectionConfig",
+            "setConfig"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ConfigManagerModule",
+          "line": 13,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "loadConfigSafe",
+          "callee": "QFile::exists",
+          "lineNumber": 36
+        },
+        {
+          "caller": "loadConfigSafe",
+          "callee": "qWarning",
+          "lineNumber": 38
+        },
+        {
+          "caller": "loadConfigSafe",
+          "callee": "loadSafe",
+          "lineNumber": 42
+        },
+        {
+          "caller": "loadConfigSafe",
+          "callee": "toStdString",
+          "lineNumber": 42
+        },
+        {
+          "caller": "loadConfigSafe",
+          "callee": "qWarning",
+          "lineNumber": 45
+        },
+        {
+          "caller": "loadConfigSafe",
+          "callee": "QFile::remove",
+          "lineNumber": 46
+        },
+        {
+          "caller": "loadConfigSafe",
+          "callee": "ConfigType",
+          "lineNumber": 52
+        },
+        {
+          "caller": "loadConfigSafe",
+          "callee": "qWarning",
+          "lineNumber": 57
+        },
+        {
+          "caller": "loadConfigSafe",
+          "callee": "ConfigType",
+          "lineNumber": 60
+        },
+        {
+          "caller": "loadConfigSafe",
+          "callee": "rw::oso::AssemblyMergeTool::Merge",
+          "lineNumber": 61
+        },
+        {
+          "caller": "loadConfigSafe",
+          "callee": "saveSafe",
+          "lineNumber": 63
+        },
+        {
+          "caller": "loadConfigSafe",
+          "callee": "toStdString",
+          "lineNumber": 63
+        },
+        {
+          "caller": "loadConfigSafe",
+          "callee": "qDebug",
+          "lineNumber": 65
+        },
+        {
+          "caller": "loadConfigSafe",
+          "callee": "ConfigType",
+          "lineNumber": 70
+        },
+        {
+          "caller": "loadConfigSafe",
+          "callee": "qWarning",
+          "lineNumber": 75
+        },
+        {
+          "caller": "loadConfigSafe",
+          "callee": "qWarning",
+          "lineNumber": 80
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "include/Modules/ImgProModule.hpp",
+      "language": "cpp",
+      "fileCategory": "code",
+      "totalLines": 38,
+      "nonEmptyLines": 32,
+      "classes": [
+        {
+          "name": "ImgProModule",
+          "startLine": 8,
+          "endLine": 38,
+          "methods": [
+            "build",
+            "destroy",
+            "start",
+            "stop",
+            "buildImgProContext",
+            "buildImgProContextPreProcess",
+            "resetImgProIsUpdate",
+            "buildImageProcessingModule",
+            "destroyImageProcessingModule",
+            "buildImageProcessingPreModule",
+            "onUpdateImgProContext"
+          ],
+          "properties": [
+            "private",
+            "imageProcessContext_PreProcess",
+            "imgProIsUpdate",
+            "imageProcessingModule1"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "build",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "destroy",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "start",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "stop",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "onUpdateImgProContext",
+          "line": 37,
+          "isDefault": false
+        },
+        {
+          "name": "ImgProModule",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 6,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "include/Modules/Modules.hpp",
+      "language": "cpp",
+      "fileCategory": "code",
+      "totalLines": 93,
+      "nonEmptyLines": 82,
+      "functions": [
+        {
+          "name": "Modules",
+          "startLine": 31,
+          "endLine": 31,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "Modules",
+          "startLine": 19,
+          "endLine": 66,
+          "methods": [
+            "Modules",
+            "build",
+            "destroy",
+            "start",
+            "stop",
+            "connect",
+            "check",
+            "EnsureDirectoryExists"
+          ],
+          "properties": [
+            "cameraModule",
+            "reconnectModule",
+            "uiModule",
+            "configManagerModule",
+            "runtimeInfoModule",
+            "imgSaveModule",
+            "imgProModule",
+            "eliminateModule",
+            "plcController"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Modules",
+          "line": 31,
+          "isDefault": false
+        },
+        {
+          "name": "build",
+          "line": 39,
+          "isDefault": false
+        },
+        {
+          "name": "destroy",
+          "line": 40,
+          "isDefault": false
+        },
+        {
+          "name": "start",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "stop",
+          "line": 42,
+          "isDefault": false
+        },
+        {
+          "name": "connect",
+          "line": 43,
+          "isDefault": false
+        },
+        {
+          "name": "check",
+          "line": 46,
+          "isDefault": false
+        },
+        {
+          "name": "EnsureDirectoryExists",
+          "line": 49,
+          "isDefault": false
+        },
+        {
+          "name": "Modules",
+          "line": 19,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "checkFileExistAndFormat",
+          "callee": "rw::rqw::RunEnvCheck::isFileExist",
+          "lineNumber": 71
+        },
+        {
+          "caller": "checkFileExistAndFormat",
+          "callee": "rw::rqw::RunEnvCheck::isFileFormatCorrectWithSafe<TypeCanToAssembly>",
+          "lineNumber": 73
+        },
+        {
+          "caller": "checkFileExistAndFormat",
+          "callee": "load",
+          "lineNumber": 75
+        },
+        {
+          "caller": "checkFileExistAndFormat",
+          "callee": "toStdString",
+          "lineNumber": 75
+        },
+        {
+          "caller": "checkFileExistAndFormat",
+          "callee": "rw::oso::AssemblyMergeTool::Merge",
+          "lineNumber": 77
+        },
+        {
+          "caller": "checkFileExistAndFormat",
+          "callee": "TypeCanToAssembly",
+          "lineNumber": 77
+        },
+        {
+          "caller": "checkFileExistAndFormat",
+          "callee": "saveSafe",
+          "lineNumber": 80
+        },
+        {
+          "caller": "checkFileExistAndFormat",
+          "callee": "toStdString",
+          "lineNumber": 80
+        },
+        {
+          "caller": "checkFileExistAndFormat",
+          "callee": "saveSafe",
+          "lineNumber": 84
+        },
+        {
+          "caller": "checkFileExistAndFormat",
+          "callee": "TypeCanToAssembly",
+          "lineNumber": 84
+        },
+        {
+          "caller": "checkFileExistAndFormat",
+          "callee": "toStdString",
+          "lineNumber": 84
+        },
+        {
+          "caller": "checkFileExistAndFormat",
+          "callee": "saveSafe",
+          "lineNumber": 90
+        },
+        {
+          "caller": "checkFileExistAndFormat",
+          "callee": "TypeCanToAssembly",
+          "lineNumber": 90
+        },
+        {
+          "caller": "checkFileExistAndFormat",
+          "callee": "toStdString",
+          "lineNumber": 90
+        }
+      ],
+      "metrics": {
+        "importCount": 12,
+        "exportCount": 9,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "include/Modules/CameraModule.hpp",
+      "language": "cpp",
+      "fileCategory": "code",
+      "totalLines": 50,
+      "nonEmptyLines": 44,
+      "functions": [
+        {
+          "name": "getBuildResults",
+          "startLine": 34,
+          "endLine": 34,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "CameraModule",
+          "startLine": 14,
+          "endLine": 50,
+          "methods": [
+            "build",
+            "destroy",
+            "start",
+            "stop",
+            "build_camera1",
+            "destroy_camera1",
+            "getBuildResults",
+            "isTargetCamera",
+            "cameraMetaDataCheck",
+            "onBuildCamera",
+            "onDestroyCamera",
+            "onStartCamera",
+            "onFrameCaptured",
+            "frameCaptured1"
+          ],
+          "properties": [
+            "public",
+            "_buildResults",
+            "camera1"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "build",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "destroy",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "start",
+          "line": 25,
+          "isDefault": false
+        },
+        {
+          "name": "stop",
+          "line": 26,
+          "isDefault": false
+        },
+        {
+          "name": "getBuildResults",
+          "line": 34,
+          "isDefault": false
+        },
+        {
+          "name": "onBuildCamera",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "onDestroyCamera",
+          "line": 42,
+          "isDefault": false
+        },
+        {
+          "name": "onStartCamera",
+          "line": 43,
+          "isDefault": false
+        },
+        {
+          "name": "onFrameCaptured",
+          "line": 45,
+          "isDefault": false
+        },
+        {
+          "name": "frameCaptured1",
+          "line": 47,
+          "isDefault": false
+        },
+        {
+          "name": "CameraModule",
+          "line": 14,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 11,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "include/Modules/EliminateModule.hpp",
+      "language": "cpp",
+      "fileCategory": "code",
+      "totalLines": 22,
+      "nonEmptyLines": 18,
+      "classes": [
+        {
+          "name": "EliminateModule",
+          "startLine": 7,
+          "endLine": 22,
+          "methods": [
+            "destroy",
+            "start",
+            "stop"
+          ],
+          "properties": [
+            "public",
+            "productPriorityQueue1",
+            "detachDefectThreadPreProcess"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "EliminateModule",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "include/func/ImageProcessorModule.hpp",
+      "language": "cpp",
+      "fileCategory": "code",
+      "totalLines": 100,
+      "nonEmptyLines": 82,
+      "functions": [
+        {
+          "name": "getProcessors",
+          "startLine": 86,
+          "endLine": 88,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "ImageProcessor",
+          "startLine": 18,
+          "endLine": 62,
+          "methods": [
+            "run",
+            "run_debug",
+            "run_OpenRemoveFunc",
+            "run_OpenRemoveFunc_emitErrorInfo",
+            "imageReady",
+            "save_image",
+            "save_image_work",
+            "drawImg",
+            "writePlcController",
+            "buildObbModelEngine"
+          ],
+          "properties": [
+            "public",
+            "_imgProcess",
+            "_queue",
+            "_mutex",
+            "_condition",
+            "_workIndex",
+            "imageProcessingModuleIndex"
+          ]
+        },
+        {
+          "name": "ImageProcessingModule",
+          "startLine": 65,
+          "endLine": 98,
+          "methods": [
+            "BuildModule",
+            "onFrameCaptured",
+            "imageReady",
+            "getProcessors"
+          ],
+          "properties": [
+            "public",
+            "_queue",
+            "_mutex",
+            "_condition",
+            "_processors",
+            "_numConsumers",
+            "index"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "buildObbModelEngine",
+          "line": 54,
+          "isDefault": false
+        },
+        {
+          "name": "ImageProcessor",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "BuildModule",
+          "line": 72,
+          "isDefault": false
+        },
+        {
+          "name": "onFrameCaptured",
+          "line": 80,
+          "isDefault": false
+        },
+        {
+          "name": "imageReady",
+          "line": 83,
+          "isDefault": false
+        },
+        {
+          "name": "getProcessors",
+          "line": 86,
+          "isDefault": false
+        },
+        {
+          "name": "ImageProcessingModule",
+          "line": 65,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 7,
+        "functionCount": 1,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "include/data/Utilty.hpp",
+      "language": "cpp",
+      "fileCategory": "code",
+      "totalLines": 96,
+      "nonEmptyLines": 83,
+      "classes": [
+        {
+          "name": "GlobalPath",
+          "startLine": 6,
+          "endLine": 20,
+          "methods": [],
+          "properties": [
+            "projectHome",
+            "configRootPath",
+            "modelRootPath",
+            "EdgeWidthDetectionConfigPath",
+            "setConfigPath",
+            "modelPath",
+            "imageSaveRootPath",
+            "testImgDirPath"
+          ]
+        },
+        {
+          "name": "ClassId",
+          "startLine": 22,
+          "endLine": 33,
+          "methods": [],
+          "properties": [
+            "minNum",
+            "edge",
+            "maxNum",
+            "indexCount",
+            "classIdNameMap",
+            "classids"
+          ]
+        },
+        {
+          "name": "Utility",
+          "startLine": 35,
+          "endLine": 39,
+          "methods": [],
+          "properties": [
+            "cameraIp1",
+            "cameraIp2"
+          ]
+        },
+        {
+          "name": "ModBusAddress",
+          "startLine": 41,
+          "endLine": 60,
+          "methods": [],
+          "properties": [
+            "shiceyahenkuanduAddress",
+            "shedingyahenbiaozhunkuanduzhiAddress",
+            "paizhaojiangejuliAddress",
+            "daizichangdubiaozhunAddress",
+            "jimiqiyiquanmaichongshuAddress",
+            "jimiqiyiquanzhouchangAddress",
+            "bujinyiquanmaichongshuAddress",
+            "bujinluojuAddress",
+            "daoyidongbuchangAddress",
+            "zidongdaoyidongzuidajuliAddress",
+            "daojiakeyidongdezuidajuliAddress",
+            "daoyidongsudumaichongpinlvAddress",
+            "readPLCbaojingxinxiAddress",
+            "readPLCkeyipaizhaoxinhaoAddress",
+            "readPLCtingzhipaizhaoxinhaoAddress",
+            "readPLCdaizishicechangduAddress"
+          ]
+        },
+        {
+          "name": "PlcReadItem",
+          "startLine": 62,
+          "endLine": 67,
+          "methods": [],
+          "properties": [
+            "value",
+            "ok",
+            "index"
+          ]
+        },
+        {
+          "name": "PlcReadIndex",
+          "startLine": 69,
+          "endLine": 88,
+          "methods": [],
+          "properties": [
+            "shiceyahenkuandu",
+            "shedingyahenbiaozhunzhi",
+            "paizhaojiangejuli",
+            "daizichangdubiaozhun",
+            "jimiqiyiquanmaichongshu",
+            "jimiqiyiquanzhouchang",
+            "bujinyiquanmaichongshu",
+            "bujinluoju",
+            "daoyidongbuchang",
+            "zidongdaoyidongzuidajuli",
+            "daojiakeyidongdezuidajuli",
+            "daoyidongsudumaichongpinlv",
+            "readPLCbaojingxinxi",
+            "readPLCkeyipaizhaoxinhao",
+            "readPLCtingzhipaizhaoxinhao",
+            "readPLCdaizishicechangdu"
+          ]
+        },
+        {
+          "name": "MatInfo",
+          "startLine": 91,
+          "endLine": 95,
+          "methods": [],
+          "properties": [
+            "image",
+            "location",
+            "index"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GlobalPath",
+          "line": 6,
+          "isDefault": false
+        },
+        {
+          "name": "ClassId",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "Utility",
+          "line": 35,
+          "isDefault": false
+        },
+        {
+          "name": "ModBusAddress",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "PlcReadItem",
+          "line": 62,
+          "isDefault": false
+        },
+        {
+          "name": "PlcReadIndex",
+          "line": 69,
+          "isDefault": false
+        },
+        {
+          "name": "MatInfo",
+          "line": 91,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 7,
+        "functionCount": 0,
+        "classCount": 7
+      }
+    }
+  ]
+}

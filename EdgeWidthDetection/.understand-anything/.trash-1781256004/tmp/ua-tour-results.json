@@ -1,0 +1,708 @@
+{
+  "scriptCompleted": true,
+  "entryPointCandidates": [
+    {
+      "id": "file:src/main.cpp",
+      "score": 4,
+      "name": "main.cpp",
+      "summary": "程序入口点：创建 Modules 单例并启动事件循环",
+      "type": "file"
+    },
+    {
+      "id": "file:.understand-anything/.understandignore",
+      "score": 2,
+      "name": ".understandignore",
+      "summary": "忽略文件配置，定义分析排除模式",
+      "type": "file"
+    },
+    {
+      "id": "file:src/CMakeLists.txt",
+      "score": 2,
+      "name": "src/CMakeLists.txt",
+      "summary": "构建配置，定义源文件和链接库",
+      "type": "file"
+    },
+    {
+      "id": "file:src/Modules/Modules.cpp",
+      "score": 2,
+      "name": "Modules.cpp",
+      "summary": "单例中枢实现：build/destroy/start/stop/connect 全流程编排",
+      "type": "file"
+    },
+    {
+      "id": "file:include/Modules/ConfigManagerModule.hpp",
+      "score": 1,
+      "name": "ConfigManagerModule.hpp",
+      "summary": "配置加载/保存模块，提供 loadConfigSafe 模板",
+      "type": "file"
+    }
+  ],
+  "fanInRanking": [
+    {
+      "id": "file:include/Modules/IModule.hpp",
+      "fanIn": 12,
+      "name": "IModule.hpp"
+    },
+    {
+      "id": "file:include/data/Utilty.hpp",
+      "fanIn": 10,
+      "name": "Utilty.hpp"
+    },
+    {
+      "id": "file:osoInclude/EdgeWidthDetection.hpp",
+      "fanIn": 4,
+      "name": "EdgeWidthDetection.hpp"
+    },
+    {
+      "id": "file:osoInclude/SetConfig.hpp",
+      "fanIn": 4,
+      "name": "SetConfig.hpp"
+    },
+    {
+      "id": "file:include/func/ImageProcessorModule.hpp",
+      "fanIn": 3,
+      "name": "ImageProcessorModule.hpp"
+    },
+    {
+      "id": "file:include/Modules/ConfigManagerModule.hpp",
+      "fanIn": 3,
+      "name": "ConfigManagerModule.hpp"
+    },
+    {
+      "id": "file:include/NoHardWare/TestImgPushThread.hpp",
+      "fanIn": 3,
+      "name": "TestImgPushThread.hpp"
+    },
+    {
+      "id": "file:include/ui/DlgProductSet.h",
+      "fanIn": 3,
+      "name": "DlgProductSet.h"
+    },
+    {
+      "id": "file:include/ui/EdgeWidthDetection.h",
+      "fanIn": 3,
+      "name": "EdgeWidthDetection.h"
+    },
+    {
+      "id": "file:include/data/osoFIleUtiltyFunc.hpp",
+      "fanIn": 2,
+      "name": "osoFIleUtiltyFunc.hpp"
+    },
+    {
+      "id": "file:include/DetachThread/CameraAndCardStateThread.h",
+      "fanIn": 2,
+      "name": "CameraAndCardStateThread.h"
+    },
+    {
+      "id": "file:include/DetachThread/DetachDefectThreadProcess.h",
+      "fanIn": 2,
+      "name": "DetachDefectThreadProcess.h"
+    },
+    {
+      "id": "file:include/DetachThread/DetachPLCListenThread.h",
+      "fanIn": 2,
+      "name": "DetachPLCListenThread.h"
+    },
+    {
+      "id": "file:include/DetachThread/DetachUtiltyThread.h",
+      "fanIn": 2,
+      "name": "DetachUtiltyThread.h"
+    },
+    {
+      "id": "file:include/Modules/CameraModule.hpp",
+      "fanIn": 2,
+      "name": "CameraModule.hpp"
+    },
+    {
+      "id": "file:include/Modules/EliminateModule.hpp",
+      "fanIn": 2,
+      "name": "EliminateModule.hpp"
+    },
+    {
+      "id": "file:include/Modules/ImgProModule.hpp",
+      "fanIn": 2,
+      "name": "ImgProModule.hpp"
+    },
+    {
+      "id": "file:include/Modules/ImgSaveModule.hpp",
+      "fanIn": 2,
+      "name": "ImgSaveModule.hpp"
+    },
+    {
+      "id": "file:include/Modules/Modules.hpp",
+      "fanIn": 2,
+      "name": "Modules.hpp"
+    },
+    {
+      "id": "file:include/Modules/PlcController.hpp",
+      "fanIn": 2,
+      "name": "PlcController.hpp"
+    }
+  ],
+  "fanOutRanking": [
+    {
+      "id": "file:include/Modules/Modules.hpp",
+      "fanOut": 13,
+      "name": "Modules.hpp"
+    },
+    {
+      "id": "file:src/Modules/Modules.cpp",
+      "fanOut": 13,
+      "name": "Modules.cpp"
+    },
+    {
+      "id": "file:src/Modules/ConfigManagerModule.cpp",
+      "fanOut": 4,
+      "name": "ConfigManagerModule.cpp"
+    },
+    {
+      "id": "file:src/Modules/UIModule.cpp",
+      "fanOut": 4,
+      "name": "UIModule.cpp"
+    },
+    {
+      "id": "file:include/Modules/ConfigManagerModule.hpp",
+      "fanOut": 3,
+      "name": "ConfigManagerModule.hpp"
+    },
+    {
+      "id": "file:include/Modules/UIModule.hpp",
+      "fanOut": 3,
+      "name": "UIModule.hpp"
+    },
+    {
+      "id": "file:src/Modules/CameraModule.cpp",
+      "fanOut": 3,
+      "name": "CameraModule.cpp"
+    },
+    {
+      "id": "file:src/Modules/EliminateModule.cpp",
+      "fanOut": 3,
+      "name": "EliminateModule.cpp"
+    },
+    {
+      "id": "file:src/Modules/ImgProModule.cpp",
+      "fanOut": 3,
+      "name": "ImgProModule.cpp"
+    },
+    {
+      "id": "file:src/Modules/RuntimeInfoModule.cpp",
+      "fanOut": 3,
+      "name": "RuntimeInfoModule.cpp"
+    },
+    {
+      "id": "file:include/func/ImageProcessorModule.hpp",
+      "fanOut": 2,
+      "name": "ImageProcessorModule.hpp"
+    },
+    {
+      "id": "file:include/Modules/ImgProModule.hpp",
+      "fanOut": 2,
+      "name": "ImgProModule.hpp"
+    },
+    {
+      "id": "file:src/main.cpp",
+      "fanOut": 2,
+      "name": "main.cpp"
+    },
+    {
+      "id": "file:src/func/ImageProcessorModule.cpp",
+      "fanOut": 2,
+      "name": "ImageProcessorModule.cpp"
+    },
+    {
+      "id": "file:src/Modules/ImgSaveModule.cpp",
+      "fanOut": 2,
+      "name": "ImgSaveModule.cpp"
+    },
+    {
+      "id": "file:src/Modules/PlcController.cpp",
+      "fanOut": 2,
+      "name": "PlcController.cpp"
+    },
+    {
+      "id": "file:src/Modules/ReconnectModule.cpp",
+      "fanOut": 2,
+      "name": "ReconnectModule.cpp"
+    },
+    {
+      "id": "file:src/Modules/TestModule.cpp",
+      "fanOut": 2,
+      "name": "TestModule.cpp"
+    },
+    {
+      "id": "document:CMakeLists.txt",
+      "fanOut": 1,
+      "name": "CMakeLists.txt"
+    },
+    {
+      "id": "file:include/Modules/CameraModule.hpp",
+      "fanOut": 1,
+      "name": "CameraModule.hpp"
+    }
+  ],
+  "bfsTraversal": {
+    "startNode": "file:src/main.cpp",
+    "order": [
+      "file:src/main.cpp",
+      "file:include/Modules/Modules.hpp",
+      "file:include/Modules/ConfigManagerModule.hpp",
+      "file:include/Modules/IModule.hpp",
+      "file:include/Modules/CameraModule.hpp",
+      "file:include/Modules/ImgProModule.hpp",
+      "file:include/Modules/ImgSaveModule.hpp",
+      "file:include/Modules/EliminateModule.hpp",
+      "file:include/Modules/PlcController.hpp",
+      "file:include/Modules/ReconnectModule.hpp",
+      "file:include/Modules/RuntimeInfoModule.hpp",
+      "file:include/Modules/UIModule.hpp",
+      "file:include/Modules/WarningModule.hpp",
+      "file:include/Modules/TestModule.hpp",
+      "file:include/data/Utilty.hpp",
+      "file:osoInclude/EdgeWidthDetection.hpp",
+      "file:osoInclude/SetConfig.hpp",
+      "file:include/func/ImageProcessorModule.hpp",
+      "file:include/ui/EdgeWidthDetection.h",
+      "file:include/ui/DlgProductSet.h",
+      "file:ui/EdgeWidthDetection.ui",
+      "file:ui/DlgProductSet.ui"
+    ],
+    "depthMap": {
+      "file:src/main.cpp": 0,
+      "file:include/Modules/Modules.hpp": 1,
+      "file:include/Modules/ConfigManagerModule.hpp": 1,
+      "file:include/Modules/IModule.hpp": 2,
+      "file:include/Modules/CameraModule.hpp": 2,
+      "file:include/Modules/ImgProModule.hpp": 2,
+      "file:include/Modules/ImgSaveModule.hpp": 2,
+      "file:include/Modules/EliminateModule.hpp": 2,
+      "file:include/Modules/PlcController.hpp": 2,
+      "file:include/Modules/ReconnectModule.hpp": 2,
+      "file:include/Modules/RuntimeInfoModule.hpp": 2,
+      "file:include/Modules/UIModule.hpp": 2,
+      "file:include/Modules/WarningModule.hpp": 2,
+      "file:include/Modules/TestModule.hpp": 2,
+      "file:include/data/Utilty.hpp": 2,
+      "file:osoInclude/EdgeWidthDetection.hpp": 2,
+      "file:osoInclude/SetConfig.hpp": 2,
+      "file:include/func/ImageProcessorModule.hpp": 3,
+      "file:include/ui/EdgeWidthDetection.h": 3,
+      "file:include/ui/DlgProductSet.h": 3,
+      "file:ui/EdgeWidthDetection.ui": 4,
+      "file:ui/DlgProductSet.ui": 4
+    },
+    "byDepth": {
+      "0": [
+        "file:src/main.cpp"
+      ],
+      "1": [
+        "file:include/Modules/Modules.hpp",
+        "file:include/Modules/ConfigManagerModule.hpp"
+      ],
+      "2": [
+        "file:include/Modules/IModule.hpp",
+        "file:include/Modules/CameraModule.hpp",
+        "file:include/Modules/ImgProModule.hpp",
+        "file:include/Modules/ImgSaveModule.hpp",
+        "file:include/Modules/EliminateModule.hpp",
+        "file:include/Modules/PlcController.hpp",
+        "file:include/Modules/ReconnectModule.hpp",
+        "file:include/Modules/RuntimeInfoModule.hpp",
+        "file:include/Modules/UIModule.hpp",
+        "file:include/Modules/WarningModule.hpp",
+        "file:include/Modules/TestModule.hpp",
+        "file:include/data/Utilty.hpp",
+        "file:osoInclude/EdgeWidthDetection.hpp",
+        "file:osoInclude/SetConfig.hpp"
+      ],
+      "3": [
+        "file:include/func/ImageProcessorModule.hpp",
+        "file:include/ui/EdgeWidthDetection.h",
+        "file:include/ui/DlgProductSet.h"
+      ],
+      "4": [
+        "file:ui/EdgeWidthDetection.ui",
+        "file:ui/DlgProductSet.ui"
+      ]
+    }
+  },
+  "nonCodeFiles": {
+    "documentation": [
+      {
+        "id": "document:CMakeLists.txt",
+        "name": "CMakeLists.txt",
+        "summary": "顶层 CMake 构建配置，定义项目 Qt6 依赖和源文件组织",
+        "type": "document"
+      }
+    ],
+    "infrastructure": [],
+    "data": [
+      {
+        "id": "schema:osoFile/EdgeWidthDetection.oso",
+        "name": "EdgeWidthDetection.oso",
+        "summary": "EdgeWidthDetection 配置 DSL 定义，自动生成 C++ 类",
+        "type": "schema"
+      },
+      {
+        "id": "schema:osoFile/SetConfig.oso",
+        "name": "SetConfig.oso",
+        "summary": "产品设置配置 DSL 定义，包含检测参数和相机设置",
+        "type": "schema"
+      }
+    ],
+    "config": [
+      {
+        "id": "config:.understand-anything/config.json",
+        "name": "config.json",
+        "summary": "理解项目配置文件",
+        "type": "config"
+      },
+      {
+        "id": "config:qrc/QiXinShiJinDanXiangJi.qrc",
+        "name": "QiXinShiJinDanXiangJi.qrc",
+        "summary": "Qt 资源文件",
+        "type": "config"
+      }
+    ]
+  },
+  "clusters": [],
+  "layers": {
+    "count": 8,
+    "list": [
+      {
+        "id": "layer:core-framework",
+        "name": "核心框架层",
+        "description": "IModule 生命周期接口模板和 Modules 全局单例中枢，定义所有模块的统一契约和全生命周期编排"
+      },
+      {
+        "id": "layer:feature-modules",
+        "name": "功能模块层",
+        "description": "实现 IModule 接口的 10 个业务子模块：相机采集、配置管理、图像处理、图像保存、缺陷剔除、PLC 通信、重连监控、运行时信息、UI 管理、警告"
+      },
+      {
+        "id": "layer:image-processing",
+        "name": "图像处理引擎层",
+        "description": "ImageProcessingModule 图像处理管线：预处理、模型引擎构建（ONNX/CUDA/TensorRT）和边缘宽度检测算法"
+      },
+      {
+        "id": "layer:background-threads",
+        "name": "后台线程层",
+        "description": "4 个独立于 Qt 主事件循环的异步工作线程：PLC 监听、缺陷剔除判定、PLC 信息轮询、相机/板卡状态监控"
+      },
+      {
+        "id": "layer:global-data",
+        "name": "全局数据层",
+        "description": "跨模块共享的数据结构和工具函数：GlobalPath、ModBusAddress、PlcReadIndex、配置转换工具"
+      },
+      {
+        "id": "layer:ui-presentation",
+        "name": "UI 表现层",
+        "description": "Qt6 主窗口和产品设置对话框的声明、实现和 Qt Designer 生成的 .ui 布局文件"
+      },
+      {
+        "id": "layer:configuration",
+        "name": "配置与资源层",
+        "description": "OSO 配置 DSL 定义文件、自动生成的配置头文件、Qt 资源文件、CMake 构建配置和程序入口点 main.cpp"
+      },
+      {
+        "id": "layer:test-no-hardware",
+        "name": "测试与无硬件层",
+        "description": "无硬件开发模式组件：TestModule 和 TestImgPushThread，在 BUILD_WITHOUT_HARDWARE 模式下替代真实相机推送测试图像"
+      }
+    ]
+  },
+  "nodeSummaryIndex": {
+    "file:.understand-anything/.understandignore": {
+      "name": ".understandignore",
+      "type": "file",
+      "summary": "忽略文件配置，定义分析排除模式"
+    },
+    "config:.understand-anything/config.json": {
+      "name": "config.json",
+      "type": "config",
+      "summary": "理解项目配置文件"
+    },
+    "document:CMakeLists.txt": {
+      "name": "CMakeLists.txt",
+      "type": "document",
+      "summary": "顶层 CMake 构建配置，定义项目 Qt6 依赖和源文件组织"
+    },
+    "file:include/data/osoFIleUtiltyFunc.hpp": {
+      "name": "osoFIleUtiltyFunc.hpp",
+      "type": "file",
+      "summary": "配置文件转换工具函数声明"
+    },
+    "file:include/data/Utilty.hpp": {
+      "name": "Utilty.hpp",
+      "type": "file",
+      "summary": "全局数据结构定义：路径、类ID、ModBus地址、PLC寄存器、图像信息"
+    },
+    "file:include/DetachThread/CameraAndCardStateThread.h": {
+      "name": "CameraAndCardStateThread.h",
+      "type": "file",
+      "summary": "相机和板卡状态监控线程"
+    },
+    "file:include/DetachThread/DetachDefectThreadProcess.h": {
+      "name": "DetachDefectThreadProcess.h",
+      "type": "file",
+      "summary": "异步缺陷剔除判定线程"
+    },
+    "file:include/DetachThread/DetachPLCListenThread.h": {
+      "name": "DetachPLCListenThread.h",
+      "type": "file",
+      "summary": "Modbus PLC 后台监听线程"
+    },
+    "file:include/DetachThread/DetachUtiltyThread.h": {
+      "name": "DetachUtiltyThread.h",
+      "type": "file",
+      "summary": "PLC 信息和统计数据轮询线程"
+    },
+    "file:include/func/ImageProcessorModule.hpp": {
+      "name": "ImageProcessorModule.hpp",
+      "type": "file",
+      "summary": "图像处理管线：预处理+检测，管理多个 ImageProcessor"
+    },
+    "file:include/Modules/CameraModule.hpp": {
+      "name": "CameraModule.hpp",
+      "type": "file",
+      "summary": "海康威视/度申相机模块，帧采集、重连"
+    },
+    "file:include/Modules/ConfigManagerModule.hpp": {
+      "name": "ConfigManagerModule.hpp",
+      "type": "file",
+      "summary": "配置加载/保存模块，提供 loadConfigSafe 模板"
+    },
+    "file:include/Modules/EliminateModule.hpp": {
+      "name": "EliminateModule.hpp",
+      "type": "file",
+      "summary": "缺陷剔除逻辑模块，产品判定优先级队列"
+    },
+    "file:include/Modules/IModule.hpp": {
+      "name": "IModule.hpp",
+      "type": "file",
+      "summary": "模块生命周期接口模板：build/destroy/start/stop"
+    },
+    "file:include/Modules/ImgProModule.hpp": {
+      "name": "ImgProModule.hpp",
+      "type": "file",
+      "summary": "图像处理模块，对接 ImageProcessingModule"
+    },
+    "file:include/Modules/ImgSaveModule.hpp": {
+      "name": "ImgSaveModule.hpp",
+      "type": "file",
+      "summary": "异步图像保存模块，通过 ImageSaveEngine 写入磁盘"
+    },
+    "file:include/Modules/Modules.hpp": {
+      "name": "Modules.hpp",
+      "type": "file",
+      "summary": "全局单例中枢，持有所有子模块，组织 build/connect/start/stop"
+    },
+    "file:include/Modules/PlcController.hpp": {
+      "name": "PlcController.hpp",
+      "type": "file",
+      "summary": "Modbus PLC 通信模块，读写寄存器"
+    },
+    "file:include/Modules/ReconnectModule.hpp": {
+      "name": "ReconnectModule.hpp",
+      "type": "file",
+      "summary": "重连模块，监控相机/板卡连接并触发重连"
+    },
+    "file:include/Modules/RuntimeInfoModule.hpp": {
+      "name": "RuntimeInfoModule.hpp",
+      "type": "file",
+      "summary": "运行时状态追踪：调试/运行/停止、废品计数、PLC 信息"
+    },
+    "file:include/Modules/TestModule.hpp": {
+      "name": "TestModule.hpp",
+      "type": "file",
+      "summary": "无硬件测试模块，替代真实相机推送测试图像"
+    },
+    "file:include/Modules/UIModule.hpp": {
+      "name": "UIModule.hpp",
+      "type": "file",
+      "summary": "UI 模块：主窗口 EdgeWidthDetection + 产品设置对话框 DlgProductSet"
+    },
+    "file:include/Modules/WarningModule.hpp": {
+      "name": "WarningModule.hpp",
+      "type": "file",
+      "summary": "警告模块（占位）"
+    },
+    "file:include/NoHardWare/TestImgPushThread.hpp": {
+      "name": "TestImgPushThread.hpp",
+      "type": "file",
+      "summary": "无硬件模式下从磁盘推送测试图像的线程"
+    },
+    "file:include/ui/DlgProductSet.h": {
+      "name": "DlgProductSet.h",
+      "type": "file",
+      "summary": "产品设置对话框 UI 声明"
+    },
+    "file:include/ui/EdgeWidthDetection.h": {
+      "name": "EdgeWidthDetection.h",
+      "type": "file",
+      "summary": "主窗口 UI 声明，包含控件定义和信号槽"
+    },
+    "schema:osoFile/EdgeWidthDetection.oso": {
+      "name": "EdgeWidthDetection.oso",
+      "type": "schema",
+      "summary": "EdgeWidthDetection 配置 DSL 定义，自动生成 C++ 类"
+    },
+    "schema:osoFile/SetConfig.oso": {
+      "name": "SetConfig.oso",
+      "type": "schema",
+      "summary": "产品设置配置 DSL 定义，包含检测参数和相机设置"
+    },
+    "file:osoInclude/EdgeWidthDetection.hpp": {
+      "name": "EdgeWidthDetection.hpp",
+      "type": "file",
+      "summary": "由 EdgeWidthDetection.oso 自动生成的头文件"
+    },
+    "file:osoInclude/SetConfig.hpp": {
+      "name": "SetConfig.hpp",
+      "type": "file",
+      "summary": "由 SetConfig.oso 自动生成的头文件"
+    },
+    "config:qrc/QiXinShiJinDanXiangJi.qrc": {
+      "name": "QiXinShiJinDanXiangJi.qrc",
+      "type": "config",
+      "summary": "Qt 资源文件"
+    },
+    "file:src/CMakeLists.txt": {
+      "name": "src/CMakeLists.txt",
+      "type": "file",
+      "summary": "构建配置，定义源文件和链接库"
+    },
+    "file:src/main.cpp": {
+      "name": "main.cpp",
+      "type": "file",
+      "summary": "程序入口点：创建 Modules 单例并启动事件循环"
+    },
+    "file:src/data/osoFIleUtiltyFunc.cpp": {
+      "name": "osoFIleUtiltyFunc.cpp",
+      "type": "file",
+      "summary": "配置文件转换工具函数实现"
+    },
+    "file:src/data/Utilty.cpp": {
+      "name": "Utilty.cpp",
+      "type": "file",
+      "summary": "全局路径和工具类实现，包含注册表读取和目录创建"
+    },
+    "file:src/DetachThread/CameraAndCardStateThread.cpp": {
+      "name": "CameraAndCardStateThread.cpp",
+      "type": "file",
+      "summary": "相机/板卡状态监控线程实现"
+    },
+    "file:src/DetachThread/DetachDefectThreadProcess.cpp": {
+      "name": "DetachDefectThreadProcess.cpp",
+      "type": "file",
+      "summary": "缺陷剔除线程实现"
+    },
+    "file:src/DetachThread/DetachPLCListenThread.cpp": {
+      "name": "DetachPLCListenThread.cpp",
+      "type": "file",
+      "summary": "PLC 监听线程实现"
+    },
+    "file:src/DetachThread/DetachUtiltyThread.cpp": {
+      "name": "DetachUtiltyThread.cpp",
+      "type": "file",
+      "summary": "PLC 信息轮询线程实现"
+    },
+    "file:src/func/ImageProcessorModule.cpp": {
+      "name": "ImageProcessorModule.cpp",
+      "type": "file",
+      "summary": "图像处理管线实现：预处理、模型引擎构建、检测流程"
+    },
+    "file:src/Modules/CameraModule.cpp": {
+      "name": "CameraModule.cpp",
+      "type": "file",
+      "summary": "相机模块实现：构建、帧采集回调、重连逻辑"
+    },
+    "file:src/Modules/ConfigManagerModule.cpp": {
+      "name": "ConfigManagerModule.cpp",
+      "type": "file",
+      "summary": "配置加载实现：XML 读写、合并、路径管理"
+    },
+    "file:src/Modules/EliminateModule.cpp": {
+      "name": "EliminateModule.cpp",
+      "type": "file",
+      "summary": "缺陷剔除模块实现"
+    },
+    "file:src/Modules/IModule.cpp": {
+      "name": "IModule.cpp",
+      "type": "file",
+      "summary": "IModule 模板接口实现（占位）"
+    },
+    "file:src/Modules/ImgProModule.cpp": {
+      "name": "ImgProModule.cpp",
+      "type": "file",
+      "summary": "图像处理模块实现：构建处理管线、参数配置"
+    },
+    "file:src/Modules/ImgSaveModule.cpp": {
+      "name": "ImgSaveModule.cpp",
+      "type": "file",
+      "summary": "图像保存模块实现：文件命名、异步写入"
+    },
+    "file:src/Modules/Modules.cpp": {
+      "name": "Modules.cpp",
+      "type": "file",
+      "summary": "单例中枢实现：build/destroy/start/stop/connect 全流程编排"
+    },
+    "file:src/Modules/PlcController.cpp": {
+      "name": "PlcController.cpp",
+      "type": "file",
+      "summary": "PLC 控制器实现：Modbus 读写、配置路径解析"
+    },
+    "file:src/Modules/ReconnectModule.cpp": {
+      "name": "ReconnectModule.cpp",
+      "type": "file",
+      "summary": "重连模块实现"
+    },
+    "file:src/Modules/RuntimeInfoModule.cpp": {
+      "name": "RuntimeInfoModule.cpp",
+      "type": "file",
+      "summary": "运行时信息模块实现：状态更新、废品计数、PLC 信息轮询"
+    },
+    "file:src/Modules/TestModule.cpp": {
+      "name": "TestModule.cpp",
+      "type": "file",
+      "summary": "测试模块实现（无硬件模式）"
+    },
+    "file:src/Modules/UIModule.cpp": {
+      "name": "UIModule.cpp",
+      "type": "file",
+      "summary": "UI 模块实现：窗口管理、配置更新、信号槽连接"
+    },
+    "file:src/Modules/WarningModule.cpp": {
+      "name": "WarningModule.cpp",
+      "type": "file",
+      "summary": "警告模块实现（占位）"
+    },
+    "file:src/NoHardWare/TestImgPushThread.cpp": {
+      "name": "TestImgPushThread.cpp",
+      "type": "file",
+      "summary": "无硬件测试图像推送线程实现"
+    },
+    "file:src/ui/DlgProductSet.cpp": {
+      "name": "DlgProductSet.cpp",
+      "type": "file",
+      "summary": "产品设置对话框实现：控件交互、信号槽"
+    },
+    "file:src/ui/EdgeWidthDetection.cpp": {
+      "name": "EdgeWidthDetection.cpp",
+      "type": "file",
+      "summary": "主窗口实现：布局管理、控件初始化、全景更新"
+    },
+    "file:ui/DlgProductSet.ui": {
+      "name": "DlgProductSet.ui",
+      "type": "file",
+      "summary": "产品设置对话框 Qt Designer UI 布局文件"
+    },
+    "file:ui/EdgeWidthDetection.ui": {
+      "name": "EdgeWidthDetection.ui",
+      "type": "file",
+      "summary": "主窗口 Qt Designer UI 布局文件"
+    }
+  },
+  "totalNodes": 58,
+  "totalEdges": 92
+}

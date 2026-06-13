@@ -1,0 +1,116 @@
+[
+  {
+    "id": "layer:core-framework",
+    "name": "核心框架层",
+    "description": "模块生命周期接口 IModule 模板和全局单例 Modules 中枢，定义 build/destroy/start/stop 契约并统一编排所有子模块的初始化、信号槽连接和启停流程",
+    "nodeIds": [
+      "file:include/Modules/IModule.hpp",
+      "file:src/Modules/IModule.cpp",
+      "file:include/Modules/Modules.hpp",
+      "file:src/Modules/Modules.cpp"
+    ]
+  },
+  {
+    "id": "layer:feature-modules",
+    "name": "功能模块层",
+    "description": "实现 IModule 接口的所有业务子模块，包括相机采集（CameraModule）、配置管理（ConfigManagerModule）、图像处理对接（ImgProModule）、图像保存（ImgSaveModule）、缺陷剔除（EliminateModule）、PLC 通信（PlcController）、重连（ReconnectModule）、运行时状态（RuntimeInfoModule）、UI 管理（UIModule）和警告（WarningModule）",
+    "nodeIds": [
+      "file:include/Modules/CameraModule.hpp",
+      "file:include/Modules/ConfigManagerModule.hpp",
+      "file:include/Modules/EliminateModule.hpp",
+      "file:include/Modules/ImgProModule.hpp",
+      "file:include/Modules/ImgSaveModule.hpp",
+      "file:include/Modules/PlcController.hpp",
+      "file:include/Modules/ReconnectModule.hpp",
+      "file:include/Modules/RuntimeInfoModule.hpp",
+      "file:include/Modules/UIModule.hpp",
+      "file:include/Modules/WarningModule.hpp",
+      "file:src/Modules/CameraModule.cpp",
+      "file:src/Modules/ConfigManagerModule.cpp",
+      "file:src/Modules/EliminateModule.cpp",
+      "file:src/Modules/ImgProModule.cpp",
+      "file:src/Modules/ImgSaveModule.cpp",
+      "file:src/Modules/PlcController.cpp",
+      "file:src/Modules/ReconnectModule.cpp",
+      "file:src/Modules/RuntimeInfoModule.cpp",
+      "file:src/Modules/UIModule.cpp",
+      "file:src/Modules/WarningModule.cpp"
+    ]
+  },
+  {
+    "id": "layer:image-processing",
+    "name": "图像处理引擎层",
+    "description": "图像处理管线核心实现（ImageProcessorModule），管理多个 ImageProcessor 实例，负责预处理、模型引擎构建和边缘宽度检测流程",
+    "nodeIds": [
+      "file:include/func/ImageProcessorModule.hpp",
+      "file:src/func/ImageProcessorModule.cpp"
+    ]
+  },
+  {
+    "id": "layer:background-threads",
+    "name": "后台线程层",
+    "description": "独立于主 Qt 事件循环的后台线程基础设施，包括 Modbus PLC 监听（DetachPLCListenThread）、异步缺陷剔除判定（DetachDefectThread）、PLC 信息轮询（DetachUtiltyThread）和相机板卡状态监控（CameraAndCardStateThread）",
+    "nodeIds": [
+      "file:include/DetachThread/CameraAndCardStateThread.h",
+      "file:include/DetachThread/DetachDefectThreadProcess.h",
+      "file:include/DetachThread/DetachPLCListenThread.h",
+      "file:include/DetachThread/DetachUtiltyThread.h",
+      "file:src/DetachThread/CameraAndCardStateThread.cpp",
+      "file:src/DetachThread/DetachDefectThreadProcess.cpp",
+      "file:src/DetachThread/DetachPLCListenThread.cpp",
+      "file:src/DetachThread/DetachUtiltyThread.cpp"
+    ]
+  },
+  {
+    "id": "layer:global-data",
+    "name": "全局数据层",
+    "description": "跨模块共享的全局数据结构和工具函数，包括文件路径管理（GlobalPath）、ModBus 地址定义（ModBusAddress）、PLC 寄存器索引（PlcReadIndex）、图像信息结构体和配置文件转换工具",
+    "nodeIds": [
+      "file:include/data/osoFIleUtiltyFunc.hpp",
+      "file:include/data/Utilty.hpp",
+      "file:src/data/osoFIleUtiltyFunc.cpp",
+      "file:src/data/Utilty.cpp"
+    ]
+  },
+  {
+    "id": "layer:ui-presentation",
+    "name": "UI 表现层",
+    "description": "Qt6 用户界面层，包含主窗口（EdgeWidthDetection）和产品设置对话框（DlgProductSet）的类声明、控件交互实现及 Qt Designer 布局文件",
+    "nodeIds": [
+      "file:include/ui/DlgProductSet.h",
+      "file:include/ui/EdgeWidthDetection.h",
+      "file:src/ui/DlgProductSet.cpp",
+      "file:src/ui/EdgeWidthDetection.cpp",
+      "file:ui/DlgProductSet.ui",
+      "file:ui/EdgeWidthDetection.ui"
+    ]
+  },
+  {
+    "id": "layer:configuration",
+    "name": "配置与资源层",
+    "description": "配置 DSL 定义（.oso 文件）、自动生成的 C++ 配置类（osoInclude）、Qt 资源文件、CMake 构建系统配置以及程序入口点 main.cpp",
+    "nodeIds": [
+      "schema:osoFile/EdgeWidthDetection.oso",
+      "schema:osoFile/SetConfig.oso",
+      "file:osoInclude/EdgeWidthDetection.hpp",
+      "file:osoInclude/SetConfig.hpp",
+      "config:qrc/QiXinShiJinDanXiangJi.qrc",
+      "document:CMakeLists.txt",
+      "file:src/CMakeLists.txt",
+      "file:src/main.cpp",
+      "file:.understand-anything/.understandignore",
+      "config:.understand-anything/config.json"
+    ]
+  },
+  {
+    "id": "layer:test-no-hardware",
+    "name": "测试与无硬件层",
+    "description": "无硬件开发模式支持，包括替代真实相机的测试模块（TestModule）和从磁盘推送测试图像的线程（TestImgPushThread），在 BUILD_WITHOUT_HARDWARE 模式下启用",
+    "nodeIds": [
+      "file:include/Modules/TestModule.hpp",
+      "file:src/Modules/TestModule.cpp",
+      "file:include/NoHardWare/TestImgPushThread.hpp",
+      "file:src/NoHardWare/TestImgPushThread.cpp"
+    ]
+  }
+]

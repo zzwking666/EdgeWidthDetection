@@ -1,0 +1,3840 @@
+{
+  "projectRoot": "D:/Projects/EdgeWidthDetection",
+  "files": [
+    {
+      "path": ".claude/memory/feedback_chinese_language.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".claude/memory/feedback_emoji_prefix.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".claude/memory/MEMORY.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".claude/settings.json",
+      "language": "json",
+      "fileCategory": "config"
+    },
+    {
+      "path": ".gitattributes",
+      "language": "unknown",
+      "fileCategory": "code"
+    },
+    {
+      "path": ".github/copilot-instructions.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".understand-anything/.understandignore",
+      "language": "unknown",
+      "fileCategory": "code"
+    },
+    {
+      "path": ".understand-anything/config.json",
+      "language": "json",
+      "fileCategory": "config"
+    },
+    {
+      "path": "CLAUDE.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "cmake/CMakeCacheIni.cmake",
+      "language": "cmake",
+      "fileCategory": "code"
+    },
+    {
+      "path": "cmake/ComplierIni.cmake",
+      "language": "cmake",
+      "fileCategory": "code"
+    },
+    {
+      "path": "cmake/iniRW_UL.cmake",
+      "language": "cmake",
+      "fileCategory": "code"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "CMakePresets.json",
+      "language": "json",
+      "fileCategory": "config"
+    },
+    {
+      "path": "ConfigProject.bat",
+      "language": "batch",
+      "fileCategory": "script"
+    },
+    {
+      "path": "EdgeWidthDetection/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "EdgeWidthDetection/include/data/osoFIleUtiltyFunc.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/data/Utilty.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/DetachThread/CameraAndCardStateThread.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/DetachThread/DetachDefectThreadProcess.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/DetachThread/DetachPLCListenThread.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/DetachThread/DetachUtiltyThread.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/func/ImageProcessorModule.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/Modules/CameraModule.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/Modules/ConfigManagerModule.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/Modules/EliminateModule.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/Modules/ImgProModule.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/Modules/ImgSaveModule.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/Modules/IModule.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/Modules/Modules.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/Modules/PlcController.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/Modules/ReconnectModule.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/Modules/RuntimeInfoModule.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/Modules/TestModule.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/Modules/UIModule.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/Modules/WarningModule.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/NoHardWare/TestImgPushThread.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/ui/DlgProductSet.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/include/ui/EdgeWidthDetection.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/osoFile/EdgeWidthDetection.oso",
+      "language": "oso",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/osoFile/SetConfig.oso",
+      "language": "oso",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/osoInclude/EdgeWidthDetection.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/osoInclude/SetConfig.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/qrc/QiXinShiJinDanXiangJi.qrc",
+      "language": "qrc",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/data/osoFIleUtiltyFunc.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/data/Utilty.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/DetachThread/CameraAndCardStateThread.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/DetachThread/DetachDefectThreadProcess.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/DetachThread/DetachPLCListenThread.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/DetachThread/DetachUtiltyThread.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/func/ImageProcessorModule.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/main.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/Modules/CameraModule.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/Modules/ConfigManagerModule.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/Modules/EliminateModule.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/Modules/ImgProModule.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/Modules/ImgSaveModule.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/Modules/IModule.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/Modules/Modules.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/Modules/PlcController.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/Modules/ReconnectModule.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/Modules/RuntimeInfoModule.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/Modules/TestModule.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/Modules/UIModule.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/Modules/WarningModule.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/NoHardWare/TestImgPushThread.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/ui/DlgProductSet.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/src/ui/EdgeWidthDetection.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/ui/DlgProductSet.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "EdgeWidthDetection/ui/EdgeWidthDetection.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Folder.DotSettings",
+      "language": "dotsettings",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Folder.DotSettings.user",
+      "language": "user",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/cmake/CMakeCahceIni.cmake",
+      "language": "cmake",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/cmake/ComplierIni.cmake",
+      "language": "cmake",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/cmake/EnvironmetIni.cmake",
+      "language": "cmake",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/cmake/func.cmake",
+      "language": "cmake",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/cmake/PackageFind.cmake",
+      "language": "cmake",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/cmake/SerializedCodeGenerator/cmake/SerializedCodeGenerator.cmake",
+      "language": "cmake",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/cmake/SerializedCodeGenerator/SerializedCodeGenerator.py",
+      "language": "python",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/CMakePresets.json",
+      "language": "json",
+      "fileCategory": "config"
+    },
+    {
+      "path": "ThirdRep/RW_UL/downloadZfkjDevelopment.bat",
+      "language": "batch",
+      "fileCategory": "script"
+    },
+    {
+      "path": "ThirdRep/RW_UL/Folder.DotSettings",
+      "language": "dotsettings",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/Folder.DotSettings.user",
+      "language": "user",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/installPackage.bat",
+      "language": "batch",
+      "fileCategory": "script"
+    },
+    {
+      "path": "ThirdRep/RW_UL/installPackage.sh",
+      "language": "shell",
+      "fileCategory": "script"
+    },
+    {
+      "path": "ThirdRep/RW_UL/README.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/include/btm_BackgroundTaskManager.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/include/btm_ConfigLoader.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/include/btm_IdleDetector.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/include/btm_ProcessManager.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/include/btm_ResourceMonitor.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/include/btm_TaskScanner.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/include/btm_TaskScheduler.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/include/btm_Types.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/README.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/src/btm_BackgroundTaskManager.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/src/btm_ConfigLoader.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/src/btm_IdleDetector.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/src/btm_ProcessManager.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/src/btm_ResourceMonitor.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/src/btm_TaskScanner.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/src/btm_TaskScheduler.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/src/btm_Types.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/btm/test/main.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/include/ActivationCodeModule/cla_ActivationCodeGenerator.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/include/ActivationCodeModule/cla_ActivationCodeValidator.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/include/ActivationCodeModule/cla_ActivationConfig.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/include/cla_StrEncryption.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/include/cla_utility.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/include/EncrpyModule/cla_EncrpyUtilty.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/include/EncrpyModule/cla_SymmetricEncryptor.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/README.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/src/ActivationCodeModule/cla_ActivationCodeGenerator.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/src/ActivationCodeModule/cla_ActivationCodeValidator.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/src/ActivationCodeModule/cla_ActivationConfig.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/src/cla_StrEncryption.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/src/cla_utility.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/src/EncrpyModule/cla_EncrpyUtilty.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/src/EncrpyModule/cla_SymmetricEncryptor.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/test/include/cla_ActivationCodeGenerator_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/test/include/cla_ActivationCodeValidator_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/test/include/cla_ActivationConfig_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/test/include/cla_StrEncryption_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/test/include/cla_utility_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/test/src/cla_ActivationCodeGenerator_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/test/src/cla_ActivationCodeValidator_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/test/src/cla_ActivationConfig_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/test/src/cla_EncrpyUtilty_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/test/src/cla_StrEncryption_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/test/src/cla_SymmetricEncryptor_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/cla/test/src/cla_utility_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/Cache/dsl_Cache.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/Cache/dsl_CacheClock.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/Cache/dsl_CacheFactory.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/Cache/dsl_CacheFIFO.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/Cache/dsl_CacheFIFOThreadSafe.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/Cache/dsl_CacheLIFO.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/Cache/dsl_CacheLMFU.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/Cache/dsl_CacheLMRU.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/Cache/dsl_TimeBasedCache.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/DataStructure/dsl_BloomFilter.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/DataStructure/dsl_core.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/DataStructure/dsl_StringContainer.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/DataStructure/dsl_ThreadSafeMinHeap.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/DataStructure/dsl_ThreadSafeQueue.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/dsl_core.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/PriorityQueue/dsl_DHeap.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/PriorityQueue/dsl_DHeapLockFree.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/PriorityQueue/dsl_Heap.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/PriorityQueue/dsl_IPriorityQueue.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/include/PriorityQueue/dsl_PriorityQueue.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/InterfaceForPy/main.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/README.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/Cache/dsl_Cache.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/Cache/dsl_CacheClock.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/Cache/dsl_CacheFactory.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/Cache/dsl_CacheFIFO.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/Cache/dsl_CacheFIFOThreadSafe.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/Cache/dsl_CacheLIFO.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/Cache/dsl_CacheLMFU.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/Cache/dsl_CacheLMRU.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/Cache/dsl_TimeBasedCache.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/DataStructure/dsl_BloomFilter.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/DataStructure/dsl_PriorityQueue.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/DataStructure/dsl_StringContainer.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/DataStructure/dsl_ThreadSafeMinHeap.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/DataStructure/dsl_ThreadSafeQueue.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/dsl_core.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/PriorityQueue/dsl_DHeap.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/PriorityQueue/dsl_DHeapLockFree.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/PriorityQueue/dsl_Heap.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/PriorityQueue/dsl_IPriorityQueue.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/src/PriorityQueue/dsl_PriorityQueue.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/include/dsl_CacheClock_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/include/dsl_CacheFactory_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/include/dsl_CacheFIFO_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/include/dsl_CacheLMFU_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/include/dsl_CacheLMRU_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/include/dsl_DHeap_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/include/dsl_pch_t.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/include/dsl_PriorityQueue_t.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/include/dsl_TimeBasedCache_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/src/dsl_BloomFilter_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/src/dsl_CacheClock_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/src/dsl_CacheFactory_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/src/dsl_CacheFIFO_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/src/dsl_CacheFIFOThreadSafe_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/src/dsl_CacheLMFU_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/src/dsl_CacheLMRU_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/src/dsl_DHeap_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/src/dsl_DHeapLockFree_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/src/dsl_PriorityQueue_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/src/dsl_ThreadSafeQueue_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/dsl/test/src/dsl_TimeBasedCache_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/include/hoec_Camera.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/include/hoec_CameraException.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/include/hoec_CameraFactory.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/private/include/hoec_Camera_core_private.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/private/include/hoec_Camera_MVS_private.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/private/include/hoec_Camera_private.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/private/src/hoec_Camera_core_private.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/private/src/hoec_Camera_MVS_private.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/private/src/hoec_Camera_private.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/README.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/src/hoec_Camera.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/src/hoec_CameraException.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/src/hoec_CameraFactory.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/test/include/hoec_Camera_MVS_private_t.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/test/include/hoec_Camera_private_t.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/test/include/hoec_CameraFactory_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/test/include/pch.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/test/src/hoec_Camera_MVS_private_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/test/src/hoec_Camera_private_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/test/src/hoec_CameraFactory_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/ThirdLibrary/MVS/Includes/CameraParams.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/ThirdLibrary/MVS/Includes/MvCameraControl.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/ThirdLibrary/MVS/Includes/MvErrorDefine.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/ThirdLibrary/MVS/Includes/MvISPErrorDefine.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/ThirdLibrary/MVS/Includes/MvObsoleteInterfaces.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/ThirdLibrary/MVS/Includes/MvSdkExport.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/ThirdLibrary/MVS/Includes/ObsoleteCamParams.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/ThirdLibrary/MVS/Includes/PixelType.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/ThirdLibrary/MVS/Libraries/windows32/C++ Builder/BCB_Convert_x86.bat",
+      "language": "batch",
+      "fileCategory": "script"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/ThirdLibrary/MVS/Libraries/windows32/C++ Builder/MvCameraControlBC.lib",
+      "language": "lib",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/ThirdLibrary/MVS/Libraries/windows32/MvCameraControl.lib",
+      "language": "lib",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/ThirdLibrary/MVS/Libraries/windows32/VC6/MvSdkExport.lib",
+      "language": "lib",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/ThirdLibrary/MVS/Libraries/windows64/C++ Builder/BCB_Convert_x64.bat",
+      "language": "batch",
+      "fileCategory": "script"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/ThirdLibrary/MVS/Libraries/windows64/C++ Builder/MvCameraControlBC.a",
+      "language": "a",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoec/ThirdLibrary/MVS/Libraries/windows64/MvCameraControl.lib",
+      "language": "lib",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/include/hoec_Camera_utilty_V1.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/include/hoec_Camera_V1.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/include/hoec_CameraFactory_v1.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/private/include/hoec_Camera_core_v1_private.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/private/include/hoec_Camera_DS_v1_private.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/private/include/hoec_Camera_MVS_v1_private.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/private/src/hoec_Camera_core_v1_private.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/private/src/hoec_Camera_DS_v1_private.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/private/src/hoec_Camera_MVS_v1_private.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/src/hoec_Camera_utilty_V1.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/src/hoec_Camera_V1.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/src/hoec_CameraFactory_v1.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/test/include/hoec_Camera_DS_private_t.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/test/include/hoec_Camera_MVS_private_t.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/test/include/hoec_Camera_private_t.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/test/include/hoec_CameraFactory_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/test/include/pch.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/test/src/hoec_Camera_DS_private_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/test/src/hoec_Camera_MVS_private_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/test/src/hoec_Camera_private_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/test/src/hoec_CameraFactory_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/DS/bin/x64/DVPCamera64.dll",
+      "language": "dll",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/DS/bin/x64/dvpir64.dll",
+      "language": "dll",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/DS/bin/x86/DVPCamera.dll",
+      "language": "dll",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/DS/bin/x86/dvpir.dll",
+      "language": "dll",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/DS/include/DVPCamera.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/DS/include/dvpir.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/DS/include/dvpParam.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/DS/lib/x64/DVPCamera64.lib",
+      "language": "lib",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/DS/lib/x64/dvpir64.lib",
+      "language": "lib",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/DS/lib/x86/DVPCamera.lib",
+      "language": "lib",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/DS/lib/x86/dvpir.lib",
+      "language": "lib",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/MVS/Includes/CameraParams.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/MVS/Includes/MvCameraControl.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/MVS/Includes/MvErrorDefine.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/MVS/Includes/MvISPErrorDefine.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/MVS/Includes/MvObsoleteInterfaces.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/MVS/Includes/MvSdkExport.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/MVS/Includes/ObsoleteCamParams.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/MVS/Includes/PixelType.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/MVS/Libraries/windows32/C++ Builder/BCB_Convert_x86.bat",
+      "language": "batch",
+      "fileCategory": "script"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/MVS/Libraries/windows32/C++ Builder/MvCameraControlBC.lib",
+      "language": "lib",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/MVS/Libraries/windows32/MvCameraControl.lib",
+      "language": "lib",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/MVS/Libraries/windows32/VC6/MvSdkExport.lib",
+      "language": "lib",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/MVS/Libraries/windows64/C++ Builder/BCB_Convert_x64.bat",
+      "language": "batch",
+      "fileCategory": "script"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/MVS/Libraries/windows64/C++ Builder/MvCameraControlBC.a",
+      "language": "a",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoecRefactor/ThirdLibrary/MVS/Libraries/windows64/MvCameraControl.lib",
+      "language": "lib",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoei/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoei/include/hoei_CPUInfo.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoei/include/hoei_GPUInfo.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoei/include/hoei_HardwareInfo.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoei/include/hoei_MotherBoardInfo.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoei/src/hoei_CPUInfo.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoei/src/hoei_GPUInfo.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoei/src/hoei_HardwareInfo.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoei/src/hoei_MotherBoardInfo.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoei/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoei/test/include/hoei_utilty_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoei/test/src/hoei_CPUInfo_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoei/test/src/hoei_GPUInfo_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoei/test/src/hoei_HardwareInfo_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoei/test/src/hoei_MotherBoardInfo_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoem/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoem/include/hoem_ModbusDevice.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoem/include/hoem_ModbusDeviceScheduler.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoem/include/hoem_utilty.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoem/README.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoem/src/hoem_ModbusDevice.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoem/src/hoem_ModbusDeviceScheduler.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoem/src/hoem_utilty.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoem/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoem/test/include/hoem_ModbusDevice_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoem/test/include/hoem_pch_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoem/test/src/hoem_ModbusDevice_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/include/hoes_Serial.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/include/hoes_Utilty.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/src/hoes_Serial.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/src/hoes_Utilty.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/test/src/main.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/ThirdLibrary/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/ThirdLibrary/serial/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/ThirdLibrary/serial/examples/serial_example.cc",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/ThirdLibrary/serial/include/serial/impl/unix.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/ThirdLibrary/serial/include/serial/impl/win.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/ThirdLibrary/serial/include/serial/serial.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/ThirdLibrary/serial/include/serial/v8stdint.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/ThirdLibrary/serial/src/impl/list_ports/list_ports_linux.cc",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/ThirdLibrary/serial/src/impl/list_ports/list_ports_osx.cc",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/ThirdLibrary/serial/src/impl/list_ports/list_ports_win.cc",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/ThirdLibrary/serial/src/impl/unix.cc",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/ThirdLibrary/serial/src/impl/win.cc",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/ThirdLibrary/serial/src/serial.cc",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/ThirdLibrary/serial/tests/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/ThirdLibrary/serial/tests/proof_of_concepts/mdc2250.cc",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/ThirdLibrary/serial/tests/proof_of_concepts/python_serial_test.py",
+      "language": "python",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/ThirdLibrary/serial/tests/proof_of_concepts/tokenizer.cc",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/ThirdLibrary/serial/tests/unit/unix_timer_tests.cc",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/hoes/ThirdLibrary/serial/tests/unix_serial_tests.cc",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/README.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/utilty/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/utilty/include/hoe_utilty.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/utilty/src/hoe_utilty.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/utilty/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/utilty/test/include/hoe_HardwareInfo_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/hoe/utilty/test/src/hoe_HardwareInfo_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/ime/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/ime/include/ime_ModelEngineFactory.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/ime/src/ime_ModelEngineFactory.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/ime/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/ime/test/main.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imeo/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imeo/include/imeo_ModelEngineFactory_OnnxRuntime.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imeo/private/include/imeo_ModelEngine_yolov11_det.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imeo/private/include/imeo_ModelEngine_yolov11_obb.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imeo/private/include/imeo_ModelEngine_yolov11_seg.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imeo/private/src/imeo_ModelEngine_yolov11_det.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imeo/private/src/imeo_ModelEngine_yolov11_obb.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imeo/private/src/imeo_ModelEngine_yolov11_seg.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imeo/src/imeo_ModelEngineFactory_OnnxRuntime.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imeo/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imeo/test/main.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/include/imet_ModelEngineFactory_TensorRT.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/cuda/include/imet_PostProcess.cuh",
+      "language": "cuh",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/cuda/include/imet_PreProcess.cuh",
+      "language": "cuh",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/cuda/include/imet_Utility.cuh",
+      "language": "cuh",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/cuda/src/imet_PostProcess.cu",
+      "language": "cu",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/cuda/src/imet_PreProcess.cu",
+      "language": "cu",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/cuda/src/imet_Utility.cu",
+      "language": "cu",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT10.12/include/imet_ModelEngine_yolov11_det_cudaAcc.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT10.12/include/imet_ModelEngine_yolov11_det.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT10.12/include/imet_ModelEngine_yolov11_obb.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT10.12/include/imet_ModelEngine_yolov11_seg_cudaAcc.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT10.12/include/imet_ModelEngine_yolov11_seg_mask_cudaAcc.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT10.12/include/imet_ModelEngine_yolov11_seg_mask.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT10.12/include/imet_ModelEngine_yolov11_seg.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT10.12/src/imet_ModelEngine_yolov11_det_cudaAcc.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT10.12/src/imet_ModelEngine_yolov11_det.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT10.12/src/imet_ModelEngine_yolov11_obb.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT10.12/src/imet_ModelEngine_yolov11_seg_cudaAcc.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT10.12/src/imet_ModelEngine_yolov11_seg_mask_cudaAcc.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT10.12/src/imet_ModelEngine_yolov11_seg_mask.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT10.12/src/imet_ModelEngine_yolov11_seg.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT8.6/include/imet_ModelEngine_yolov11_det_cudaAcc.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT8.6/include/imet_ModelEngine_yolov11_det.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT8.6/include/imet_ModelEngine_yolov11_obb.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT8.6/include/imet_ModelEngine_yolov11_seg_cudaAcc.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT8.6/include/imet_ModelEngine_yolov11_seg_mask_cudaAcc.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT8.6/include/imet_ModelEngine_yolov11_seg_mask.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT8.6/include/imet_ModelEngine_yolov11_seg.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT8.6/src/imet_ModelEngine_yolov11_det_cudaAcc.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT8.6/src/imet_ModelEngine_yolov11_det.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT8.6/src/imet_ModelEngine_yolov11_obb.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT8.6/src/imet_ModelEngine_yolov11_seg_cudaAcc.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT8.6/src/imet_ModelEngine_yolov11_seg_mask_cudaAcc.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT8.6/src/imet_ModelEngine_yolov11_seg_mask.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/private/TensorRT8.6/src/imet_ModelEngine_yolov11_seg.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/src/imet_ModelEngineFactory_TensorRT.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/imet/test/main.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/utilty/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/utilty/include/ime_ModelEngine.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/utilty/include/ime_ModelEngineConfig.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/utilty/include/ime_utilty.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/utilty/private/include/ime_utilty_private.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/utilty/private/src/ime_utilty_private.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/utilty/src/ime_ModelEngine.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/utilty/src/ime_ModelEngineConfig.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/utilty/src/ime_utilty.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/ime/utilty/test/main.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/include/lgm_ILogger.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/include/lgm_Logger.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/include/lgm_PreDef.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/include/lgm_utilty.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/README.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/spdlog/include/lgms_BasicFileSinkManager.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/spdlog/include/lgms_ConsoleSinkManager.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/spdlog/include/lgms_DailyFileSinkManager.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/spdlog/include/lgms_HourlyFileSinkManager.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/spdlog/include/lgms_RotatingFileSinkManager.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/spdlog/include/lgms_SpdlogModuleLogger.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/spdlog/include/lgms_ThreadPoolManager.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/spdlog/private/include/lgms_Utilty.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/spdlog/private/src/lgms_Utilty.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/spdlog/src/lgms_BasicFileSinkManager.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/spdlog/src/lgms_ConsoleSinkManager.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/spdlog/src/lgms_DailyFileSinkManager.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/spdlog/src/lgms_HourlyFileSinkManager.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/spdlog/src/lgms_RotatingFileSinkManager.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/spdlog/src/lgms_SpdlogModuleLogger.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/spdlog/src/lgms_ThreadPoolManager.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/src/lgm_ILogger.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/src/lgm_Logger.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/src/lgm_utilty.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/lgm/test/src/main.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/include/oso_core.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/include/oso_func.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/include/oso_StorageContext.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/private/include/oso_IStorageStrategy.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/private/include/oso_StorageStrategy_Json.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/private/include/oso_StorageStrategy_Sqlite.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/private/include/oso_StorageStrategy_Text.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/private/include/oso_StorageStrategy_Xml.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/private/src/oso_StorageStrategy_Json.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/private/src/oso_StorageStrategy_Sqlite.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/private/src/oso_StorageStrategy_Text.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/private/src/oso_StorageStrategy_Xml.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/private/src/oso_StorageStrategy.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/README.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/src/oso_core.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/src/oso_func.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/src/oso_StorageContext.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/test/include/oso_StorageContext_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/test/include/oso_StorageStrategy_Json_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/test/include/oso_StorageStrategy_Text_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/test/include/oso_StorageStrategy_xml_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/test/include/pch.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/test/src/oso_core_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/test/src/oso_StorageContext_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/test/src/oso_StorageStrategy_Json_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/test/src/oso_StorageStrategy_Text_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/oso/test/src/oso_StorageStrategy_xml_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwhalcon/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwhalcon/include/rqw_HalconModel.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwhalcon/include/rqw_HalconModelConfig.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwhalcon/include/rqw_HalconUtilty.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwhalcon/include/rqw_HalconWidget.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwhalcon/include/rqw_HalconWidgetDisObject.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwhalcon/src/rqw_HalconModel.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwhalcon/src/rqw_HalconModelConfig.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwhalcon/src/rqw_HalconUtilty.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwhalcon/src/rqw_HalconWidget.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwhalcon/src/rqw_HalconWidgetDisObject.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwhoec/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwhoec/include/rqw_CameraObject.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwhoec/include/rqw_CameraObjectCore.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwhoec/include/rqw_CameraObjectThread.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwhoec/src/rqw_CameraObject.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwhoec/src/rqw_CameraObjectCore.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwhoec/src/rqw_CameraObjectThread.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwime/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwime/include/rqw_ImagePainter.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwime/src/rqw_ImagePainter.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwm/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwm/include/rqw_CameraObjectThreadZMotion.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwm/include/rqw_CameraObjectZMotion.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwm/src/rqw_CameraObjectThreadZMotion.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwm/src/rqw_CameraObjectZMotion.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwmodbus/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwmodbus/include/rqwm_ModbusDevice.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwmodbus/include/rqwm_ModbusDeviceThread.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwmodbus/include/rqwm_ModbusUtilty.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwmodbus/src/rqwm_ModbusDevice.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwmodbus/src/rqwm_ModbusDeviceThread.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwmodbus/src/rqwm_ModbusUtilty.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwscc/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwscc/include/rqw_MonitorMotionIO.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwscc/include/rqw_ZMotion.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwscc/src/rqw_MonitorMotionIO.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/expandComponet/rqwscc/src/rqw_ZMotion.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/componet/rqw_HistoricalElementManager.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/componet/rqw_ImageSaveCom.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/componet/rqw_ImageSaveEngine.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/componet/rqw_ImageSaveInfo.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/componet/rqw_RunEnvCheck.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/componet/rqw_StorageSense.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/rqw_global.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/DlgCloseForm.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/DlgShutdownWarn.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/DlgWarn.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/DraggableListWidget.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/FullKeyBoard.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/ImageEnlargedDisplay.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/LicenseValidation.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/LoadingDialog.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/NumberKeyboard.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/PicturesPainter_SetAspectRatio.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/PicturesPainter.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/PicturesPainterUtilty.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/PicturesPainterVersionDunDai.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/PicturesViewer.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/PictureViewerThumbnails.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/PictureViewerUtilty.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/rqw_CarouselWidget.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/rqw_DlgVersion.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/rqw_LabelClickable.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/rqw_LabelWarning.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/rqw_MessageBox.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/WarningInfoList.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/include/ui/WarnUtilty.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/componet/rqw_HistoricalElementManager.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/componet/rqw_ImageSaveEngine.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/componet/rqw_ImageSaveEngineCom.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/componet/rqw_ImageSaveInfo.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/componet/rqw_RunEnvCheck.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/componet/rqw_StorageSense.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/DlgCloseForm.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/DlgShutdownWarn.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/DlgWarn.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/DraggableListWidget.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/FullKeyBoard.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/ImageEnlargedDisplay.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/LicenseValidation.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/LoadingDialog.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/NumberKeyboard.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/PicturesPainter_SetAspectRatio.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/PicturesPainter.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/PicturesPainterUtilty.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/PicturesPainterVersionDunDai.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/PicturesViewer.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/PictureViewerThumbnails.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/PictureViewerUtilty.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/rqw_CarouselWidget.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/rqw_DlgVersion.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/rqw_LabelClickable.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/rqw_LabelWarning.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/rqw_MessageBox.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/WarningInfoList.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/src/ui/WarnUtilty.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/test/include/pch.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/test/include/rqw_CameraObject_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/test/include/rqw_CameraObjectThread_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/test/include/rqw_HistoricalElementManager_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/test/include/rqw_ImageSaveEngineRefactor_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/test/src/rqw_CameraObject_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/test/src/rqw_CameraObjectThread_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/test/src/rqw_HistoricalElementManager_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/test/src/rqw_ImageSaveEngineRefactor_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/ui/CarouselWidget.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/ui/DlgCloseForm.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/ui/DlgShutdownWarn.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/ui/DlgWarn.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/ui/FullKeyBoard.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/ui/LicenseValidation.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/ui/LoadingDialog.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/ui/NumberKeyboard.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/ui/PicturesPainter_SetAspectRatio.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/ui/PicturesPainter.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/ui/PicturesPainterVersionDunDai.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/ui/PicturesViewer.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/ui/PictureViewerThumbnails.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/ui/PictureViewerUtilty.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/ui/rqw_DlgVersion.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/ui/rqw_ImageEnlargedDisplay.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/main/ui/WarningInfoList.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/utilty/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/utilty/include/rqw_ImgConvert.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/utilty/include/rqw_rqwColor.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/utilty/src/rqw_ImgConvert.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqw/utilty/src/rqw_rqwColor.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/include/rqwu/Keyboard/rqwu_FullKeyboard.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/include/rqwu/Keyboard/rqwu_NumberKeyboard.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/include/rqwu/rqwu_core.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/include/rqwu/rqwu_Dialog.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/include/rqwu/rqwu_DialogDraggable.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/include/rqwu/rqwu_DlgModelManager.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/include/rqwu/rqwu_MessageBox.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/private/include/rqwu/rqwu_p_DlgModelManager.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/private/src/rqwu_p_DlgModelManager.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/qrc/rqwu.qrc",
+      "language": "qrc",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/src/Keyboard/rqwu_FullKeyboard.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/src/Keyboard/rqwu_NumberKeyboard.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/src/rqwu_core.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/src/rqwu_Dialog.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/src/rqwu_DialogDraggable.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/src/rqwu_DlgModelManager.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/src/rqwu_MessageBox.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/test/src/main.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/ui/rqwu_DlgModelManager.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/ui/rqwu_FullKeyBoard.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/rqwu/ui/rqwu_NumberKeyboard.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/scc/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/scc/include/scc_motion.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/scc/src/scc_motion.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/scc/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/utilty/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/utilty/include/utilty_ObjectPool.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/utilty/include/utilty_ThreadPool.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/utilty/README.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/utilty/src/utilty_ObjectPool.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/utilty/src/utilty_ThreadPool.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/utilty/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/utilty/test/include/pch.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/utilty/test/include/utilty_ObjectPool_t.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/utilty/test/include/utilty_ThreadPool_t.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/utilty/test/src/utilty_ObjectPool_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/fundation/utilty/test/src/utilty_ThreadPool_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ActCry/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ActCry/include/actCry_ActivationCrypto.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ActCry/include/actCry_ActivationInfo.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ActCry/include/actCry_HWID.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ActCry/include/actCry_RegistryManager.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ActCry/include/actCry_utility.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ActCry/README.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ActCry/src/actCry_ActivationCrypto.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ActCry/src/actCry_ActivationInfo.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ActCry/src/actCry_HWID.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ActCry/src/actCry_RegistryManager.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ActCry/src/actCry_utility.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ActCry/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ActCry/test/include/actCry_ActivationCrypto_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ActCry/test/include/actCry_ActivationInfo_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ActCry/test/include/actCry_RegistryManager_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ActCry/test/src/actCry_ActivationCrypto_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ActCry/test/src/actCry_ActivationInfo_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ActCry/test/src/actCry_RegistryManager_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ConMon/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ConMon/include/conMon_ConditionItem.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ConMon/include/conMon_ConditionMonitor.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ConMon/README.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ConMon/src/conMon_ConditionItem.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ConMon/src/conMon_ConditionMonitor.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ConMon/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ConMon/test/include/comMon_ConditionMonitor_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ConMon/test/src/comMon_ConditionMonitor_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ConMon/testQt/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ConMon/testQt/include/ImageProcessTest.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ConMon/testQt/include/imgPro_ImageProcess_tq.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ConMon/testQt/src/ImageProcessTest.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ConMon/testQt/src/imgPro_ImageProcess_tq.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ConMon/testQt/src/main.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ConMon/testQt/ui/ImageProcessTest.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/include/imgPro_DefectDrawFunc.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/include/imgPro_DefectResultInfoFunc.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/include/imgPro_EliminationInfoFunc.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/include/imgPro_ImagePainter.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/include/imgPro_ImageProcess.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/include/imgPro_ImageProcessUtilty.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/include/imgPro_IndexFunc.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/include/imgPro_Logger.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/private/include/Logger.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/private/src/Logger.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/src/imgPro_DefectDrawFunc.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/src/imgPro_DefectResultInfoFunc.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/src/imgPro_EliminationInfoFunc.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/src/imgPro_ImagePainter.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/src/imgPro_ImageProcess.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/src/imgPro_ImageProcessUtilty.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/src/imgPro_IndexFunc.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/src/imgPro_Logger.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/test/include/imgPro_ImageProcess_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/test/src/imgPro_ImageProcess_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/testQt/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/testQt/include/ImageProcessTest.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/testQt/include/imgPro_ImageProcess_tq.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/testQt/src/ImageProcessTest.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/testQt/src/imgPro_ImageProcess_tq.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/testQt/src/main.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/RW_UL/Module/ImgPro/testQt/ui/ImageProcessTest.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/AutomaticAnnotation/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/AutomaticAnnotation/include/AutomaticAnnotation.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/AutomaticAnnotation/include/AutomaticAnnotationThread.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/AutomaticAnnotation/qrc/AutomaticAnnotation.qrc",
+      "language": "qrc",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/AutomaticAnnotation/src/AutomaticAnnotation.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/AutomaticAnnotation/src/AutomaticAnnotationThread.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/AutomaticAnnotation/src/main.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/AutomaticAnnotation/ui/AutomaticAnnotation.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/DataSetAnalysis/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/DataSetAnalysis/include/DataSetAnalysis.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/DataSetAnalysis/include/DatasetDivide.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/DataSetAnalysis/include/DatasetImport.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/DataSetAnalysis/include/IndexType.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/DataSetAnalysis/qrc/DataSetAnalysis.qrc",
+      "language": "qrc",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/DataSetAnalysis/src/DataSetAnalysis.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/DataSetAnalysis/src/DatasetDivide.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/DataSetAnalysis/src/DatasetImport.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/DataSetAnalysis/src/IndexType.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/DataSetAnalysis/src/main.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/DataSetAnalysis/ui/DataSetAnalysis.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/demo/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/demo/include/Demo.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/demo/osoFile/demoConfig.oso",
+      "language": "oso",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/demo/osoHpp/demoConfig.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/demo/src/Demo.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/demo/src/main.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/demo/ui/Demo.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/demoNoQt/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/demoNoQt/src/main.cu",
+      "language": "cu",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/DiskStorageManager/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/DiskStorageManager/include/DiskStorageManager.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/DiskStorageManager/src/DiskStorageManager.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/DiskStorageManager/src/main.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/LicenseIssuance/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/LicenseIssuance/src/main.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/ModelConverter/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/ModelConverter/include/Converter.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/ModelConverter/include/ModelConverter.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/ModelConverter/qrc/example.qrc",
+      "language": "qrc",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/ModelConverter/src/Converter.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/ModelConverter/src/main.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/ModelConverter/src/ModelConverter.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/ModelConverter/ui/ModelConverter.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/PackageTool/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/PackageTool/main.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/PackageTool/PackageTool.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/PackageTool/PackageTool.h",
+      "language": "c",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/PackageTool/PackageTool.qrc",
+      "language": "qrc",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/PackageTool/PackageTool.ui",
+      "language": "ui",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/XmlMerge/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/XmlMerge/include/GeneralConfig.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/XmlMerge/include/XmlMergeTool.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/XmlMerge/src/XmlMergeTool.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/XmlMerge/test/CMakeLists.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/XmlMerge/test/include/XmlMergeTool_t.hpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/tools/XmlMerge/test/src/XmlMergeTool_t.cpp",
+      "language": "cpp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "ThirdRep/RW_UL/VcpkgPackageList.txt",
+      "language": "txt",
+      "fileCategory": "docs"
+    }
+  ]
+}

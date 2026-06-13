@@ -1,0 +1,16 @@
+{
+  "fixedSectionOk": true,
+  "nodesRecovered": 1,
+  "edgesRestored": 5,
+  "crossBatchEdgesAdded": 0,
+  "typesRemapped": 0,
+  "complexityRemapped": 0,
+  "notes": [
+    "4 duplicate node IDs were deduplicated from 135 input nodes (~3%), within expected bounds for multi-batch merge.",
+    "IModule class node (class:include/Modules/IModule.hpp:IModule) was missing because tree-sitter could not extract it as a C++ template class. Created manually with summary based on the file node's description and actual source code.",
+    "5 inherits edges restored: ConfigManagerModule, ImgProModule, Modules, CameraModule, EliminateModule all inherit from IModule.",
+    "1 imports edge (CameraModule.hpp -> IModule.hpp) was recovered by the merge script from importMap — this was the only module header missing an imports edge to IModule.hpp in the batch outputs.",
+    "107 imports edges exist covering all verified include relationships; no additional cross-batch gaps found.",
+    "Third-party headers (oso_func.hpp, rqw_RunEnvCheck.hpp) included by Modules.hpp are not in the project scan scope; their absence from the graph is expected."
+  ]
+}

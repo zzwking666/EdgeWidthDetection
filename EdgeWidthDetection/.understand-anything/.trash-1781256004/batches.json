@@ -1,0 +1,1089 @@
+{
+  "schemaVersion": 1,
+  "algorithm": "louvain",
+  "totalFiles": 57,
+  "totalBatches": 4,
+  "exportsByPath": {
+    ".understand-anything/.understandignore": [],
+    "include/data/osoFIleUtiltyFunc.hpp": [
+      "toClassIdWithEliConfigMap",
+      "toClassIdWithDefConfigMap",
+      "ScoreConfigConvert"
+    ],
+    "include/data/Utilty.hpp": [
+      "GlobalPath",
+      "ClassId",
+      "Utility",
+      "ModBusAddress",
+      "PlcReadItem",
+      "PlcReadIndex",
+      "MatInfo"
+    ],
+    "include/DetachThread/CameraAndCardStateThread.h": [
+      "startThread",
+      "stopThread",
+      "CameraAndCardStateThread"
+    ],
+    "include/DetachThread/DetachDefectThreadProcess.h": [
+      "startThread",
+      "stopThread",
+      "processQueue1",
+      "DetachDefectThread"
+    ],
+    "include/DetachThread/DetachPLCListenThread.h": [
+      "DetachPLCListenThread"
+    ],
+    "include/DetachThread/DetachUtiltyThread.h": [
+      "DetachUtiltyThread"
+    ],
+    "include/func/ImageProcessorModule.hpp": [
+      "buildObbModelEngine",
+      "ImageProcessor",
+      "BuildModule",
+      "onFrameCaptured",
+      "imageReady",
+      "getProcessors",
+      "ImageProcessingModule"
+    ],
+    "include/Modules/CameraModule.hpp": [
+      "build",
+      "destroy",
+      "start",
+      "stop",
+      "getBuildResults",
+      "onBuildCamera",
+      "onDestroyCamera",
+      "onStartCamera",
+      "onFrameCaptured",
+      "frameCaptured1",
+      "CameraModule"
+    ],
+    "include/Modules/ConfigManagerModule.hpp": [
+      "ConfigManagerModule"
+    ],
+    "include/Modules/EliminateModule.hpp": [
+      "EliminateModule"
+    ],
+    "include/Modules/ImgProModule.hpp": [
+      "build",
+      "destroy",
+      "start",
+      "stop",
+      "onUpdateImgProContext",
+      "ImgProModule"
+    ],
+    "include/Modules/ImgSaveModule.hpp": [
+      "build",
+      "destroy",
+      "start",
+      "stop",
+      "ImgSaveModule"
+    ],
+    "include/Modules/IModule.hpp": [],
+    "include/Modules/Modules.hpp": [
+      "Modules",
+      "build",
+      "destroy",
+      "start",
+      "stop",
+      "connect",
+      "check",
+      "EnsureDirectoryExists",
+      "Modules"
+    ],
+    "include/Modules/PlcController.hpp": [
+      "build_plcController",
+      "destroy_plcController",
+      "build_plcListenThread",
+      "destroy_plcListenThread",
+      "getBuildResult",
+      "PlcController"
+    ],
+    "include/Modules/ReconnectModule.hpp": [
+      "ReconnectModule"
+    ],
+    "include/Modules/RuntimeInfoModule.hpp": [
+      "RuntimeInfoModule"
+    ],
+    "include/Modules/TestModule.hpp": [],
+    "include/Modules/UIModule.hpp": [
+      "EdgeWidthDetection",
+      "DlgProductSet",
+      "UIModule"
+    ],
+    "include/Modules/WarningModule.hpp": [],
+    "include/NoHardWare/TestImgPushThread.hpp": [],
+    "include/ui/DlgProductSet.h": [],
+    "include/ui/EdgeWidthDetection.h": [],
+    "osoFile/EdgeWidthDetection.oso": [],
+    "osoFile/SetConfig.oso": [],
+    "osoInclude/EdgeWidthDetection.hpp": [
+      "EdgeWidthDetectionConfig",
+      "~EdgeWidthDetectionConfig",
+      "operator==",
+      "operator!=",
+      "EdgeWidthDetectionConfig",
+      "EdgeWidthDetectionConfig",
+      "EdgeWidthDetectionConfig",
+      "oso::ObjectStoreAssembly",
+      "operator==",
+      "operator!="
+    ],
+    "osoInclude/SetConfig.hpp": [
+      "SetConfig",
+      "~SetConfig",
+      "operator==",
+      "operator!=",
+      "SetConfig",
+      "SetConfig",
+      "SetConfig",
+      "oso::ObjectStoreAssembly",
+      "operator==",
+      "operator!="
+    ],
+    "qrc/QiXinShiJinDanXiangJi.qrc": [],
+    "src/data/osoFIleUtiltyFunc.cpp": [
+      "ScoreConfigConvert::toClassIdWithEliConfigMap",
+      "ScoreConfigConvert::toClassIdWithDefConfigMap"
+    ],
+    "src/data/Utilty.cpp": [],
+    "src/DetachThread/CameraAndCardStateThread.cpp": [
+      "CameraAndCardStateThread",
+      "~CameraAndCardStateThread",
+      "startThread",
+      "stopThread",
+      "run",
+      "check_cameraState",
+      "check_cameraState1"
+    ],
+    "src/DetachThread/DetachDefectThreadProcess.cpp": [
+      "DetachDefectThread",
+      "~DetachDefectThread",
+      "startThread",
+      "stopThread",
+      "processQueue1",
+      "run"
+    ],
+    "src/DetachThread/DetachPLCListenThread.cpp": [
+      "DetachPLCListenThread",
+      "~DetachPLCListenThread",
+      "startThread",
+      "stopThread",
+      "run",
+      "readPLCInfo"
+    ],
+    "src/DetachThread/DetachUtiltyThread.cpp": [
+      "DetachUtiltyThread",
+      "~DetachUtiltyThread",
+      "startThread",
+      "stopThread",
+      "run",
+      "readPLCWarnningInfo",
+      "readPLCdaizishicechangduInfo"
+    ],
+    "src/func/ImageProcessorModule.cpp": [
+      "AllowOncePer",
+      "ImageProcessor",
+      "run",
+      "run_debug",
+      "run_OpenRemoveFunc",
+      "run_OpenRemoveFunc_emitErrorInfo",
+      "save_image",
+      "save_image_work",
+      "drawImg",
+      "writePlcController",
+      "buildObbModelEngine",
+      "BuildModule",
+      "ImageProcessingModule",
+      "~ImageProcessingModule",
+      "onFrameCaptured"
+    ],
+    "src/main.cpp": [
+      "main"
+    ],
+    "src/Modules/CameraModule.cpp": [
+      "CameraModule",
+      "~CameraModule",
+      "build",
+      "destroy",
+      "start",
+      "stop",
+      "build_camera1",
+      "destroy_camera1",
+      "isTargetCamera",
+      "cameraMetaDataCheck",
+      "onBuildCamera",
+      "onDestroyCamera",
+      "onStartCamera",
+      "onFrameCaptured"
+    ],
+    "src/Modules/ConfigManagerModule.cpp": [
+      "build",
+      "destroy",
+      "start",
+      "stop"
+    ],
+    "src/Modules/EliminateModule.cpp": [
+      "build",
+      "destroy",
+      "start",
+      "stop"
+    ],
+    "src/Modules/ImgProModule.cpp": [
+      "build",
+      "destroy",
+      "start",
+      "stop",
+      "buildImgProContext",
+      "buildImgProContextPreProcess",
+      "resetImgProIsUpdate",
+      "buildImageProcessingModule",
+      "destroyImageProcessingModule",
+      "buildImageProcessingPreModule",
+      "onUpdateImgProContext"
+    ],
+    "src/Modules/ImgSaveModule.cpp": [
+      "build",
+      "destroy",
+      "start",
+      "stop"
+    ],
+    "src/Modules/IModule.cpp": [],
+    "src/Modules/Modules.cpp": [
+      "Modules",
+      "~Modules",
+      "build",
+      "destroy",
+      "start",
+      "stop",
+      "connect",
+      "check",
+      "EnsureDirectoryExists"
+    ],
+    "src/Modules/PlcController.cpp": [
+      "build",
+      "destroy",
+      "start",
+      "stop",
+      "build_plcController",
+      "destroy_plcController",
+      "build_plcListenThread",
+      "destroy_plcListenThread",
+      "loadConfigFromFile",
+      "getDesktopPath"
+    ],
+    "src/Modules/ReconnectModule.cpp": [
+      "build",
+      "destroy",
+      "start",
+      "stop"
+    ],
+    "src/Modules/RuntimeInfoModule.cpp": [
+      "build",
+      "destroy",
+      "start",
+      "stop"
+    ],
+    "src/Modules/TestModule.cpp": [],
+    "src/Modules/UIModule.cpp": [
+      "build",
+      "destroy",
+      "start",
+      "stop"
+    ],
+    "src/Modules/WarningModule.cpp": [],
+    "src/NoHardWare/TestImgPushThread.cpp": [],
+    "src/ui/DlgProductSet.cpp": [
+      "DlgProductSet",
+      "~DlgProductSet",
+      "build_ui",
+      "read_config",
+      "build_connect",
+      "onUpdatePLCInfo",
+      "btn_close_clicked",
+      "btn_xiangjiguangdianpingbishijian_clicked",
+      "btn_shuchuxinhaoyanshi_clicked",
+      "btn_shuchuxinhaochixushijian_clicked",
+      "cbox_changeSaveImgMode_clicked",
+      "btn_score_clicked",
+      "btn_testTrigger1_1_clicked",
+      "btn_testTrigger2_1_clicked",
+      "btn_shangxianwei1_clicked",
+      "btn_xiaxianwei1_clicked",
+      "btn_zuoxianwei1_clicked",
+      "btn_youxianwei1_clicked",
+      "btn_zengyi_clicked",
+      "btn_qiangguang_clicked",
+      "btn_zhongguang_clicked",
+      "btn_ruoguang_clicked",
+      "btn_shiceyahenkuanduduqudizhi_clicked",
+      "btn_shedingyahenbiaozhunzhiduqudizhi_clicked",
+      "btn_paizhaojiangejuliduqudizhi_clicked",
+      "btn_daizichangdubiaozhunduqudizhi_clicked",
+      "btn_jimiqiyiquanmaichongshuduqudizhi_clicked",
+      "btn_jimiqiyiquanzhouchangduqudizhi_clicked",
+      "btn_bujinyiquanmaichongshuduqudizhi_clicked",
+      "btn_bujinluojuduqudizhi_clicked",
+      "btn_daoyidongbuchangduqudizhi_clicked",
+      "btn_zidongdaoyidongzuidajuliduqudizhi_clicked",
+      "btn_daojiakeyidongdezuidajuliduqudizhi_clicked",
+      "btn_daoyidongsudumaichongpinlvduqudizhi_clicked",
+      "btn_huodePLCbaojingxinxidizhi_clicked",
+      "btn_keyipaizhaoxinhaodizhi_clicked",
+      "btn_tingzhipaizhaoxinhaodizhi_clicked",
+      "btn_daizishicechangdudizhi_clicked",
+      "btn_shiceyahenkuanduxierushuzhi_clicked",
+      "btn_shedingyahenbiaozhunkuanduzhixierushuzhi_clicked",
+      "btn_paizhaojiangejulixierushuzhi_clicked",
+      "btn_daizichangdubiaozhunxierushuzhi_clicked",
+      "btn_jimiqiyiquanmaichongshuxierushuzhi_clicked",
+      "btn_jimiqiyiquanzhouchangxierushuzhi_clicked",
+      "btn_bujinyiquanmaichongshuxierushuzhi_clicked",
+      "btn_bujinluojuxierushuzhi_clicked",
+      "btn_daoyidongbuchangxierushuzhi_clicked",
+      "btn_zidongdaoyidongzuidajulixierushuzhi_clicked",
+      "btn_daojiakeyidongdezuidajulixierushuzhi_clicked",
+      "btn_daoyidongsudumaichongpinlvxierushuzhi_clicked",
+      "btn_writeshiceyahenkuanduxierushuzhi_clicked",
+      "btn_writeshedingyahenbiaozhunkuanduzhixierushuzhi_clicked",
+      "btn_writepaizhaojiangejulixierushuzhi_clicked",
+      "btn_writedaizichangdubiaozhunxierushuzhi_clicked",
+      "btn_writejimiqiyiquanmaichongshuxierushuzhi_clicked",
+      "btn_writejimiqiyiquanzhouchangxierushuzhi_clicked",
+      "btn_writebujinyiquanmaichongshuxierushuzhi_clicked",
+      "btn_writebujinluojuxierushuzhi_clicked",
+      "btn_writedaoyidongbuchangxierushuzhi_clicked",
+      "btn_writezidongdaoyidongzuidajulixierushuzhi_clicked",
+      "btn_writedaojiakeyidongdezuidajulixierushuzhi_clicked",
+      "btn_writedaoyidongsudumaichongpinlvxierushuzhi_clicked",
+      "tabWidget_indexChanged",
+      "checkIsPLCAddressSame",
+      "btn_xiangsudangliang1_clicked",
+      "btn_debugFrame_clicked",
+      "btn_openRemoveFrame_clicked",
+      "ckb_autoSaveImg_clicked"
+    ],
+    "src/ui/EdgeWidthDetection.cpp": [
+      "EdgeWidthDetection",
+      "~EdgeWidthDetection",
+      "build_ui",
+      "build_connect",
+      "build_EdgeWidthDetectionData",
+      "ini_clickableTitle",
+      "build_DlgCloseForm",
+      "initializeComponents",
+      "build_camera",
+      "build_plcController",
+      "updateCameraLabelState",
+      "onUpdateStatisticalInfoUI",
+      "onUpdatePLCWarnningInfoUI",
+      "onUpdatePLCdaizishicechangduInfoUI",
+      "onCameraDisplay",
+      "lb_title_clicked",
+      "pbtn_exit_clicked",
+      "pbtn_set_clicked",
+      "rbtn_debug_checked",
+      "rbtn_removeFunc_checked",
+      "pbtn_resetProduct_clicked",
+      "pbtn_openSaveLocation_clicked",
+      "rbtn_ruoguang_checked",
+      "rbtn_zhongguang_checked",
+      "rbtn_qiangguang_checked",
+      "ckb_saveImg_checked"
+    ],
+    "ui/DlgProductSet.ui": [],
+    "ui/EdgeWidthDetection.ui": []
+  },
+  "batches": [
+    {
+      "batchIndex": 1,
+      "files": [
+        {
+          "path": "include/Modules/ConfigManagerModule.hpp",
+          "language": "cpp",
+          "sizeLines": 84,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/Modules/ImgProModule.hpp",
+          "language": "cpp",
+          "sizeLines": 37,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/Modules/Modules.hpp",
+          "language": "cpp",
+          "sizeLines": 93,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/Modules/PlcController.hpp",
+          "language": "cpp",
+          "sizeLines": 38,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/Modules/RuntimeInfoModule.hpp",
+          "language": "cpp",
+          "sizeLines": 34,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/Modules/TestModule.hpp",
+          "language": "cpp",
+          "sizeLines": 24,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/Modules/WarningModule.hpp",
+          "language": "cpp",
+          "sizeLines": 0,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "include/Modules/ConfigManagerModule.hpp": [
+          "include/Modules/IModule.hpp"
+        ],
+        "include/Modules/ImgProModule.hpp": [
+          "include/Modules/IModule.hpp"
+        ],
+        "include/Modules/Modules.hpp": [
+          "include/Modules/CameraModule.hpp",
+          "include/Modules/ConfigManagerModule.hpp",
+          "include/Modules/EliminateModule.hpp",
+          "include/Modules/ImgProModule.hpp",
+          "include/Modules/ImgSaveModule.hpp",
+          "include/Modules/IModule.hpp",
+          "include/Modules/PlcController.hpp",
+          "include/Modules/ReconnectModule.hpp",
+          "include/Modules/RuntimeInfoModule.hpp",
+          "include/Modules/TestModule.hpp",
+          "include/Modules/UIModule.hpp",
+          "include/Modules/WarningModule.hpp"
+        ],
+        "include/Modules/PlcController.hpp": [
+          "include/Modules/IModule.hpp"
+        ],
+        "include/Modules/RuntimeInfoModule.hpp": [
+          "include/Modules/IModule.hpp"
+        ],
+        "include/Modules/TestModule.hpp": [],
+        "include/Modules/WarningModule.hpp": []
+      },
+      "neighborMap": {
+        "include/Modules/ConfigManagerModule.hpp": [
+          {
+            "path": "include/Modules/IModule.hpp",
+            "batchIndex": 2,
+            "symbols": []
+          }
+        ],
+        "include/Modules/ImgProModule.hpp": [
+          {
+            "path": "include/Modules/IModule.hpp",
+            "batchIndex": 2,
+            "symbols": []
+          }
+        ],
+        "include/Modules/Modules.hpp": [
+          {
+            "path": "include/Modules/CameraModule.hpp",
+            "batchIndex": 2,
+            "symbols": [
+              "build",
+              "destroy",
+              "start",
+              "stop",
+              "getBuildResults",
+              "onBuildCamera",
+              "onDestroyCamera",
+              "onStartCamera",
+              "onFrameCaptured",
+              "frameCaptured1",
+              "CameraModule"
+            ]
+          },
+          {
+            "path": "include/Modules/EliminateModule.hpp",
+            "batchIndex": 2,
+            "symbols": [
+              "EliminateModule"
+            ]
+          },
+          {
+            "path": "include/Modules/ImgSaveModule.hpp",
+            "batchIndex": 2,
+            "symbols": [
+              "build",
+              "destroy",
+              "start",
+              "stop",
+              "ImgSaveModule"
+            ]
+          },
+          {
+            "path": "include/Modules/IModule.hpp",
+            "batchIndex": 2,
+            "symbols": []
+          },
+          {
+            "path": "include/Modules/ReconnectModule.hpp",
+            "batchIndex": 2,
+            "symbols": [
+              "ReconnectModule"
+            ]
+          },
+          {
+            "path": "include/Modules/UIModule.hpp",
+            "batchIndex": 2,
+            "symbols": [
+              "EdgeWidthDetection",
+              "DlgProductSet",
+              "UIModule"
+            ]
+          }
+        ],
+        "include/Modules/PlcController.hpp": [
+          {
+            "path": "include/Modules/IModule.hpp",
+            "batchIndex": 2,
+            "symbols": []
+          }
+        ],
+        "include/Modules/RuntimeInfoModule.hpp": [
+          {
+            "path": "include/Modules/IModule.hpp",
+            "batchIndex": 2,
+            "symbols": []
+          }
+        ]
+      }
+    },
+    {
+      "batchIndex": 2,
+      "files": [
+        {
+          "path": "include/Modules/CameraModule.hpp",
+          "language": "cpp",
+          "sizeLines": 50,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/Modules/EliminateModule.hpp",
+          "language": "cpp",
+          "sizeLines": 21,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/Modules/IModule.hpp",
+          "language": "cpp",
+          "sizeLines": 15,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/Modules/ImgSaveModule.hpp",
+          "language": "cpp",
+          "sizeLines": 21,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/Modules/ReconnectModule.hpp",
+          "language": "cpp",
+          "sizeLines": 19,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/Modules/UIModule.hpp",
+          "language": "cpp",
+          "sizeLines": 24,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "include/Modules/CameraModule.hpp": [
+          "include/Modules/IModule.hpp"
+        ],
+        "include/Modules/EliminateModule.hpp": [
+          "include/Modules/IModule.hpp"
+        ],
+        "include/Modules/IModule.hpp": [],
+        "include/Modules/ImgSaveModule.hpp": [
+          "include/Modules/IModule.hpp"
+        ],
+        "include/Modules/ReconnectModule.hpp": [
+          "include/Modules/IModule.hpp"
+        ],
+        "include/Modules/UIModule.hpp": [
+          "include/Modules/IModule.hpp"
+        ]
+      },
+      "neighborMap": {
+        "include/Modules/CameraModule.hpp": [
+          {
+            "path": "include/Modules/Modules.hpp",
+            "batchIndex": 1,
+            "symbols": [
+              "Modules",
+              "build",
+              "destroy",
+              "start",
+              "stop",
+              "connect",
+              "check",
+              "EnsureDirectoryExists",
+              "Modules"
+            ]
+          }
+        ],
+        "include/Modules/EliminateModule.hpp": [
+          {
+            "path": "include/Modules/Modules.hpp",
+            "batchIndex": 1,
+            "symbols": [
+              "Modules",
+              "build",
+              "destroy",
+              "start",
+              "stop",
+              "connect",
+              "check",
+              "EnsureDirectoryExists",
+              "Modules"
+            ]
+          }
+        ],
+        "include/Modules/IModule.hpp": [
+          {
+            "path": "include/Modules/ConfigManagerModule.hpp",
+            "batchIndex": 1,
+            "symbols": [
+              "ConfigManagerModule"
+            ]
+          },
+          {
+            "path": "include/Modules/ImgProModule.hpp",
+            "batchIndex": 1,
+            "symbols": [
+              "build",
+              "destroy",
+              "start",
+              "stop",
+              "onUpdateImgProContext",
+              "ImgProModule"
+            ]
+          },
+          {
+            "path": "include/Modules/Modules.hpp",
+            "batchIndex": 1,
+            "symbols": [
+              "Modules",
+              "build",
+              "destroy",
+              "start",
+              "stop",
+              "connect",
+              "check",
+              "EnsureDirectoryExists",
+              "Modules"
+            ]
+          },
+          {
+            "path": "include/Modules/PlcController.hpp",
+            "batchIndex": 1,
+            "symbols": [
+              "build_plcController",
+              "destroy_plcController",
+              "build_plcListenThread",
+              "destroy_plcListenThread",
+              "getBuildResult",
+              "PlcController"
+            ]
+          },
+          {
+            "path": "include/Modules/RuntimeInfoModule.hpp",
+            "batchIndex": 1,
+            "symbols": [
+              "RuntimeInfoModule"
+            ]
+          }
+        ],
+        "include/Modules/ImgSaveModule.hpp": [
+          {
+            "path": "include/Modules/Modules.hpp",
+            "batchIndex": 1,
+            "symbols": [
+              "Modules",
+              "build",
+              "destroy",
+              "start",
+              "stop",
+              "connect",
+              "check",
+              "EnsureDirectoryExists",
+              "Modules"
+            ]
+          }
+        ],
+        "include/Modules/ReconnectModule.hpp": [
+          {
+            "path": "include/Modules/Modules.hpp",
+            "batchIndex": 1,
+            "symbols": [
+              "Modules",
+              "build",
+              "destroy",
+              "start",
+              "stop",
+              "connect",
+              "check",
+              "EnsureDirectoryExists",
+              "Modules"
+            ]
+          }
+        ],
+        "include/Modules/UIModule.hpp": [
+          {
+            "path": "include/Modules/Modules.hpp",
+            "batchIndex": 1,
+            "symbols": [
+              "Modules",
+              "build",
+              "destroy",
+              "start",
+              "stop",
+              "connect",
+              "check",
+              "EnsureDirectoryExists",
+              "Modules"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "batchIndex": 3,
+      "files": [
+        {
+          "path": ".understand-anything/.understandignore",
+          "language": "unknown",
+          "sizeLines": 12,
+          "fileCategory": "code"
+        },
+        {
+          "path": ".understand-anything/config.json",
+          "language": "json",
+          "sizeLines": 1,
+          "fileCategory": "config"
+        },
+        {
+          "path": "CMakeLists.txt",
+          "language": "txt",
+          "sizeLines": 102,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "include/data/osoFIleUtiltyFunc.hpp",
+          "language": "cpp",
+          "sizeLines": 14,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/data/Utilty.hpp",
+          "language": "cpp",
+          "sizeLines": 96,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/DetachThread/CameraAndCardStateThread.h",
+          "language": "c",
+          "sizeLines": 34,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/DetachThread/DetachDefectThreadProcess.h",
+          "language": "c",
+          "sizeLines": 33,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/DetachThread/DetachPLCListenThread.h",
+          "language": "c",
+          "sizeLines": 27,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/DetachThread/DetachUtiltyThread.h",
+          "language": "c",
+          "sizeLines": 29,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/func/ImageProcessorModule.hpp",
+          "language": "cpp",
+          "sizeLines": 100,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/NoHardWare/TestImgPushThread.hpp",
+          "language": "cpp",
+          "sizeLines": 47,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/ui/DlgProductSet.h",
+          "language": "c",
+          "sizeLines": 108,
+          "fileCategory": "code"
+        },
+        {
+          "path": "include/ui/EdgeWidthDetection.h",
+          "language": "c",
+          "sizeLines": 73,
+          "fileCategory": "code"
+        },
+        {
+          "path": "osoFile/EdgeWidthDetection.oso",
+          "language": "oso",
+          "sizeLines": 11,
+          "fileCategory": "code"
+        },
+        {
+          "path": "osoFile/SetConfig.oso",
+          "language": "oso",
+          "sizeLines": 46,
+          "fileCategory": "code"
+        },
+        {
+          "path": "osoInclude/EdgeWidthDetection.hpp",
+          "language": "cpp",
+          "sizeLines": 110,
+          "fileCategory": "code"
+        },
+        {
+          "path": "osoInclude/SetConfig.hpp",
+          "language": "cpp",
+          "sizeLines": 470,
+          "fileCategory": "code"
+        },
+        {
+          "path": "qrc/QiXinShiJinDanXiangJi.qrc",
+          "language": "qrc",
+          "sizeLines": 6,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/data/osoFIleUtiltyFunc.cpp",
+          "language": "cpp",
+          "sizeLines": 44,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/data/Utilty.cpp",
+          "language": "cpp",
+          "sizeLines": 29,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/DetachThread/CameraAndCardStateThread.cpp",
+          "language": "cpp",
+          "sizeLines": 74,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/DetachThread/DetachDefectThreadProcess.cpp",
+          "language": "cpp",
+          "sizeLines": 73,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/DetachThread/DetachPLCListenThread.cpp",
+          "language": "cpp",
+          "sizeLines": 74,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/DetachThread/DetachUtiltyThread.cpp",
+          "language": "cpp",
+          "sizeLines": 80,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/func/ImageProcessorModule.cpp",
+          "language": "cpp",
+          "sizeLines": 340,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        ".understand-anything/.understandignore": [],
+        ".understand-anything/config.json": [],
+        "CMakeLists.txt": [],
+        "include/data/osoFIleUtiltyFunc.hpp": [],
+        "include/data/Utilty.hpp": [],
+        "include/DetachThread/CameraAndCardStateThread.h": [],
+        "include/DetachThread/DetachDefectThreadProcess.h": [],
+        "include/DetachThread/DetachPLCListenThread.h": [],
+        "include/DetachThread/DetachUtiltyThread.h": [],
+        "include/func/ImageProcessorModule.hpp": [],
+        "include/NoHardWare/TestImgPushThread.hpp": [],
+        "include/ui/DlgProductSet.h": [],
+        "include/ui/EdgeWidthDetection.h": [],
+        "osoFile/EdgeWidthDetection.oso": [],
+        "osoFile/SetConfig.oso": [],
+        "osoInclude/EdgeWidthDetection.hpp": [],
+        "osoInclude/SetConfig.hpp": [],
+        "qrc/QiXinShiJinDanXiangJi.qrc": [],
+        "src/data/osoFIleUtiltyFunc.cpp": [],
+        "src/data/Utilty.cpp": [],
+        "src/DetachThread/CameraAndCardStateThread.cpp": [],
+        "src/DetachThread/DetachDefectThreadProcess.cpp": [],
+        "src/DetachThread/DetachPLCListenThread.cpp": [],
+        "src/DetachThread/DetachUtiltyThread.cpp": [],
+        "src/func/ImageProcessorModule.cpp": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 4,
+      "files": [
+        {
+          "path": "src/main.cpp",
+          "language": "cpp",
+          "sizeLines": 40,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/Modules/CameraModule.cpp",
+          "language": "cpp",
+          "sizeLines": 165,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/Modules/ConfigManagerModule.cpp",
+          "language": "cpp",
+          "sizeLines": 39,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/Modules/EliminateModule.cpp",
+          "language": "cpp",
+          "sizeLines": 38,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/Modules/ImgProModule.cpp",
+          "language": "cpp",
+          "sizeLines": 297,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/Modules/ImgSaveModule.cpp",
+          "language": "cpp",
+          "sizeLines": 97,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/Modules/IModule.cpp",
+          "language": "cpp",
+          "sizeLines": 1,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/Modules/Modules.cpp",
+          "language": "cpp",
+          "sizeLines": 225,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/Modules/PlcController.cpp",
+          "language": "cpp",
+          "sizeLines": 175,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/Modules/ReconnectModule.cpp",
+          "language": "cpp",
+          "sizeLines": 28,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/Modules/RuntimeInfoModule.cpp",
+          "language": "cpp",
+          "sizeLines": 23,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/Modules/TestModule.cpp",
+          "language": "cpp",
+          "sizeLines": 22,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/Modules/UIModule.cpp",
+          "language": "cpp",
+          "sizeLines": 25,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/Modules/WarningModule.cpp",
+          "language": "cpp",
+          "sizeLines": 0,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/NoHardWare/TestImgPushThread.cpp",
+          "language": "cpp",
+          "sizeLines": 139,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/ui/DlgProductSet.cpp",
+          "language": "cpp",
+          "sizeLines": 1588,
+          "fileCategory": "code"
+        },
+        {
+          "path": "src/ui/EdgeWidthDetection.cpp",
+          "language": "cpp",
+          "sizeLines": 407,
+          "fileCategory": "code"
+        },
+        {
+          "path": "ui/DlgProductSet.ui",
+          "language": "ui",
+          "sizeLines": 9821,
+          "fileCategory": "code"
+        },
+        {
+          "path": "ui/EdgeWidthDetection.ui",
+          "language": "ui",
+          "sizeLines": 1042,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "src/main.cpp": [],
+        "src/Modules/CameraModule.cpp": [],
+        "src/Modules/ConfigManagerModule.cpp": [],
+        "src/Modules/EliminateModule.cpp": [],
+        "src/Modules/ImgProModule.cpp": [],
+        "src/Modules/ImgSaveModule.cpp": [],
+        "src/Modules/IModule.cpp": [],
+        "src/Modules/Modules.cpp": [],
+        "src/Modules/PlcController.cpp": [],
+        "src/Modules/ReconnectModule.cpp": [],
+        "src/Modules/RuntimeInfoModule.cpp": [],
+        "src/Modules/TestModule.cpp": [],
+        "src/Modules/UIModule.cpp": [],
+        "src/Modules/WarningModule.cpp": [],
+        "src/NoHardWare/TestImgPushThread.cpp": [],
+        "src/ui/DlgProductSet.cpp": [],
+        "src/ui/EdgeWidthDetection.cpp": [],
+        "ui/DlgProductSet.ui": [],
+        "ui/EdgeWidthDetection.ui": []
+      },
+      "neighborMap": {}
+    }
+  ]
+}

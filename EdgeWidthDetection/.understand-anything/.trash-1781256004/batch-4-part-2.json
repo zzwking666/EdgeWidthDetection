@@ -1,0 +1,662 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/Modules/Modules.cpp",
+      "type": "file",
+      "name": "Modules.cpp",
+      "filePath": "src/Modules/Modules.cpp",
+      "summary": "全局单例中枢实现，持有所有子模块实例，按依赖顺序统一调用各模块的build/destroy/start/stop生命周期，在connect()中完成所有跨模块Qt信号槽连接，并提供运行环境检查。",
+      "tags": ["singleton", "orchestration", "module", "lifecycle", "qt-signal-slot"],
+      "complexity": "complex",
+      "languageNotes": "build/start/stop方法按固定顺序遍历模块列表调用同名方法，connect方法包含十余个QObject::connect跨模块信号槽绑定。"
+    },
+    {
+      "id": "file:src/Modules/PlcController.cpp",
+      "type": "file",
+      "name": "PlcController.cpp",
+      "filePath": "src/Modules/PlcController.cpp",
+      "summary": "PLC控制器模块实现，管理Modbus设备（PLC）的连接与调度器，从配置文件读取IP/端口，创建后台监听线程轮询寄存器值。",
+      "tags": ["plc", "modbus", "module", "threading", "configuration"],
+      "complexity": "moderate",
+      "languageNotes": "loadConfigFromFile函数从桌面路径下的配置文件解析IP和端口，使用Windows SHGetFolderPathW API获取桌面路径。"
+    },
+    {
+      "id": "file:src/Modules/ReconnectModule.cpp",
+      "type": "file",
+      "name": "ReconnectModule.cpp",
+      "filePath": "src/Modules/ReconnectModule.cpp",
+      "summary": "重连模块实现，创建CameraAndCardStateThread后台线程，监控相机和板卡连接状态并在断连时触发设备重连。",
+      "tags": ["reconnection", "monitoring", "module", "threading"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/Modules/RuntimeInfoModule.cpp",
+      "type": "file",
+      "name": "RuntimeInfoModule.cpp",
+      "filePath": "src/Modules/RuntimeInfoModule.cpp",
+      "summary": "运行时信息模块实现，创建DetachUtiltyThread后台线程用于轮询PLC信息和统计数据，追踪系统运行状态。",
+      "tags": ["runtime", "statistics", "module", "threading"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/Modules/TestModule.cpp",
+      "type": "file",
+      "name": "TestModule.cpp",
+      "filePath": "src/Modules/TestModule.cpp",
+      "summary": "测试模块实现（BUILD_WITHOUT_HARDWARE模式），创建TestImgPushThread从磁盘读取测试图像并推送帧，替代真实相机输入。",
+      "tags": ["testing", "module", "no-hardware", "image-push"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/Modules/UIModule.cpp",
+      "type": "file",
+      "name": "UIModule.cpp",
+      "filePath": "src/Modules/UIModule.cpp",
+      "summary": "UI模块实现，负责构建和销毁主窗口（EdgeWidthDetection）及产品设置对话框（DlgProductSet），管理UI资源的生命周期。",
+      "tags": ["ui", "qt", "module", "dialog", "main-window"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/Modules/WarningModule.cpp",
+      "type": "file",
+      "name": "WarningModule.cpp",
+      "filePath": "src/Modules/WarningModule.cpp",
+      "summary": "告警模块实现文件（当前仅含头文件引入），用于监控相机和图像处理模块状态并触发告警。",
+      "tags": ["warning", "monitoring", "module"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/NoHardWare/TestImgPushThread.cpp",
+      "type": "file",
+      "name": "TestImgPushThread.cpp",
+      "filePath": "src/NoHardWare/TestImgPushThread.cpp",
+      "summary": "测试图像推送线程实现，读取指定目录中的测试图片文件，通过OpenCV加载图像并模拟两路相机帧推送至图像处理模块。",
+      "tags": ["testing", "image-push", "threading", "no-hardware", "opencv"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/main.cpp",
+      "type": "file",
+      "name": "main.cpp",
+      "filePath": "src/main.cpp",
+      "summary": "程序入口点，设置控制台编码、初始化日志系统、通过Modules单例构建/连接/启动所有子模块，然后进入Qt事件循环全屏显示主窗口。",
+      "tags": ["entry-point", "qt", "initialization", "application"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/Modules/Modules.cpp:build",
+      "type": "function",
+      "name": "build",
+      "filePath": "src/Modules/Modules.cpp",
+      "lineRange": [24, 58],
+      "summary": "按依赖顺序构建所有子模块（配置->相机->图像处理->UI->PLC->缺陷剔除->图像保存->运行时->告警->重连），并调用connect完成信号槽绑定。",
+      "tags": ["build", "module-lifecycle", "orchestration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/Modules/Modules.cpp:destroy",
+      "type": "function",
+      "name": "destroy",
+      "filePath": "src/Modules/Modules.cpp",
+      "lineRange": [60, 74],
+      "summary": "按逆序销毁所有子模块，释放各模块持有的资源。",
+      "tags": ["destroy", "module-lifecycle", "cleanup"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/Modules/Modules.cpp:start",
+      "type": "function",
+      "name": "start",
+      "filePath": "src/Modules/Modules.cpp",
+      "lineRange": [76, 90],
+      "summary": "按顺序启动所有子模块的运行时功能，跳过测试模块（无硬件模式下单独启动）。",
+      "tags": ["start", "module-lifecycle", "orchestration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/Modules/Modules.cpp:stop",
+      "type": "function",
+      "name": "stop",
+      "filePath": "src/Modules/Modules.cpp",
+      "lineRange": [92, 106],
+      "summary": "按逆序停止所有子模块的运行时功能，优先停止缺陷剔除和图像处理以安全关闭。",
+      "tags": ["stop", "module-lifecycle", "orchestration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/Modules/Modules.cpp:connect",
+      "type": "function",
+      "name": "connect",
+      "filePath": "src/Modules/Modules.cpp",
+      "lineRange": [108, 167],
+      "summary": "完成所有跨模块Qt信号槽连接，包括相机帧到图像处理、PLC信息到UI更新、配置变更到图像上下文重建等关键信号链路。",
+      "tags": ["qt-signal-slot", "connection", "orchestration", "module"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/Modules/Modules.cpp:check",
+      "type": "function",
+      "name": "check",
+      "filePath": "src/Modules/Modules.cpp",
+      "lineRange": [169, 216],
+      "summary": "运行环境检查：验证单实例运行、必需进程存在、必要目录和配置文件完整性，异常时弹出警告对话框。",
+      "tags": ["validation", "environment-check", "startup", "diagnostics"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/Modules/PlcController.cpp:build_plcController",
+      "type": "function",
+      "name": "build_plcController",
+      "filePath": "src/Modules/PlcController.cpp",
+      "lineRange": [37, 69],
+      "summary": "构建PLC控制器，从配置文件加载IP和端口，创建ModbusDevice并建立连接，然后创建ModbusDeviceScheduler调度器。",
+      "tags": ["plc", "modbus", "initialization", "build"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/Modules/PlcController.cpp:destroy_plcController",
+      "type": "function",
+      "name": "destroy_plcController",
+      "filePath": "src/Modules/PlcController.cpp",
+      "lineRange": [71, 81],
+      "summary": "销毁PLC控制器，释放ModbusDeviceScheduler和ModbusDevice资源。",
+      "tags": ["plc", "destroy", "cleanup"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/Modules/PlcController.cpp:loadConfigFromFile",
+      "type": "function",
+      "name": "loadConfigFromFile",
+      "filePath": "src/Modules/PlcController.cpp",
+      "lineRange": [96, 163],
+      "summary": "从桌面路径下的PlcConfig.txt配置文件解析IP地址和端口号，支持异常处理和默认值回退。",
+      "tags": ["plc", "configuration", "file-io", "parsing"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/Modules/PlcController.cpp:getDesktopPath",
+      "type": "function",
+      "name": "getDesktopPath",
+      "filePath": "src/Modules/PlcController.cpp",
+      "lineRange": [165, 175],
+      "summary": "通过Windows SHGetFolderPathW API获取当前用户的桌面路径。",
+      "tags": ["windows-api", "filesystem", "utility"],
+      "complexity": "simple",
+      "languageNotes": "使用Windows特定API SHGetFolderPathW获取CSIDL_DESKTOP路径。"
+    },
+    {
+      "id": "function:src/main.cpp:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "src/main.cpp",
+      "lineRange": [10, 40],
+      "summary": "应用程序入口，设置控制台编码、初始化日志系统、通过Modules单例完成构建/连接/启动，创建主窗口全屏显示并进入Qt事件循环。",
+      "tags": ["entry-point", "initialization", "qt", "application"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/Modules/Modules.cpp",
+      "target": "file:include/Modules/Modules.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/Modules.cpp",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/PlcController.cpp",
+      "target": "file:include/Modules/PlcController.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/PlcController.cpp",
+      "target": "file:include/Modules/Modules.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/PlcController.cpp",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/PlcController.cpp",
+      "target": "file:include/DetachThread/DetachPLCListenThread.h",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/PlcController.cpp",
+      "target": "file:osoInclude/EdgeWidthDetection.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/PlcController.cpp",
+      "target": "file:osoInclude/SetConfig.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/ReconnectModule.cpp",
+      "target": "file:include/Modules/ReconnectModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/ReconnectModule.cpp",
+      "target": "file:include/Modules/Modules.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/ReconnectModule.cpp",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/RuntimeInfoModule.cpp",
+      "target": "file:include/Modules/RuntimeInfoModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/RuntimeInfoModule.cpp",
+      "target": "file:include/Modules/Modules.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/RuntimeInfoModule.cpp",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/RuntimeInfoModule.cpp",
+      "target": "file:include/DetachThread/DetachUtiltyThread.h",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/RuntimeInfoModule.cpp",
+      "target": "file:include/DetachThread/CameraAndCardStateThread.h",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/TestModule.cpp",
+      "target": "file:include/Modules/TestModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/TestModule.cpp",
+      "target": "file:include/Modules/Modules.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/TestModule.cpp",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/UIModule.cpp",
+      "target": "file:include/Modules/UIModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/UIModule.cpp",
+      "target": "file:include/Modules/Modules.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/UIModule.cpp",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/UIModule.cpp",
+      "target": "file:include/ui/EdgeWidthDetection.h",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/UIModule.cpp",
+      "target": "file:include/ui/DlgProductSet.h",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/UIModule.cpp",
+      "target": "file:include/DetachThread/DetachDefectThreadProcess.h",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/UIModule.cpp",
+      "target": "file:include/data/osoFIleUtiltyFunc.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/UIModule.cpp",
+      "target": "file:osoInclude/EdgeWidthDetection.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/UIModule.cpp",
+      "target": "file:osoInclude/SetConfig.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/UIModule.cpp",
+      "target": "file:include/Modules/ImgProModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/WarningModule.cpp",
+      "target": "file:include/Modules/WarningModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/WarningModule.cpp",
+      "target": "file:include/Modules/Modules.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/WarningModule.cpp",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/WarningModule.cpp",
+      "target": "file:include/Modules/CameraModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/WarningModule.cpp",
+      "target": "file:include/Modules/ImgProModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/NoHardWare/TestImgPushThread.cpp",
+      "target": "file:include/NoHardWare/TestImgPushThread.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/NoHardWare/TestImgPushThread.cpp",
+      "target": "file:include/Modules/TestModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/NoHardWare/TestImgPushThread.cpp",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.cpp",
+      "target": "file:include/Modules/Modules.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.cpp",
+      "target": "file:include/ui/EdgeWidthDetection.h",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.cpp",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/Modules.cpp",
+      "target": "function:src/Modules/Modules.cpp:build",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/Modules.cpp",
+      "target": "function:src/Modules/Modules.cpp:destroy",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/Modules.cpp",
+      "target": "function:src/Modules/Modules.cpp:start",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/Modules.cpp",
+      "target": "function:src/Modules/Modules.cpp:stop",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/Modules.cpp",
+      "target": "function:src/Modules/Modules.cpp:connect",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/Modules.cpp",
+      "target": "function:src/Modules/Modules.cpp:check",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/PlcController.cpp",
+      "target": "function:src/Modules/PlcController.cpp:build_plcController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/PlcController.cpp",
+      "target": "function:src/Modules/PlcController.cpp:destroy_plcController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/PlcController.cpp",
+      "target": "function:src/Modules/PlcController.cpp:loadConfigFromFile",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/PlcController.cpp",
+      "target": "function:src/Modules/PlcController.cpp:getDesktopPath",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/main.cpp",
+      "target": "function:src/main.cpp:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/Modules.cpp",
+      "target": "function:src/Modules/Modules.cpp:build",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/Modules.cpp",
+      "target": "function:src/Modules/Modules.cpp:destroy",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/Modules.cpp",
+      "target": "function:src/Modules/Modules.cpp:start",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/Modules.cpp",
+      "target": "function:src/Modules/Modules.cpp:stop",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/Modules.cpp",
+      "target": "function:src/Modules/Modules.cpp:connect",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/Modules.cpp",
+      "target": "function:src/Modules/Modules.cpp:check",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/PlcController.cpp",
+      "target": "function:src/Modules/PlcController.cpp:build_plcController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/PlcController.cpp",
+      "target": "function:src/Modules/PlcController.cpp:destroy_plcController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/PlcController.cpp",
+      "target": "function:src/Modules/PlcController.cpp:loadConfigFromFile",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/PlcController.cpp",
+      "target": "function:src/Modules/PlcController.cpp:getDesktopPath",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/main.cpp",
+      "target": "function:src/main.cpp:main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/main.cpp:main",
+      "target": "function:src/Modules/Modules.cpp:build",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/main.cpp:main",
+      "target": "function:src/Modules/Modules.cpp:connect",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/main.cpp:main",
+      "target": "function:src/Modules/Modules.cpp:start",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/main.cpp:main",
+      "target": "function:src/Modules/Modules.cpp:check",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

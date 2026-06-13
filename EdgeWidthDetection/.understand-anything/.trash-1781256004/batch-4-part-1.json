@@ -1,0 +1,823 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/DetachThread/CameraAndCardStateThread.cpp",
+      "type": "file",
+      "name": "CameraAndCardStateThread.cpp",
+      "filePath": "src/DetachThread/CameraAndCardStateThread.cpp",
+      "summary": "相机和板卡状态监控线程实现，在后台轮询检查相机连接状态（针对相机1），状态异常时触发重连信号。",
+      "tags": ["monitoring", "camera-reconnect", "threading", "module"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/DetachThread/DetachDefectThreadProcess.cpp",
+      "type": "file",
+      "name": "DetachDefectThreadProcess.cpp",
+      "filePath": "src/DetachThread/DetachDefectThreadProcess.cpp",
+      "summary": "缺陷剔除后台线程实现，从优先级堆队列中取出缺陷判定结果，根据产品配置触发剔除信号并写入PLC输出。",
+      "tags": ["defect-elimination", "threading", "queue", "plc"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/DetachThread/DetachPLCListenThread.cpp",
+      "type": "file",
+      "name": "DetachPLCListenThread.cpp",
+      "filePath": "src/DetachThread/DetachPLCListenThread.cpp",
+      "summary": "PLC监听后台线程实现，周期性异步读取多个Modbus寄存器（包括产品宽度、废品计数、状态标志等），并将PLC信息写入运行时模块。",
+      "tags": ["plc", "modbus", "polling", "threading"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/DetachThread/DetachUtiltyThread.cpp",
+      "type": "file",
+      "name": "DetachUtiltyThread.cpp",
+      "filePath": "src/DetachThread/DetachUtiltyThread.cpp",
+      "summary": "通用工具后台线程实现，轮询读取PLC告警信息和袋字实测长度信息，通过异步Modbus寄存器读取更新运行时状态。",
+      "tags": ["utility", "plc-polling", "warning", "threading"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/Modules/CameraModule.cpp",
+      "type": "file",
+      "name": "CameraModule.cpp",
+      "filePath": "src/Modules/CameraModule.cpp",
+      "summary": "相机模块实现，管理海康威视/度申相机的初始化、帧采集、启停和重连，支持按IP地址匹配多台相机并校验元数据。",
+      "tags": ["camera", "hardware", "module", "image-acquisition", "qt"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/Modules/ConfigManagerModule.cpp",
+      "type": "file",
+      "name": "ConfigManagerModule.cpp",
+      "filePath": "src/Modules/ConfigManagerModule.cpp",
+      "summary": "配置管理模块实现，使用rw::oso存储上下文加载EdgeWidthDetection和SetConfig两个XML配置文件，支持版本兼容合并。",
+      "tags": ["configuration", "xml", "module", "serialization"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/Modules/EliminateModule.cpp",
+      "type": "file",
+      "name": "EliminateModule.cpp",
+      "filePath": "src/Modules/EliminateModule.cpp",
+      "summary": "缺陷剔除模块实现，创建优先级最小堆队列和后台判定线程，在启停时控制线程生命周期。",
+      "tags": ["defect-elimination", "threading", "module", "queue"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/Modules/IModule.cpp",
+      "type": "file",
+      "name": "IModule.cpp",
+      "filePath": "src/Modules/IModule.cpp",
+      "summary": "模块接口实现文件，仅包含IModule.hpp头文件引入，模板类定义在头文件中。",
+      "tags": ["interface", "module", "template"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/Modules/ImgProModule.cpp",
+      "type": "file",
+      "name": "ImgProModule.cpp",
+      "filePath": "src/Modules/ImgProModule.cpp",
+      "summary": "图像处理模块实现，构建完整的图像处理上下文中预处理管线（ROI、阈值、检测参数配置），管理多个ImageProcessingModule实例。",
+      "tags": ["image-processing", "preprocessing", "module", "pipeline", "roi"],
+      "complexity": "complex",
+      "languageNotes": "buildImgProContextPreProcess函数长达229行，包含大量std::any_cast类型转换和图像处理参数配置逻辑。"
+    },
+    {
+      "id": "file:src/Modules/ImgSaveModule.cpp",
+      "type": "file",
+      "name": "ImgSaveModule.cpp",
+      "filePath": "src/Modules/ImgSaveModule.cpp",
+      "summary": "图像保存模块实现，初始化异步图像保存引擎并配置保存路径、格式和质量，按日期自动清理过期图像文件。",
+      "tags": ["image-saving", "async", "module", "disk-io", "cleanup"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/DetachThread/CameraAndCardStateThread.cpp:run",
+      "type": "function",
+      "name": "run",
+      "filePath": "src/DetachThread/CameraAndCardStateThread.cpp",
+      "lineRange": [29, 41],
+      "summary": "线程主循环，周期性休眠后调用check_cameraState检查相机连接状态。",
+      "tags": ["thread-loop", "monitoring", "camera"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/DetachThread/CameraAndCardStateThread.cpp:check_cameraState1",
+      "type": "function",
+      "name": "check_cameraState1",
+      "filePath": "src/DetachThread/CameraAndCardStateThread.cpp",
+      "lineRange": [48, 75],
+      "summary": "检查相机1的连接状态，通过Modules单例获取相机模块并查询连接状态，必要时触发重连。",
+      "tags": ["camera-reconnect", "state-check", "monitoring"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/DetachThread/DetachDefectThreadProcess.cpp:processQueue1",
+      "type": "function",
+      "name": "processQueue1",
+      "filePath": "src/DetachThread/DetachDefectThreadProcess.cpp",
+      "lineRange": [30, 62],
+      "summary": "处理缺陷判定优先级队列，取出队首判定结果，根据产品配置设置剔除触发参数并执行PLC输出剔除。",
+      "tags": ["defect-elimination", "queue-processing", "plc-output"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/DetachThread/DetachDefectThreadProcess.cpp:run",
+      "type": "function",
+      "name": "run",
+      "filePath": "src/DetachThread/DetachDefectThreadProcess.cpp",
+      "lineRange": [64, 73],
+      "summary": "线程主循环，周期性休眠后调用processQueue1处理缺陷剔除队列。",
+      "tags": ["thread-loop", "defect-elimination"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/DetachThread/DetachPLCListenThread.cpp:readPLCInfo",
+      "type": "function",
+      "name": "readPLCInfo",
+      "filePath": "src/DetachThread/DetachPLCListenThread.cpp",
+      "lineRange": [38, 75],
+      "summary": "批量异步读取PLC寄存器信息（产品宽度、废品计数、状态标志等十余项），将读取结果写入运行时信息模块。",
+      "tags": ["plc", "modbus", "register-read", "polling"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/DetachThread/DetachUtiltyThread.cpp:readPLCWarnningInfo",
+      "type": "function",
+      "name": "readPLCWarnningInfo",
+      "filePath": "src/DetachThread/DetachUtiltyThread.cpp",
+      "lineRange": [36, 57],
+      "summary": "异步读取PLC告警相关寄存器值，将告警信息写入运行时信息模块用于UI展示。",
+      "tags": ["plc", "warning", "register-read", "polling"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/DetachThread/DetachUtiltyThread.cpp:readPLCdaizishicechangduInfo",
+      "type": "function",
+      "name": "readPLCdaizishicechangduInfo",
+      "filePath": "src/DetachThread/DetachUtiltyThread.cpp",
+      "lineRange": [59, 80],
+      "summary": "异步读取PLC袋字实测长度相关寄存器值，将测量数据写入运行时信息模块。",
+      "tags": ["plc", "measurement", "register-read", "polling"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/Modules/CameraModule.cpp:build",
+      "type": "function",
+      "name": "build",
+      "filePath": "src/Modules/CameraModule.cpp",
+      "lineRange": [15, 24],
+      "summary": "构建相机模块，遍历相机列表为每台相机调用build_camera1初始化硬件。",
+      "tags": ["module-lifecycle", "camera", "build"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/Modules/CameraModule.cpp:build_camera1",
+      "type": "function",
+      "name": "build_camera1",
+      "filePath": "src/Modules/CameraModule.cpp",
+      "lineRange": [47, 79],
+      "summary": "初始化单个相机：检测相机列表、校验元数据、创建CameraPassiveThread、设置帧率/曝光/增益参数并连接帧捕获信号。",
+      "tags": ["camera", "initialization", "hardware", "qt-signal-slot"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/Modules/CameraModule.cpp:isTargetCamera",
+      "type": "function",
+      "name": "isTargetCamera",
+      "filePath": "src/Modules/CameraModule.cpp",
+      "lineRange": [86, 98],
+      "summary": "判断相机是否为指定名称的目标相机，通过正则匹配相机信息中的序列号或型号名。",
+      "tags": ["camera", "matching", "regex", "utility"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/Modules/CameraModule.cpp:cameraMetaDataCheck",
+      "type": "function",
+      "name": "cameraMetaDataCheck",
+      "filePath": "src/Modules/CameraModule.cpp",
+      "lineRange": [100, 111],
+      "summary": "校验相机元数据，调用isTargetCamera判断相机是否匹配配置中的目标相机名称。",
+      "tags": ["camera", "validation", "metadata"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/Modules/CameraModule.cpp:onBuildCamera",
+      "type": "function",
+      "name": "onBuildCamera",
+      "filePath": "src/Modules/CameraModule.cpp",
+      "lineRange": [113, 122],
+      "summary": "按索引重建指定相机，从配置中获取相机信息并重新调用build_camera1。",
+      "tags": ["camera", "rebuild", "reconnect"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/Modules/CameraModule.cpp:onDestroyCamera",
+      "type": "function",
+      "name": "onDestroyCamera",
+      "filePath": "src/Modules/CameraModule.cpp",
+      "lineRange": [124, 138],
+      "summary": "按索引销毁指定相机，先停止监控和线程，然后释放相机资源。",
+      "tags": ["camera", "destroy", "cleanup"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/Modules/CameraModule.cpp:onStartCamera",
+      "type": "function",
+      "name": "onStartCamera",
+      "filePath": "src/Modules/CameraModule.cpp",
+      "lineRange": [140, 153],
+      "summary": "按索引启动指定相机，从配置中获取相机信息并启动监控。",
+      "tags": ["camera", "start", "reconnect"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/Modules/CameraModule.cpp:onFrameCaptured",
+      "type": "function",
+      "name": "onFrameCaptured",
+      "filePath": "src/Modules/CameraModule.cpp",
+      "lineRange": [155, 165],
+      "summary": "帧捕获回调，接收相机采集的帧数据并转发给图像处理模块进行进一步处理。",
+      "tags": ["camera", "frame-capture", "callback", "image-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/Modules/ConfigManagerModule.cpp:build",
+      "type": "function",
+      "name": "build",
+      "filePath": "src/Modules/ConfigManagerModule.cpp",
+      "lineRange": [6, 22],
+      "summary": "构建配置模块，创建存储上下文并通过loadConfigSafe加载EdgeWidthDetection和SetConfig两个配置文件。",
+      "tags": ["configuration", "build", "module-lifecycle", "xml"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/Modules/EliminateModule.cpp:destroy",
+      "type": "function",
+      "name": "destroy",
+      "filePath": "src/Modules/EliminateModule.cpp",
+      "lineRange": [11, 21],
+      "summary": "销毁缺陷剔除模块，释放后台判定线程和优先级堆队列资源。",
+      "tags": ["destroy", "module-lifecycle", "cleanup"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/Modules/ImgProModule.cpp:build",
+      "type": "function",
+      "name": "build",
+      "filePath": "src/Modules/ImgProModule.cpp",
+      "lineRange": [7, 16],
+      "summary": "构建图像处理模块，创建图像处理上下文和多个图像处理流水线实例。",
+      "tags": ["image-processing", "build", "module-lifecycle"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/Modules/ImgProModule.cpp:buildImgProContextPreProcess",
+      "type": "function",
+      "name": "buildImgProContextPreProcess",
+      "filePath": "src/Modules/ImgProModule.cpp",
+      "lineRange": [38, 266],
+      "summary": "构建图像处理上下文的预处理配置，从Modules单例获取配置参数，设置ROI区域、检测阈值、分类映射、图像绘制标线等完整预处理管线。",
+      "tags": ["image-processing", "preprocessing", "configuration", "roi", "threshold"],
+      "complexity": "complex",
+      "languageNotes": "该函数长达229行，使用大量std::any_cast进行类型安全转换，配置项涵盖边缘检测算法参数、缺陷分类映射和视觉标线绘制。"
+    },
+    {
+      "id": "function:src/Modules/ImgSaveModule.cpp:build",
+      "type": "function",
+      "name": "build",
+      "filePath": "src/Modules/ImgSaveModule.cpp",
+      "lineRange": [7, 73],
+      "summary": "构建图像保存模块，创建ImageSaveEngine、配置保存路径和格式质量，并按日期自动清理过期文件。",
+      "tags": ["image-saving", "build", "module-lifecycle", "cleanup"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/DetachThread/CameraAndCardStateThread.cpp",
+      "target": "file:include/DetachThread/CameraAndCardStateThread.h",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/DetachThread/CameraAndCardStateThread.cpp",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/DetachThread/CameraAndCardStateThread.cpp",
+      "target": "file:include/Modules/Modules.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/DetachThread/DetachDefectThreadProcess.cpp",
+      "target": "file:include/DetachThread/DetachDefectThreadProcess.h",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/DetachThread/DetachDefectThreadProcess.cpp",
+      "target": "file:include/Modules/Modules.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/DetachThread/DetachDefectThreadProcess.cpp",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/DetachThread/DetachDefectThreadProcess.cpp",
+      "target": "file:include/Modules/ImgProModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/DetachThread/DetachPLCListenThread.cpp",
+      "target": "file:include/DetachThread/DetachPLCListenThread.h",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/DetachThread/DetachPLCListenThread.cpp",
+      "target": "file:include/Modules/Modules.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/DetachThread/DetachPLCListenThread.cpp",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/DetachThread/DetachUtiltyThread.cpp",
+      "target": "file:include/DetachThread/DetachUtiltyThread.h",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/DetachThread/DetachUtiltyThread.cpp",
+      "target": "file:include/Modules/Modules.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/DetachThread/DetachUtiltyThread.cpp",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "file:include/Modules/CameraModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "file:include/Modules/ConfigManagerModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "file:include/Modules/Modules.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/ConfigManagerModule.cpp",
+      "target": "file:include/Modules/ConfigManagerModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/ConfigManagerModule.cpp",
+      "target": "file:include/Modules/Modules.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/ConfigManagerModule.cpp",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/ConfigManagerModule.cpp",
+      "target": "file:osoInclude/EdgeWidthDetection.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/ConfigManagerModule.cpp",
+      "target": "file:osoInclude/SetConfig.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/ConfigManagerModule.cpp",
+      "target": "file:include/data/osoFIleUtiltyFunc.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/EliminateModule.cpp",
+      "target": "file:include/Modules/EliminateModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/EliminateModule.cpp",
+      "target": "file:include/Modules/Modules.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/EliminateModule.cpp",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/IModule.cpp",
+      "target": "file:include/Modules/IModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/ImgProModule.cpp",
+      "target": "file:include/Modules/ImgProModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/ImgProModule.cpp",
+      "target": "file:include/Modules/Modules.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/ImgProModule.cpp",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/ImgProModule.cpp",
+      "target": "file:include/func/ImageProcessorModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/ImgSaveModule.cpp",
+      "target": "file:include/Modules/ImgSaveModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/ImgSaveModule.cpp",
+      "target": "file:include/Modules/Modules.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/ImgSaveModule.cpp",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/Modules/ImgSaveModule.cpp",
+      "target": "file:include/Modules/ConfigManagerModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/DetachThread/CameraAndCardStateThread.cpp",
+      "target": "function:src/DetachThread/CameraAndCardStateThread.cpp:run",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/DetachThread/CameraAndCardStateThread.cpp",
+      "target": "function:src/DetachThread/CameraAndCardStateThread.cpp:check_cameraState1",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/DetachThread/DetachDefectThreadProcess.cpp",
+      "target": "function:src/DetachThread/DetachDefectThreadProcess.cpp:processQueue1",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/DetachThread/DetachDefectThreadProcess.cpp",
+      "target": "function:src/DetachThread/DetachDefectThreadProcess.cpp:run",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/DetachThread/DetachPLCListenThread.cpp",
+      "target": "function:src/DetachThread/DetachPLCListenThread.cpp:readPLCInfo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/DetachThread/DetachUtiltyThread.cpp",
+      "target": "function:src/DetachThread/DetachUtiltyThread.cpp:readPLCWarnningInfo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/DetachThread/DetachUtiltyThread.cpp",
+      "target": "function:src/DetachThread/DetachUtiltyThread.cpp:readPLCdaizishicechangduInfo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "function:src/Modules/CameraModule.cpp:build",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "function:src/Modules/CameraModule.cpp:build_camera1",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "function:src/Modules/CameraModule.cpp:isTargetCamera",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "function:src/Modules/CameraModule.cpp:cameraMetaDataCheck",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "function:src/Modules/CameraModule.cpp:onBuildCamera",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "function:src/Modules/CameraModule.cpp:onDestroyCamera",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "function:src/Modules/CameraModule.cpp:onStartCamera",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "function:src/Modules/CameraModule.cpp:onFrameCaptured",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/ConfigManagerModule.cpp",
+      "target": "function:src/Modules/ConfigManagerModule.cpp:build",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/EliminateModule.cpp",
+      "target": "function:src/Modules/EliminateModule.cpp:destroy",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/ImgProModule.cpp",
+      "target": "function:src/Modules/ImgProModule.cpp:build",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/ImgProModule.cpp",
+      "target": "function:src/Modules/ImgProModule.cpp:buildImgProContextPreProcess",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/Modules/ImgSaveModule.cpp",
+      "target": "function:src/Modules/ImgSaveModule.cpp:build",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/DetachThread/CameraAndCardStateThread.cpp",
+      "target": "function:src/DetachThread/CameraAndCardStateThread.cpp:run",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/DetachThread/CameraAndCardStateThread.cpp",
+      "target": "function:src/DetachThread/CameraAndCardStateThread.cpp:check_cameraState1",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/DetachThread/DetachDefectThreadProcess.cpp",
+      "target": "function:src/DetachThread/DetachDefectThreadProcess.cpp:processQueue1",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/DetachThread/DetachDefectThreadProcess.cpp",
+      "target": "function:src/DetachThread/DetachDefectThreadProcess.cpp:run",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/DetachThread/DetachPLCListenThread.cpp",
+      "target": "function:src/DetachThread/DetachPLCListenThread.cpp:readPLCInfo",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/DetachThread/DetachUtiltyThread.cpp",
+      "target": "function:src/DetachThread/DetachUtiltyThread.cpp:readPLCWarnningInfo",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/DetachThread/DetachUtiltyThread.cpp",
+      "target": "function:src/DetachThread/DetachUtiltyThread.cpp:readPLCdaizishicechangduInfo",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "function:src/Modules/CameraModule.cpp:build",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "function:src/Modules/CameraModule.cpp:build_camera1",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "function:src/Modules/CameraModule.cpp:isTargetCamera",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "function:src/Modules/CameraModule.cpp:cameraMetaDataCheck",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "function:src/Modules/CameraModule.cpp:onBuildCamera",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "function:src/Modules/CameraModule.cpp:onDestroyCamera",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "function:src/Modules/CameraModule.cpp:onStartCamera",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/CameraModule.cpp",
+      "target": "function:src/Modules/CameraModule.cpp:onFrameCaptured",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/ConfigManagerModule.cpp",
+      "target": "function:src/Modules/ConfigManagerModule.cpp:build",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/EliminateModule.cpp",
+      "target": "function:src/Modules/EliminateModule.cpp:destroy",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/ImgProModule.cpp",
+      "target": "function:src/Modules/ImgProModule.cpp:build",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/ImgProModule.cpp",
+      "target": "function:src/Modules/ImgProModule.cpp:buildImgProContextPreProcess",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/Modules/ImgSaveModule.cpp",
+      "target": "function:src/Modules/ImgSaveModule.cpp:build",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

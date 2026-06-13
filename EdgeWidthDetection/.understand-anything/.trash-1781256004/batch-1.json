@@ -1,0 +1,514 @@
+{
+  "nodes": [
+    {
+      "id": "file:include/Modules/ConfigManagerModule.hpp",
+      "type": "file",
+      "name": "ConfigManagerModule.hpp",
+      "filePath": "include/Modules/ConfigManagerModule.hpp",
+      "summary": "配置管理模块头文件，定义 ConfigManagerModule 类及 loadConfigSafe 模板方法，实现版本兼容的 XML 配置文件加载与自动合并。",
+      "tags": ["configuration", "serialization", "template", "module-interface"],
+      "complexity": "moderate",
+      "languageNotes": "loadConfigSafe 模板函数利用 SFINAE 和异常捕获实现配置文件版本兼容合并，是配置系统的核心模式。"
+    },
+    {
+      "id": "file:include/Modules/ImgProModule.hpp",
+      "type": "file",
+      "name": "ImgProModule.hpp",
+      "filePath": "include/Modules/ImgProModule.hpp",
+      "summary": "图像处理模块头文件，定义 ImgProModule 类，负责构建和管理图像处理上下文及 ImageProcessingModule 实例。",
+      "tags": ["image-processing", "module-interface", "qt-signals"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:include/Modules/Modules.hpp",
+      "type": "file",
+      "name": "Modules.hpp",
+      "filePath": "include/Modules/Modules.hpp",
+      "summary": "全局单例中枢头文件，定义 Modules 类以公开成员持有所有子模块实例，统一编排 build/start/stop 生命周期及模块间信号连接。",
+      "tags": ["singleton", "orchestration", "lifecycle-management", "module-interface"],
+      "complexity": "moderate",
+      "languageNotes": "采用 Meyers 单例模式（C++11 线程安全），checkFileExistAndFormat 模板函数自动验证并修复配置文件格式。"
+    },
+    {
+      "id": "file:include/Modules/CameraModule.hpp",
+      "type": "file",
+      "name": "CameraModule.hpp",
+      "filePath": "include/Modules/CameraModule.hpp",
+      "summary": "相机模块头文件，定义 CameraModule 类及 BuildError 枚举，管理海康威视/度申相机初始化、帧采集与重连。",
+      "tags": ["camera", "hardware-abstraction", "frame-capture", "qt-signals"],
+      "complexity": "moderate",
+      "languageNotes": "使用 std::vector<BuildError> 作为 IModule 模板参数，支持按相机分别报告构建错误。"
+    },
+    {
+      "id": "file:include/Modules/EliminateModule.hpp",
+      "type": "file",
+      "name": "EliminateModule.hpp",
+      "filePath": "include/Modules/EliminateModule.hpp",
+      "summary": "缺陷剔除模块头文件，定义 EliminateModule 类，通过线程安全优先队列管理产品缺陷判定与剔除逻辑。",
+      "tags": ["defect-detection", "priority-queue", "module-interface"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:include/func/ImageProcessorModule.hpp",
+      "type": "file",
+      "name": "ImageProcessorModule.hpp",
+      "filePath": "include/func/ImageProcessorModule.hpp",
+      "summary": "图像处理核心头文件，定义 QThread 子类 ImageProcessor 实现多线程图像处理管线，以及 ImageProcessingModule 类管理多个消费者线程。",
+      "tags": ["image-processing", "multi-threading", "edge-detection", "qt-thread"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:include/data/Utilty.hpp",
+      "type": "file",
+      "name": "Utilty.hpp",
+      "filePath": "include/data/Utilty.hpp",
+      "summary": "全局数据结构与常量定义头文件，包含项目路径 GlobalPath、PLC 地址映射 ModBusAddress、PLC 索引常量 PlcReadIndex 等核心数据类。",
+      "tags": ["data-model", "constants", "plc-communication", "path-configuration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:include/Modules/ConfigManagerModule.hpp:ConfigManagerModule",
+      "type": "class",
+      "name": "ConfigManagerModule",
+      "filePath": "include/Modules/ConfigManagerModule.hpp",
+      "lineRange": [13, 31],
+      "summary": "配置管理模块，继承 IModule<bool> 和 QObject，持有 StorageContext、EdgeWidthDetectionConfig、SetConfig，提供 loadConfigSafe 模板方法实现版本兼容配置加载。",
+      "tags": ["configuration", "service", "serialization"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:include/Modules/ConfigManagerModule.hpp:loadConfigSafe",
+      "type": "function",
+      "name": "loadConfigSafe",
+      "filePath": "include/Modules/ConfigManagerModule.hpp",
+      "lineRange": [33, 84],
+      "summary": "模板函数，安全加载 XML 配置文件；若文件缺失或字段不匹配，自动使用 AssemblyMergeTool 合并旧数据与新默认值后重试。",
+      "tags": ["configuration", "template", "error-handling", "serialization"],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:include/Modules/ImgProModule.hpp:ImgProModule",
+      "type": "class",
+      "name": "ImgProModule",
+      "filePath": "include/Modules/ImgProModule.hpp",
+      "lineRange": [8, 38],
+      "summary": "图像处理模块，继承 IModule<bool> 和 QObject，管理预处理的 ImageProcessContext、多通道原子更新标志及 ImageProcessingModule 实例的构建与销毁。",
+      "tags": ["image-processing", "module-interface", "context-management"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:include/Modules/Modules.hpp:Modules",
+      "type": "class",
+      "name": "Modules",
+      "filePath": "include/Modules/Modules.hpp",
+      "lineRange": [19, 66],
+      "summary": "全局单例中枢类，继承 IModule<bool>，以公开成员持有所有 10 个子模块实例，提供 build/destroy/start/stop/connect 统一编排生命周期。",
+      "tags": ["singleton", "orchestration", "lifecycle-management", "entry-point"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:include/Modules/Modules.hpp:checkFileExistAndFormat",
+      "type": "function",
+      "name": "checkFileExistAndFormat",
+      "filePath": "include/Modules/Modules.hpp",
+      "lineRange": [68, 92],
+      "summary": "静态模板函数，检查配置文件是否存在且格式正确；若格式不匹配则自动合并默认值修复，若文件缺失则创建默认配置。",
+      "tags": ["configuration", "template", "validation", "error-handling"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:include/Modules/CameraModule.hpp:CameraModule",
+      "type": "class",
+      "name": "CameraModule",
+      "filePath": "include/Modules/CameraModule.hpp",
+      "lineRange": [14, 50],
+      "summary": "相机模块，继承 IModule<std::vector<BuildError>> 和 QObject，管理 CameraPassiveThread 相机线程、帧捕获信号 frameCaptured1 及相机构建/销毁/启动槽函数。",
+      "tags": ["camera", "hardware-abstraction", "frame-capture", "qt-signals"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:include/Modules/EliminateModule.hpp:EliminateModule",
+      "type": "class",
+      "name": "EliminateModule",
+      "filePath": "include/Modules/EliminateModule.hpp",
+      "lineRange": [7, 22],
+      "summary": "缺陷剔除模块，继承 IModule<bool> 和 QObject，持有线程安全优先队列 productPriorityQueue1 和 DetachDefectThread 异步剔除线程。",
+      "tags": ["defect-detection", "priority-queue", "module-interface"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:include/func/ImageProcessorModule.hpp:ImageProcessor",
+      "type": "class",
+      "name": "ImageProcessor",
+      "filePath": "include/func/ImageProcessorModule.hpp",
+      "lineRange": [18, 62],
+      "summary": "图像处理器工作线程，继承 QThread，实现 run 主循环、调试模式 run_debug、剔废模式 run_OpenRemoveFunc、图像保存、边缘绘制及 PLC 宽度写入。",
+      "tags": ["image-processing", "multi-threading", "edge-detection", "qt-thread"],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:include/func/ImageProcessorModule.hpp:ImageProcessingModule",
+      "type": "class",
+      "name": "ImageProcessingModule",
+      "filePath": "include/func/ImageProcessorModule.hpp",
+      "lineRange": [65, 98],
+      "summary": "图像处理模块管理器，继承 QObject，管理多个 ImageProcessor 消费者线程的队列、互斥锁和条件变量，提供帧回调分发和处理器查询。",
+      "tags": ["image-processing", "multi-threading", "producer-consumer", "qt-signals"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:include/data/Utilty.hpp:GlobalPath",
+      "type": "class",
+      "name": "GlobalPath",
+      "filePath": "include/data/Utilty.hpp",
+      "lineRange": [6, 20],
+      "summary": "全局路径配置内联结构体，定义项目根目录、配置文件路径、模型路径、图像保存路径及测试图像目录，存在全局实例 globalPath。",
+      "tags": ["data-model", "path-configuration", "constants"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:include/data/Utilty.hpp:ModBusAddress",
+      "type": "class",
+      "name": "ModBusAddress",
+      "filePath": "include/data/Utilty.hpp",
+      "lineRange": [41, 60],
+      "summary": "ModBus PLC 寄存器地址映射结构体，定义 16 个静态 int 字段对应压痕宽度、拍照间隔、步进螺距等 PLC 寄存器地址。",
+      "tags": ["data-model", "plc-communication", "constants"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:include/data/Utilty.hpp:PlcReadIndex",
+      "type": "class",
+      "name": "PlcReadIndex",
+      "filePath": "include/data/Utilty.hpp",
+      "lineRange": [69, 88],
+      "summary": "PLC 读取索引常量结构体，定义 16 个 static constexpr int 索引值（从 shiceyahenkuandu=1 到 readPLCdaizishicechangdu=16），用于 PLC 数据轮询读取。",
+      "tags": ["data-model", "plc-communication", "constants"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:include/Modules/ConfigManagerModule.hpp",
+      "target": "class:include/Modules/ConfigManagerModule.hpp:ConfigManagerModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:include/Modules/ConfigManagerModule.hpp",
+      "target": "function:include/Modules/ConfigManagerModule.hpp:loadConfigSafe",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:include/Modules/ImgProModule.hpp",
+      "target": "class:include/Modules/ImgProModule.hpp:ImgProModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:include/Modules/Modules.hpp",
+      "target": "class:include/Modules/Modules.hpp:Modules",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:include/Modules/Modules.hpp",
+      "target": "function:include/Modules/Modules.hpp:checkFileExistAndFormat",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:include/Modules/CameraModule.hpp",
+      "target": "class:include/Modules/CameraModule.hpp:CameraModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:include/Modules/EliminateModule.hpp",
+      "target": "class:include/Modules/EliminateModule.hpp:EliminateModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:include/func/ImageProcessorModule.hpp",
+      "target": "class:include/func/ImageProcessorModule.hpp:ImageProcessor",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:include/func/ImageProcessorModule.hpp",
+      "target": "class:include/func/ImageProcessorModule.hpp:ImageProcessingModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:include/data/Utilty.hpp",
+      "target": "class:include/data/Utilty.hpp:GlobalPath",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:include/data/Utilty.hpp",
+      "target": "class:include/data/Utilty.hpp:ModBusAddress",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:include/data/Utilty.hpp",
+      "target": "class:include/data/Utilty.hpp:PlcReadIndex",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:include/Modules/ConfigManagerModule.hpp",
+      "target": "class:include/Modules/ConfigManagerModule.hpp:ConfigManagerModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:include/Modules/ImgProModule.hpp",
+      "target": "class:include/Modules/ImgProModule.hpp:ImgProModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:include/Modules/Modules.hpp",
+      "target": "class:include/Modules/Modules.hpp:Modules",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:include/Modules/CameraModule.hpp",
+      "target": "class:include/Modules/CameraModule.hpp:CameraModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:include/Modules/EliminateModule.hpp",
+      "target": "class:include/Modules/EliminateModule.hpp:EliminateModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:include/func/ImageProcessorModule.hpp",
+      "target": "class:include/func/ImageProcessorModule.hpp:ImageProcessor",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:include/func/ImageProcessorModule.hpp",
+      "target": "class:include/func/ImageProcessorModule.hpp:ImageProcessingModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:include/data/Utilty.hpp",
+      "target": "class:include/data/Utilty.hpp:GlobalPath",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:include/data/Utilty.hpp",
+      "target": "class:include/data/Utilty.hpp:ModBusAddress",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:include/data/Utilty.hpp",
+      "target": "class:include/data/Utilty.hpp:PlcReadIndex",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:include/Modules/ConfigManagerModule.hpp",
+      "target": "file:include/Modules/IModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:include/Modules/ImgProModule.hpp",
+      "target": "file:include/Modules/IModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:include/Modules/EliminateModule.hpp",
+      "target": "file:include/Modules/IModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:include/Modules/Modules.hpp",
+      "target": "file:include/Modules/CameraModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:include/Modules/Modules.hpp",
+      "target": "file:include/Modules/ConfigManagerModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:include/Modules/Modules.hpp",
+      "target": "file:include/Modules/EliminateModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:include/Modules/Modules.hpp",
+      "target": "file:include/Modules/IModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:include/Modules/Modules.hpp",
+      "target": "file:include/Modules/ImgProModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:include/Modules/Modules.hpp",
+      "target": "file:include/Modules/ImgSaveModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:include/Modules/Modules.hpp",
+      "target": "file:include/Modules/PlcController.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:include/Modules/Modules.hpp",
+      "target": "file:include/Modules/ReconnectModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:include/Modules/Modules.hpp",
+      "target": "file:include/Modules/RuntimeInfoModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:include/Modules/Modules.hpp",
+      "target": "file:include/Modules/UIModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:include/Modules/Modules.hpp",
+      "target": "file:include/Modules/WarningModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:include/Modules/Modules.hpp",
+      "target": "file:include/Modules/TestModule.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:include/data/Utilty.hpp",
+      "target": "file:include/data/osoFIleUtiltyFunc.hpp",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "class:include/Modules/ConfigManagerModule.hpp:ConfigManagerModule",
+      "target": "class:include/Modules/IModule.hpp:IModule",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:include/Modules/ImgProModule.hpp:ImgProModule",
+      "target": "class:include/Modules/IModule.hpp:IModule",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:include/Modules/Modules.hpp:Modules",
+      "target": "class:include/Modules/IModule.hpp:IModule",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:include/Modules/CameraModule.hpp:CameraModule",
+      "target": "class:include/Modules/IModule.hpp:IModule",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:include/Modules/EliminateModule.hpp:EliminateModule",
+      "target": "class:include/Modules/IModule.hpp:IModule",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:include/Modules/ImgProModule.hpp",
+      "target": "file:include/func/ImageProcessorModule.hpp",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:include/func/ImageProcessorModule.hpp",
+      "target": "file:include/data/Utilty.hpp",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:include/Modules/EliminateModule.hpp",
+      "target": "file:include/DetachThread/DetachDefectThreadProcess.h",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}
