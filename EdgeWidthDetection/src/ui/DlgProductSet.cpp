@@ -100,6 +100,23 @@ void DlgProductSet::read_config()
 	ui->tabWidget_PLC->setCurrentIndex(0);
 }
 
+void DlgProductSet::save_config()
+{
+	auto& configManager = Modules::getInstance().configManagerModule;
+	if (configManager.storeContext)
+	{
+		auto& setConfig = configManager.setConfig;
+		configManager.storeContext->saveSafe(setConfig, globalPath.setConfigPath.toStdString());
+	}
+}
+
+void DlgProductSet::closeEvent(QCloseEvent* event)
+{
+	// 关闭窗口前保存 SetConfig 参数到本地
+	save_config();
+	QDialog::closeEvent(event);
+}
+
 void DlgProductSet::build_connect()
 {
 	connect(ui->btn_close, &QPushButton::clicked, this, &DlgProductSet::btn_close_clicked);

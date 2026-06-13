@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QCloseEvent>
 #include <QDialog>
 
 #include "Utilty.hpp"
@@ -20,6 +21,7 @@ public:
 public:
 	void build_ui();
 	void read_config();
+	void save_config();
 	void build_connect();
 
 signals:
@@ -106,6 +108,8 @@ private slots:
 	void tabWidget_indexChanged(int index);
 private:
 	bool checkIsPLCAddressSame(int newAddress, const QString& currentKey);
+protected:
+	void closeEvent(QCloseEvent* event) override;
 public:
 	Ui::DlgProductSetClass* ui;
 };
