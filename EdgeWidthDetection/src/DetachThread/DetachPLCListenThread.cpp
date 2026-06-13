@@ -65,6 +65,7 @@ void DetachPLCListenThread::readPLCInfo()
 	appendReadItem(ModBusAddress::zidongdaoyidongzuidajuliAddress, PlcReadIndex::zidongdaoyidongzuidajuli);
 	appendReadItem(ModBusAddress::daojiakeyidongdezuidajuliAddress, PlcReadIndex::daojiakeyidongdezuidajuli);
 	appendReadItem(ModBusAddress::daoyidongsudumaichongpinlvAddress, PlcReadIndex::daoyidongsudumaichongpinlv);
+	appendReadItem(ModBusAddress::shibiezhongxindianyutuxiangzhongxindianchazhiAddress, PlcReadIndex::shibiezhongxindianyutuxiangzhongxindianchazhi);
 
 	appendReadItem(ModBusAddress::readPLCbaojingxinxiAddress, PlcReadIndex::readPLCbaojingxinxi);
 	appendReadItem(ModBusAddress::readPLCkeyipaizhaoxinhaoAddress, PlcReadIndex::readPLCkeyipaizhaoxinhao);

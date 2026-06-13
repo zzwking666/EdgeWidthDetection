@@ -102,6 +102,30 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	auto processResult = imgPro.getContext().getProcessResult();
 
 	double width = 0.0;
+	double centerDiffMm = 0.0;
+
+	// 计算识别中心点与图像中心点差值
+	if (processResult.size() == 1)
+	{
+		auto pixToWorld = setConfig.xiangsudangliang1;
+		int imageCenterY = frame.image.rows / 2;
+		int detectionCenterY = processResult[0].center_y;
+		double centerDiffPixel = imageCenterY - detectionCenterY;
+		centerDiffMm = centerDiffPixel * pixToWorld;
+		if (setConfig.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan)
+		{
+			centerDiffMm = -centerDiffMm;
+		}
+
+		// 写入中心点差值到PLC
+		auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
+		if (plcControllerScheduler)
+		{
+			plcControllerScheduler->writeUInt16RegisterAsync(
+				static_cast<uint16_t>(ModBusAddress::shibiezhongxindianyutuxiangzhongxindianchazhiAddress),
+				static_cast<uint16_t>(centerDiffMm * 100));
+		}
+	}
 
 	if (defectResult.defects.size() == 1)
 	{
@@ -113,12 +137,13 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 			// 写入Plc
 			writePlcController(width * 100);
 
-			drawImg(maskImg, processResult);
+			drawImg(maskImg, processResult, centerDiffMm);
 		}
 	}
 
 	QStringList textList;
-	textList.append(QString::number(width) + "mm");
+	textList.append("实测压痕宽度:" + QString::number(width) + "mm");
+	textList.append("中心点偏差值:" + QString::number(centerDiffMm, 'f', 2) + "mm");
 	std::vector<rw::imgPro::Color> colors;
 	colors.push_back(rw::imgPro::Color::Blue);
 
@@ -189,10 +214,12 @@ void ImageProcessor::save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage
 	}
 }
 
-void ImageProcessor::drawImg(QImage& qimage, const std::vector<rw::DetectionRectangleInfo>& processResult)
+void ImageProcessor::drawImg(QImage& qimage, const std::vector<rw::DetectionRectangleInfo>& processResult, double centerDiffMm)
 {
 	QPainter painter(&qimage);
 	painter.setRenderHint(QPainter::Antialiasing, true);
+
+	// 绘制 OBB 矩形长边
 	QPen pen(QColor(0, 255, 0)); // 绿色
 	pen.setWidth(2);
 	painter.setPen(pen);
@@ -223,6 +250,29 @@ void ImageProcessor::drawImg(QImage& qimage, const std::vector<rw::DetectionRect
 			painter.drawLine(lt, lb);
 			painter.drawLine(rt, rb);
 		}
+	}
+
+	// 绘制图像中心线（黄色虚线）
+	int imageCenterY = qimage.height() / 2;
+	QPen imageCenterPen(QColor(255, 255, 0)); // 黄色
+	imageCenterPen.setWidth(1);
+	imageCenterPen.setStyle(Qt::DashLine);
+	painter.setPen(imageCenterPen);
+	painter.drawLine(0, imageCenterY, qimage.width(), imageCenterY);
+
+	// 绘制识别中心点水平线（红色虚线）
+	if (!processResult.empty())
+	{
+		int detectionCenterY = processResult[0].center_y;
+		QPen detCenterPen(QColor(255, 0, 0)); // 红色
+		detCenterPen.setWidth(1);
+		detCenterPen.setStyle(Qt::DashLine);
+		painter.setPen(detCenterPen);
+		painter.drawLine(0, detectionCenterY, qimage.width(), detectionCenterY);
+
+		// 在识别中心点处绘制十字标记
+		painter.drawLine(processResult[0].center_x - 8, detectionCenterY, processResult[0].center_x + 8, detectionCenterY);
+		painter.drawLine(processResult[0].center_x, detectionCenterY - 8, processResult[0].center_x, detectionCenterY + 8);
 	}
 
 	painter.end();

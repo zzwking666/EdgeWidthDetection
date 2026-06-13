@@ -15,6 +15,7 @@ int ModBusAddress::daoyidongbuchangAddress = 0;
 int ModBusAddress::zidongdaoyidongzuidajuliAddress = 0;
 int ModBusAddress::daojiakeyidongdezuidajuliAddress = 0;
 int ModBusAddress::daoyidongsudumaichongpinlvAddress = 0;
+int ModBusAddress::shibiezhongxindianyutuxiangzhongxindianchazhiAddress = 0;
 
 int ModBusAddress::readPLCbaojingxinxiAddress = 2000;
 int ModBusAddress::readPLCkeyipaizhaoxinhaoAddress = 0;

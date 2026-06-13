@@ -52,6 +52,7 @@ struct ModBusAddress
 	static int zidongdaoyidongzuidajuliAddress;
 	static int daojiakeyidongdezuidajuliAddress;
 	static int daoyidongsudumaichongpinlvAddress;
+	static int shibiezhongxindianyutuxiangzhongxindianchazhiAddress;
 
 	static int readPLCbaojingxinxiAddress;
 	static int readPLCkeyipaizhaoxinhaoAddress;
@@ -80,6 +81,7 @@ struct PlcReadIndex
 	static constexpr int zidongdaoyidongzuidajuli = 10;		 // 自动刀移动最大距离
 	static constexpr int daojiakeyidongdezuidajuli = 11;	 // 刀架可移动的最大距离
 	static constexpr int daoyidongsudumaichongpinlv = 12;	 // 刀移动速度脉冲频率
+	static constexpr int shibiezhongxindianyutuxiangzhongxindianchazhi = 17; // 识别中心点与图像中心点差值
 
 	static constexpr int readPLCbaojingxinxi = 13;			 // PLC报警信息
 	static constexpr int readPLCkeyipaizhaoxinhao = 14;      // PLC开机拍照信号

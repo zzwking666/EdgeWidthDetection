@@ -36,6 +36,8 @@ namespace cdm {
 		zidongdaoyidongzuidajuliduqudizhi : int : default = 0;
 		daojiakeyidongdezuidajuliduqudizhi : int : default = 0;
 		daoyidongsudumaichongpinlvduqudizhi : int : default = 0;
+		shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi : int : default = 0;
+		shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan : bool : default = false;
 
 		huodePLCbaojingxinxidizhi : int : default = 0;
 		keyipaizhaoxinhaodizhi : int : default = 0;

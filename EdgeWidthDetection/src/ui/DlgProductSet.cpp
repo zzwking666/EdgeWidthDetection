@@ -39,6 +39,7 @@ void DlgProductSet::read_config()
 	ui->cbox_changeSaveImgMode->setCurrentIndex(setConfig.saveImgMode);
 	ui->btn_score->setText(QString::number(setConfig.score));
 	ui->ckb_autoSaveImg->setChecked(setConfig.autoSaveImg);
+	ui->ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan->setChecked(setConfig.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan);
 
 	// 相机参数
 	ui->btn_shangxianwei1->setText(QString::number(setConfig.shangxianwei1));
@@ -74,6 +75,7 @@ void DlgProductSet::read_config()
 	ui->btn_keyipaizhaoxinhaodizhi->setText(QString::number(setConfig.keyipaizhaoxinhaodizhi));
 	ui->btn_tingzhipaizhaoxinhaodizhi->setText(QString::number(setConfig.tingzhipaizhaoxinhaodizhi));
 	ui->btn_daizishicechangdudizhi->setText(QString::number(setConfig.daizishicechangdudizhi));
+	ui->btn_shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi->setText(QString::number(setConfig.shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi));
 
 	// 同步更新 ModBusAddress 静态变量
 	ModBusAddress::shiceyahenkuanduAddress = setConfig.shiceyahenkuanduduqudizhi;
@@ -88,6 +90,7 @@ void DlgProductSet::read_config()
 	ModBusAddress::zidongdaoyidongzuidajuliAddress = setConfig.zidongdaoyidongzuidajuliduqudizhi;
 	ModBusAddress::daojiakeyidongdezuidajuliAddress = setConfig.daojiakeyidongdezuidajuliduqudizhi;
 	ModBusAddress::daoyidongsudumaichongpinlvAddress = setConfig.daoyidongsudumaichongpinlvduqudizhi;
+	ModBusAddress::shibiezhongxindianyutuxiangzhongxindianchazhiAddress = setConfig.shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi;
 	ModBusAddress::readPLCbaojingxinxiAddress = setConfig.huodePLCbaojingxinxidizhi;
 	ModBusAddress::readPLCkeyipaizhaoxinhaoAddress = setConfig.keyipaizhaoxinhaodizhi;
 	ModBusAddress::readPLCtingzhipaizhaoxinhaoAddress = setConfig.tingzhipaizhaoxinhaodizhi;
@@ -138,6 +141,7 @@ void DlgProductSet::build_connect()
 	connect(ui->btn_keyipaizhaoxinhaodizhi, &QPushButton::clicked, this, &DlgProductSet::btn_keyipaizhaoxinhaodizhi_clicked);
 	connect(ui->btn_tingzhipaizhaoxinhaodizhi, &QPushButton::clicked, this, &DlgProductSet::btn_tingzhipaizhaoxinhaodizhi_clicked);
 	connect(ui->btn_daizishicechangdudizhi, &QPushButton::clicked, this, &DlgProductSet::btn_daizishicechangdudizhi_clicked);
+	connect(ui->btn_shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi, &QPushButton::clicked, this, &DlgProductSet::btn_shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi_clicked);
 
 	// 写入PLC
 	connect(ui->btn_shiceyahenkuanduxierushuzhi, &QPushButton::clicked, this, &DlgProductSet::btn_shiceyahenkuanduxierushuzhi_clicked);
@@ -152,6 +156,7 @@ void DlgProductSet::build_connect()
 	connect(ui->btn_zidongdaoyidongzuidajulixierushuzhi, &QPushButton::clicked, this, &DlgProductSet::btn_zidongdaoyidongzuidajulixierushuzhi_clicked);
 	connect(ui->btn_daojiakeyidongdezuidajulixierushuzhi, &QPushButton::clicked, this, &DlgProductSet::btn_daojiakeyidongdezuidajulixierushuzhi_clicked);
 	connect(ui->btn_daoyidongsudumaichongpinlvxierushuzhi, &QPushButton::clicked, this, &DlgProductSet::btn_daoyidongsudumaichongpinlvxierushuzhi_clicked);
+	connect(ui->btn_shibiezhongxindianyutuxiangzhongxindianchazhixierushuzhi, &QPushButton::clicked, this, &DlgProductSet::btn_shibiezhongxindianyutuxiangzhongxindianchazhixierushuzhi_clicked);
 
 	connect(ui->btn_writeshiceyahenkuanduxierushuzhi, &QPushButton::clicked, this, &DlgProductSet::btn_writeshiceyahenkuanduxierushuzhi_clicked);
 	connect(ui->btn_writeshedingyahenbiaozhunkuanduzhixierushuzhi, &QPushButton::clicked, this, &DlgProductSet::btn_writeshedingyahenbiaozhunkuanduzhixierushuzhi_clicked);
@@ -165,9 +170,11 @@ void DlgProductSet::build_connect()
 	connect(ui->btn_writezidongdaoyidongzuidajulixierushuzhi, &QPushButton::clicked, this, &DlgProductSet::btn_writezidongdaoyidongzuidajulixierushuzhi_clicked);
 	connect(ui->btn_writedaojiakeyidongdezuidajulixierushuzhi, &QPushButton::clicked, this, &DlgProductSet::btn_writedaojiakeyidongdezuidajulixierushuzhi_clicked);
 	connect(ui->btn_writedaoyidongsudumaichongpinlvxierushuzhi, &QPushButton::clicked, this, &DlgProductSet::btn_writedaoyidongsudumaichongpinlvxierushuzhi_clicked);
+	connect(ui->btn_writeshibiezhongxindianyutuxiangzhongxindianchazhixierushuzhi, &QPushButton::clicked, this, &DlgProductSet::btn_writeshibiezhongxindianyutuxiangzhongxindianchazhixierushuzhi_clicked);
 
 
 	connect(ui->ckb_autoSaveImg, &QCheckBox::clicked, this, &DlgProductSet::ckb_autoSaveImg_clicked);
+	connect(ui->ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan, &QCheckBox::clicked, this, &DlgProductSet::ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan_clicked);
 	connect(ui->tabWidget, &QTabWidget::currentChanged, this, &DlgProductSet::tabWidget_indexChanged);
 }
 
@@ -236,6 +243,9 @@ void DlgProductSet::onUpdatePLCInfo(QVector<PlcReadItem> datas)
 			break;
 		case PlcReadIndex::readPLCdaizishicechangdu:
 			applyValue(ui->btn_daizishicechangdushuzhi, item);
+			break;
+		case PlcReadIndex::shibiezhongxindianyutuxiangzhongxindianchazhi:
+			applyValue(ui->btn_shibiezhongxindianyutuxiangzhongxindianchazhiduqushuzhi, item);
 			break;
 		default:
 			break;
@@ -955,6 +965,33 @@ void DlgProductSet::btn_daizishicechangdudizhi_clicked()
 	}
 }
 
+void DlgProductSet::btn_shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+
+		const int newAddress = value.toInt();
+		if (!checkIsPLCAddressSame(newAddress, "shibiezhongxindianyutuxiangzhongxindianchazhi"))
+		{
+			return;
+		}
+
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		ui->btn_shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi->setText(value);
+		setConfig.shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi = value.toInt();
+		ModBusAddress::shibiezhongxindianyutuxiangzhongxindianchazhiAddress = value.toInt();
+	}
+}
+
 void DlgProductSet::btn_shiceyahenkuanduxierushuzhi_clicked()
 {
 	NumberKeyboard numKeyBord;
@@ -1156,6 +1193,23 @@ void DlgProductSet::btn_daoyidongsudumaichongpinlvxierushuzhi_clicked()
 			return;
 		}
 		ui->btn_daoyidongsudumaichongpinlvxierushuzhi->setText(value);
+	}
+}
+
+void DlgProductSet::btn_shibiezhongxindianyutuxiangzhongxindianchazhixierushuzhi_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+		ui->btn_shibiezhongxindianyutuxiangzhongxindianchazhixierushuzhi->setText(value);
 	}
 }
 
@@ -1435,6 +1489,30 @@ void DlgProductSet::btn_writedaoyidongsudumaichongpinlvxierushuzhi_clicked()
 	}
 }
 
+void DlgProductSet::btn_writeshibiezhongxindianyutuxiangzhongxindianchazhixierushuzhi_clicked()
+{
+	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
+
+	if (plcControllerScheduler)
+	{
+		uint16_t writeData = ui->btn_shibiezhongxindianyutuxiangzhongxindianchazhixierushuzhi->text().toUInt();
+		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(ModBusAddress::shibiezhongxindianyutuxiangzhongxindianchazhiAddress, writeData * 100);
+
+		if (fut.get())
+		{
+			QMessageBox::information(this, "提示", "识别中心点与图像中心点差值写入成功");
+		}
+		else
+		{
+			QMessageBox::information(this, "警告", "识别中心点与图像中心点差值写入失败");
+		}
+	}
+	else
+	{
+		QMessageBox::information(this, "警告", "PLC未连接");
+	}
+}
+
 void DlgProductSet::tabWidget_indexChanged(int index)
 {
 	if (2 == index)
@@ -1480,6 +1558,7 @@ bool DlgProductSet::checkIsPLCAddressSame(int newAddress, const QString& current
 		{ "zidongdaoyidongzuidajuli",		 "自动刀移动最大距离读取地址",      setConfig.zidongdaoyidongzuidajuliduqudizhi },
 		{ "daojiakeyidongdezuidajuli",	 "刀架可移动的最大距离读取地址",      setConfig.daojiakeyidongdezuidajuliduqudizhi },
 		{ "daoyidongsudumaichongpinlv",	 "刀移动速度脉冲频率读取地址",      setConfig.daoyidongsudumaichongpinlvduqudizhi },
+		{ "shibiezhongxindianyutuxiangzhongxindianchazhi", "识别中心点与图像中心点差值读取地址", setConfig.shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi },
 
 		{ "huodePLCbaojingxinxi",			 "获得PLC报警信息地址",		 setConfig.huodePLCbaojingxinxidizhi },
 		{ "keyipaizhaoxinhao",			 "可以拍照信号地址",			 setConfig.keyipaizhaoxinhaodizhi },
@@ -1585,4 +1664,10 @@ void DlgProductSet::ckb_autoSaveImg_clicked()
 {
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	setConfig.autoSaveImg = ui->ckb_autoSaveImg->isChecked();
+}
+
+void DlgProductSet::ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan_clicked()
+{
+	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+	setConfig.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan = ui->ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan->isChecked();
 }

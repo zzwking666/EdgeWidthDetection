@@ -35,6 +35,7 @@ private slots:
 	void cbox_changeSaveImgMode_clicked();
 	void btn_score_clicked();
 	void ckb_autoSaveImg_clicked();
+	void ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan_clicked();
 
 	void btn_testTrigger1_1_clicked();
 	void btn_testTrigger2_1_clicked();
@@ -71,6 +72,7 @@ private slots:
 	void btn_keyipaizhaoxinhaodizhi_clicked();
 	void btn_tingzhipaizhaoxinhaodizhi_clicked();
 	void btn_daizishicechangdudizhi_clicked();
+	void btn_shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi_clicked();
 
 	// 写入PLC
 	void btn_shiceyahenkuanduxierushuzhi_clicked();
@@ -85,6 +87,7 @@ private slots:
 	void btn_zidongdaoyidongzuidajulixierushuzhi_clicked();
 	void btn_daojiakeyidongdezuidajulixierushuzhi_clicked();
 	void btn_daoyidongsudumaichongpinlvxierushuzhi_clicked();
+	void btn_shibiezhongxindianyutuxiangzhongxindianchazhixierushuzhi_clicked();
 
 	void btn_writeshiceyahenkuanduxierushuzhi_clicked();
 	void btn_writeshedingyahenbiaozhunkuanduzhixierushuzhi_clicked();
@@ -98,6 +101,7 @@ private slots:
 	void btn_writezidongdaoyidongzuidajulixierushuzhi_clicked();
 	void btn_writedaojiakeyidongdezuidajulixierushuzhi_clicked();
 	void btn_writedaoyidongsudumaichongpinlvxierushuzhi_clicked();
+	void btn_writeshibiezhongxindianyutuxiangzhongxindianchazhixierushuzhi_clicked();
 
 	void tabWidget_indexChanged(int index);
 private:
