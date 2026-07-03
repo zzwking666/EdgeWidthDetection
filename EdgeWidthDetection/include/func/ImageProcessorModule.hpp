@@ -81,6 +81,7 @@ public slots:
 
 signals:
 	void imageReady(size_t index, QPixmap image);
+	void exposureStatsReady(double meanIntensity, double overRatio, double underRatio);
 
 public:
 	std::vector<ImageProcessor*> getProcessors() const {

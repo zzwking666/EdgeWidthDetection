@@ -1,0 +1,9 @@
+[2026-07-03 09:47:22.815] [info] [RW_UL.foundation] [thread 18912] imet:Building Yolov11 obb ....
+[2026-07-03 09:47:23.076] [info] [RW_UL.foundation] [thread 18912] imet:modelPath is "D:\zfkjData\EdgeWidthDetection\model\EdgeWidthDetection.engine" 
+[2026-07-03 09:47:23.076] [info] [RW_UL.foundation] [thread 18912] imet:conf_threshold is 0.1
+[2026-07-03 09:47:23.076] [info] [RW_UL.foundation] [thread 18912] imet:nms_threshold is 0.1
+[2026-07-03 09:47:23.076] [info] [RW_UL.foundation] [thread 18912] imet:classids_nms_together is []
+[2026-07-03 09:47:23.076] [info] [RW_UL.foundation] [thread 18912] imet:Build Yolov11 detection success!
+[2026-07-03 09:47:23.076] [info] [RW_UL.foundation] [thread 18912] imet:Build success
+[2026-07-03 09:47:23.454] [info] [RW_UL.foundation] [thread 18912] Build modbus by tcp, ip "192.168.1.10",port "502" ...
+[2026-07-03 09:47:23.955] [warning] [RW_UL.foundation] [thread 18912] Connect modbus failed

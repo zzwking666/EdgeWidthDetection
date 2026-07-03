@@ -55,6 +55,16 @@ namespace cdm {
         int tingzhipaizhaoxinhaodizhi{ 0 };
         int daizishicechangdudizhi{ 0 };
         int lastChooseLight{ 0 };
+        bool autoExposureEnabled{ false };
+        double autoExposureTargetMean{ 128.0 };
+        double autoExposureOverExposeThreshold{ 250.0 };
+        double autoExposureUnderExposeThreshold{ 20.0 };
+        double autoExposureMaxOverRatio{ 0.02 };
+        double autoExposureMaxUnderRatio{ 0.05 };
+        double autoExposureMinExposure{ 100.0 };
+        double autoExposureMaxExposure{ 50000.0 };
+        double autoExposureAdjustIntervalMs{ 500.0 };
+        double autoExposureLastExposure{ 0.0 };
     };
 
     inline SetConfig::SetConfig(const rw::oso::ObjectStoreAssembly& assembly)
@@ -244,6 +254,56 @@ namespace cdm {
             throw std::runtime_error("$variable$lastChooseLight is not found");
         }
         lastChooseLight = lastChooseLightItem->getValueAsInt();
+        auto autoExposureEnabledItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$autoExposureEnabled$"));
+        if (!autoExposureEnabledItem) {
+            throw std::runtime_error("$variable$autoExposureEnabled is not found");
+        }
+        autoExposureEnabled = autoExposureEnabledItem->getValueAsBool();
+        auto autoExposureTargetMeanItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$autoExposureTargetMean$"));
+        if (!autoExposureTargetMeanItem) {
+            throw std::runtime_error("$variable$autoExposureTargetMean is not found");
+        }
+        autoExposureTargetMean = autoExposureTargetMeanItem->getValueAsDouble();
+        auto autoExposureOverExposeThresholdItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$autoExposureOverExposeThreshold$"));
+        if (!autoExposureOverExposeThresholdItem) {
+            throw std::runtime_error("$variable$autoExposureOverExposeThreshold is not found");
+        }
+        autoExposureOverExposeThreshold = autoExposureOverExposeThresholdItem->getValueAsDouble();
+        auto autoExposureUnderExposeThresholdItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$autoExposureUnderExposeThreshold$"));
+        if (!autoExposureUnderExposeThresholdItem) {
+            throw std::runtime_error("$variable$autoExposureUnderExposeThreshold is not found");
+        }
+        autoExposureUnderExposeThreshold = autoExposureUnderExposeThresholdItem->getValueAsDouble();
+        auto autoExposureMaxOverRatioItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$autoExposureMaxOverRatio$"));
+        if (!autoExposureMaxOverRatioItem) {
+            throw std::runtime_error("$variable$autoExposureMaxOverRatio is not found");
+        }
+        autoExposureMaxOverRatio = autoExposureMaxOverRatioItem->getValueAsDouble();
+        auto autoExposureMaxUnderRatioItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$autoExposureMaxUnderRatio$"));
+        if (!autoExposureMaxUnderRatioItem) {
+            throw std::runtime_error("$variable$autoExposureMaxUnderRatio is not found");
+        }
+        autoExposureMaxUnderRatio = autoExposureMaxUnderRatioItem->getValueAsDouble();
+        auto autoExposureMinExposureItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$autoExposureMinExposure$"));
+        if (!autoExposureMinExposureItem) {
+            throw std::runtime_error("$variable$autoExposureMinExposure is not found");
+        }
+        autoExposureMinExposure = autoExposureMinExposureItem->getValueAsDouble();
+        auto autoExposureMaxExposureItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$autoExposureMaxExposure$"));
+        if (!autoExposureMaxExposureItem) {
+            throw std::runtime_error("$variable$autoExposureMaxExposure is not found");
+        }
+        autoExposureMaxExposure = autoExposureMaxExposureItem->getValueAsDouble();
+        auto autoExposureAdjustIntervalMsItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$autoExposureAdjustIntervalMs$"));
+        if (!autoExposureAdjustIntervalMsItem) {
+            throw std::runtime_error("$variable$autoExposureAdjustIntervalMs is not found");
+        }
+        autoExposureAdjustIntervalMs = autoExposureAdjustIntervalMsItem->getValueAsDouble();
+        auto autoExposureLastExposureItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$autoExposureLastExposure$"));
+        if (!autoExposureLastExposureItem) {
+            throw std::runtime_error("$variable$autoExposureLastExposure is not found");
+        }
+        autoExposureLastExposure = autoExposureLastExposureItem->getValueAsDouble();
     }
 
     inline SetConfig::SetConfig(const SetConfig& obj)
@@ -284,6 +344,16 @@ namespace cdm {
         tingzhipaizhaoxinhaodizhi = obj.tingzhipaizhaoxinhaodizhi;
         daizishicechangdudizhi = obj.daizishicechangdudizhi;
         lastChooseLight = obj.lastChooseLight;
+        autoExposureEnabled = obj.autoExposureEnabled;
+        autoExposureTargetMean = obj.autoExposureTargetMean;
+        autoExposureOverExposeThreshold = obj.autoExposureOverExposeThreshold;
+        autoExposureUnderExposeThreshold = obj.autoExposureUnderExposeThreshold;
+        autoExposureMaxOverRatio = obj.autoExposureMaxOverRatio;
+        autoExposureMaxUnderRatio = obj.autoExposureMaxUnderRatio;
+        autoExposureMinExposure = obj.autoExposureMinExposure;
+        autoExposureMaxExposure = obj.autoExposureMaxExposure;
+        autoExposureAdjustIntervalMs = obj.autoExposureAdjustIntervalMs;
+        autoExposureLastExposure = obj.autoExposureLastExposure;
     }
 
     inline SetConfig& SetConfig::operator=(const SetConfig& obj)
@@ -325,6 +395,16 @@ namespace cdm {
             tingzhipaizhaoxinhaodizhi = obj.tingzhipaizhaoxinhaodizhi;
             daizishicechangdudizhi = obj.daizishicechangdudizhi;
             lastChooseLight = obj.lastChooseLight;
+            autoExposureEnabled = obj.autoExposureEnabled;
+            autoExposureTargetMean = obj.autoExposureTargetMean;
+            autoExposureOverExposeThreshold = obj.autoExposureOverExposeThreshold;
+            autoExposureUnderExposeThreshold = obj.autoExposureUnderExposeThreshold;
+            autoExposureMaxOverRatio = obj.autoExposureMaxOverRatio;
+            autoExposureMaxUnderRatio = obj.autoExposureMaxUnderRatio;
+            autoExposureMinExposure = obj.autoExposureMinExposure;
+            autoExposureMaxExposure = obj.autoExposureMaxExposure;
+            autoExposureAdjustIntervalMs = obj.autoExposureAdjustIntervalMs;
+            autoExposureLastExposure = obj.autoExposureLastExposure;
         }
         return *this;
     }
@@ -477,12 +557,52 @@ namespace cdm {
         lastChooseLightItem->setName("$variable$lastChooseLight$");
         lastChooseLightItem->setValueFromInt(lastChooseLight);
         assembly.addItem(lastChooseLightItem);
+        auto autoExposureEnabledItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        autoExposureEnabledItem->setName("$variable$autoExposureEnabled$");
+        autoExposureEnabledItem->setValueFromBool(autoExposureEnabled);
+        assembly.addItem(autoExposureEnabledItem);
+        auto autoExposureTargetMeanItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        autoExposureTargetMeanItem->setName("$variable$autoExposureTargetMean$");
+        autoExposureTargetMeanItem->setValueFromDouble(autoExposureTargetMean);
+        assembly.addItem(autoExposureTargetMeanItem);
+        auto autoExposureOverExposeThresholdItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        autoExposureOverExposeThresholdItem->setName("$variable$autoExposureOverExposeThreshold$");
+        autoExposureOverExposeThresholdItem->setValueFromDouble(autoExposureOverExposeThreshold);
+        assembly.addItem(autoExposureOverExposeThresholdItem);
+        auto autoExposureUnderExposeThresholdItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        autoExposureUnderExposeThresholdItem->setName("$variable$autoExposureUnderExposeThreshold$");
+        autoExposureUnderExposeThresholdItem->setValueFromDouble(autoExposureUnderExposeThreshold);
+        assembly.addItem(autoExposureUnderExposeThresholdItem);
+        auto autoExposureMaxOverRatioItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        autoExposureMaxOverRatioItem->setName("$variable$autoExposureMaxOverRatio$");
+        autoExposureMaxOverRatioItem->setValueFromDouble(autoExposureMaxOverRatio);
+        assembly.addItem(autoExposureMaxOverRatioItem);
+        auto autoExposureMaxUnderRatioItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        autoExposureMaxUnderRatioItem->setName("$variable$autoExposureMaxUnderRatio$");
+        autoExposureMaxUnderRatioItem->setValueFromDouble(autoExposureMaxUnderRatio);
+        assembly.addItem(autoExposureMaxUnderRatioItem);
+        auto autoExposureMinExposureItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        autoExposureMinExposureItem->setName("$variable$autoExposureMinExposure$");
+        autoExposureMinExposureItem->setValueFromDouble(autoExposureMinExposure);
+        assembly.addItem(autoExposureMinExposureItem);
+        auto autoExposureMaxExposureItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        autoExposureMaxExposureItem->setName("$variable$autoExposureMaxExposure$");
+        autoExposureMaxExposureItem->setValueFromDouble(autoExposureMaxExposure);
+        assembly.addItem(autoExposureMaxExposureItem);
+        auto autoExposureAdjustIntervalMsItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        autoExposureAdjustIntervalMsItem->setName("$variable$autoExposureAdjustIntervalMs$");
+        autoExposureAdjustIntervalMsItem->setValueFromDouble(autoExposureAdjustIntervalMs);
+        assembly.addItem(autoExposureAdjustIntervalMsItem);
+        auto autoExposureLastExposureItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        autoExposureLastExposureItem->setName("$variable$autoExposureLastExposure$");
+        autoExposureLastExposureItem->setValueFromDouble(autoExposureLastExposure);
+        assembly.addItem(autoExposureLastExposureItem);
         return assembly;
     }
 
     inline bool SetConfig::operator==(const SetConfig& obj) const
     {
-        return xiangjiguangdianpingbishijian == obj.xiangjiguangdianpingbishijian && shuchuxinhaoyanshi == obj.shuchuxinhaoyanshi && shuchuxinhaochixushijian == obj.shuchuxinhaochixushijian && saveImgMode == obj.saveImgMode && score == obj.score && autoSaveImg == obj.autoSaveImg && shangxianwei1 == obj.shangxianwei1 && xiaxianwei1 == obj.xiaxianwei1 && zuoxianwei1 == obj.zuoxianwei1 && youxianwei1 == obj.youxianwei1 && xiangsudangliang1 == obj.xiangsudangliang1 && debugFrame == obj.debugFrame && openRemoveFrame == obj.openRemoveFrame && zengyi == obj.zengyi && qiangguang == obj.qiangguang && zhongguang == obj.zhongguang && ruoguang == obj.ruoguang && shiceyahenkuanduduqudizhi == obj.shiceyahenkuanduduqudizhi && shedingyahenbiaozhunzhiduqudizhi == obj.shedingyahenbiaozhunzhiduqudizhi && paizhaojiangejuliduqudizhi == obj.paizhaojiangejuliduqudizhi && daizichangdubiaozhunduqudizhi == obj.daizichangdubiaozhunduqudizhi && jimiqiyiquanmaichongshuduqudizhi == obj.jimiqiyiquanmaichongshuduqudizhi && jimiqiyiquanzhouchangduqudizhi == obj.jimiqiyiquanzhouchangduqudizhi && bujinyiquanmaichongshuduqudizhi == obj.bujinyiquanmaichongshuduqudizhi && bujinluojuduqudizhi == obj.bujinluojuduqudizhi && daoyidongbuchangduqudizhi == obj.daoyidongbuchangduqudizhi && zidongdaoyidongzuidajuliduqudizhi == obj.zidongdaoyidongzuidajuliduqudizhi && daojiakeyidongdezuidajuliduqudizhi == obj.daojiakeyidongdezuidajuliduqudizhi && daoyidongsudumaichongpinlvduqudizhi == obj.daoyidongsudumaichongpinlvduqudizhi && shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi == obj.shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi && shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan == obj.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan && huodePLCbaojingxinxidizhi == obj.huodePLCbaojingxinxidizhi && keyipaizhaoxinhaodizhi == obj.keyipaizhaoxinhaodizhi && tingzhipaizhaoxinhaodizhi == obj.tingzhipaizhaoxinhaodizhi && daizishicechangdudizhi == obj.daizishicechangdudizhi && lastChooseLight == obj.lastChooseLight;
+        return xiangjiguangdianpingbishijian == obj.xiangjiguangdianpingbishijian && shuchuxinhaoyanshi == obj.shuchuxinhaoyanshi && shuchuxinhaochixushijian == obj.shuchuxinhaochixushijian && saveImgMode == obj.saveImgMode && score == obj.score && autoSaveImg == obj.autoSaveImg && shangxianwei1 == obj.shangxianwei1 && xiaxianwei1 == obj.xiaxianwei1 && zuoxianwei1 == obj.zuoxianwei1 && youxianwei1 == obj.youxianwei1 && xiangsudangliang1 == obj.xiangsudangliang1 && debugFrame == obj.debugFrame && openRemoveFrame == obj.openRemoveFrame && zengyi == obj.zengyi && qiangguang == obj.qiangguang && zhongguang == obj.zhongguang && ruoguang == obj.ruoguang && shiceyahenkuanduduqudizhi == obj.shiceyahenkuanduduqudizhi && shedingyahenbiaozhunzhiduqudizhi == obj.shedingyahenbiaozhunzhiduqudizhi && paizhaojiangejuliduqudizhi == obj.paizhaojiangejuliduqudizhi && daizichangdubiaozhunduqudizhi == obj.daizichangdubiaozhunduqudizhi && jimiqiyiquanmaichongshuduqudizhi == obj.jimiqiyiquanmaichongshuduqudizhi && jimiqiyiquanzhouchangduqudizhi == obj.jimiqiyiquanzhouchangduqudizhi && bujinyiquanmaichongshuduqudizhi == obj.bujinyiquanmaichongshuduqudizhi && bujinluojuduqudizhi == obj.bujinluojuduqudizhi && daoyidongbuchangduqudizhi == obj.daoyidongbuchangduqudizhi && zidongdaoyidongzuidajuliduqudizhi == obj.zidongdaoyidongzuidajuliduqudizhi && daojiakeyidongdezuidajuliduqudizhi == obj.daojiakeyidongdezuidajuliduqudizhi && daoyidongsudumaichongpinlvduqudizhi == obj.daoyidongsudumaichongpinlvduqudizhi && shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi == obj.shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi && shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan == obj.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan && huodePLCbaojingxinxidizhi == obj.huodePLCbaojingxinxidizhi && keyipaizhaoxinhaodizhi == obj.keyipaizhaoxinhaodizhi && tingzhipaizhaoxinhaodizhi == obj.tingzhipaizhaoxinhaodizhi && daizishicechangdudizhi == obj.daizishicechangdudizhi && lastChooseLight == obj.lastChooseLight && autoExposureEnabled == obj.autoExposureEnabled && autoExposureTargetMean == obj.autoExposureTargetMean && autoExposureOverExposeThreshold == obj.autoExposureOverExposeThreshold && autoExposureUnderExposeThreshold == obj.autoExposureUnderExposeThreshold && autoExposureMaxOverRatio == obj.autoExposureMaxOverRatio && autoExposureMaxUnderRatio == obj.autoExposureMaxUnderRatio && autoExposureMinExposure == obj.autoExposureMinExposure && autoExposureMaxExposure == obj.autoExposureMaxExposure && autoExposureAdjustIntervalMs == obj.autoExposureAdjustIntervalMs && autoExposureLastExposure == obj.autoExposureLastExposure;
     }
 
     inline bool SetConfig::operator!=(const SetConfig& obj) const

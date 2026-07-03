@@ -3,6 +3,9 @@
 #endif
 #include "ImageProcessorModule.hpp"
 
+#include <opencv2/core.hpp>
+#include <opencv2/imgproc.hpp>
+
 #include <qfuture.h>
 #include <qtconcurrentrun.h>
 #include <atomic>
@@ -373,6 +376,25 @@ void ImageProcessingModule::onFrameCaptured(rw::rqw::MatInfo matInfo, size_t ind
 
 	if (matInfo.mat.empty()) {
 		return; // 跳过空帧
+	}
+
+	// 计算整图亮度统计，用于自动曝光
+	auto& cfg = Modules::getInstance().configManagerModule.setConfig;
+	if (cfg.autoExposureEnabled) {
+		cv::Mat gray;
+		cv::cvtColor(matInfo.mat, gray, cv::COLOR_BGR2GRAY);
+		double meanIntensity = cv::mean(gray)[0];
+
+		cv::Mat overMask;
+		cv::Mat underMask;
+		cv::threshold(gray, overMask, cfg.autoExposureOverExposeThreshold, 255, cv::THRESH_BINARY);
+		cv::threshold(gray, underMask, cfg.autoExposureUnderExposeThreshold, 255, cv::THRESH_BINARY_INV);
+
+		double totalPixels = static_cast<double>(gray.total());
+		double overRatio = (totalPixels > 0.0) ? (cv::countNonZero(overMask) / totalPixels) : 0.0;
+		double underRatio = (totalPixels > 0.0) ? (cv::countNonZero(underMask) / totalPixels) : 0.0;
+
+		emit exposureStatsReady(meanIntensity, overRatio, underRatio);
 	}
 
 	QMutexLocker locker(&_mutex);

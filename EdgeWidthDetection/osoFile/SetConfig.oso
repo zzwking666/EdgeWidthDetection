@@ -45,5 +45,16 @@ namespace cdm {
 		daizishicechangdudizhi : int : default = 0;
 
 		lastChooseLight : int : default = 0;
+
+		autoExposureEnabled : bool : default = false;
+		autoExposureTargetMean : double : default = 128.0;
+		autoExposureOverExposeThreshold : double : default = 250.0;
+		autoExposureUnderExposeThreshold : double : default = 20.0;
+		autoExposureMaxOverRatio : double : default = 0.02;
+		autoExposureMaxUnderRatio : double : default = 0.05;
+		autoExposureMinExposure : double : default = 100.0;
+		autoExposureMaxExposure : double : default = 50000.0;
+		autoExposureAdjustIntervalMs : double : default = 500.0;
+		autoExposureLastExposure : double : default = 0.0;
 	};
 }

@@ -26,6 +26,9 @@ bool Modules::build()
 	// 读取配置
 	auto configManagerBuild = configManagerModule.build();
 
+	// 构建自动曝光模块
+	auto autoExposureModuleBuild = autoExposureModule.build();
+
 	// 构建相机
 	auto cameraBuild = cameraModule.build();
 
@@ -110,6 +113,12 @@ void Modules::connect()
 #pragma region connect camera and imgProModule
 	QObject::connect(&cameraModule, &CameraModule::frameCaptured1,
 		Modules::getInstance().imgProModule.imageProcessingModule1.get(), &ImageProcessingModule::onFrameCaptured, Qt::DirectConnection);
+
+	QObject::connect(imgProModule.imageProcessingModule1.get(), &ImageProcessingModule::exposureStatsReady,
+		&autoExposureModule, &AutoExposureModule::onExposureStats, Qt::QueuedConnection);
+
+	QObject::connect(&autoExposureModule, &AutoExposureModule::requestSetExposureTime,
+		&cameraModule, &CameraModule::onSetExposureTime, Qt::QueuedConnection);
 #pragma endregion
 
 #pragma region connect UIModule and ReconnectModule
@@ -126,7 +135,11 @@ void Modules::connect()
 #pragma endregion
 
 #pragma region connect UIModules
-	
+	QObject::connect(uiModule._edgeWidthDetection, &EdgeWidthDetection::autoExposureToggled,
+		&autoExposureModule, &AutoExposureModule::setEnabled);
+
+	QObject::connect(&autoExposureModule, &AutoExposureModule::autoExposureInfoReady,
+		uiModule._edgeWidthDetection, &EdgeWidthDetection::onAutoExposureInfo, Qt::QueuedConnection);
 #pragma endregion
 
 #pragma region connect camera and ReconnectModule
@@ -149,8 +162,9 @@ void Modules::connect()
 #pragma region connect UIModule and RuntimeInfoModule
 	QObject::connect(runtimeInfoModule.detachUtiltyThread.get(), &DetachUtiltyThread::updateStatisticalInfo,
 		uiModule._edgeWidthDetection, &EdgeWidthDetection::onUpdateStatisticalInfoUI, Qt::QueuedConnection);
-	QObject::connect(runtimeInfoModule.detachUtiltyThread.get(), &DetachUtiltyThread::updatePLCWarnningInfo,
-		uiModule._edgeWidthDetection, &EdgeWidthDetection::onUpdatePLCWarnningInfoUI, Qt::QueuedConnection);
+	// 原 label_warnningInfo 已改为显示自动曝光信息，PLC 报警信号不再连接到此标签
+	/*QObject::connect(runtimeInfoModule.detachUtiltyThread.get(), &DetachUtiltyThread::updatePLCWarnningInfo,
+		uiModule._edgeWidthDetection, &EdgeWidthDetection::onUpdatePLCWarnningInfoUI, Qt::QueuedConnection);*/
 	QObject::connect(runtimeInfoModule.detachUtiltyThread.get(), &DetachUtiltyThread::updatePLCdaizishicechangduInfo,
 		uiModule._edgeWidthDetection, &EdgeWidthDetection::onUpdatePLCdaizishicechangduInfoUI, Qt::QueuedConnection);
 #pragma endregion

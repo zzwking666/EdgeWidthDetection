@@ -2,6 +2,7 @@
 
 #include"IModule.hpp"
 
+#include"AutoExposureModule.hpp"
 #include"CameraModule.hpp"
 #include"ConfigManagerModule.hpp"
 #include "EliminateModule.hpp"
@@ -53,6 +54,7 @@ public:
 	ReconnectModule reconnectModule;
 	UIModule uiModule;
 	ConfigManagerModule configManagerModule;
+	AutoExposureModule autoExposureModule;
 	RuntimeInfoModule runtimeInfoModule;
 	ImgSaveModule imgSaveModule;
 	ImgProModule imgProModule;

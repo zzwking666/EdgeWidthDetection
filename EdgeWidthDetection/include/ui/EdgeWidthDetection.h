@@ -50,7 +50,12 @@ public slots:
 
 	void onCameraDisplay(size_t index, QPixmap image);
 
+	void onAutoExposureInfo(double targetExposure, double meanIntensity,
+		double overRatio, double underRatio);
+
 	void lb_title_clicked();
+signals:
+	void autoExposureToggled(bool enabled);
 private slots:
 	void pbtn_exit_clicked();
 	void pbtn_set_clicked();
@@ -64,6 +69,7 @@ private slots:
 	void rbtn_qiangguang_checked(bool checked);
 
 	void ckb_saveImg_checked(bool checked);
+	void ckb_autoExposure_checked(bool checked);
 private:
 	rw::rqw::ClickableLabel* clickableTitle = nullptr;
 	DlgCloseForm* _dlgCloseForm = nullptr;

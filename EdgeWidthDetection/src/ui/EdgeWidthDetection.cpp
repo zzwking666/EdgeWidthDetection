@@ -76,6 +76,8 @@ void EdgeWidthDetection::build_connect()
 		this, &EdgeWidthDetection::pbtn_openSaveLocation_clicked);
 	QObject::connect(ui->ckb_saveImg, &QCheckBox::clicked,
 		this, &EdgeWidthDetection::ckb_saveImg_checked);
+	QObject::connect(ui->ckb_autoExposure, &QCheckBox::clicked,
+		this, &EdgeWidthDetection::ckb_autoExposure_checked);
 	QObject::connect(ui->rbtn_ruoguang, &QRadioButton::clicked,
 		this, &EdgeWidthDetection::rbtn_ruoguang_checked);
 	QObject::connect(ui->rbtn_zhongguang, &QRadioButton::clicked,
@@ -144,6 +146,13 @@ void EdgeWidthDetection::build_EdgeWidthDetectionData()
 		ui->rbtn_ruoguang->setChecked(true);
 		rbtn_ruoguang_checked(true);
 		break;
+	}
+
+	ui->ckb_autoExposure->setChecked(setConfig.autoExposureEnabled);
+	ui->label_warnningInfo->setVisible(setConfig.autoExposureEnabled);
+	if (setConfig.autoExposureEnabled)
+	{
+		emit autoExposureToggled(true);
 	}
 }
 
@@ -371,6 +380,12 @@ void EdgeWidthDetection::rbtn_ruoguang_checked(bool checked)
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	auto& camera1 = Modules::getInstance().cameraModule.camera1;
 
+	ui->ckb_autoExposure->setChecked(false);
+	setConfig.autoExposureEnabled = false;
+	ui->label_warnningInfo->setVisible(false);
+	ui->label_warnningInfo->clear();
+	emit autoExposureToggled(false);
+
 	if (camera1)
 	{
 		camera1->setExposureTime(setConfig.ruoguang);
@@ -382,6 +397,13 @@ void EdgeWidthDetection::rbtn_zhongguang_checked(bool checked)
 {
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	auto& camera1 = Modules::getInstance().cameraModule.camera1;
+
+	ui->ckb_autoExposure->setChecked(false);
+	setConfig.autoExposureEnabled = false;
+	ui->label_warnningInfo->setVisible(false);
+	ui->label_warnningInfo->clear();
+	emit autoExposureToggled(false);
+
 	if (camera1)
 	{
 		camera1->setExposureTime(setConfig.zhongguang);
@@ -393,6 +415,13 @@ void EdgeWidthDetection::rbtn_qiangguang_checked(bool checked)
 {
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	auto& camera1 = Modules::getInstance().cameraModule.camera1;
+
+	ui->ckb_autoExposure->setChecked(false);
+	setConfig.autoExposureEnabled = false;
+	ui->label_warnningInfo->setVisible(false);
+	ui->label_warnningInfo->clear();
+	emit autoExposureToggled(false);
+
 	if (camera1)
 	{
 		camera1->setExposureTime(setConfig.qiangguang);
@@ -404,4 +433,27 @@ void EdgeWidthDetection::ckb_saveImg_checked(bool checked)
 {
 	auto& maiLiDingZiConfig = Modules::getInstance().configManagerModule.edgeWidthDetectionConfig;
 	maiLiDingZiConfig.isSaveImg = checked;
+}
+
+void EdgeWidthDetection::ckb_autoExposure_checked(bool checked)
+{
+	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+	setConfig.autoExposureEnabled = checked;
+	ui->label_warnningInfo->setVisible(checked);
+	if (!checked)
+	{
+		ui->label_warnningInfo->clear();
+	}
+	emit autoExposureToggled(checked);
+}
+
+void EdgeWidthDetection::onAutoExposureInfo(double targetExposure, double meanIntensity,
+	double overRatio, double underRatio)
+{
+	ui->label_warnningInfo->setText(
+		QString("均值:%1 过曝:%2% 欠曝:%3% 目标曝光:%4")
+		.arg(meanIntensity, 0, 'f', 1)
+		.arg(overRatio * 100.0, 0, 'f', 1)
+		.arg(underRatio * 100.0, 0, 'f', 1)
+		.arg(targetExposure, 0, 'f', 0));
 }

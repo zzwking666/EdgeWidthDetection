@@ -811,6 +811,65 @@ QRadioButton::indicator:pressed {
               </layout>
              </item>
              <item>
+              <layout class="QHBoxLayout" name="hLayout_autoExposure">
+               <item>
+                <widget class="QCheckBox" name="ckb_autoExposure">
+                 <property name="styleSheet">
+                  <string notr="true">QCheckBox {
+    spacing: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+}
+
+QCheckBox::indicator {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #999;
+    border-radius: 4px;
+    background: #ffffff;
+}
+
+QCheckBox::indicator:hover {
+    border: 2px solid #666;
+}
+
+QCheckBox::indicator:pressed {
+    border: 2px solid #1565C0;
+    background-color: #E3F2FD;
+}
+
+QCheckBox::indicator:checked {
+    border: 2px solid #2196F3;
+    background-color: qlineargradient(
+        x1:0, y1:0, x2:1, y2:1,
+        stop:0 #2196F3,
+        stop:1 #1E88E5
+    );
+}
+
+QCheckBox::indicator:disabled {
+    border: 2px solid #ccc;
+    background: #eee;
+}
+
+QCheckBox:disabled {
+    color: #999;
+}
+
+QCheckBox:checked {
+    color: #2196F3;
+    font-weight: 500;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>自动曝光</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
               <widget class="Line" name="line">
                <property name="orientation">
                 <enum>Qt::Orientation::Horizontal</enum>
@@ -1014,15 +1073,14 @@ QGroupBox::title {
             <widget class="QLabel" name="label_warnningInfo">
              <property name="styleSheet">
               <string notr="true">QLabel {
-       font-size: 18px;        
-       font-weight: bold;        
-       color:  rgb(141, 141, 141);       
-       padding: 5px 5px;     
-       border-bottom: 2px solid #cccccc; 
+       font-size: 18px;
+       font-weight: bold;
+       color: rgb(0, 0, 0);
+       padding: 5px 5px;
     }</string>
              </property>
              <property name="text">
-              <string>暂无报警信息</string>
+              <string/>
              </property>
             </widget>
            </item>

@@ -43,6 +43,7 @@ public slots:
 	void onStartCamera(int index);
 
 	void onFrameCaptured(rw::rqw::MatInfo frame, size_t index);
+	void onSetExposureTime(size_t exposureTime);
 signals:
 	void frameCaptured1(rw::rqw::MatInfo matInfo, size_t index);
 public:
