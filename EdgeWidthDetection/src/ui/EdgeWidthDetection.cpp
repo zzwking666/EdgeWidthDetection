@@ -122,37 +122,41 @@ void EdgeWidthDetection::build_EdgeWidthDetectionData()
 	groupA->addButton(ui->rbtn_debug);
 	groupA->addButton(ui->rbtn_removeFunc);
 
-	auto* groupB = new QButtonGroup(this); // 3个一组
+	auto* groupB = new QButtonGroup(this); // 4个一组：弱光/中光/强光/自动曝光
 	groupB->setExclusive(true);
 	groupB->addButton(ui->rbtn_ruoguang);
 	groupB->addButton(ui->rbtn_zhongguang);
 	groupB->addButton(ui->rbtn_qiangguang);
+	groupB->addButton(ui->ckb_autoExposure);
 
-	switch (setConfig.lastChooseLight)
-	{
-	case 0:
-		ui->rbtn_ruoguang->setChecked(true);
-		rbtn_ruoguang_checked(true);
-		break;
-	case 1:
-		ui->rbtn_zhongguang->setChecked(true);
-		rbtn_zhongguang_checked(true);
-		break;
-	case 2:
-		ui->rbtn_qiangguang->setChecked(true);
-		rbtn_qiangguang_checked(true);
-		break;
-	default:
-		ui->rbtn_ruoguang->setChecked(true);
-		rbtn_ruoguang_checked(true);
-		break;
-	}
-
-	ui->ckb_autoExposure->setChecked(setConfig.autoExposureEnabled);
-	ui->label_warnningInfo->setVisible(setConfig.autoExposureEnabled);
+	// 恢复上次状态：自动曝光与手动档位互斥
 	if (setConfig.autoExposureEnabled)
 	{
-		emit autoExposureToggled(true);
+		ui->ckb_autoExposure->setChecked(true);
+		ui->label_warnningInfo->setVisible(true);
+	}
+	else
+	{
+		ui->label_warnningInfo->setVisible(false);
+		switch (setConfig.lastChooseLight)
+		{
+		case 0:
+			ui->rbtn_ruoguang->setChecked(true);
+			rbtn_ruoguang_checked(true);
+			break;
+		case 1:
+			ui->rbtn_zhongguang->setChecked(true);
+			rbtn_zhongguang_checked(true);
+			break;
+		case 2:
+			ui->rbtn_qiangguang->setChecked(true);
+			rbtn_qiangguang_checked(true);
+			break;
+		default:
+			ui->rbtn_ruoguang->setChecked(true);
+			rbtn_ruoguang_checked(true);
+			break;
+		}
 	}
 }
 
@@ -380,7 +384,6 @@ void EdgeWidthDetection::rbtn_ruoguang_checked(bool checked)
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	auto& camera1 = Modules::getInstance().cameraModule.camera1;
 
-	ui->ckb_autoExposure->setChecked(false);
 	setConfig.autoExposureEnabled = false;
 	ui->label_warnningInfo->setVisible(false);
 	ui->label_warnningInfo->clear();
@@ -398,7 +401,6 @@ void EdgeWidthDetection::rbtn_zhongguang_checked(bool checked)
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	auto& camera1 = Modules::getInstance().cameraModule.camera1;
 
-	ui->ckb_autoExposure->setChecked(false);
 	setConfig.autoExposureEnabled = false;
 	ui->label_warnningInfo->setVisible(false);
 	ui->label_warnningInfo->clear();
@@ -416,7 +418,6 @@ void EdgeWidthDetection::rbtn_qiangguang_checked(bool checked)
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	auto& camera1 = Modules::getInstance().cameraModule.camera1;
 
-	ui->ckb_autoExposure->setChecked(false);
 	setConfig.autoExposureEnabled = false;
 	ui->label_warnningInfo->setVisible(false);
 	ui->label_warnningInfo->clear();

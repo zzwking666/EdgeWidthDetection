@@ -140,6 +140,9 @@ void Modules::connect()
 
 	QObject::connect(&autoExposureModule, &AutoExposureModule::autoExposureInfoReady,
 		uiModule._edgeWidthDetection, &EdgeWidthDetection::onAutoExposureInfo, Qt::QueuedConnection);
+
+	// UI 构造阶段信号槽尚未连接，此处根据配置显式同步自动曝光模块开关状态
+	autoExposureModule.setEnabled(configManagerModule.setConfig.autoExposureEnabled);
 #pragma endregion
 
 #pragma region connect camera and ReconnectModule

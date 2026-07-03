@@ -7,3 +7,21 @@
 [2026-07-03 09:47:23.076] [info] [RW_UL.foundation] [thread 18912] imet:Build success
 [2026-07-03 09:47:23.454] [info] [RW_UL.foundation] [thread 18912] Build modbus by tcp, ip "192.168.1.10",port "502" ...
 [2026-07-03 09:47:23.955] [warning] [RW_UL.foundation] [thread 18912] Connect modbus failed
+[2026-07-03 10:14:02.686] [info] [RW_UL.foundation] [thread 11008] imet:Building Yolov11 obb ....
+[2026-07-03 10:14:03.000] [info] [RW_UL.foundation] [thread 11008] imet:modelPath is "D:\zfkjData\EdgeWidthDetection\model\EdgeWidthDetection.engine" 
+[2026-07-03 10:14:03.000] [info] [RW_UL.foundation] [thread 11008] imet:conf_threshold is 0.1
+[2026-07-03 10:14:03.000] [info] [RW_UL.foundation] [thread 11008] imet:nms_threshold is 0.1
+[2026-07-03 10:14:03.000] [info] [RW_UL.foundation] [thread 11008] imet:classids_nms_together is []
+[2026-07-03 10:14:03.000] [info] [RW_UL.foundation] [thread 11008] imet:Build Yolov11 detection success!
+[2026-07-03 10:14:03.000] [info] [RW_UL.foundation] [thread 11008] imet:Build success
+[2026-07-03 10:14:03.536] [info] [RW_UL.foundation] [thread 11008] Build modbus by tcp, ip "192.168.1.10",port "502" ...
+[2026-07-03 10:14:04.048] [warning] [RW_UL.foundation] [thread 11008] Connect modbus failed
+[2026-07-03 10:23:23.342] [info] [RW_UL.foundation] [thread 1280] imet:Building Yolov11 obb ....
+[2026-07-03 10:23:23.660] [info] [RW_UL.foundation] [thread 1280] imet:modelPath is "D:\zfkjData\EdgeWidthDetection\model\EdgeWidthDetection.engine" 
+[2026-07-03 10:23:23.660] [info] [RW_UL.foundation] [thread 1280] imet:conf_threshold is 0.1
+[2026-07-03 10:23:23.660] [info] [RW_UL.foundation] [thread 1280] imet:nms_threshold is 0.1
+[2026-07-03 10:23:23.660] [info] [RW_UL.foundation] [thread 1280] imet:classids_nms_together is []
+[2026-07-03 10:23:23.660] [info] [RW_UL.foundation] [thread 1280] imet:Build Yolov11 detection success!
+[2026-07-03 10:23:23.660] [info] [RW_UL.foundation] [thread 1280] imet:Build success
+[2026-07-03 10:23:24.181] [info] [RW_UL.foundation] [thread 1280] Build modbus by tcp, ip "192.168.1.10",port "502" ...
+[2026-07-03 10:23:24.689] [warning] [RW_UL.foundation] [thread 1280] Connect modbus failed
