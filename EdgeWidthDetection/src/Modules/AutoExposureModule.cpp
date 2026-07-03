@@ -44,18 +44,25 @@ void AutoExposureModule::onExposureStats(double meanIntensity, double overRatio,
 	}
 
 	double error = 0.0;
+	bool isMeanError = false;
 	if (overRatio > setConfig.autoExposureMaxOverRatio) {
 		error = -overRatio;
 	} else if (underRatio > setConfig.autoExposureMaxUnderRatio) {
 		error = underRatio;
 	} else {
 		error = (setConfig.autoExposureTargetMean - meanIntensity) / 255.0;
+		isMeanError = true;
 	}
 
 	constexpr double kp = 0.01;
-	constexpr double minStep = 10.0;
+	constexpr double minStep = 30.0;          // 曝光调整步进，由 10 改为 30，降低灵敏度
 	constexpr double maxStep = 500.0;
-	constexpr double deadBand = 1.0;
+	constexpr double deadBand = 30.0;         // 死区与最小步进对齐，避免小范围来回跳动
+	constexpr double errorThreshold = 0.02;   // 仅对均值误差生效，抑制轻微亮度波动
+
+	if (isMeanError && std::abs(error) < errorThreshold) {
+		return;
+	}
 
 	double currentExposure = 0.0;
 	auto& cameraModule = Modules::getInstance().cameraModule;
