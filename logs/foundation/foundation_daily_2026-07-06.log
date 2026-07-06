@@ -1,0 +1,29 @@
+[2026-07-06 10:45:18.444] [info] [RW_UL.foundation] [thread 20712] imet:Building Yolov11 obb ....
+[2026-07-06 10:45:18.811] [info] [RW_UL.foundation] [thread 20712] imet:modelPath is "D:\zfkjData\EdgeWidthDetection\model\EdgeWidthDetection.engine" 
+[2026-07-06 10:45:18.812] [info] [RW_UL.foundation] [thread 20712] imet:conf_threshold is 0.1
+[2026-07-06 10:45:18.812] [info] [RW_UL.foundation] [thread 20712] imet:nms_threshold is 0.1
+[2026-07-06 10:45:18.812] [info] [RW_UL.foundation] [thread 20712] imet:classids_nms_together is []
+[2026-07-06 10:45:18.812] [info] [RW_UL.foundation] [thread 20712] imet:Build Yolov11 detection success!
+[2026-07-06 10:45:18.812] [info] [RW_UL.foundation] [thread 20712] imet:Build success
+[2026-07-06 10:45:19.348] [info] [RW_UL.foundation] [thread 20712] Build modbus by tcp, ip "192.168.1.10",port "502" ...
+[2026-07-06 10:45:19.853] [warning] [RW_UL.foundation] [thread 20712] Connect modbus failed
+[2026-07-06 10:45:54.635] [info] [RW_UL.foundation] [thread 20712] Disconnect modbus success
+[2026-07-06 11:05:25.762] [info] [RW_UL.foundation] [thread 31128] imet:Building Yolov11 obb ....
+[2026-07-06 11:05:26.118] [info] [RW_UL.foundation] [thread 31128] imet:modelPath is "D:\zfkjData\EdgeWidthDetection\model\EdgeWidthDetection.engine" 
+[2026-07-06 11:05:26.118] [info] [RW_UL.foundation] [thread 31128] imet:conf_threshold is 0.1
+[2026-07-06 11:05:26.118] [info] [RW_UL.foundation] [thread 31128] imet:nms_threshold is 0.1
+[2026-07-06 11:05:26.118] [info] [RW_UL.foundation] [thread 31128] imet:classids_nms_together is []
+[2026-07-06 11:05:26.118] [info] [RW_UL.foundation] [thread 31128] imet:Build Yolov11 detection success!
+[2026-07-06 11:05:26.118] [info] [RW_UL.foundation] [thread 31128] imet:Build success
+[2026-07-06 11:05:26.634] [info] [RW_UL.foundation] [thread 31128] Build modbus by tcp, ip "192.168.1.10",port "502" ...
+[2026-07-06 11:05:27.142] [warning] [RW_UL.foundation] [thread 31128] Connect modbus failed
+[2026-07-06 11:05:39.512] [info] [RW_UL.foundation] [thread 31128] Disconnect modbus success
+[2026-07-06 11:23:10.983] [info] [RW_UL.foundation] [thread 33600] imet:Building Yolov11 obb ....
+[2026-07-06 11:23:11.336] [info] [RW_UL.foundation] [thread 33600] imet:modelPath is "D:\zfkjData\EdgeWidthDetection\model\EdgeWidthDetection.engine" 
+[2026-07-06 11:23:11.336] [info] [RW_UL.foundation] [thread 33600] imet:conf_threshold is 0.1
+[2026-07-06 11:23:11.336] [info] [RW_UL.foundation] [thread 33600] imet:nms_threshold is 0.1
+[2026-07-06 11:23:11.336] [info] [RW_UL.foundation] [thread 33600] imet:classids_nms_together is []
+[2026-07-06 11:23:11.336] [info] [RW_UL.foundation] [thread 33600] imet:Build Yolov11 detection success!
+[2026-07-06 11:23:11.336] [info] [RW_UL.foundation] [thread 33600] imet:Build success
+[2026-07-06 11:23:11.833] [info] [RW_UL.foundation] [thread 33600] Build modbus by tcp, ip "192.168.1.10",port "502" ...
+[2026-07-06 11:23:12.334] [warning] [RW_UL.foundation] [thread 33600] Connect modbus failed

@@ -6,6 +6,7 @@
 #include "DlgProductSet.h"
 #include "EdgeWidthDetection.h"
 #include "EdgeWidthDetection.hpp"
+#include "LicenseManager.hpp"
 #include "rqw_RunEnvCheck.hpp"
 #include "SetConfig.hpp"
 #include "Utilty.hpp"
@@ -227,6 +228,17 @@ bool Modules::check()
 
 	checkFileExistAndFormat<cdm::EdgeWidthDetectionConfig>(globalPath.EdgeWidthDetectionConfigPath, storageContext);
 	checkFileExistAndFormat<cdm::SetConfig>(globalPath.setConfigPath, storageContext);
+#pragma endregion
+
+#pragma region check license
+#ifndef BUILD_WITHOUT_HARDWARE
+	if (!LicenseManager::verifyAtStartup())
+	{
+		return false;
+	}
+#else
+	qDebug() << "[开发模式] 跳过机器码授权校验";
+#endif
 #pragma endregion
 
 	return true;

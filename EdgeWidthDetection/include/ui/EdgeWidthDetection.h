@@ -70,6 +70,7 @@ private slots:
 
 	void ckb_saveImg_checked(bool checked);
 	void ckb_autoExposure_checked(bool checked);
+	void actionLicense_triggered();
 private:
 	rw::rqw::ClickableLabel* clickableTitle = nullptr;
 	DlgCloseForm* _dlgCloseForm = nullptr;

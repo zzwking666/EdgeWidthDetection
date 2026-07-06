@@ -65,7 +65,7 @@ target_link_libraries(${PROJECT_NAME}
 	PRIVATE ${OpenCV_LIBS}
 )
 
-target_link_libraries(${PROJECT_NAME} 
+target_link_libraries(${PROJECT_NAME}
 	PRIVATE rqw
 	PRIVATE oso
 	PRIVATE rqwhoec
@@ -73,6 +73,8 @@ target_link_libraries(${PROJECT_NAME}
 	PRIVATE ime
 	PRIVATE rqwime
 	PRIVATE imgPro
+	PRIVATE actCry
+	PRIVATE hoei
 	#PRIVATE rqwscc
 )
 
@@ -80,6 +82,8 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${QT_PATH}/bin/windeployqt.exe --no-compiler-runtime --no-opengl-sw $<TARGET_FILE:${PROJECT_NAME}>
     COMMENT "Running windeployqt to package Qt dependencies"
 )
+
+add_subdirectory(tools/LicenseIssuer)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
