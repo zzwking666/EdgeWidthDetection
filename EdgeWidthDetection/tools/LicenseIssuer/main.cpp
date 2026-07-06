@@ -1,13 +1,12 @@
-#include <actCry_ActivationInfo.hpp>
+#include "DlgLicenseIssuer.h"
+
+#include <QApplication>
+#include <QCoreApplication>
 #include <QCryptographicHash>
 #include <QString>
 #include <algorithm>
 #include <cctype>
-#include <chrono>
-#include <ctime>
-#include <iomanip>
 #include <iostream>
-#include <iterator>
 #include <sstream>
 #include <string>
 
@@ -17,7 +16,6 @@
 namespace
 {
 	constexpr char kProductName[] = "EdgeWidthDetection";
-	constexpr char kActivationKey[] = "EdgeWidthDetectionActivationKey";
 
 	std::string toUpper(const std::string& str)
 	{
@@ -94,55 +92,19 @@ namespace
 		QByteArray data(combined.data(), static_cast<int>(combined.size()));
 		return QCryptographicHash::hash(data, QCryptographicHash::Sha256).toHex().toStdString();
 	}
-
-	std::chrono::system_clock::time_point parseDateTime(const std::string& str)
-	{
-		std::tm tmBuf{};
-		std::istringstream ss(str);
-		ss >> std::get_time(&tmBuf, "%Y-%m-%d");
-		if (ss.fail())
-		{
-			throw std::runtime_error("日期格式错误，应为 YYYY-MM-DD");
-		}
-		tmBuf.tm_hour = 0;
-		tmBuf.tm_min = 0;
-		tmBuf.tm_sec = 0;
-		auto timeT = std::mktime(&tmBuf);
-		return std::chrono::system_clock::from_time_t(timeT);
-	}
 }
 
 int main(int argc, char* argv[])
 {
 	if (argc == 2 && std::strcmp(argv[1], "--machine-code") == 0)
 	{
+		QCoreApplication app(argc, argv);
 		std::cout << generateMachineCode() << std::endl;
 		return 0;
 	}
 
-	if (argc != 2)
-	{
-		std::cerr << "用法:" << std::endl;
-		std::cerr << "  LicenseIssuer --machine-code" << std::endl;
-		std::cerr << "  LicenseIssuer <机器码>" << std::endl;
-		std::cerr << "示例: LicenseIssuer ABCD1234..." << std::endl;
-		return 1;
-	}
-
-	try
-	{
-		rw::actCry::ActivationInfo info;
-		info.hwid = argv[1];
-		info.startTime = std::chrono::system_clock::time_point{};
-		info.endTime = parseDateTime("2099-12-31");
-
-		auto code = rw::actCry::ActivationInfo::generateActivationCode(info, kActivationKey);
-		std::cout << code << std::endl;
-		return 0;
-	}
-	catch (const std::exception& e)
-	{
-		std::cerr << "生成激活码失败: " << e.what() << std::endl;
-		return 1;
-	}
+	QApplication app(argc, argv);
+	DlgLicenseIssuer dlg;
+	dlg.show();
+	return app.exec();
 }
