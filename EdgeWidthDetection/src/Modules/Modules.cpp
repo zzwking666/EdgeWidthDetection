@@ -230,16 +230,16 @@ bool Modules::check()
 	checkFileExistAndFormat<cdm::SetConfig>(globalPath.setConfigPath, storageContext);
 #pragma endregion
 
-//#pragma region check license
-//#ifndef BUILD_WITHOUT_HARDWARE
-//	if (!LicenseManager::verifyAtStartup())
-//	{
-//		return false;
-//	}
-//#else
-//	qDebug() << "[开发模式] 跳过机器码授权校验";
-//#endif
-//#pragma endregion
+#pragma region check license
+#ifndef BUILD_WITHOUT_HARDWARE
+	if (!LicenseManager::verifyAtStartup())
+	{
+		return false;
+	}
+#else
+	qDebug() << "[开发模式] 跳过机器码授权校验";
+#endif
+#pragma endregion
 
 	return true;
 }

@@ -55,11 +55,6 @@ void EdgeWidthDetection::build_ui()
 	build_EdgeWidthDetectionData();
 	build_DlgCloseForm();
 
-	// 添加系统菜单：授权管理
-	auto* menuSystem = menuBar()->addMenu("系统(S)");
-	auto* actionLicense = menuSystem->addAction("授权管理...");
-	connect(actionLicense, &QAction::triggered, this, &EdgeWidthDetection::actionLicense_triggered);
-
 #ifdef BUILD_WITHOUT_HARDWARE
 	cBox_testPushImg = new QCheckBox(this);
 	cBox_testPushImg->setText("图像推送状态");
@@ -466,17 +461,4 @@ void EdgeWidthDetection::onAutoExposureInfo(double targetExposure, double meanIn
 		.arg(overRatio * 100.0, 0, 'f', 1)
 		.arg(underRatio * 100.0, 0, 'f', 1)
 		.arg(targetExposure, 0, 'f', 0));
-}
-
-void EdgeWidthDetection::actionLicense_triggered()
-{
-	DlgLicense dlg(LicenseManager::getMachineCode(), this);
-	if (dlg.exec() != QDialog::Accepted)
-		return;
-
-	if (LicenseManager::applyActivationCode(dlg.activationCode()))
-	{
-		QMessageBox::information(this, "提示",
-			QString("激活成功，%1").arg(LicenseManager::getAuthorizationExpiry()));
-	}
 }
