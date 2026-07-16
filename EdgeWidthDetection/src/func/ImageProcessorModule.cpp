@@ -185,6 +185,7 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 	imgPro(frame.image);
 	auto maskImg = imgPro.getMaskImg(frame.image);
 	auto defectResult = imgPro.getDefectResultInfo();
+	auto processResult = imgPro.getContext().getProcessResult();
 
 	double width = 0.0;
 
@@ -194,6 +195,7 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 		{
 			auto pixToWorld = setConfig.xiangsudangliang2;
 			width = std::any_cast<int>(imgPro.context().customFields["width"]) * pixToWorld;
+			drawImg(maskImg, processResult, 0.0);
 		}
 	}
 

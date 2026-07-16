@@ -53,6 +53,9 @@ public slots:
 	void onAutoExposureInfo(double targetExposure, double meanIntensity,
 		double overRatio, double underRatio);
 
+	void onAutoExposureInfo2(double targetExposure, double meanIntensity,
+		double overRatio, double underRatio);
+
 	void lb_title_clicked();
 signals:
 	void autoExposureToggled(bool enabled);
@@ -78,10 +81,15 @@ private slots:
 	void ckb_autoExposure_2_checked(bool checked);
 
 private:
+	void refreshExposureInfo();
+	void updateExposureInfoVisibility();
+
 	rw::rqw::ClickableLabel* clickableTitle = nullptr;
 	DlgCloseForm* _dlgCloseForm = nullptr;
 	PictureViewerThumbnails* _picturesViewer = nullptr;
 private:
 	Ui::EdgeWidthDetectionClass* ui;
 	int minimizeCount{ 3 };
+	QString _cam1ExposureInfo;
+	QString _cam2ExposureInfo;
 };

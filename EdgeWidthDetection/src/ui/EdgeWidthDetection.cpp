@@ -152,11 +152,9 @@ void EdgeWidthDetection::build_EdgeWidthDetectionData()
 	if (setConfig.autoExposureEnabled1)
 	{
 		ui->ckb_autoExposure->setChecked(true);
-		ui->label_warnningInfo->setVisible(true);
 	}
 	else
 	{
-		ui->label_warnningInfo->setVisible(false);
 		switch (setConfig.lastChooseLight1)
 		{
 		case 0:
@@ -178,7 +176,7 @@ void EdgeWidthDetection::build_EdgeWidthDetectionData()
 		}
 	}
 
-	// 恢复相机2上次状态：自动曝光与手动档位互斥（相机2无信息标签）
+	// 恢复相机2上次状态：自动曝光与手动档位互斥（相机2自动曝光信息与相机1共用 label_warnningInfo，独立分行显示）
 	if (setConfig.autoExposureEnabled2)
 	{
 		ui->ckb_autoExposure_2->setChecked(true);
@@ -205,6 +203,9 @@ void EdgeWidthDetection::build_EdgeWidthDetectionData()
 			break;
 		}
 	}
+
+	// 任一相机开启自动曝光即显示信息标签
+	updateExposureInfoVisibility();
 }
 
 void EdgeWidthDetection::ini_clickableTitle()
@@ -458,8 +459,9 @@ void EdgeWidthDetection::rbtn_ruoguang_checked(bool checked)
 	auto& camera1 = Modules::getInstance().cameraModule.camera1;
 
 	setConfig.autoExposureEnabled1 = false;
-	ui->label_warnningInfo->setVisible(false);
-	ui->label_warnningInfo->clear();
+	_cam1ExposureInfo.clear();
+	refreshExposureInfo();
+	updateExposureInfoVisibility();
 	emit autoExposureToggled(false);
 
 	if (camera1)
@@ -475,8 +477,9 @@ void EdgeWidthDetection::rbtn_zhongguang_checked(bool checked)
 	auto& camera1 = Modules::getInstance().cameraModule.camera1;
 
 	setConfig.autoExposureEnabled1 = false;
-	ui->label_warnningInfo->setVisible(false);
-	ui->label_warnningInfo->clear();
+	_cam1ExposureInfo.clear();
+	refreshExposureInfo();
+	updateExposureInfoVisibility();
 	emit autoExposureToggled(false);
 
 	if (camera1)
@@ -492,8 +495,9 @@ void EdgeWidthDetection::rbtn_qiangguang_checked(bool checked)
 	auto& camera1 = Modules::getInstance().cameraModule.camera1;
 
 	setConfig.autoExposureEnabled1 = false;
-	ui->label_warnningInfo->setVisible(false);
-	ui->label_warnningInfo->clear();
+	_cam1ExposureInfo.clear();
+	refreshExposureInfo();
+	updateExposureInfoVisibility();
 	emit autoExposureToggled(false);
 
 	if (camera1)
@@ -513,23 +517,60 @@ void EdgeWidthDetection::ckb_autoExposure_checked(bool checked)
 {
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	setConfig.autoExposureEnabled1 = checked;
-	ui->label_warnningInfo->setVisible(checked);
 	if (!checked)
 	{
-		ui->label_warnningInfo->clear();
+		_cam1ExposureInfo.clear();
+		refreshExposureInfo();
 	}
+	updateExposureInfoVisibility();
 	emit autoExposureToggled(checked);
 }
 
 void EdgeWidthDetection::onAutoExposureInfo(double targetExposure, double meanIntensity,
 	double overRatio, double underRatio)
 {
-	ui->label_warnningInfo->setText(
-		QString("均值:%1 过曝:%2% 欠曝:%3% 目标曝光:%4")
+	_cam1ExposureInfo = QString("相机1 均值:%1 过曝:%2% 欠曝:%3% 目标曝光:%4")
 		.arg(meanIntensity, 0, 'f', 1)
 		.arg(overRatio * 100.0, 0, 'f', 1)
 		.arg(underRatio * 100.0, 0, 'f', 1)
-		.arg(targetExposure, 0, 'f', 0));
+		.arg(targetExposure, 0, 'f', 0);
+	refreshExposureInfo();
+}
+
+void EdgeWidthDetection::onAutoExposureInfo2(double targetExposure, double meanIntensity,
+	double overRatio, double underRatio)
+{
+	_cam2ExposureInfo = QString("相机2 均值:%1 过曝:%2% 欠曝:%3% 目标曝光:%4")
+		.arg(meanIntensity, 0, 'f', 1)
+		.arg(overRatio * 100.0, 0, 'f', 1)
+		.arg(underRatio * 100.0, 0, 'f', 1)
+		.arg(targetExposure, 0, 'f', 0);
+	refreshExposureInfo();
+}
+
+void EdgeWidthDetection::refreshExposureInfo()
+{
+	QString text;
+	if (!_cam1ExposureInfo.isEmpty() && !_cam2ExposureInfo.isEmpty())
+	{
+		text = _cam1ExposureInfo + "\n" + _cam2ExposureInfo;
+	}
+	else if (!_cam1ExposureInfo.isEmpty())
+	{
+		text = _cam1ExposureInfo;
+	}
+	else if (!_cam2ExposureInfo.isEmpty())
+	{
+		text = _cam2ExposureInfo;
+	}
+	ui->label_warnningInfo->setText(text);
+}
+
+void EdgeWidthDetection::updateExposureInfoVisibility()
+{
+	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+	bool anyAuto = setConfig.autoExposureEnabled1 || setConfig.autoExposureEnabled2;
+	ui->label_warnningInfo->setVisible(anyAuto);
 }
 
 void EdgeWidthDetection::rbtn_ruoguang_2_checked(bool checked)
@@ -538,6 +579,9 @@ void EdgeWidthDetection::rbtn_ruoguang_2_checked(bool checked)
 	auto& camera2 = Modules::getInstance().cameraModule.camera2;
 
 	setConfig.autoExposureEnabled2 = false;
+	_cam2ExposureInfo.clear();
+	refreshExposureInfo();
+	updateExposureInfoVisibility();
 	emit autoExposureToggled2(false);
 
 	if (camera2)
@@ -553,6 +597,9 @@ void EdgeWidthDetection::rbtn_zhongguang_2_checked(bool checked)
 	auto& camera2 = Modules::getInstance().cameraModule.camera2;
 
 	setConfig.autoExposureEnabled2 = false;
+	_cam2ExposureInfo.clear();
+	refreshExposureInfo();
+	updateExposureInfoVisibility();
 	emit autoExposureToggled2(false);
 
 	if (camera2)
@@ -568,6 +615,9 @@ void EdgeWidthDetection::rbtn_qiangguang_2_checked(bool checked)
 	auto& camera2 = Modules::getInstance().cameraModule.camera2;
 
 	setConfig.autoExposureEnabled2 = false;
+	_cam2ExposureInfo.clear();
+	refreshExposureInfo();
+	updateExposureInfoVisibility();
 	emit autoExposureToggled2(false);
 
 	if (camera2)
@@ -581,5 +631,11 @@ void EdgeWidthDetection::ckb_autoExposure_2_checked(bool checked)
 {
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	setConfig.autoExposureEnabled2 = checked;
+	if (!checked)
+	{
+		_cam2ExposureInfo.clear();
+		refreshExposureInfo();
+	}
+	updateExposureInfoVisibility();
 	emit autoExposureToggled2(checked);
 }
