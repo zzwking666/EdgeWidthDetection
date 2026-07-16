@@ -24,9 +24,28 @@
         </property>
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
-          <layout class="QVBoxLayout" name="verticalLayout_2" stretch="3">
+          <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1">
            <item>
             <widget class="QLabel" name="label_imgDisplay_1">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>999</width>
+               <height>999</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_imgDisplay_2">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                <horstretch>0</horstretch>
@@ -216,6 +235,46 @@ QPushButton:pressed {
                      </property>
                     </widget>
                    </item>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_3">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel {
+       font-size: 18px;        
+       font-weight: bold;        
+		padding: 5px 5px;  
+    }</string>
+                     </property>
+                     <property name="text">
+                      <string>2.</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QLabel" name="label_camera2State">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel {
+       font-size: 18px;        
+       font-weight: bold;        
+		padding: 5px 5px;  
+    }</string>
+                     </property>
+                     <property name="text">
+                      <string>TextLabel</string>
+                     </property>
+                    </widget>
+                   </item>
                   </layout>
                  </item>
                 </layout>
@@ -321,7 +380,7 @@ QGroupBox::title {
           </property>
           <layout class="QGridLayout" name="gridLayout_4">
            <item row="0" column="0">
-            <layout class="QVBoxLayout" name="verticalLayout_4" stretch="1,1,1,1,1,1,1,1,1">
+            <layout class="QVBoxLayout" name="verticalLayout_4" stretch="1,1,1,1,1,1,1,1,1,1">
              <item>
               <layout class="QHBoxLayout" name="hLayout_info" stretch="1,1">
                <item>
@@ -810,6 +869,260 @@ QRadioButton::indicator:pressed {
                </item>
                <item>
                 <widget class="QCheckBox" name="ckb_autoExposure">
+                 <property name="styleSheet">
+                  <string notr="true">QCheckBox {
+    spacing: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+}
+
+QCheckBox::indicator {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #999;
+    border-radius: 4px;
+    background: #ffffff;
+}
+
+QCheckBox::indicator:hover {
+    border: 2px solid #666;
+}
+
+QCheckBox::indicator:pressed {
+    border: 2px solid #1565C0;
+    background-color: #E3F2FD;
+}
+
+QCheckBox::indicator:checked {
+    border: 2px solid #2196F3;
+    background-color: qlineargradient(
+        x1:0, y1:0, x2:1, y2:1,
+        stop:0 #2196F3,
+        stop:1 #1E88E5
+    );
+}
+
+QCheckBox::indicator:disabled {
+    border: 2px solid #ccc;
+    background: #eee;
+}
+
+QCheckBox:disabled {
+    color: #999;
+}
+
+QCheckBox:checked {
+    color: #2196F3;
+    font-weight: 500;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>自动曝光</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,1,1,1">
+               <item>
+                <widget class="QRadioButton" name="rbtn_ruoguang_2">
+                 <property name="styleSheet">
+                  <string notr="true">QRadioButton {
+    spacing: 8px;
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;        
+    color:  rgb(0, 0, 0);       
+
+}
+
+/* 未选中状态 */
+QRadioButton::indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    border: 2px solid #999;
+    background: #ffffff;
+}
+
+/* 悬停效果 */
+QRadioButton::indicator:hover {
+    border: 2px solid #666;
+}
+
+/* 选中状态 */
+QRadioButton::indicator:checked {
+    border: 2px solid #2196F3;
+}
+
+/* 选中时的内圆 */
+QRadioButton::indicator:checked {
+    background-color: qradialgradient(
+        cx:0.5, cy:0.5,
+        radius:0.4,
+        fx:0.5, fy:0.5,
+        stop:0 #2196F3,
+        stop:1 transparent
+    );
+}
+
+/* 禁用状态 */
+QRadioButton::indicator:disabled {
+    border: 2px solid #ccc;
+    background: #eee;
+}
+
+/* 点击动画效果 */
+QRadioButton::indicator:pressed {
+    border: 2px solid #1565C0;
+    background-color: qradialgradient(
+        cx:0.5, cy:0.5,
+        radius:0.5,
+        fx:0.5, fy:0.5,
+        stop:0 #BBDEFB,
+        stop:1 transparent
+    );
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>弱光</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="rbtn_zhongguang_2">
+                 <property name="styleSheet">
+                  <string notr="true">QRadioButton {
+    spacing: 8px;
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;        
+    color:  rgb(0, 0, 0);       
+
+}
+
+/* 未选中状态 */
+QRadioButton::indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    border: 2px solid #999;
+    background: #ffffff;
+}
+
+/* 悬停效果 */
+QRadioButton::indicator:hover {
+    border: 2px solid #666;
+}
+
+/* 选中状态 */
+QRadioButton::indicator:checked {
+    border: 2px solid #2196F3;
+}
+
+/* 选中时的内圆 */
+QRadioButton::indicator:checked {
+    background-color: qradialgradient(
+        cx:0.5, cy:0.5,
+        radius:0.4,
+        fx:0.5, fy:0.5,
+        stop:0 #2196F3,
+        stop:1 transparent
+    );
+}
+
+/* 禁用状态 */
+QRadioButton::indicator:disabled {
+    border: 2px solid #ccc;
+    background: #eee;
+}
+
+/* 点击动画效果 */
+QRadioButton::indicator:pressed {
+    border: 2px solid #1565C0;
+    background-color: qradialgradient(
+        cx:0.5, cy:0.5,
+        radius:0.5,
+        fx:0.5, fy:0.5,
+        stop:0 #BBDEFB,
+        stop:1 transparent
+    );
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>中光</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="rbtn_qiangguang_2">
+                 <property name="styleSheet">
+                  <string notr="true">QRadioButton {
+    spacing: 8px;
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;        
+    color:  rgb(0, 0, 0);       
+
+}
+
+/* 未选中状态 */
+QRadioButton::indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    border: 2px solid #999;
+    background: #ffffff;
+}
+
+/* 悬停效果 */
+QRadioButton::indicator:hover {
+    border: 2px solid #666;
+}
+
+/* 选中状态 */
+QRadioButton::indicator:checked {
+    border: 2px solid #2196F3;
+}
+
+/* 选中时的内圆 */
+QRadioButton::indicator:checked {
+    background-color: qradialgradient(
+        cx:0.5, cy:0.5,
+        radius:0.4,
+        fx:0.5, fy:0.5,
+        stop:0 #2196F3,
+        stop:1 transparent
+    );
+}
+
+/* 禁用状态 */
+QRadioButton::indicator:disabled {
+    border: 2px solid #ccc;
+    background: #eee;
+}
+
+/* 点击动画效果 */
+QRadioButton::indicator:pressed {
+    border: 2px solid #1565C0;
+    background-color: qradialgradient(
+        cx:0.5, cy:0.5,
+        radius:0.5,
+        fx:0.5, fy:0.5,
+        stop:0 #BBDEFB,
+        stop:1 transparent
+    );
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>强光</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="ckb_autoExposure_2">
                  <property name="styleSheet">
                   <string notr="true">QCheckBox {
     spacing: 8px;
