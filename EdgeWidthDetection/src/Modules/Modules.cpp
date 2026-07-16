@@ -28,7 +28,10 @@ bool Modules::build()
 	auto configManagerBuild = configManagerModule.build();
 
 	// 构建自动曝光模块
+	autoExposureModule.setCameraIndex(1);
 	auto autoExposureModuleBuild = autoExposureModule.build();
+	autoExposureModule2.setCameraIndex(2);
+	auto autoExposureModule2Build = autoExposureModule2.build();
 
 	// 构建相机
 	auto cameraBuild = cameraModule.build();
@@ -122,6 +125,17 @@ void Modules::connect()
 		&cameraModule, &CameraModule::onSetExposureTime, Qt::QueuedConnection);
 #pragma endregion
 
+#pragma region connect camera2 and imgProModule
+	QObject::connect(&cameraModule, &CameraModule::frameCaptured2,
+		Modules::getInstance().imgProModule.imageProcessingModule2.get(), &ImageProcessingModule::onFrameCaptured, Qt::DirectConnection);
+
+	QObject::connect(imgProModule.imageProcessingModule2.get(), &ImageProcessingModule::exposureStatsReady,
+		&autoExposureModule2, &AutoExposureModule::onExposureStats, Qt::QueuedConnection);
+
+	QObject::connect(&autoExposureModule2, &AutoExposureModule::requestSetExposureTime,
+		&cameraModule, &CameraModule::onSetExposureTime2, Qt::QueuedConnection);
+#pragma endregion
+
 #pragma region connect UIModule and ReconnectModule
 	QObject::connect(reconnectModule.monitorCameraAndCardStateThread.get(), &CameraAndCardStateThread::updateCameraLabelState,
 		uiModule._edgeWidthDetection, &EdgeWidthDetection::updateCameraLabelState);
@@ -129,6 +143,9 @@ void Modules::connect()
 
 #pragma region connect UIModule and imgProModule
 	QObject::connect(imgProModule.imageProcessingModule1.get(), &ImageProcessingModule::imageReady,
+		uiModule._edgeWidthDetection, &EdgeWidthDetection::onCameraDisplay);
+
+	QObject::connect(imgProModule.imageProcessingModule2.get(), &ImageProcessingModule::imageReady,
 		uiModule._edgeWidthDetection, &EdgeWidthDetection::onCameraDisplay);
 
 	QObject::connect(uiModule._dlgProductSet,&DlgProductSet::paramsChanged,
@@ -139,11 +156,15 @@ void Modules::connect()
 	QObject::connect(uiModule._edgeWidthDetection, &EdgeWidthDetection::autoExposureToggled,
 		&autoExposureModule, &AutoExposureModule::setEnabled);
 
+	QObject::connect(uiModule._edgeWidthDetection, &EdgeWidthDetection::autoExposureToggled2,
+		&autoExposureModule2, &AutoExposureModule::setEnabled);
+
 	QObject::connect(&autoExposureModule, &AutoExposureModule::autoExposureInfoReady,
 		uiModule._edgeWidthDetection, &EdgeWidthDetection::onAutoExposureInfo, Qt::QueuedConnection);
 
 	// UI 构造阶段信号槽尚未连接，此处根据配置显式同步自动曝光模块开关状态
-	autoExposureModule.setEnabled(configManagerModule.setConfig.autoExposureEnabled);
+	autoExposureModule.setEnabled(configManagerModule.setConfig.autoExposureEnabled1);
+	autoExposureModule2.setEnabled(configManagerModule.setConfig.autoExposureEnabled2);
 #pragma endregion
 
 #pragma region connect camera and ReconnectModule
@@ -181,6 +202,8 @@ void Modules::connect()
 #ifdef BUILD_WITHOUT_HARDWARE
 	QObject::connect(test_module.testImgPushThread.get(), &TestImgPushThread::imgReady,
 		imgProModule.imageProcessingModule1.get(), &ImageProcessingModule::onFrameCaptured, Qt::DirectConnection);
+	QObject::connect(test_module.testImgPushThread.get(), &TestImgPushThread::imgReady2,
+		imgProModule.imageProcessingModule2.get(), &ImageProcessingModule::onFrameCaptured, Qt::DirectConnection);
 	#endif
 }
 

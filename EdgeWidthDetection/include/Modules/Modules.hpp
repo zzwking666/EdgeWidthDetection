@@ -55,6 +55,7 @@ public:
 	UIModule uiModule;
 	ConfigManagerModule configManagerModule;
 	AutoExposureModule autoExposureModule;
+	AutoExposureModule autoExposureModule2;
 	RuntimeInfoModule runtimeInfoModule;
 	ImgSaveModule imgSaveModule;
 	ImgProModule imgProModule;

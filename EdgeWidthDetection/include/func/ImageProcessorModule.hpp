@@ -2,6 +2,7 @@
 
 #include"ime_ModelEngineFactory.h"
 
+#include <atomic>
 #include <QObject>
 #include <QQueue>
 #include <QMutex>
@@ -33,6 +34,7 @@ private:
 	void run_debug(MatInfo& frame);				// 不开剔废时候的调试模式
 private:
 	void run_OpenRemoveFunc(MatInfo& frame);	// 开启剔废功能时的处理模式
+	void run_OpenRemoveFunc2(MatInfo& frame);	// 相机2开启剔废时的简化处理（仅识别+算宽度，无PLC/剔废）
 
 	void run_OpenRemoveFunc_emitErrorInfo(bool isbad);
 signals:
@@ -94,6 +96,7 @@ private:
 	QWaitCondition _condition;
 	std::vector<ImageProcessor*> _processors;
 	int _numConsumers;
+	std::atomic<long long> _lastCamNs{ 0 };	// 防抖动时间戳（每模块独立，避免跨相机误丢帧）
 public:
 	size_t index;
 };

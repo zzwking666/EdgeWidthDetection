@@ -8,9 +8,14 @@
 bool AutoExposureModule::build()
 {
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-	_enabled = setConfig.autoExposureEnabled;
+	_enabled = (1 == _cameraIndex) ? setConfig.autoExposureEnabled1 : setConfig.autoExposureEnabled2;
 	_lastAdjustTime = std::chrono::steady_clock::now();
 	return true;
+}
+
+void AutoExposureModule::setCameraIndex(size_t cameraIndex)
+{
+	_cameraIndex = cameraIndex;
 }
 
 void AutoExposureModule::destroy()
@@ -66,13 +71,14 @@ void AutoExposureModule::onExposureStats(double meanIntensity, double overRatio,
 
 	double currentExposure = 0.0;
 	auto& cameraModule = Modules::getInstance().cameraModule;
-	if (cameraModule.camera1) {
-		currentExposure = static_cast<double>(cameraModule.camera1->getExposureTime());
+	auto& camera = (1 == _cameraIndex) ? cameraModule.camera1 : cameraModule.camera2;
+	double lastExposure = (1 == _cameraIndex) ? setConfig.autoExposureLastExposure1 : setConfig.autoExposureLastExposure2;
+	double fallbackExposure = (1 == _cameraIndex) ? setConfig.ruoguang1 : setConfig.ruoguang2;
+	if (camera) {
+		currentExposure = static_cast<double>(camera->getExposureTime());
 	}
 	if (currentExposure <= 0.0) {
-		currentExposure = setConfig.autoExposureLastExposure > 0.0
-			? setConfig.autoExposureLastExposure
-			: setConfig.ruoguang;
+		currentExposure = lastExposure > 0.0 ? lastExposure : fallbackExposure;
 	}
 
 	double delta = currentExposure * kp * error;
@@ -91,7 +97,12 @@ void AutoExposureModule::onExposureStats(double meanIntensity, double overRatio,
 	}
 
 	emit requestSetExposureTime(static_cast<size_t>(newExposure));
-	setConfig.autoExposureLastExposure = newExposure;
+	if (1 == _cameraIndex) {
+		setConfig.autoExposureLastExposure1 = newExposure;
+	}
+	else {
+		setConfig.autoExposureLastExposure2 = newExposure;
+	}
 	_lastAdjustTime = now;
 
 	emit autoExposureInfoReady(newExposure, meanIntensity, overRatio, underRatio);

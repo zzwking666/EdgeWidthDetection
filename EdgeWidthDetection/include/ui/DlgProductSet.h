@@ -46,14 +46,32 @@ private slots:
 	void btn_xiaxianwei1_clicked();
 	void btn_zuoxianwei1_clicked();
 	void btn_youxianwei1_clicked();
-	void btn_zengyi_clicked();
+	void btn_zengyi1_clicked();
 	void btn_xiangsudangliang1_clicked();
-	void btn_debugFrame_clicked();
-	void btn_openRemoveFrame_clicked();
+	void btn_debugFrame1_clicked();
+	void btn_openRemoveFrame1_clicked();
 
-	void btn_qiangguang_clicked();
-	void btn_zhongguang_clicked();
-	void btn_ruoguang_clicked();
+	void btn_qiangguang1_clicked();
+	void btn_zhongguang1_clicked();
+	void btn_ruoguang1_clicked();
+
+	void btn_testTrigger1_2_clicked();
+	void btn_testTrigger2_2_clicked();
+
+	void btn_shangxianwei2_clicked();
+	void btn_xiaxianwei2_clicked();
+	void btn_zuoxianwei2_clicked();
+	void btn_youxianwei2_clicked();
+	void btn_zengyi2_clicked();
+	void btn_xiangsudangliang2_clicked();
+	void btn_debugFrame2_clicked();
+	void btn_openRemoveFrame2_clicked();
+
+	void btn_qiangguang2_clicked();
+	void btn_zhongguang2_clicked();
+	void btn_ruoguang2_clicked();
+
+	void ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2_clicked();
 
 	// 设置与读取地址
 	void btn_shiceyahenkuanduduqudizhi_clicked();

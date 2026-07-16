@@ -39,7 +39,7 @@ void DlgProductSet::read_config()
 	ui->cbox_changeSaveImgMode->setCurrentIndex(setConfig.saveImgMode);
 	ui->btn_score->setText(QString::number(setConfig.score));
 	ui->ckb_autoSaveImg->setChecked(setConfig.autoSaveImg);
-	ui->ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan->setChecked(setConfig.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan);
+	ui->ckb_yixiangjishibiezhongxindianyutuxiangzhongxindianchazhishifouqufan->setChecked(setConfig.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1);
 
 	// 相机参数
 	ui->btn_shangxianwei1->setText(QString::number(setConfig.shangxianwei1));
@@ -47,14 +47,32 @@ void DlgProductSet::read_config()
 	ui->btn_zuoxianwei1->setText(QString::number(setConfig.zuoxianwei1));
 	ui->btn_youxianwei1->setText(QString::number(setConfig.youxianwei1));
 	ui->btn_xiangsudangliang1->setText(QString::number(setConfig.xiangsudangliang1));
-	ui->btn_debugFrame->setText(QString::number(setConfig.debugFrame));
-	ui->btn_openRemoveFrame->setText(QString::number(setConfig.openRemoveFrame));
+	ui->btn_debugFrame1->setText(QString::number(setConfig.debugFrame1));
+	ui->btn_openRemoveFrame1->setText(QString::number(setConfig.openRemoveFrame1));
 
 	// 亮度调整 
-	ui->btn_zengyi->setText(QString::number(setConfig.zengyi));
-	ui->btn_qiangguang->setText(QString::number(setConfig.qiangguang));
-	ui->btn_zhongguang->setText(QString::number(setConfig.zhongguang));
-	ui->btn_ruoguang->setText(QString::number(setConfig.ruoguang));
+	ui->btn_zengyi1->setText(QString::number(setConfig.zengyi1));
+	ui->btn_qiangguang1->setText(QString::number(setConfig.qiangguang1));
+	ui->btn_zhongguang1->setText(QString::number(setConfig.zhongguang1));
+	ui->btn_ruoguang1->setText(QString::number(setConfig.ruoguang1));
+
+	// 相机2参数
+	ui->btn_shangxianwei2->setText(QString::number(setConfig.shangxianwei2));
+	ui->btn_xiaxianwei2->setText(QString::number(setConfig.xiaxianwei2));
+	ui->btn_zuoxianwei2->setText(QString::number(setConfig.zuoxianwei2));
+	ui->btn_youxianwei2->setText(QString::number(setConfig.youxianwei2));
+	ui->btn_xiangsudangliang2->setText(QString::number(setConfig.xiangsudangliang2));
+	ui->btn_debugFrame2->setText(QString::number(setConfig.debugFrame2));
+	ui->btn_openRemoveFrame2->setText(QString::number(setConfig.openRemoveFrame2));
+
+	// 相机2亮度调整
+	ui->btn_zengyi2->setText(QString::number(setConfig.zengyi2));
+	ui->btn_qiangguang2->setText(QString::number(setConfig.qiangguang2));
+	ui->btn_zhongguang2->setText(QString::number(setConfig.zhongguang2));
+	ui->btn_ruoguang2->setText(QString::number(setConfig.ruoguang2));
+
+	// 相机2识别中心点与图像中心点差值是否取反
+	ui->ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan_2->setChecked(setConfig.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2);
 
 	// modbus地址
 	ui->btn_shiceyahenkuanduduqudizhi->setText(QString::number(setConfig.shiceyahenkuanduduqudizhi));
@@ -127,13 +145,29 @@ void DlgProductSet::build_connect()
 	connect(ui->btn_xiaxianwei1, &QPushButton::clicked, this, &DlgProductSet::btn_xiaxianwei1_clicked);
 	connect(ui->btn_zuoxianwei1, &QPushButton::clicked, this, &DlgProductSet::btn_zuoxianwei1_clicked);
 	connect(ui->btn_youxianwei1, &QPushButton::clicked, this, &DlgProductSet::btn_youxianwei1_clicked);
-	connect(ui->btn_zengyi, &QPushButton::clicked, this, &DlgProductSet::btn_zengyi_clicked);
+	connect(ui->btn_zengyi1, &QPushButton::clicked, this, &DlgProductSet::btn_zengyi1_clicked);
 	connect(ui->btn_xiangsudangliang1, &QPushButton::clicked, this, &DlgProductSet::btn_xiangsudangliang1_clicked);
-	connect(ui->btn_debugFrame, &QPushButton::clicked, this, &DlgProductSet::btn_debugFrame_clicked);
-	connect(ui->btn_openRemoveFrame, &QPushButton::clicked, this, &DlgProductSet::btn_openRemoveFrame_clicked);
-	connect(ui->btn_qiangguang, &QPushButton::clicked, this, &DlgProductSet::btn_qiangguang_clicked);
-	connect(ui->btn_zhongguang, &QPushButton::clicked, this, &DlgProductSet::btn_zhongguang_clicked);
-	connect(ui->btn_ruoguang, &QPushButton::clicked, this, &DlgProductSet::btn_ruoguang_clicked);
+	connect(ui->btn_debugFrame1, &QPushButton::clicked, this, &DlgProductSet::btn_debugFrame1_clicked);
+	connect(ui->btn_openRemoveFrame1, &QPushButton::clicked, this, &DlgProductSet::btn_openRemoveFrame1_clicked);
+	connect(ui->btn_qiangguang1, &QPushButton::clicked, this, &DlgProductSet::btn_qiangguang1_clicked);
+	connect(ui->btn_zhongguang1, &QPushButton::clicked, this, &DlgProductSet::btn_zhongguang1_clicked);
+	connect(ui->btn_ruoguang1, &QPushButton::clicked, this, &DlgProductSet::btn_ruoguang1_clicked);
+
+	// 相机2
+	connect(ui->btn_testTrigger1_2, &QPushButton::clicked, this, &DlgProductSet::btn_testTrigger1_2_clicked);
+	connect(ui->btn_testTrigger2_2, &QPushButton::clicked, this, &DlgProductSet::btn_testTrigger2_2_clicked);
+	connect(ui->btn_shangxianwei2, &QPushButton::clicked, this, &DlgProductSet::btn_shangxianwei2_clicked);
+	connect(ui->btn_xiaxianwei2, &QPushButton::clicked, this, &DlgProductSet::btn_xiaxianwei2_clicked);
+	connect(ui->btn_zuoxianwei2, &QPushButton::clicked, this, &DlgProductSet::btn_zuoxianwei2_clicked);
+	connect(ui->btn_youxianwei2, &QPushButton::clicked, this, &DlgProductSet::btn_youxianwei2_clicked);
+	connect(ui->btn_zengyi2, &QPushButton::clicked, this, &DlgProductSet::btn_zengyi2_clicked);
+	connect(ui->btn_xiangsudangliang2, &QPushButton::clicked, this, &DlgProductSet::btn_xiangsudangliang2_clicked);
+	connect(ui->btn_debugFrame2, &QPushButton::clicked, this, &DlgProductSet::btn_debugFrame2_clicked);
+	connect(ui->btn_openRemoveFrame2, &QPushButton::clicked, this, &DlgProductSet::btn_openRemoveFrame2_clicked);
+	connect(ui->btn_qiangguang2, &QPushButton::clicked, this, &DlgProductSet::btn_qiangguang2_clicked);
+	connect(ui->btn_zhongguang2, &QPushButton::clicked, this, &DlgProductSet::btn_zhongguang2_clicked);
+	connect(ui->btn_ruoguang2, &QPushButton::clicked, this, &DlgProductSet::btn_ruoguang2_clicked);
+	connect(ui->ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan_2, &QCheckBox::clicked, this, &DlgProductSet::ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2_clicked);
 
 	// modbus地址
 	connect(ui->btn_shiceyahenkuanduduqudizhi, &QPushButton::clicked, this, &DlgProductSet::btn_shiceyahenkuanduduqudizhi_clicked);
@@ -187,7 +221,7 @@ void DlgProductSet::build_connect()
 
 
 	connect(ui->ckb_autoSaveImg, &QCheckBox::clicked, this, &DlgProductSet::ckb_autoSaveImg_clicked);
-	connect(ui->ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan, &QCheckBox::clicked, this, &DlgProductSet::ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan_clicked);
+	connect(ui->ckb_yixiangjishibiezhongxindianyutuxiangzhongxindianchazhishifouqufan, &QCheckBox::clicked, this, &DlgProductSet::ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan_clicked);
 	connect(ui->tabWidget, &QTabWidget::currentChanged, this, &DlgProductSet::tabWidget_indexChanged);
 }
 
@@ -473,7 +507,7 @@ void DlgProductSet::btn_youxianwei1_clicked()
 	}
 }
 
-void DlgProductSet::btn_zengyi_clicked()
+void DlgProductSet::btn_zengyi1_clicked()
 {
 	NumberKeyboard numKeyBord;
 	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
@@ -492,12 +526,12 @@ void DlgProductSet::btn_zengyi_clicked()
 		{
 			camera->setGain(value.toInt());
 		}
-		ui->btn_zengyi->setText(value);
-		setConfig.zengyi = value.toDouble();
+		ui->btn_zengyi1->setText(value);
+		setConfig.zengyi1 = value.toDouble();
 	}
 }
 
-void DlgProductSet::btn_qiangguang_clicked()
+void DlgProductSet::btn_qiangguang1_clicked()
 {
 	NumberKeyboard numKeyBord;
 	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
@@ -511,12 +545,12 @@ void DlgProductSet::btn_qiangguang_clicked()
 			return;
 		}
 		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-		ui->btn_qiangguang->setText(value);
-		setConfig.qiangguang = value.toDouble();
+		ui->btn_qiangguang1->setText(value);
+		setConfig.qiangguang1 = value.toDouble();
 	}
 }
 
-void DlgProductSet::btn_zhongguang_clicked()
+void DlgProductSet::btn_zhongguang1_clicked()
 {
 	NumberKeyboard numKeyBord;
 	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
@@ -530,12 +564,12 @@ void DlgProductSet::btn_zhongguang_clicked()
 			return;
 		}
 		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-		ui->btn_zhongguang->setText(value);
-		setConfig.zhongguang = value.toDouble();
+		ui->btn_zhongguang1->setText(value);
+		setConfig.zhongguang1 = value.toDouble();
 	}
 }
 
-void DlgProductSet::btn_ruoguang_clicked()
+void DlgProductSet::btn_ruoguang1_clicked()
 {
 	NumberKeyboard numKeyBord;
 	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
@@ -549,8 +583,8 @@ void DlgProductSet::btn_ruoguang_clicked()
 			return;
 		}
 		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-		ui->btn_ruoguang->setText(value);
-		setConfig.ruoguang = value.toDouble();
+		ui->btn_ruoguang1->setText(value);
+		setConfig.ruoguang1 = value.toDouble();
 	}
 }
 
@@ -1617,7 +1651,7 @@ void DlgProductSet::btn_xiangsudangliang1_clicked()
 	}
 }
 
-void DlgProductSet::btn_debugFrame_clicked()
+void DlgProductSet::btn_debugFrame1_clicked()
 {
 	NumberKeyboard numKeyBord;
 	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
@@ -1631,21 +1665,21 @@ void DlgProductSet::btn_debugFrame_clicked()
 			return;
 		}
 		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-		ui->btn_debugFrame->setText(value);
-		setConfig.debugFrame = value.toDouble();
+		ui->btn_debugFrame1->setText(value);
+		setConfig.debugFrame1 = value.toDouble();
 		auto& runningState = Modules::getInstance().runtimeInfoModule.runningState;
 		if (runningState == RunningState::Debug)
 		{
 			auto& camera = Modules::getInstance().cameraModule.camera1;
 			if (camera)
 			{
-				camera->setFrameRate(setConfig.debugFrame);
+				camera->setFrameRate(setConfig.debugFrame1);
 			}
 		}
 	}
 }
 
-void DlgProductSet::btn_openRemoveFrame_clicked()
+void DlgProductSet::btn_openRemoveFrame1_clicked()
 {
 	NumberKeyboard numKeyBord;
 	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
@@ -1659,15 +1693,15 @@ void DlgProductSet::btn_openRemoveFrame_clicked()
 			return;
 		}
 		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-		ui->btn_openRemoveFrame->setText(value);
-		setConfig.openRemoveFrame = value.toDouble();
+		ui->btn_openRemoveFrame1->setText(value);
+		setConfig.openRemoveFrame1 = value.toDouble();
 		auto& runningState = Modules::getInstance().runtimeInfoModule.runningState;
 		if (runningState == RunningState::OpenRemoveFunc)
 		{
 			auto& camera = Modules::getInstance().cameraModule.camera1;
 			if (camera)
 			{
-				camera->setFrameRate(setConfig.openRemoveFrame);
+				camera->setFrameRate(setConfig.openRemoveFrame1);
 			}
 		}
 	}
@@ -1682,5 +1716,277 @@ void DlgProductSet::ckb_autoSaveImg_clicked()
 void DlgProductSet::ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan_clicked()
 {
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-	setConfig.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan = ui->ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan->isChecked();
+	setConfig.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1 = ui->ckb_yixiangjishibiezhongxindianyutuxiangzhongxindianchazhishifouqufan->isChecked();
+}
+
+void DlgProductSet::btn_testTrigger1_2_clicked()
+{
+	auto& camera = Modules::getInstance().cameraModule.camera2;
+	// 剔废动作
+	rw::rqw::OutTriggerConfig outTriggerConfig;
+	outTriggerConfig.lineSelector = 1;
+	outTriggerConfig.lineMode = 8;
+	outTriggerConfig.lineSource = 5;
+	outTriggerConfig.durationValue = 400 * 1000;
+	outTriggerConfig.strobeEnable = true;
+	if (camera)
+	{
+		camera->setOutTriggerConfig(outTriggerConfig);
+		camera->outTrigger();
+	}
+}
+
+void DlgProductSet::btn_testTrigger2_2_clicked()
+{
+	auto& camera = Modules::getInstance().cameraModule.camera2;
+	// 剔废动作
+	rw::rqw::OutTriggerConfig outTriggerConfig;
+	outTriggerConfig.lineSelector = 2;
+	outTriggerConfig.lineMode = 8;
+	outTriggerConfig.lineSource = 5;
+	outTriggerConfig.durationValue = 400 * 1000;
+	outTriggerConfig.strobeEnable = true;
+	if (camera)
+	{
+		camera->setOutTriggerConfig(outTriggerConfig);
+		camera->outTrigger();
+	}
+}
+
+void DlgProductSet::btn_shangxianwei2_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		ui->btn_shangxianwei2->setText(value);
+		setConfig.shangxianwei2 = value.toDouble();
+	}
+}
+
+void DlgProductSet::btn_xiaxianwei2_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		ui->btn_xiaxianwei2->setText(value);
+		setConfig.xiaxianwei2 = value.toDouble();
+	}
+}
+
+void DlgProductSet::btn_zuoxianwei2_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		ui->btn_zuoxianwei2->setText(value);
+		setConfig.zuoxianwei2 = value.toDouble();
+	}
+}
+
+void DlgProductSet::btn_youxianwei2_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		ui->btn_youxianwei2->setText(value);
+		setConfig.youxianwei2 = value.toDouble();
+	}
+}
+
+void DlgProductSet::btn_zengyi2_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		auto& camera = Modules::getInstance().cameraModule.camera2;
+		if (camera)
+		{
+			camera->setGain(value.toInt());
+		}
+		ui->btn_zengyi2->setText(value);
+		setConfig.zengyi2 = value.toDouble();
+	}
+}
+
+void DlgProductSet::btn_qiangguang2_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		ui->btn_qiangguang2->setText(value);
+		setConfig.qiangguang2 = value.toDouble();
+	}
+}
+
+void DlgProductSet::btn_zhongguang2_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		ui->btn_zhongguang2->setText(value);
+		setConfig.zhongguang2 = value.toDouble();
+	}
+}
+
+void DlgProductSet::btn_ruoguang2_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() < 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
+			return;
+		}
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		ui->btn_ruoguang2->setText(value);
+		setConfig.ruoguang2 = value.toDouble();
+	}
+}
+
+void DlgProductSet::btn_xiangsudangliang2_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() <= 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于0的数值");
+			return;
+		}
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		ui->btn_xiangsudangliang2->setText(value);
+		setConfig.xiangsudangliang2 = value.toDouble();
+	}
+}
+
+void DlgProductSet::btn_debugFrame2_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() <= 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于0的数值");
+			return;
+		}
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		ui->btn_debugFrame2->setText(value);
+		setConfig.debugFrame2 = value.toDouble();
+		auto& runningState = Modules::getInstance().runtimeInfoModule.runningState;
+		if (runningState == RunningState::Debug)
+		{
+			auto& camera = Modules::getInstance().cameraModule.camera2;
+			if (camera)
+			{
+				camera->setFrameRate(setConfig.debugFrame2);
+			}
+		}
+	}
+}
+
+void DlgProductSet::btn_openRemoveFrame2_clicked()
+{
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept == QDialog::Accepted)
+	{
+		auto value = numKeyBord.getValue();
+		if (value.toDouble() <= 0)
+		{
+			QMessageBox::warning(this, "提示", "请输入大于0的数值");
+			return;
+		}
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		ui->btn_openRemoveFrame2->setText(value);
+		setConfig.openRemoveFrame2 = value.toDouble();
+		auto& runningState = Modules::getInstance().runtimeInfoModule.runningState;
+		if (runningState == RunningState::OpenRemoveFunc)
+		{
+			auto& camera = Modules::getInstance().cameraModule.camera2;
+			if (camera)
+			{
+				camera->setFrameRate(setConfig.openRemoveFrame2);
+			}
+		}
+	}
+}
+
+void DlgProductSet::ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2_clicked()
+{
+	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+	setConfig.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2 = ui->ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan_2->isChecked();
 }

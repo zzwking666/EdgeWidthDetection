@@ -13,6 +13,7 @@ public:
 	void destroy() override;
 	void start() override;
 	void stop() override;
+	void setCameraIndex(size_t cameraIndex);
 
 public slots:
 	void onExposureStats(double meanIntensity, double overRatio, double underRatio);
@@ -25,5 +26,6 @@ signals:
 
 private:
 	bool _enabled{ false };
+	size_t _cameraIndex{ 1 };
 	std::chrono::steady_clock::time_point _lastAdjustTime;
 };

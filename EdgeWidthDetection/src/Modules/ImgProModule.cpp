@@ -8,6 +8,7 @@ bool ImgProModule::build()
 {
 	buildImgProContext();
 	buildImageProcessingModule(imgProSignalWorkThreadNum);
+	buildImageProcessingPreModule2(imgProSignalWorkThreadNum);
 	for (int i = 0; i < 4; i++)
 	{
 		imgProIsUpdate[i] = true;
@@ -63,6 +64,10 @@ void ImgProModule::buildImgProContextPreProcess()
 				{
 					currentPixToWorld = setConfig.xiangsudangliang1;
 				}
+				else if (2 == ImgProcessIndex)
+				{
+					currentPixToWorld = setConfig.xiangsudangliang2;
+				}
 				context.customFields["CurrentPixToWorld"] = currentPixToWorld;
 			}
 
@@ -89,6 +94,13 @@ void ImgProModule::buildImgProContextPreProcess()
 					limitBottom = static_cast<int>(setConfig.xiaxianwei1);
 					limitLeft = static_cast<int>(setConfig.zuoxianwei1);
 					limitRight = static_cast<int>(setConfig.youxianwei1);
+				}
+				else if (2 == ImgProcessIndex)
+				{
+					limitTop = static_cast<int>(setConfig.shangxianwei2);
+					limitBottom = static_cast<int>(setConfig.xiaxianwei2);
+					limitLeft = static_cast<int>(setConfig.zuoxianwei2);
+					limitRight = static_cast<int>(setConfig.youxianwei2);
 				}
 
 				context.customFields["LimitTop"] = limitTop;
@@ -280,6 +292,7 @@ void ImgProModule::buildImageProcessingModule(size_t num)
 void ImgProModule::destroyImageProcessingModule()
 {
 	imageProcessingModule1.reset();
+	imageProcessingModule2.reset();
 }
 
 void ImgProModule::buildImageProcessingPreModule(size_t num)
@@ -288,6 +301,14 @@ void ImgProModule::buildImageProcessingPreModule(size_t num)
 	imageProcessingModule1->modelEnginePath = globalPath.modelPath;
 	imageProcessingModule1->index = 1;
 	imageProcessingModule1->BuildModule();
+}
+
+void ImgProModule::buildImageProcessingPreModule2(size_t num)
+{
+	imageProcessingModule2 = std::make_unique<ImageProcessingModule>(num, this);
+	imageProcessingModule2->modelEnginePath = globalPath.modelPath;
+	imageProcessingModule2->index = 2;
+	imageProcessingModule2->BuildModule();
 }
 
 void ImgProModule::onUpdateImgProContext()

@@ -19,6 +19,10 @@ std::vector<BuildError> CameraModule::build()
 	{
 		errorList.emplace_back(Camera1Error);
 	}
+	if (!build_camera2())
+	{
+		errorList.emplace_back(Camera2Error);
+	}
 	_buildResults = errorList;
 	return std::vector<BuildError>();
 }
@@ -26,6 +30,7 @@ std::vector<BuildError> CameraModule::build()
 void CameraModule::destroy()
 {
 	destroy_camera1();
+	destroy_camera2();
 }
 
 void CameraModule::start()
@@ -34,6 +39,10 @@ void CameraModule::start()
 	{
 		camera1->startMonitor();
 	}
+	if (camera2)
+	{
+		camera2->startMonitor();
+	}
 }
 
 void CameraModule::stop()
@@ -41,6 +50,10 @@ void CameraModule::stop()
 	if (camera1)
 	{
 		camera1->stopMonitor();
+	}
+	if (camera2)
+	{
+		camera2->stopMonitor();
 	}
 }
 
@@ -62,12 +75,12 @@ bool CameraModule::build_camera1()
 			camera1->cameraIndex = 1;
 			camera1->setFrameRate(50);
 			camera1->setHeartbeatTime(5000);
-			size_t initExposure = static_cast<size_t>(globalDataSetConfig.ruoguang);
-		if (globalDataSetConfig.autoExposureEnabled && globalDataSetConfig.autoExposureLastExposure > 0.0) {
-			initExposure = static_cast<size_t>(globalDataSetConfig.autoExposureLastExposure);
+			size_t initExposure = static_cast<size_t>(globalDataSetConfig.ruoguang1);
+		if (globalDataSetConfig.autoExposureEnabled1 && globalDataSetConfig.autoExposureLastExposure1 > 0.0) {
+			initExposure = static_cast<size_t>(globalDataSetConfig.autoExposureLastExposure1);
 		}
 		camera1->setExposureTime(initExposure);
-			camera1->setGain(static_cast<size_t>(globalDataSetConfig.zengyi));
+			camera1->setGain(static_cast<size_t>(globalDataSetConfig.zengyi1));
 
 			QObject::connect(camera1.get(), &rw::rqw::CameraPassiveThread::frameCaptured,
 				this, &CameraModule::onFrameCaptured);
@@ -85,6 +98,49 @@ bool CameraModule::build_camera1()
 void CameraModule::destroy_camera1()
 {
 	camera1.reset();
+}
+
+bool CameraModule::build_camera2()
+{
+	auto cameraList = rw::rqw::CheckCameraList();
+
+	auto cameraMetaData = cameraMetaDataCheck(Utility::cameraIp2, cameraList);
+
+	auto& globalDataSetConfig = Modules::getInstance().configManagerModule.setConfig;
+
+	if (cameraMetaData.ip != "0")
+	{
+		try
+		{
+			camera2 = std::make_unique<rw::rqw::CameraPassiveThread>(this);
+			camera2->initCamera(cameraMetaData, rw::rqw::CameraObjectTrigger::Hardware);
+			camera2->setTriggerState(true);
+			camera2->cameraIndex = 2;
+			camera2->setFrameRate(50);
+			camera2->setHeartbeatTime(5000);
+			size_t initExposure = static_cast<size_t>(globalDataSetConfig.ruoguang2);
+			if (globalDataSetConfig.autoExposureEnabled2 && globalDataSetConfig.autoExposureLastExposure2 > 0.0) {
+				initExposure = static_cast<size_t>(globalDataSetConfig.autoExposureLastExposure2);
+			}
+			camera2->setExposureTime(initExposure);
+			camera2->setGain(static_cast<size_t>(globalDataSetConfig.zengyi2));
+
+			QObject::connect(camera2.get(), &rw::rqw::CameraPassiveThread::frameCaptured,
+				this, &CameraModule::onFrameCaptured);
+
+			return true;
+		}
+		catch (const std::exception&)
+		{
+			return false;
+		}
+	}
+	return false;
+}
+
+void CameraModule::destroy_camera2()
+{
+	camera2.reset();
 }
 
 bool CameraModule::isTargetCamera(const QString& cameraIndex, const QString& targetName)
@@ -120,6 +176,8 @@ bool CameraModule::onBuildCamera(int index)
 	{
 	case 1:
 		return build_camera1();
+	case 2:
+		return build_camera2();
 	default:
 		return false;
 	}
@@ -133,6 +191,7 @@ void CameraModule::onDestroyCamera(int index)
 		destroy_camera1();
 		break;
 	case 2:
+		destroy_camera2();
 		break;
 	case 3:
 		break;
@@ -151,6 +210,12 @@ void CameraModule::onStartCamera(int index)
 			camera1->startMonitor();
 		}
 		break;
+	case 2:
+		if (camera2)
+		{
+			camera2->startMonitor();
+		}
+		break;
 	default:
 		break;
 	}
@@ -163,6 +228,9 @@ void CameraModule::onFrameCaptured(rw::rqw::MatInfo frame, size_t index)
 	case 1:
 		emit frameCaptured1(frame, index);
 		break;
+	case 2:
+		emit frameCaptured2(frame, index);
+		break;
 	default:
 		break;
 	}
@@ -173,5 +241,13 @@ void CameraModule::onSetExposureTime(size_t exposureTime)
 	if (camera1)
 	{
 		camera1->setExposureTime(exposureTime);
+	}
+}
+
+void CameraModule::onSetExposureTime2(size_t exposureTime)
+{
+	if (camera2)
+	{
+		camera2->setExposureTime(exposureTime);
 	}
 }

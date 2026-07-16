@@ -74,7 +74,14 @@ void ImageProcessor::run()
 			run_debug(frame);
 			break;
 		case RunningState::OpenRemoveFunc:
-			run_OpenRemoveFunc(frame);
+			if (2 == imageProcessingModuleIndex)
+			{
+				run_OpenRemoveFunc2(frame);
+			}
+			else
+			{
+				run_OpenRemoveFunc(frame);
+			}
 			break;
 		default:
 			break;
@@ -115,7 +122,7 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 		int detectionCenterY = processResult[0].center_y;
 		double centerDiffPixel = imageCenterY - detectionCenterY;
 		centerDiffMm = centerDiffPixel * pixToWorld;
-		if (setConfig.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan)
+		if (setConfig.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1)
 		{
 			centerDiffMm = -centerDiffMm;
 		}
@@ -147,6 +154,51 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	QStringList textList;
 	textList.append("实测压痕宽度:" + QString::number(width) + "mm");
 	textList.append("中心点偏差值:" + QString::number(centerDiffMm, 'f', 2) + "mm");
+	std::vector<rw::imgPro::Color> colors;
+	colors.push_back(rw::imgPro::Color::Blue);
+
+	rw::imgPro::ImagePainter::drawTextOnImageWithFontSize(maskImg, textList, colors, 50);
+
+	emit imageReady(frame.index, QPixmap::fromImage(maskImg));
+
+	// 全部保存
+	if (0 == setConfig.saveImgMode)
+	{
+		rw::rqw::ImageInfo imageInfo(rw::rqw::cvMatToQImage(frame.image));
+		save_image(imageInfo, maskImg);
+	}
+	// 只保存有识别到的
+	else if (1 == setConfig.saveImgMode)
+	{
+		if (defectResult.disableDefects.size() > 0)
+		{
+			rw::rqw::ImageInfo imageInfo(rw::rqw::cvMatToQImage(frame.image));
+			save_image(imageInfo, maskImg);
+		}
+	}
+}
+
+void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
+{
+	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+	auto& imgPro = *_imgProcess;
+	imgPro(frame.image);
+	auto maskImg = imgPro.getMaskImg(frame.image);
+	auto defectResult = imgPro.getDefectResultInfo();
+
+	double width = 0.0;
+
+	if (defectResult.defects.size() == 1)
+	{
+		if (imgPro.context().customFields.find("width") != imgPro.context().customFields.end())
+		{
+			auto pixToWorld = setConfig.xiangsudangliang2;
+			width = std::any_cast<int>(imgPro.context().customFields["width"]) * pixToWorld;
+		}
+	}
+
+	QStringList textList;
+	textList.append("实测压痕宽度:" + QString::number(width) + "mm");
 	std::vector<rw::imgPro::Color> colors;
 	colors.push_back(rw::imgPro::Color::Blue);
 
@@ -361,9 +413,7 @@ void ImageProcessingModule::onFrameCaptured(rw::rqw::MatInfo matInfo, size_t ind
 	const long long debounceMs = static_cast<long long>(std::max(0.0, setConfig.xiangjiguangdianpingbishijian));
 	const auto minInterval = std::chrono::milliseconds(debounceMs);
 
-	static std::atomic<long long> lastCamNs{ 0 };
-
-	if (!AllowOncePer(lastCamNs, minInterval)) {
+	if (!AllowOncePer(_lastCamNs, minInterval)) {
 		return;
 	}
 
@@ -380,7 +430,8 @@ void ImageProcessingModule::onFrameCaptured(rw::rqw::MatInfo matInfo, size_t ind
 
 	// 计算整图亮度统计，用于自动曝光
 	auto& cfg = Modules::getInstance().configManagerModule.setConfig;
-	if (cfg.autoExposureEnabled) {
+	bool autoExposureOn = (1 == this->index) ? cfg.autoExposureEnabled1 : cfg.autoExposureEnabled2;
+	if (autoExposureOn) {
 		cv::Mat gray;
 		cv::cvtColor(matInfo.mat, gray, cv::COLOR_BGR2GRAY);
 		double meanIntensity = cv::mean(gray)[0];

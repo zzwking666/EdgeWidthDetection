@@ -30,12 +30,23 @@ namespace cdm {
         double zuoxianwei1{ 0 };
         double youxianwei1{ 0 };
         double xiangsudangliang1{ 0 };
-        int debugFrame{ 0 };
-        int openRemoveFrame{ 0 };
-        double zengyi{ 0 };
-        double qiangguang{ 0 };
-        double zhongguang{ 0 };
-        double ruoguang{ 0 };
+        int debugFrame1{ 0 };
+        int openRemoveFrame1{ 0 };
+        double zengyi1{ 0 };
+        double qiangguang1{ 0 };
+        double zhongguang1{ 0 };
+        double ruoguang1{ 0 };
+        double shangxianwei2{ 0 };
+        double xiaxianwei2{ 0 };
+        double zuoxianwei2{ 0 };
+        double youxianwei2{ 0 };
+        double xiangsudangliang2{ 0 };
+        int debugFrame2{ 0 };
+        int openRemoveFrame2{ 0 };
+        double zengyi2{ 0 };
+        double qiangguang2{ 0 };
+        double zhongguang2{ 0 };
+        double ruoguang2{ 0 };
         int shiceyahenkuanduduqudizhi{ 0 };
         int shedingyahenbiaozhunzhiduqudizhi{ 0 };
         int paizhaojiangejuliduqudizhi{ 0 };
@@ -49,13 +60,16 @@ namespace cdm {
         int daojiakeyidongdezuidajuliduqudizhi{ 0 };
         int daoyidongsudumaichongpinlvduqudizhi{ 0 };
         int shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi{ 0 };
-        bool shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan{ false };
+        bool shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1{ false };
+        bool shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2{ false };
         int huodePLCbaojingxinxidizhi{ 0 };
         int keyipaizhaoxinhaodizhi{ 0 };
         int tingzhipaizhaoxinhaodizhi{ 0 };
         int daizishicechangdudizhi{ 0 };
-        int lastChooseLight{ 0 };
-        bool autoExposureEnabled{ false };
+        int lastChooseLight1{ 0 };
+        int lastChooseLight2{ 0 };
+        bool autoExposureEnabled1{ false };
+        bool autoExposureEnabled2{ false };
         double autoExposureTargetMean{ 128.0 };
         double autoExposureOverExposeThreshold{ 250.0 };
         double autoExposureUnderExposeThreshold{ 20.0 };
@@ -64,7 +78,8 @@ namespace cdm {
         double autoExposureMinExposure{ 100.0 };
         double autoExposureMaxExposure{ 50000.0 };
         double autoExposureAdjustIntervalMs{ 500.0 };
-        double autoExposureLastExposure{ 0.0 };
+        double autoExposureLastExposure1{ 0.0 };
+        double autoExposureLastExposure2{ 0.0 };
     };
 
     inline SetConfig::SetConfig(const rw::oso::ObjectStoreAssembly& assembly)
@@ -129,36 +144,91 @@ namespace cdm {
             throw std::runtime_error("$variable$xiangsudangliang1 is not found");
         }
         xiangsudangliang1 = xiangsudangliang1Item->getValueAsDouble();
-        auto debugFrameItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$debugFrame$"));
-        if (!debugFrameItem) {
-            throw std::runtime_error("$variable$debugFrame is not found");
+        auto debugFrame1Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$debugFrame1$"));
+        if (!debugFrame1Item) {
+            throw std::runtime_error("$variable$debugFrame1 is not found");
         }
-        debugFrame = debugFrameItem->getValueAsInt();
-        auto openRemoveFrameItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$openRemoveFrame$"));
-        if (!openRemoveFrameItem) {
-            throw std::runtime_error("$variable$openRemoveFrame is not found");
+        debugFrame1 = debugFrame1Item->getValueAsInt();
+        auto openRemoveFrame1Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$openRemoveFrame1$"));
+        if (!openRemoveFrame1Item) {
+            throw std::runtime_error("$variable$openRemoveFrame1 is not found");
         }
-        openRemoveFrame = openRemoveFrameItem->getValueAsInt();
-        auto zengyiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$zengyi$"));
-        if (!zengyiItem) {
-            throw std::runtime_error("$variable$zengyi is not found");
+        openRemoveFrame1 = openRemoveFrame1Item->getValueAsInt();
+        auto zengyi1Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$zengyi1$"));
+        if (!zengyi1Item) {
+            throw std::runtime_error("$variable$zengyi1 is not found");
         }
-        zengyi = zengyiItem->getValueAsDouble();
-        auto qiangguangItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$qiangguang$"));
-        if (!qiangguangItem) {
-            throw std::runtime_error("$variable$qiangguang is not found");
+        zengyi1 = zengyi1Item->getValueAsDouble();
+        auto qiangguang1Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$qiangguang1$"));
+        if (!qiangguang1Item) {
+            throw std::runtime_error("$variable$qiangguang1 is not found");
         }
-        qiangguang = qiangguangItem->getValueAsDouble();
-        auto zhongguangItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$zhongguang$"));
-        if (!zhongguangItem) {
-            throw std::runtime_error("$variable$zhongguang is not found");
+        qiangguang1 = qiangguang1Item->getValueAsDouble();
+        auto zhongguang1Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$zhongguang1$"));
+        if (!zhongguang1Item) {
+            throw std::runtime_error("$variable$zhongguang1 is not found");
         }
-        zhongguang = zhongguangItem->getValueAsDouble();
-        auto ruoguangItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$ruoguang$"));
-        if (!ruoguangItem) {
-            throw std::runtime_error("$variable$ruoguang is not found");
+        zhongguang1 = zhongguang1Item->getValueAsDouble();
+        auto ruoguang1Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$ruoguang1$"));
+        if (!ruoguang1Item) {
+            throw std::runtime_error("$variable$ruoguang1 is not found");
         }
-        ruoguang = ruoguangItem->getValueAsDouble();
+        ruoguang1 = ruoguang1Item->getValueAsDouble();
+        auto shangxianwei2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$shangxianwei2$"));
+        if (!shangxianwei2Item) {
+            throw std::runtime_error("$variable$shangxianwei2 is not found");
+        }
+        shangxianwei2 = shangxianwei2Item->getValueAsDouble();
+        auto xiaxianwei2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$xiaxianwei2$"));
+        if (!xiaxianwei2Item) {
+            throw std::runtime_error("$variable$xiaxianwei2 is not found");
+        }
+        xiaxianwei2 = xiaxianwei2Item->getValueAsDouble();
+        auto zuoxianwei2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$zuoxianwei2$"));
+        if (!zuoxianwei2Item) {
+            throw std::runtime_error("$variable$zuoxianwei2 is not found");
+        }
+        zuoxianwei2 = zuoxianwei2Item->getValueAsDouble();
+        auto youxianwei2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$youxianwei2$"));
+        if (!youxianwei2Item) {
+            throw std::runtime_error("$variable$youxianwei2 is not found");
+        }
+        youxianwei2 = youxianwei2Item->getValueAsDouble();
+        auto xiangsudangliang2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$xiangsudangliang2$"));
+        if (!xiangsudangliang2Item) {
+            throw std::runtime_error("$variable$xiangsudangliang2 is not found");
+        }
+        xiangsudangliang2 = xiangsudangliang2Item->getValueAsDouble();
+        auto debugFrame2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$debugFrame2$"));
+        if (!debugFrame2Item) {
+            throw std::runtime_error("$variable$debugFrame2 is not found");
+        }
+        debugFrame2 = debugFrame2Item->getValueAsInt();
+        auto openRemoveFrame2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$openRemoveFrame2$"));
+        if (!openRemoveFrame2Item) {
+            throw std::runtime_error("$variable$openRemoveFrame2 is not found");
+        }
+        openRemoveFrame2 = openRemoveFrame2Item->getValueAsInt();
+        auto zengyi2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$zengyi2$"));
+        if (!zengyi2Item) {
+            throw std::runtime_error("$variable$zengyi2 is not found");
+        }
+        zengyi2 = zengyi2Item->getValueAsDouble();
+        auto qiangguang2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$qiangguang2$"));
+        if (!qiangguang2Item) {
+            throw std::runtime_error("$variable$qiangguang2 is not found");
+        }
+        qiangguang2 = qiangguang2Item->getValueAsDouble();
+        auto zhongguang2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$zhongguang2$"));
+        if (!zhongguang2Item) {
+            throw std::runtime_error("$variable$zhongguang2 is not found");
+        }
+        zhongguang2 = zhongguang2Item->getValueAsDouble();
+        auto ruoguang2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$ruoguang2$"));
+        if (!ruoguang2Item) {
+            throw std::runtime_error("$variable$ruoguang2 is not found");
+        }
+        ruoguang2 = ruoguang2Item->getValueAsDouble();
         auto shiceyahenkuanduduqudizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$shiceyahenkuanduduqudizhi$"));
         if (!shiceyahenkuanduduqudizhiItem) {
             throw std::runtime_error("$variable$shiceyahenkuanduduqudizhi is not found");
@@ -224,11 +294,16 @@ namespace cdm {
             throw std::runtime_error("$variable$shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi is not found");
         }
         shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi = shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhiItem->getValueAsInt();
-        auto shibiezhongxindianyutuxiangzhongxindianchazhishifouqufanItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan$"));
-        if (!shibiezhongxindianyutuxiangzhongxindianchazhishifouqufanItem) {
-            throw std::runtime_error("$variable$shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan is not found");
+        auto shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1$"));
+        if (!shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1Item) {
+            throw std::runtime_error("$variable$shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1 is not found");
         }
-        shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan = shibiezhongxindianyutuxiangzhongxindianchazhishifouqufanItem->getValueAsBool();
+        shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1 = shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1Item->getValueAsBool();
+        auto shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2$"));
+        if (!shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2Item) {
+            throw std::runtime_error("$variable$shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2 is not found");
+        }
+        shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2 = shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2Item->getValueAsBool();
         auto huodePLCbaojingxinxidizhiItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$huodePLCbaojingxinxidizhi$"));
         if (!huodePLCbaojingxinxidizhiItem) {
             throw std::runtime_error("$variable$huodePLCbaojingxinxidizhi is not found");
@@ -249,16 +324,26 @@ namespace cdm {
             throw std::runtime_error("$variable$daizishicechangdudizhi is not found");
         }
         daizishicechangdudizhi = daizishicechangdudizhiItem->getValueAsInt();
-        auto lastChooseLightItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$lastChooseLight$"));
-        if (!lastChooseLightItem) {
-            throw std::runtime_error("$variable$lastChooseLight is not found");
+        auto lastChooseLight1Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$lastChooseLight1$"));
+        if (!lastChooseLight1Item) {
+            throw std::runtime_error("$variable$lastChooseLight1 is not found");
         }
-        lastChooseLight = lastChooseLightItem->getValueAsInt();
-        auto autoExposureEnabledItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$autoExposureEnabled$"));
-        if (!autoExposureEnabledItem) {
-            throw std::runtime_error("$variable$autoExposureEnabled is not found");
+        lastChooseLight1 = lastChooseLight1Item->getValueAsInt();
+        auto lastChooseLight2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$lastChooseLight2$"));
+        if (!lastChooseLight2Item) {
+            throw std::runtime_error("$variable$lastChooseLight2 is not found");
         }
-        autoExposureEnabled = autoExposureEnabledItem->getValueAsBool();
+        lastChooseLight2 = lastChooseLight2Item->getValueAsInt();
+        auto autoExposureEnabled1Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$autoExposureEnabled1$"));
+        if (!autoExposureEnabled1Item) {
+            throw std::runtime_error("$variable$autoExposureEnabled1 is not found");
+        }
+        autoExposureEnabled1 = autoExposureEnabled1Item->getValueAsBool();
+        auto autoExposureEnabled2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$autoExposureEnabled2$"));
+        if (!autoExposureEnabled2Item) {
+            throw std::runtime_error("$variable$autoExposureEnabled2 is not found");
+        }
+        autoExposureEnabled2 = autoExposureEnabled2Item->getValueAsBool();
         auto autoExposureTargetMeanItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$autoExposureTargetMean$"));
         if (!autoExposureTargetMeanItem) {
             throw std::runtime_error("$variable$autoExposureTargetMean is not found");
@@ -299,11 +384,16 @@ namespace cdm {
             throw std::runtime_error("$variable$autoExposureAdjustIntervalMs is not found");
         }
         autoExposureAdjustIntervalMs = autoExposureAdjustIntervalMsItem->getValueAsDouble();
-        auto autoExposureLastExposureItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$autoExposureLastExposure$"));
-        if (!autoExposureLastExposureItem) {
-            throw std::runtime_error("$variable$autoExposureLastExposure is not found");
+        auto autoExposureLastExposure1Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$autoExposureLastExposure1$"));
+        if (!autoExposureLastExposure1Item) {
+            throw std::runtime_error("$variable$autoExposureLastExposure1 is not found");
         }
-        autoExposureLastExposure = autoExposureLastExposureItem->getValueAsDouble();
+        autoExposureLastExposure1 = autoExposureLastExposure1Item->getValueAsDouble();
+        auto autoExposureLastExposure2Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$autoExposureLastExposure2$"));
+        if (!autoExposureLastExposure2Item) {
+            throw std::runtime_error("$variable$autoExposureLastExposure2 is not found");
+        }
+        autoExposureLastExposure2 = autoExposureLastExposure2Item->getValueAsDouble();
     }
 
     inline SetConfig::SetConfig(const SetConfig& obj)
@@ -319,12 +409,23 @@ namespace cdm {
         zuoxianwei1 = obj.zuoxianwei1;
         youxianwei1 = obj.youxianwei1;
         xiangsudangliang1 = obj.xiangsudangliang1;
-        debugFrame = obj.debugFrame;
-        openRemoveFrame = obj.openRemoveFrame;
-        zengyi = obj.zengyi;
-        qiangguang = obj.qiangguang;
-        zhongguang = obj.zhongguang;
-        ruoguang = obj.ruoguang;
+        debugFrame1 = obj.debugFrame1;
+        openRemoveFrame1 = obj.openRemoveFrame1;
+        zengyi1 = obj.zengyi1;
+        qiangguang1 = obj.qiangguang1;
+        zhongguang1 = obj.zhongguang1;
+        ruoguang1 = obj.ruoguang1;
+        shangxianwei2 = obj.shangxianwei2;
+        xiaxianwei2 = obj.xiaxianwei2;
+        zuoxianwei2 = obj.zuoxianwei2;
+        youxianwei2 = obj.youxianwei2;
+        xiangsudangliang2 = obj.xiangsudangliang2;
+        debugFrame2 = obj.debugFrame2;
+        openRemoveFrame2 = obj.openRemoveFrame2;
+        zengyi2 = obj.zengyi2;
+        qiangguang2 = obj.qiangguang2;
+        zhongguang2 = obj.zhongguang2;
+        ruoguang2 = obj.ruoguang2;
         shiceyahenkuanduduqudizhi = obj.shiceyahenkuanduduqudizhi;
         shedingyahenbiaozhunzhiduqudizhi = obj.shedingyahenbiaozhunzhiduqudizhi;
         paizhaojiangejuliduqudizhi = obj.paizhaojiangejuliduqudizhi;
@@ -338,13 +439,16 @@ namespace cdm {
         daojiakeyidongdezuidajuliduqudizhi = obj.daojiakeyidongdezuidajuliduqudizhi;
         daoyidongsudumaichongpinlvduqudizhi = obj.daoyidongsudumaichongpinlvduqudizhi;
         shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi = obj.shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi;
-        shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan = obj.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan;
+        shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1 = obj.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1;
+        shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2 = obj.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2;
         huodePLCbaojingxinxidizhi = obj.huodePLCbaojingxinxidizhi;
         keyipaizhaoxinhaodizhi = obj.keyipaizhaoxinhaodizhi;
         tingzhipaizhaoxinhaodizhi = obj.tingzhipaizhaoxinhaodizhi;
         daizishicechangdudizhi = obj.daizishicechangdudizhi;
-        lastChooseLight = obj.lastChooseLight;
-        autoExposureEnabled = obj.autoExposureEnabled;
+        lastChooseLight1 = obj.lastChooseLight1;
+        lastChooseLight2 = obj.lastChooseLight2;
+        autoExposureEnabled1 = obj.autoExposureEnabled1;
+        autoExposureEnabled2 = obj.autoExposureEnabled2;
         autoExposureTargetMean = obj.autoExposureTargetMean;
         autoExposureOverExposeThreshold = obj.autoExposureOverExposeThreshold;
         autoExposureUnderExposeThreshold = obj.autoExposureUnderExposeThreshold;
@@ -353,7 +457,8 @@ namespace cdm {
         autoExposureMinExposure = obj.autoExposureMinExposure;
         autoExposureMaxExposure = obj.autoExposureMaxExposure;
         autoExposureAdjustIntervalMs = obj.autoExposureAdjustIntervalMs;
-        autoExposureLastExposure = obj.autoExposureLastExposure;
+        autoExposureLastExposure1 = obj.autoExposureLastExposure1;
+        autoExposureLastExposure2 = obj.autoExposureLastExposure2;
     }
 
     inline SetConfig& SetConfig::operator=(const SetConfig& obj)
@@ -370,12 +475,23 @@ namespace cdm {
             zuoxianwei1 = obj.zuoxianwei1;
             youxianwei1 = obj.youxianwei1;
             xiangsudangliang1 = obj.xiangsudangliang1;
-            debugFrame = obj.debugFrame;
-            openRemoveFrame = obj.openRemoveFrame;
-            zengyi = obj.zengyi;
-            qiangguang = obj.qiangguang;
-            zhongguang = obj.zhongguang;
-            ruoguang = obj.ruoguang;
+            debugFrame1 = obj.debugFrame1;
+            openRemoveFrame1 = obj.openRemoveFrame1;
+            zengyi1 = obj.zengyi1;
+            qiangguang1 = obj.qiangguang1;
+            zhongguang1 = obj.zhongguang1;
+            ruoguang1 = obj.ruoguang1;
+            shangxianwei2 = obj.shangxianwei2;
+            xiaxianwei2 = obj.xiaxianwei2;
+            zuoxianwei2 = obj.zuoxianwei2;
+            youxianwei2 = obj.youxianwei2;
+            xiangsudangliang2 = obj.xiangsudangliang2;
+            debugFrame2 = obj.debugFrame2;
+            openRemoveFrame2 = obj.openRemoveFrame2;
+            zengyi2 = obj.zengyi2;
+            qiangguang2 = obj.qiangguang2;
+            zhongguang2 = obj.zhongguang2;
+            ruoguang2 = obj.ruoguang2;
             shiceyahenkuanduduqudizhi = obj.shiceyahenkuanduduqudizhi;
             shedingyahenbiaozhunzhiduqudizhi = obj.shedingyahenbiaozhunzhiduqudizhi;
             paizhaojiangejuliduqudizhi = obj.paizhaojiangejuliduqudizhi;
@@ -389,13 +505,16 @@ namespace cdm {
             daojiakeyidongdezuidajuliduqudizhi = obj.daojiakeyidongdezuidajuliduqudizhi;
             daoyidongsudumaichongpinlvduqudizhi = obj.daoyidongsudumaichongpinlvduqudizhi;
             shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi = obj.shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi;
-            shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan = obj.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan;
+            shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1 = obj.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1;
+            shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2 = obj.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2;
             huodePLCbaojingxinxidizhi = obj.huodePLCbaojingxinxidizhi;
             keyipaizhaoxinhaodizhi = obj.keyipaizhaoxinhaodizhi;
             tingzhipaizhaoxinhaodizhi = obj.tingzhipaizhaoxinhaodizhi;
             daizishicechangdudizhi = obj.daizishicechangdudizhi;
-            lastChooseLight = obj.lastChooseLight;
-            autoExposureEnabled = obj.autoExposureEnabled;
+            lastChooseLight1 = obj.lastChooseLight1;
+            lastChooseLight2 = obj.lastChooseLight2;
+            autoExposureEnabled1 = obj.autoExposureEnabled1;
+            autoExposureEnabled2 = obj.autoExposureEnabled2;
             autoExposureTargetMean = obj.autoExposureTargetMean;
             autoExposureOverExposeThreshold = obj.autoExposureOverExposeThreshold;
             autoExposureUnderExposeThreshold = obj.autoExposureUnderExposeThreshold;
@@ -404,7 +523,8 @@ namespace cdm {
             autoExposureMinExposure = obj.autoExposureMinExposure;
             autoExposureMaxExposure = obj.autoExposureMaxExposure;
             autoExposureAdjustIntervalMs = obj.autoExposureAdjustIntervalMs;
-            autoExposureLastExposure = obj.autoExposureLastExposure;
+            autoExposureLastExposure1 = obj.autoExposureLastExposure1;
+            autoExposureLastExposure2 = obj.autoExposureLastExposure2;
         }
         return *this;
     }
@@ -457,30 +577,74 @@ namespace cdm {
         xiangsudangliang1Item->setName("$variable$xiangsudangliang1$");
         xiangsudangliang1Item->setValueFromDouble(xiangsudangliang1);
         assembly.addItem(xiangsudangliang1Item);
-        auto debugFrameItem = std::make_shared<rw::oso::ObjectStoreItem>();
-        debugFrameItem->setName("$variable$debugFrame$");
-        debugFrameItem->setValueFromInt(debugFrame);
-        assembly.addItem(debugFrameItem);
-        auto openRemoveFrameItem = std::make_shared<rw::oso::ObjectStoreItem>();
-        openRemoveFrameItem->setName("$variable$openRemoveFrame$");
-        openRemoveFrameItem->setValueFromInt(openRemoveFrame);
-        assembly.addItem(openRemoveFrameItem);
-        auto zengyiItem = std::make_shared<rw::oso::ObjectStoreItem>();
-        zengyiItem->setName("$variable$zengyi$");
-        zengyiItem->setValueFromDouble(zengyi);
-        assembly.addItem(zengyiItem);
-        auto qiangguangItem = std::make_shared<rw::oso::ObjectStoreItem>();
-        qiangguangItem->setName("$variable$qiangguang$");
-        qiangguangItem->setValueFromDouble(qiangguang);
-        assembly.addItem(qiangguangItem);
-        auto zhongguangItem = std::make_shared<rw::oso::ObjectStoreItem>();
-        zhongguangItem->setName("$variable$zhongguang$");
-        zhongguangItem->setValueFromDouble(zhongguang);
-        assembly.addItem(zhongguangItem);
-        auto ruoguangItem = std::make_shared<rw::oso::ObjectStoreItem>();
-        ruoguangItem->setName("$variable$ruoguang$");
-        ruoguangItem->setValueFromDouble(ruoguang);
-        assembly.addItem(ruoguangItem);
+        auto debugFrame1Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        debugFrame1Item->setName("$variable$debugFrame1$");
+        debugFrame1Item->setValueFromInt(debugFrame1);
+        assembly.addItem(debugFrame1Item);
+        auto openRemoveFrame1Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        openRemoveFrame1Item->setName("$variable$openRemoveFrame1$");
+        openRemoveFrame1Item->setValueFromInt(openRemoveFrame1);
+        assembly.addItem(openRemoveFrame1Item);
+        auto zengyi1Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        zengyi1Item->setName("$variable$zengyi1$");
+        zengyi1Item->setValueFromDouble(zengyi1);
+        assembly.addItem(zengyi1Item);
+        auto qiangguang1Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        qiangguang1Item->setName("$variable$qiangguang1$");
+        qiangguang1Item->setValueFromDouble(qiangguang1);
+        assembly.addItem(qiangguang1Item);
+        auto zhongguang1Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        zhongguang1Item->setName("$variable$zhongguang1$");
+        zhongguang1Item->setValueFromDouble(zhongguang1);
+        assembly.addItem(zhongguang1Item);
+        auto ruoguang1Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        ruoguang1Item->setName("$variable$ruoguang1$");
+        ruoguang1Item->setValueFromDouble(ruoguang1);
+        assembly.addItem(ruoguang1Item);
+        auto shangxianwei2Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        shangxianwei2Item->setName("$variable$shangxianwei2$");
+        shangxianwei2Item->setValueFromDouble(shangxianwei2);
+        assembly.addItem(shangxianwei2Item);
+        auto xiaxianwei2Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        xiaxianwei2Item->setName("$variable$xiaxianwei2$");
+        xiaxianwei2Item->setValueFromDouble(xiaxianwei2);
+        assembly.addItem(xiaxianwei2Item);
+        auto zuoxianwei2Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        zuoxianwei2Item->setName("$variable$zuoxianwei2$");
+        zuoxianwei2Item->setValueFromDouble(zuoxianwei2);
+        assembly.addItem(zuoxianwei2Item);
+        auto youxianwei2Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        youxianwei2Item->setName("$variable$youxianwei2$");
+        youxianwei2Item->setValueFromDouble(youxianwei2);
+        assembly.addItem(youxianwei2Item);
+        auto xiangsudangliang2Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        xiangsudangliang2Item->setName("$variable$xiangsudangliang2$");
+        xiangsudangliang2Item->setValueFromDouble(xiangsudangliang2);
+        assembly.addItem(xiangsudangliang2Item);
+        auto debugFrame2Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        debugFrame2Item->setName("$variable$debugFrame2$");
+        debugFrame2Item->setValueFromInt(debugFrame2);
+        assembly.addItem(debugFrame2Item);
+        auto openRemoveFrame2Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        openRemoveFrame2Item->setName("$variable$openRemoveFrame2$");
+        openRemoveFrame2Item->setValueFromInt(openRemoveFrame2);
+        assembly.addItem(openRemoveFrame2Item);
+        auto zengyi2Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        zengyi2Item->setName("$variable$zengyi2$");
+        zengyi2Item->setValueFromDouble(zengyi2);
+        assembly.addItem(zengyi2Item);
+        auto qiangguang2Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        qiangguang2Item->setName("$variable$qiangguang2$");
+        qiangguang2Item->setValueFromDouble(qiangguang2);
+        assembly.addItem(qiangguang2Item);
+        auto zhongguang2Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        zhongguang2Item->setName("$variable$zhongguang2$");
+        zhongguang2Item->setValueFromDouble(zhongguang2);
+        assembly.addItem(zhongguang2Item);
+        auto ruoguang2Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        ruoguang2Item->setName("$variable$ruoguang2$");
+        ruoguang2Item->setValueFromDouble(ruoguang2);
+        assembly.addItem(ruoguang2Item);
         auto shiceyahenkuanduduqudizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
         shiceyahenkuanduduqudizhiItem->setName("$variable$shiceyahenkuanduduqudizhi$");
         shiceyahenkuanduduqudizhiItem->setValueFromInt(shiceyahenkuanduduqudizhi);
@@ -533,10 +697,14 @@ namespace cdm {
         shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhiItem->setName("$variable$shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi$");
         shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhiItem->setValueFromInt(shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi);
         assembly.addItem(shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhiItem);
-        auto shibiezhongxindianyutuxiangzhongxindianchazhishifouqufanItem = std::make_shared<rw::oso::ObjectStoreItem>();
-        shibiezhongxindianyutuxiangzhongxindianchazhishifouqufanItem->setName("$variable$shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan$");
-        shibiezhongxindianyutuxiangzhongxindianchazhishifouqufanItem->setValueFromBool(shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan);
-        assembly.addItem(shibiezhongxindianyutuxiangzhongxindianchazhishifouqufanItem);
+        auto shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1Item->setName("$variable$shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1$");
+        shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1Item->setValueFromBool(shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1);
+        assembly.addItem(shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1Item);
+        auto shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2Item->setName("$variable$shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2$");
+        shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2Item->setValueFromBool(shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2);
+        assembly.addItem(shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2Item);
         auto huodePLCbaojingxinxidizhiItem = std::make_shared<rw::oso::ObjectStoreItem>();
         huodePLCbaojingxinxidizhiItem->setName("$variable$huodePLCbaojingxinxidizhi$");
         huodePLCbaojingxinxidizhiItem->setValueFromInt(huodePLCbaojingxinxidizhi);
@@ -553,14 +721,22 @@ namespace cdm {
         daizishicechangdudizhiItem->setName("$variable$daizishicechangdudizhi$");
         daizishicechangdudizhiItem->setValueFromInt(daizishicechangdudizhi);
         assembly.addItem(daizishicechangdudizhiItem);
-        auto lastChooseLightItem = std::make_shared<rw::oso::ObjectStoreItem>();
-        lastChooseLightItem->setName("$variable$lastChooseLight$");
-        lastChooseLightItem->setValueFromInt(lastChooseLight);
-        assembly.addItem(lastChooseLightItem);
-        auto autoExposureEnabledItem = std::make_shared<rw::oso::ObjectStoreItem>();
-        autoExposureEnabledItem->setName("$variable$autoExposureEnabled$");
-        autoExposureEnabledItem->setValueFromBool(autoExposureEnabled);
-        assembly.addItem(autoExposureEnabledItem);
+        auto lastChooseLight1Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        lastChooseLight1Item->setName("$variable$lastChooseLight1$");
+        lastChooseLight1Item->setValueFromInt(lastChooseLight1);
+        assembly.addItem(lastChooseLight1Item);
+        auto lastChooseLight2Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        lastChooseLight2Item->setName("$variable$lastChooseLight2$");
+        lastChooseLight2Item->setValueFromInt(lastChooseLight2);
+        assembly.addItem(lastChooseLight2Item);
+        auto autoExposureEnabled1Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        autoExposureEnabled1Item->setName("$variable$autoExposureEnabled1$");
+        autoExposureEnabled1Item->setValueFromBool(autoExposureEnabled1);
+        assembly.addItem(autoExposureEnabled1Item);
+        auto autoExposureEnabled2Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        autoExposureEnabled2Item->setName("$variable$autoExposureEnabled2$");
+        autoExposureEnabled2Item->setValueFromBool(autoExposureEnabled2);
+        assembly.addItem(autoExposureEnabled2Item);
         auto autoExposureTargetMeanItem = std::make_shared<rw::oso::ObjectStoreItem>();
         autoExposureTargetMeanItem->setName("$variable$autoExposureTargetMean$");
         autoExposureTargetMeanItem->setValueFromDouble(autoExposureTargetMean);
@@ -593,16 +769,20 @@ namespace cdm {
         autoExposureAdjustIntervalMsItem->setName("$variable$autoExposureAdjustIntervalMs$");
         autoExposureAdjustIntervalMsItem->setValueFromDouble(autoExposureAdjustIntervalMs);
         assembly.addItem(autoExposureAdjustIntervalMsItem);
-        auto autoExposureLastExposureItem = std::make_shared<rw::oso::ObjectStoreItem>();
-        autoExposureLastExposureItem->setName("$variable$autoExposureLastExposure$");
-        autoExposureLastExposureItem->setValueFromDouble(autoExposureLastExposure);
-        assembly.addItem(autoExposureLastExposureItem);
+        auto autoExposureLastExposure1Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        autoExposureLastExposure1Item->setName("$variable$autoExposureLastExposure1$");
+        autoExposureLastExposure1Item->setValueFromDouble(autoExposureLastExposure1);
+        assembly.addItem(autoExposureLastExposure1Item);
+        auto autoExposureLastExposure2Item = std::make_shared<rw::oso::ObjectStoreItem>();
+        autoExposureLastExposure2Item->setName("$variable$autoExposureLastExposure2$");
+        autoExposureLastExposure2Item->setValueFromDouble(autoExposureLastExposure2);
+        assembly.addItem(autoExposureLastExposure2Item);
         return assembly;
     }
 
     inline bool SetConfig::operator==(const SetConfig& obj) const
     {
-        return xiangjiguangdianpingbishijian == obj.xiangjiguangdianpingbishijian && shuchuxinhaoyanshi == obj.shuchuxinhaoyanshi && shuchuxinhaochixushijian == obj.shuchuxinhaochixushijian && saveImgMode == obj.saveImgMode && score == obj.score && autoSaveImg == obj.autoSaveImg && shangxianwei1 == obj.shangxianwei1 && xiaxianwei1 == obj.xiaxianwei1 && zuoxianwei1 == obj.zuoxianwei1 && youxianwei1 == obj.youxianwei1 && xiangsudangliang1 == obj.xiangsudangliang1 && debugFrame == obj.debugFrame && openRemoveFrame == obj.openRemoveFrame && zengyi == obj.zengyi && qiangguang == obj.qiangguang && zhongguang == obj.zhongguang && ruoguang == obj.ruoguang && shiceyahenkuanduduqudizhi == obj.shiceyahenkuanduduqudizhi && shedingyahenbiaozhunzhiduqudizhi == obj.shedingyahenbiaozhunzhiduqudizhi && paizhaojiangejuliduqudizhi == obj.paizhaojiangejuliduqudizhi && daizichangdubiaozhunduqudizhi == obj.daizichangdubiaozhunduqudizhi && jimiqiyiquanmaichongshuduqudizhi == obj.jimiqiyiquanmaichongshuduqudizhi && jimiqiyiquanzhouchangduqudizhi == obj.jimiqiyiquanzhouchangduqudizhi && bujinyiquanmaichongshuduqudizhi == obj.bujinyiquanmaichongshuduqudizhi && bujinluojuduqudizhi == obj.bujinluojuduqudizhi && daoyidongbuchangduqudizhi == obj.daoyidongbuchangduqudizhi && zidongdaoyidongzuidajuliduqudizhi == obj.zidongdaoyidongzuidajuliduqudizhi && daojiakeyidongdezuidajuliduqudizhi == obj.daojiakeyidongdezuidajuliduqudizhi && daoyidongsudumaichongpinlvduqudizhi == obj.daoyidongsudumaichongpinlvduqudizhi && shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi == obj.shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi && shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan == obj.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan && huodePLCbaojingxinxidizhi == obj.huodePLCbaojingxinxidizhi && keyipaizhaoxinhaodizhi == obj.keyipaizhaoxinhaodizhi && tingzhipaizhaoxinhaodizhi == obj.tingzhipaizhaoxinhaodizhi && daizishicechangdudizhi == obj.daizishicechangdudizhi && lastChooseLight == obj.lastChooseLight && autoExposureEnabled == obj.autoExposureEnabled && autoExposureTargetMean == obj.autoExposureTargetMean && autoExposureOverExposeThreshold == obj.autoExposureOverExposeThreshold && autoExposureUnderExposeThreshold == obj.autoExposureUnderExposeThreshold && autoExposureMaxOverRatio == obj.autoExposureMaxOverRatio && autoExposureMaxUnderRatio == obj.autoExposureMaxUnderRatio && autoExposureMinExposure == obj.autoExposureMinExposure && autoExposureMaxExposure == obj.autoExposureMaxExposure && autoExposureAdjustIntervalMs == obj.autoExposureAdjustIntervalMs && autoExposureLastExposure == obj.autoExposureLastExposure;
+        return xiangjiguangdianpingbishijian == obj.xiangjiguangdianpingbishijian && shuchuxinhaoyanshi == obj.shuchuxinhaoyanshi && shuchuxinhaochixushijian == obj.shuchuxinhaochixushijian && saveImgMode == obj.saveImgMode && score == obj.score && autoSaveImg == obj.autoSaveImg && shangxianwei1 == obj.shangxianwei1 && xiaxianwei1 == obj.xiaxianwei1 && zuoxianwei1 == obj.zuoxianwei1 && youxianwei1 == obj.youxianwei1 && xiangsudangliang1 == obj.xiangsudangliang1 && debugFrame1 == obj.debugFrame1 && openRemoveFrame1 == obj.openRemoveFrame1 && zengyi1 == obj.zengyi1 && qiangguang1 == obj.qiangguang1 && zhongguang1 == obj.zhongguang1 && ruoguang1 == obj.ruoguang1 && shangxianwei2 == obj.shangxianwei2 && xiaxianwei2 == obj.xiaxianwei2 && zuoxianwei2 == obj.zuoxianwei2 && youxianwei2 == obj.youxianwei2 && xiangsudangliang2 == obj.xiangsudangliang2 && debugFrame2 == obj.debugFrame2 && openRemoveFrame2 == obj.openRemoveFrame2 && zengyi2 == obj.zengyi2 && qiangguang2 == obj.qiangguang2 && zhongguang2 == obj.zhongguang2 && ruoguang2 == obj.ruoguang2 && shiceyahenkuanduduqudizhi == obj.shiceyahenkuanduduqudizhi && shedingyahenbiaozhunzhiduqudizhi == obj.shedingyahenbiaozhunzhiduqudizhi && paizhaojiangejuliduqudizhi == obj.paizhaojiangejuliduqudizhi && daizichangdubiaozhunduqudizhi == obj.daizichangdubiaozhunduqudizhi && jimiqiyiquanmaichongshuduqudizhi == obj.jimiqiyiquanmaichongshuduqudizhi && jimiqiyiquanzhouchangduqudizhi == obj.jimiqiyiquanzhouchangduqudizhi && bujinyiquanmaichongshuduqudizhi == obj.bujinyiquanmaichongshuduqudizhi && bujinluojuduqudizhi == obj.bujinluojuduqudizhi && daoyidongbuchangduqudizhi == obj.daoyidongbuchangduqudizhi && zidongdaoyidongzuidajuliduqudizhi == obj.zidongdaoyidongzuidajuliduqudizhi && daojiakeyidongdezuidajuliduqudizhi == obj.daojiakeyidongdezuidajuliduqudizhi && daoyidongsudumaichongpinlvduqudizhi == obj.daoyidongsudumaichongpinlvduqudizhi && shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi == obj.shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi && shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1 == obj.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1 && shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2 == obj.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2 && huodePLCbaojingxinxidizhi == obj.huodePLCbaojingxinxidizhi && keyipaizhaoxinhaodizhi == obj.keyipaizhaoxinhaodizhi && tingzhipaizhaoxinhaodizhi == obj.tingzhipaizhaoxinhaodizhi && daizishicechangdudizhi == obj.daizishicechangdudizhi && lastChooseLight1 == obj.lastChooseLight1 && lastChooseLight2 == obj.lastChooseLight2 && autoExposureEnabled1 == obj.autoExposureEnabled1 && autoExposureEnabled2 == obj.autoExposureEnabled2 && autoExposureTargetMean == obj.autoExposureTargetMean && autoExposureOverExposeThreshold == obj.autoExposureOverExposeThreshold && autoExposureUnderExposeThreshold == obj.autoExposureUnderExposeThreshold && autoExposureMaxOverRatio == obj.autoExposureMaxOverRatio && autoExposureMaxUnderRatio == obj.autoExposureMaxUnderRatio && autoExposureMinExposure == obj.autoExposureMinExposure && autoExposureMaxExposure == obj.autoExposureMaxExposure && autoExposureAdjustIntervalMs == obj.autoExposureAdjustIntervalMs && autoExposureLastExposure1 == obj.autoExposureLastExposure1 && autoExposureLastExposure2 == obj.autoExposureLastExposure2;
     }
 
     inline bool SetConfig::operator!=(const SetConfig& obj) const

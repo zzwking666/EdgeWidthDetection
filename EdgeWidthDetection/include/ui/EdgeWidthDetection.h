@@ -56,6 +56,7 @@ public slots:
 	void lb_title_clicked();
 signals:
 	void autoExposureToggled(bool enabled);
+	void autoExposureToggled2(bool enabled);
 private slots:
 	void pbtn_exit_clicked();
 	void pbtn_set_clicked();
@@ -70,6 +71,11 @@ private slots:
 
 	void ckb_saveImg_checked(bool checked);
 	void ckb_autoExposure_checked(bool checked);
+
+	void rbtn_ruoguang_2_checked(bool checked);
+	void rbtn_zhongguang_2_checked(bool checked);
+	void rbtn_qiangguang_2_checked(bool checked);
+	void ckb_autoExposure_2_checked(bool checked);
 
 private:
 	rw::rqw::ClickableLabel* clickableTitle = nullptr;

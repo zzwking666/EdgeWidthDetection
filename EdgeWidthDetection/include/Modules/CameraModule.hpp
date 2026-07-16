@@ -28,6 +28,9 @@ private:
 	bool build_camera1();
 	void destroy_camera1();
 
+	bool build_camera2();
+	void destroy_camera2();
+
 private:
 	std::vector<BuildError> _buildResults;
 public:
@@ -44,8 +47,11 @@ public slots:
 
 	void onFrameCaptured(rw::rqw::MatInfo frame, size_t index);
 	void onSetExposureTime(size_t exposureTime);
+	void onSetExposureTime2(size_t exposureTime);
 signals:
 	void frameCaptured1(rw::rqw::MatInfo matInfo, size_t index);
+	void frameCaptured2(rw::rqw::MatInfo matInfo, size_t index);
 public:
 	std::unique_ptr<rw::rqw::CameraPassiveThread> camera1{ nullptr };
+	std::unique_ptr<rw::rqw::CameraPassiveThread> camera2{ nullptr };
 };

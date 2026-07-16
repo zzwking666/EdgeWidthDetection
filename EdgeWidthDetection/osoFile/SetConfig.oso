@@ -16,13 +16,26 @@ namespace cdm {
 		zuoxianwei1 : double : default = 0;
 		youxianwei1 : double : default = 0;
 		xiangsudangliang1 : double : default = 0;
-		debugFrame : int : default = 0;
-		openRemoveFrame : int : default = 0;
+		debugFrame1 : int : default = 0;
+		openRemoveFrame1 : int : default = 0;
 
-		zengyi : double : default = 0;
-		qiangguang : double : default = 0;
-		zhongguang : double : default = 0;
-		ruoguang : double : default = 0;
+		zengyi1 : double : default = 0;
+		qiangguang1 : double : default = 0;
+		zhongguang1 : double : default = 0;
+		ruoguang1 : double : default = 0;
+
+		shangxianwei2 : double : default = 0;
+		xiaxianwei2 : double : default = 0;
+		zuoxianwei2 : double : default = 0;
+		youxianwei2 : double : default = 0;
+		xiangsudangliang2 : double : default = 0;
+		debugFrame2 : int : default = 0;
+		openRemoveFrame2 : int : default = 0;
+
+		zengyi2 : double : default = 0;
+		qiangguang2 : double : default = 0;
+		zhongguang2 : double : default = 0;
+		ruoguang2 : double : default = 0;
 
 		shiceyahenkuanduduqudizhi : int : default = 0;
 		shedingyahenbiaozhunzhiduqudizhi : int : default = 0;
@@ -37,16 +50,19 @@ namespace cdm {
 		daojiakeyidongdezuidajuliduqudizhi : int : default = 0;
 		daoyidongsudumaichongpinlvduqudizhi : int : default = 0;
 		shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi : int : default = 0;
-		shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan : bool : default = false;
+		shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1 : bool : default = false;
+		shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2 : bool : default = false;
 
 		huodePLCbaojingxinxidizhi : int : default = 0;
 		keyipaizhaoxinhaodizhi : int : default = 0;
 		tingzhipaizhaoxinhaodizhi : int : default = 0;
 		daizishicechangdudizhi : int : default = 0;
 
-		lastChooseLight : int : default = 0;
+		lastChooseLight1 : int : default = 0;
+		lastChooseLight2 : int : default = 0;
 
-		autoExposureEnabled : bool : default = false;
+		autoExposureEnabled1 : bool : default = false;
+		autoExposureEnabled2 : bool : default = false;
 		autoExposureTargetMean : double : default = 128.0;
 		autoExposureOverExposeThreshold : double : default = 250.0;
 		autoExposureUnderExposeThreshold : double : default = 20.0;
@@ -55,6 +71,7 @@ namespace cdm {
 		autoExposureMinExposure : double : default = 100.0;
 		autoExposureMaxExposure : double : default = 50000.0;
 		autoExposureAdjustIntervalMs : double : default = 500.0;
-		autoExposureLastExposure : double : default = 0.0;
+		autoExposureLastExposure1 : double : default = 0.0;
+		autoExposureLastExposure2 : double : default = 0.0;
 	};
 }
