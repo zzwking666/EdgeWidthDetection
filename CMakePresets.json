@@ -14,14 +14,33 @@
       "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
     },
     {
+      // 本机 CUDA 11.3 的 VS 集成只装在 VS2019，且 TensorRT 仅有 cuda11/8.6；
+      // VS2019 + CUDA 11.3 + TensorRT 8.6 是本机可用的组合
+      "name": "cuda11-vs2019-base",
+      "hidden": true,
+      "inherits": "windows-base",
+      "toolset": "cuda=11.3,host=x64",
+      "environment": {
+        "CUDA_PATH": "C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v11.3"
+      },
+      "cacheVariables": {
+        "CMAKE_CUDA_COMPILER": "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.3/bin/nvcc.exe",
+        "BUILD_CUDA113_WITH_TENSOR86": "true"
+      }
+    },
+    {
       "name": "vs2022",
       "generator": "Visual Studio 17 2022",
-      "inherits": "windows-base"
+      "inherits": "windows-base",
+      // VS2022 的 MSVC 14.44 STL 要求 CUDA >= 12.4，无法使用 11.3，锁定 12.8。
+      // 注意：此预设完整构建需要 D:\zfkjDevelopment\ThirdLibrary\TensorRTs\cuda12\10.12
+      "toolset": "cuda=12.8,host=x64"
     },
     {
       "name": "vs2022-NoHardware",
       "generator": "Visual Studio 17 2022",
       "inherits": "windows-base",
+      "toolset": "cuda=12.8,host=x64",
       "cacheVariables": {
         "BUILD_WITHOUT_HARDWARE": "true"
       }
@@ -29,7 +48,15 @@
     {
       "name": "vs2019",
       "generator": "Visual Studio 16 2019",
-      "inherits": "windows-base"
+      "inherits": "cuda11-vs2019-base"
+    },
+    {
+      "name": "vs2019-NoHardware",
+      "generator": "Visual Studio 16 2019",
+      "inherits": "cuda11-vs2019-base",
+      "cacheVariables": {
+        "BUILD_WITHOUT_HARDWARE": "true"
+      }
     }
   ],
   "buildPresets": [
@@ -54,6 +81,18 @@
     {
       "name": "vs2022-release",
       "configurePreset": "vs2022",
+      "configuration": "Release",
+      "jobs": 8
+    },
+    {
+      "name": "vs2019-debug-NoHardware",
+      "configurePreset": "vs2019-NoHardware",
+      "configuration": "Debug",
+      "jobs": 8
+    },
+    {
+      "name": "vs2019-release-NoHardware",
+      "configurePreset": "vs2019-NoHardware",
       "configuration": "Release",
       "jobs": 8
     },
