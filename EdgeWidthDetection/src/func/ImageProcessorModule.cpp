@@ -252,7 +252,7 @@ void ImageProcessor::save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage
 	auto& config = Modules::getInstance().configManagerModule.edgeWidthDetectionConfig;
 	auto& runningState = Modules::getInstance().runtimeInfoModule.runningState;
 
-	if (config.isSaveImg)
+	if (config.isSaveImg && imageSaveEngine)
 	{
 		if (runningState == RunningState::OpenRemoveFunc)
 		{
