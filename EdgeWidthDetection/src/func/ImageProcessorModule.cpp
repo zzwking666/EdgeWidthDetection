@@ -33,6 +33,17 @@ namespace {
 		// 只有一个线程能成功更新 lastNs，其他并发线程会失败并返回 false
 		return lastNs.compare_exchange_strong(prev, nowNs, std::memory_order_relaxed);
 	}
+
+	// 将图像顺时针旋转 90 度（相机 2 为竖装，出图需转正后再进入图像处理）
+	// 需要逆时针时将 ROTATE_90_CLOCKWISE 改为 ROTATE_90_COUNTERCLOCKWISE
+	inline void RotateImage90Clockwise(cv::Mat& image)
+	{
+		if (image.empty()) {
+			return;
+		}
+		// cv::rotate 内部为 transpose + flip，支持原地操作，无插值开销
+		cv::rotate(image, image, cv::ROTATE_90_CLOCKWISE);
+	}
 } // namespace
 
 
@@ -91,6 +102,11 @@ void ImageProcessor::run()
 
 void ImageProcessor::run_debug(MatInfo& frame)
 {
+	// 相机 2 在 Debug 模式下同样先转正，保持与运行模式一致的画面方向与坐标系
+	if (2 == imageProcessingModuleIndex) {
+		RotateImage90Clockwise(frame.image);
+	}
+
 	auto& imgPro = *_imgProcess;
 	imgPro(frame.image);
 	auto maskImg = imgPro.getMaskImg(frame.image);
@@ -180,6 +196,9 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 
 void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 {
+	// 相机 2 出图先顺时针旋转 90 度转正，后续处理、绘制与保存均基于转正后的图像
+	RotateImage90Clockwise(frame.image);
+
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	auto& imgPro = *_imgProcess;
 	imgPro(frame.image);
