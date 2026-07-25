@@ -58,6 +58,16 @@ namespace cdm {
 		tingzhipaizhaoxinhaodizhi : int : default = 0;
 		daizishicechangdudizhi : int : default = 0;
 
+		shiceyahenkuanduxieruqishidizhi1 : int : default = 0;
+		shiceyahenkuanduxierumoweidizhi1 : int : default = 0;
+		shiceyahenkuandushanchujiushujujiange1 : int : default = 0;
+		tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixieruqishidizhi1 : int : default = 0;
+		tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixierumoweidizhi1 : int : default = 0;
+		tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhishanchujiushujujiange1 : int : default = 0;
+		shiceyahenkuanduxieruqishidizhi2 : int : default = 0;
+		shiceyahenkuanduxierumoweidizhi2 : int : default = 0;
+		shiceyahenkuandushanchujiushujujiange2 : int : default = 0;
+
 		lastChooseLight1 : int : default = 0;
 		lastChooseLight2 : int : default = 0;
 

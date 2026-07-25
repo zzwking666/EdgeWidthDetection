@@ -44,6 +44,44 @@ namespace {
 		// cv::rotate 内部为 transpose + flip，支持原地操作，无插值开销
 		cv::rotate(image, image, cv::ROTATE_90_CLOCKWISE);
 	}
+
+	// 向 PLC 循环地址区间写入一个值：地址从 start 到 end 步进 2，每调用一次在当前槽位写 value
+	// 并推进一格，写满一轮回绕到起始；同时把"往前数 intervalSlots 格"的旧数据槽位写 0 清零。
+	// 配置三元组（start/end/intervalSlots）变化时槽位自动复位到 0。
+	// 配置非法或 PLC 未连接时不写入也不推进槽位。
+	inline void WritePlcCircular(int start, int end, int intervalSlots, PlcCircularWriteState& state, uint16_t value)
+	{
+		auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
+		if (!plcControllerScheduler) {
+			qDebug() << "PLC disConnect!";
+			return;
+		}
+		if (start < 0 || end < start || (end - start) % 2 != 0 || intervalSlots < 0) {
+			qWarning() << "PLC 循环写入配置非法，已跳过: start =" << start << ", end =" << end
+				<< ", interval =" << intervalSlots << "（要求 0 <= start <= end，(end-start) 为偶数，interval >= 0）";
+			return;
+		}
+
+		// 配置变化时复位到起始槽位
+		if (state.start != start || state.end != end || state.interval != intervalSlots) {
+			state.slot = 0;
+			state.start = start;
+			state.end = end;
+			state.interval = intervalSlots;
+		}
+
+		const int totalSlots = (end - start) / 2 + 1;
+		// 清零槽位 = 当前槽位往前数 intervalSlots 格（循环回绕；C++ 负数取模需二次修正）
+		const int clearSlot = ((state.slot - intervalSlots) % totalSlots + totalSlots) % totalSlots;
+		const int clearAddress = start + clearSlot * 2;
+		const int writeAddress = start + state.slot * 2;
+
+		// 先入队清零、再入队写值（调度器同优先级 FIFO）：两槽相同时保证最终留下的是写入值
+		plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(clearAddress), static_cast<uint16_t>(0));
+		plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(writeAddress), value);
+
+		state.slot = (state.slot + 1) % totalSlots;
+	}
 } // namespace
 
 
@@ -142,16 +180,14 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 		{
 			centerDiffMm = -centerDiffMm;
 		}
-
-		// 写入中心点差值到PLC
-		auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
-		if (plcControllerScheduler)
-		{
-			plcControllerScheduler->writeUInt16RegisterAsync(
-				static_cast<uint16_t>(ModBusAddress::shibiezhongxindianyutuxiangzhongxindianchazhiAddress),
-				static_cast<uint16_t>(centerDiffMm * 100));
-		}
 	}
+
+	// 每张处理图都向循环地址区间写入一次中心点偏移值并推进槽位，无有效识别时写 0
+	WritePlcCircular(setConfig.tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixieruqishidizhi1,
+		setConfig.tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixierumoweidizhi1,
+		setConfig.tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhishanchujiushujujiange1,
+		_plcOffsetWriteState,
+		static_cast<uint16_t>(static_cast<int>(centerDiffMm * 100)));
 
 	if (defectResult.defects.size() == 1)
 	{
@@ -160,12 +196,16 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 			auto pixToWorld = setConfig.xiangsudangliang1;
 			width = std::any_cast<int>(imgPro.context().customFields["width"]) * pixToWorld;
 
-			// 写入Plc
-			writePlcController(width * 100);
-
 			drawImg(maskImg, processResult, centerDiffMm);
 		}
 	}
+
+	// 每张处理图都向循环地址区间写入一次实测压痕宽度并推进槽位，无有效识别时写 0
+	WritePlcCircular(setConfig.shiceyahenkuanduxieruqishidizhi1,
+		setConfig.shiceyahenkuanduxierumoweidizhi1,
+		setConfig.shiceyahenkuandushanchujiushujujiange1,
+		_plcWidthWriteState,
+		static_cast<uint16_t>(static_cast<int>(width * 100)));
 
 	QStringList textList;
 	textList.append("实测压痕宽度:" + QString::number(width) + "mm");
@@ -217,6 +257,13 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 			drawImg(maskImg, processResult, 0.0);
 		}
 	}
+
+	// 每张处理图都向循环地址区间写入一次实测压痕宽度并推进槽位，无有效识别时写 0
+	WritePlcCircular(setConfig.shiceyahenkuanduxieruqishidizhi2,
+		setConfig.shiceyahenkuanduxierumoweidizhi2,
+		setConfig.shiceyahenkuandushanchujiushujujiange2,
+		_plcWidthWriteState,
+		static_cast<uint16_t>(static_cast<int>(width * 100)));
 
 	QStringList textList;
 	textList.append("实测压痕宽度:" + QString::number(width) + "mm");
@@ -352,20 +399,6 @@ void ImageProcessor::drawImg(QImage& qimage, const std::vector<rw::DetectionRect
 	}
 
 	painter.end();
-}
-
-void ImageProcessor::writePlcController(double width)
-{
-	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
-
-	if (!plcControllerScheduler)
-	{
-		qDebug() << "PLC disConnect!";
-		return;
-	}
-
-	plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(ModBusAddress::shiceyahenkuanduAddress), static_cast<uint16_t>(width));
 }
 
 void ImageProcessor::buildObbModelEngine(const QString& enginePath)

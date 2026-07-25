@@ -94,6 +94,17 @@ private slots:
 	void btn_daizishicechangdudizhi_clicked();
 	void btn_shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi_clicked();
 
+	// 循环写入地址（一相机宽度/偏移、二相机宽度：起始/末尾/删除旧数据间隔）
+	void btn_shiceyahenkuanduxieruqishidizhi1_clicked();
+	void btn_shiceyahenkuanduxierumoweidizhi1_clicked();
+	void btn_shiceyahenkuandushanchujiushujujiange1_clicked();
+	void btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixieruqishidizhi1_clicked();
+	void btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixierumoweidizhi1_clicked();
+	void btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhishanchujiushujujiange1_clicked();
+	void btn_shiceyahenkuanduxieruqishidizhi2_clicked();
+	void btn_shiceyahenkuanduxierumoweidizhi2_clicked();
+	void btn_shiceyahenkuandushanchujiushujujiange2_clicked();
+
 	// 写入PLC
 	void btn_shiceyahenkuanduxierushuzhi_clicked();
 	void btn_shedingyahenbiaozhunkuanduzhixierushuzhi_clicked();

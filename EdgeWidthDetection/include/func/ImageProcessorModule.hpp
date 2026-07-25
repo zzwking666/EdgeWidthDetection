@@ -16,6 +16,16 @@
 #include "Utilty.hpp"
 
 
+// PLC 循环地址写入状态：slot 为当前写入槽位下标；
+// start/end/interval 为上次使用的配置快照，三者任一变化时 slot 自动复位到起始槽位
+struct PlcCircularWriteState
+{
+	int slot = 0;
+	int start = -1;
+	int end = -1;
+	int interval = -1;
+};
+
 class ImageProcessor : public QThread
 {
 	Q_OBJECT
@@ -34,7 +44,7 @@ private:
 	void run_debug(MatInfo& frame);				// 不开剔废时候的调试模式
 private:
 	void run_OpenRemoveFunc(MatInfo& frame);	// 开启剔废功能时的处理模式
-	void run_OpenRemoveFunc2(MatInfo& frame);	// 相机2开启剔废时的简化处理（仅识别+算宽度，无PLC/剔废）
+	void run_OpenRemoveFunc2(MatInfo& frame);	// 相机2开启剔废时的处理（识别+算宽度+循环写入PLC，无剔废）
 
 	void run_OpenRemoveFunc_emitErrorInfo(bool isbad);
 signals:
@@ -47,9 +57,6 @@ private:
 	// 在图像上面绘制短边(宽)
 	void drawImg(QImage& qimage, const std::vector<rw::DetectionRectangleInfo>& processResult, double centerDiffMm);
 private:
-	// plc
-	void writePlcController(double width);
-private:
 	std::unique_ptr<rw::imgPro::ImageProcess> _imgProcess;
 public:
 	// 构建模型引擎
@@ -59,6 +66,9 @@ private:
 	QMutex& _mutex;
 	QWaitCondition& _condition;
 	int _workIndex;
+	// PLC 循环写入游标（仅被本线程 run() 访问；相机2只使用宽度那一组）
+	PlcCircularWriteState _plcWidthWriteState;
+	PlcCircularWriteState _plcOffsetWriteState;
 public:
 	int imageProcessingModuleIndex;
 };
