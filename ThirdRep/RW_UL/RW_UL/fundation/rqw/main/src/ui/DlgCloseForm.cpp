@@ -48,6 +48,10 @@ void DlgCloseForm::btn_close_clicked()
 
 void DlgCloseForm::btn_restart_clicked()
 {
+    // 先退出 Qt 应用，让主窗口析构完成配置保存，再由系统延迟重启，
+    // 避免系统重启强杀进程导致内存中的配置丢失
+    qApp->quit();
+
 #ifdef Q_OS_WIN
     HANDLE hToken = nullptr;
     if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken)) {
@@ -60,10 +64,13 @@ void DlgCloseForm::btn_restart_clicked()
         CloseHandle(hToken);
     }
 
-    if (!ExitWindowsEx(EWX_REBOOT | EWX_FORCEIFHUNG,
-        SHTDN_REASON_MAJOR_APPLICATION | SHTDN_REASON_MINOR_OTHER | SHTDN_REASON_FLAG_PLANNED)) {
-        // 给 7 秒缓冲
-        QProcess::startDetached("shutdown", { "/r", "/t", "7" });
+    // 延迟 5 秒重启，给应用退出和配置落盘留出时间；detached 进程不受本应用退出影响
+    if (!QProcess::startDetached("shutdown", { "/r", "/f", "/t", "5" })) {
+        // 回退：立即重启（存在应用未退出即被强杀的风险）
+        if (!ExitWindowsEx(EWX_REBOOT | EWX_FORCEIFHUNG,
+            SHTDN_REASON_MAJOR_APPLICATION | SHTDN_REASON_MINOR_OTHER | SHTDN_REASON_FLAG_PLANNED)) {
+            QProcess::startDetached("shutdown", { "/r", "/t", "7" });
+        }
     }
 #else
     if (!QProcess::startDetached("systemctl", { "reboot" })) {
@@ -72,14 +79,14 @@ void DlgCloseForm::btn_restart_clicked()
         }
     }
 #endif
-
-    // 这里可做自定义清理（日志 flush 等）
-
-    qApp->quit();
 }
 
 void DlgCloseForm::btn_yes_clicked()
 {
+    // 先退出 Qt 应用，让主窗口析构完成配置保存，再由系统延迟关机，
+    // 避免关机强杀进程导致内存中的配置丢失
+    qApp->quit();
+
 #ifdef Q_OS_WIN
     // 提升关机权限（与重启相同）
     HANDLE hToken = nullptr;
@@ -93,11 +100,13 @@ void DlgCloseForm::btn_yes_clicked()
         CloseHandle(hToken);
     }
 
-    // 关机并尝试切断电源；仅强制无响应进程
-    if (!ExitWindowsEx(EWX_SHUTDOWN | EWX_POWEROFF | EWX_FORCEIFHUNG,
-        SHTDN_REASON_MAJOR_APPLICATION | SHTDN_REASON_MINOR_OTHER | SHTDN_REASON_FLAG_PLANNED)) {
-        // 回退：给 7 秒缓冲
-        QProcess::startDetached("shutdown", { "/s", "/t", "7" });
+    // 延迟 5 秒关机并切断电源，给应用退出和配置落盘留出时间；detached 进程不受本应用退出影响
+    if (!QProcess::startDetached("shutdown", { "/s", "/f", "/t", "5" })) {
+        // 回退：立即关机（存在应用未退出即被强杀的风险）
+        if (!ExitWindowsEx(EWX_SHUTDOWN | EWX_POWEROFF | EWX_FORCEIFHUNG,
+            SHTDN_REASON_MAJOR_APPLICATION | SHTDN_REASON_MINOR_OTHER | SHTDN_REASON_FLAG_PLANNED)) {
+            QProcess::startDetached("shutdown", { "/s", "/t", "7" });
+        }
     }
 #else
     // 依次尝试 systemd、传统命令、再回退到延迟方式
@@ -107,8 +116,6 @@ void DlgCloseForm::btn_yes_clicked()
         }
     }
 #endif
-
-    qApp->quit(); // 退出当前 Qt 应用进程
 }
 
 void DlgCloseForm::btn_no_clicked()

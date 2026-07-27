@@ -64,6 +64,8 @@ void AutoExposureModule::onExposureStats(double meanIntensity, double overRatio,
 	constexpr double maxStep = 500.0;
 	constexpr double deadBand = 30.0;         // 死区与最小步进对齐，避免小范围来回跳动
 	constexpr double errorThreshold = 0.02;   // 仅对均值误差生效，抑制轻微亮度波动
+	constexpr double fastRampFactor = 1.5;    // 严重欠曝/过曝时的几何爬坡倍率
+	constexpr double fastRampRatio = 0.5;     // 欠曝/过曝像素比例超过该值判定为严重偏离
 
 	if (isMeanError && std::abs(error) < errorThreshold) {
 		return;
@@ -81,13 +83,25 @@ void AutoExposureModule::onExposureStats(double meanIntensity, double overRatio,
 		currentExposure = lastExposure > 0.0 ? lastExposure : fallbackExposure;
 	}
 
-	double delta = currentExposure * kp * error;
-	delta = std::clamp(delta, -maxStep, maxStep);
-	if (std::abs(delta) < minStep) {
-		delta = (delta >= 0.0) ? minStep : -minStep;
+	double newExposure = 0.0;
+	if (underRatio > fastRampRatio && overRatio <= setConfig.autoExposureMaxOverRatio) {
+		// 严重欠曝（如冷启动黑图）：几何倍率快速拉亮，几秒内进入可见亮度区间；
+		// 与 minStep 取大，保证低曝光段不被死区阻塞。
+		// 注：同时存在较多过曝像素（高反差场景）时不走快速拉亮，交由比例微调压暗
+		newExposure = std::max(currentExposure * fastRampFactor, currentExposure + minStep);
 	}
-
-	double newExposure = currentExposure + delta;
+	else if (overRatio > fastRampRatio) {
+		// 严重过曝：对称快速压暗
+		newExposure = std::min(currentExposure / fastRampFactor, currentExposure - minStep);
+	}
+	else {
+		double delta = currentExposure * kp * error;
+		delta = std::clamp(delta, -maxStep, maxStep);
+		if (std::abs(delta) < minStep) {
+			delta = (delta >= 0.0) ? minStep : -minStep;
+		}
+		newExposure = currentExposure + delta;
+	}
 	newExposure = std::clamp(newExposure,
 		setConfig.autoExposureMinExposure,
 		setConfig.autoExposureMaxExposure);
@@ -105,5 +119,25 @@ void AutoExposureModule::onExposureStats(double meanIntensity, double overRatio,
 	}
 	_lastAdjustTime = now;
 
+	persistLastExposureThrottled(newExposure, now);
+
 	emit autoExposureInfoReady(newExposure, meanIntensity, overRatio, underRatio);
+}
+
+void AutoExposureModule::persistLastExposureThrottled(double newExposure, std::chrono::steady_clock::time_point now)
+{
+	// 部署机常直接断电关机，仅靠退出时落盘会丢失收敛好的曝光值，
+	// 这里在调节后按 10 秒节流落盘，断电最多丢失最近 10 秒的调节量。
+	// 注意：本函数在主线程执行文件 IO（含备份轮转与写后校验），节流后开销可忽略
+	constexpr auto saveInterval = std::chrono::seconds(10);
+	if (now - _lastSaveTime < saveInterval) {
+		return;
+	}
+	if (std::abs(newExposure - _lastSavedExposure) < 1.0) {
+		return;
+	}
+	if (Modules::getInstance().configManagerModule.saveConfigSafe()) {
+		_lastSaveTime = now;
+		_lastSavedExposure = newExposure;
+	}
 }

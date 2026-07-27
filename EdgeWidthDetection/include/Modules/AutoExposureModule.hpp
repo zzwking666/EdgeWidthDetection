@@ -25,7 +25,11 @@ signals:
 		double overRatio, double underRatio);
 
 private:
+	void persistLastExposureThrottled(double newExposure, std::chrono::steady_clock::time_point now);
+
 	bool _enabled{ false };
 	size_t _cameraIndex{ 1 };
 	std::chrono::steady_clock::time_point _lastAdjustTime;
+	std::chrono::steady_clock::time_point _lastSaveTime;   // 默认零点，首次调节后立即落盘
+	double _lastSavedExposure{ 0.0 };
 };

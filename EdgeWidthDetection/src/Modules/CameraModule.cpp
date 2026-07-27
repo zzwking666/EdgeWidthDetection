@@ -76,10 +76,10 @@ bool CameraModule::build_camera1()
 			camera1->setFrameRate(50);
 			camera1->setHeartbeatTime(5000);
 			size_t initExposure = static_cast<size_t>(globalDataSetConfig.ruoguang1);
-		if (globalDataSetConfig.autoExposureEnabled1 && globalDataSetConfig.autoExposureLastExposure1 > 0.0) {
-			initExposure = static_cast<size_t>(globalDataSetConfig.autoExposureLastExposure1);
-		}
-		camera1->setExposureTime(initExposure);
+			if (globalDataSetConfig.autoExposureEnabled1 && globalDataSetConfig.autoExposureLastExposure1 > 0.0) {
+				initExposure = static_cast<size_t>(globalDataSetConfig.autoExposureLastExposure1);
+			}
+			camera1->setExposureTime(initExposure);
 			camera1->setGain(static_cast<size_t>(globalDataSetConfig.zengyi1));
 
 			QObject::connect(camera1.get(), &rw::rqw::CameraPassiveThread::frameCaptured,
