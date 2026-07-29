@@ -11,6 +11,7 @@
 #include "oso_func.hpp"
 #include "RuntimeInfoModule.hpp"
 #include "UIModule.hpp"
+#include "UpsMonitorModule.hpp"
 #include "ReconnectModule.hpp"
 #include "rqw_RunEnvCheck.hpp"
 #include "TestModule.hpp"
@@ -45,6 +46,8 @@ public:
 #pragma endregion
 public:
 	static bool check();
+	/// 向 upsRecord 目录写一条断电/关机事件凭证文件，内容含时间戳，用于现场验证配置已保存
+	static void writeUpsRecord(const QString& content);
 	template<class TypeCanToAssembly>
 	static void checkFileExistAndFormat(const QString& path, const rw::oso::StorageContext& context);
 	static bool EnsureDirectoryExists(const QString& dirPath);
@@ -61,6 +64,7 @@ public:
 	ImgProModule imgProModule;
 	EliminateModule eliminateModule;
 	PlcController plcController;
+	UpsMonitorModule upsMonitorModule;
 #ifdef BUILD_WITHOUT_HARDWARE
 public:
 	TestModule test_module;

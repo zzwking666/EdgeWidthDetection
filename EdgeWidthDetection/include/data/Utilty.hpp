@@ -15,6 +15,8 @@ public:
 	QString modelPath = modelRootPath + R"(EdgeWidthDetection.engine)";
 public:
 	QString imageSaveRootPath = projectHome + R"(savedImages\)";
+	/// UPS 断电事件凭证文件保存目录（每次断电/关机保存配置时写一条记录）
+	QString upsRecordRootPath = projectHome + R"(upsRecord\)";
 public:
 	QString testImgDirPath = R"(D:\ImgStorage\EdgeWidthDetection)";
 }globalPath;

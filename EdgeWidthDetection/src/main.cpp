@@ -39,9 +39,11 @@ int main(int argc, char* argv[])
 		[](QSessionManager& sessionManager) {
 			Q_UNUSED(sessionManager);
 			auto& configManager = Modules::getInstance().configManagerModule;
-			configManager.saveEdgeWidthDetectionConfigSafe();
-			configManager.saveConfigSafe();
-			LOG_INFO("检测到系统关机，配置已保存");
+			bool saveOk = configManager.saveEdgeWidthDetectionConfigSafe()
+				&& configManager.saveConfigSafe();
+			Modules::writeUpsRecord(QString("系统关机（UPS 触发或手动），配置保存%1")
+				.arg(saveOk ? "成功" : "失败"));
+			LOG_INFO("检测到系统关机，配置保存{}", saveOk ? "成功" : "失败");
 			LOG_FLUSH();
 		});
 

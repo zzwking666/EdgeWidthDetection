@@ -1,11 +1,14 @@
 #include "Modules.hpp"
 
+#include <QDateTime>
 #include <QDir>
+#include <QFile>
 #include <QMessageBox>
 
 #include "DlgProductSet.h"
 #include "EdgeWidthDetection.h"
 #include "EdgeWidthDetection.hpp"
+#include "lgm_PreDef.hpp"
 #include "LicenseManager.hpp"
 #include "rqw_RunEnvCheck.hpp"
 #include "SetConfig.hpp"
@@ -57,6 +60,9 @@ bool Modules::build()
 	// 构建PLC控制模块
 	plcController.build();
 
+	// 构建 UPS 电源监控模块
+	upsMonitorModule.build();
+
 #ifdef BUILD_WITHOUT_HARDWARE
 	test_module.build();
 #endif
@@ -78,6 +84,7 @@ void Modules::destroy()
 	reconnectModule.destroy();
 	eliminateModule.destroy();
 	imgSaveModule.destroy();
+	upsMonitorModule.destroy();
 }
 
 void Modules::start()
@@ -202,6 +209,34 @@ void Modules::connect()
 		uiModule._dlgProductSet, &DlgProductSet::onUpdatePLCInfo);
 #pragma endregion
 
+#pragma region connect UpsMonitorModule
+	// 市电中断（切换到 UPS 电池供电）的瞬间：立即保存配置、写凭证文件、更新界面 UPS 状态，
+	// 不等 WinPower 触发系统关机，即使关机流程异常配置也已落盘
+	QObject::connect(&upsMonitorModule, &UpsMonitorModule::acPowerLost,
+		uiModule._edgeWidthDetection, [this](int batteryPercent) {
+			bool saveOk = configManagerModule.saveEdgeWidthDetectionConfigSafe()
+				&& configManagerModule.saveConfigSafe();
+			writeUpsRecord(QString("市电中断，UPS 电池供电（剩余电量 %1%），配置保存%2")
+				.arg(batteryPercent).arg(saveOk ? "成功" : "失败"));
+			LOG_WARN("市电中断：已保存配置（{}）", saveOk ? "成功" : "失败");
+			LOG_FLUSH();
+			if (uiModule._edgeWidthDetection)
+			{
+				uiModule._edgeWidthDetection->updateUpsState(true, batteryPercent, saveOk);
+			}
+		}, Qt::QueuedConnection);
+
+	// 市电恢复：界面状态恢复为市电正常
+	QObject::connect(&upsMonitorModule, &UpsMonitorModule::acPowerRestored,
+		uiModule._edgeWidthDetection, [this]() {
+			writeUpsRecord("市电恢复正常供电");
+			if (uiModule._edgeWidthDetection)
+			{
+				uiModule._edgeWidthDetection->updateUpsState(false, -1, true);
+			}
+		}, Qt::QueuedConnection);
+#pragma endregion
+
 #ifdef BUILD_WITHOUT_HARDWARE
 	QObject::connect(test_module.testImgPushThread.get(), &TestImgPushThread::imgReady,
 		imgProModule.imageProcessingModule1.get(), &ImageProcessingModule::onFrameCaptured, Qt::DirectConnection);
@@ -239,6 +274,7 @@ bool Modules::check()
 	EnsureDirectoryExists(globalPath.configRootPath);
 	EnsureDirectoryExists(globalPath.modelRootPath);
 	EnsureDirectoryExists(globalPath.imageSaveRootPath);
+	EnsureDirectoryExists(globalPath.upsRecordRootPath);
 #pragma endregion
 
 #pragma region check model exist
@@ -268,6 +304,25 @@ bool Modules::check()
 //#pragma endregion
 
 	return true;
+}
+
+void Modules::writeUpsRecord(const QString& content)
+{
+	// 确保目录存在（check() 已创建，这里兜底，因为关机回调可能发生在非常规路径）
+	QDir().mkpath(globalPath.upsRecordRootPath);
+
+	const QDateTime now = QDateTime::currentDateTime();
+	const QString fileName = globalPath.upsRecordRootPath
+		+ "UPS_" + now.toString("yyyyMMdd_HHmmss_zzz") + ".txt";
+
+	QFile file(fileName);
+	if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+	{
+		file.write(QString("[%1] %2\n")
+			.arg(now.toString("yyyy-MM-dd HH:mm:ss.zzz"), content)
+			.toUtf8());
+		file.flush();
+	}
 }
 
 bool Modules::EnsureDirectoryExists(const QString& dirPath)
