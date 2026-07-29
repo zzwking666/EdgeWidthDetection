@@ -1,4 +1,5 @@
 #include <QMessageBox>
+#include <QSessionManager>
 #include <QtWidgets/QApplication>
 #include <windows.h>
 
@@ -6,6 +7,7 @@
 #include "EdgeWidthDetection.h"
 #include "imgPro_Logger.hpp"
 #include "lgm_Logger.hpp"
+#include "lgm_PreDef.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -28,6 +30,20 @@ int main(int argc, char* argv[])
 	Modules::getInstance().uiModule._edgeWidthDetection = &w;
 	Modules::getInstance().connect();
 	Modules::getInstance().start();
+
+	// 系统关机/注销时（如 UPS 触发的自动关机），Windows 会先发 WM_QUERYENDSESSION，
+	// Qt 将其转为 commitDataRequest 信号。在此处立即保存配置，不等主窗口析构，
+	// 防止关机流程被强制终止时（shutdown /f 或超时强杀）来不及走 destroy()。
+	// 注意：此阶段 Windows 只给每个进程几秒时间，禁止弹窗或耗时操作。
+	QObject::connect(&a, &QGuiApplication::commitDataRequest, &a,
+		[](QSessionManager& sessionManager) {
+			Q_UNUSED(sessionManager);
+			auto& configManager = Modules::getInstance().configManagerModule;
+			configManager.saveEdgeWidthDetectionConfigSafe();
+			configManager.saveConfigSafe();
+			LOG_INFO("检测到系统关机，配置已保存");
+			LOG_FLUSH();
+		});
 
 	w.setFixedSize(1920, 1080);
 #ifdef NDEBUG
