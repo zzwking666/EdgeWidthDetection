@@ -43,9 +43,6 @@ public:
 public slots:
 	void updateCameraLabelState(int cameraIndex, bool state);
 
-	/// 更新 UPS 供电状态显示：市电中断时显示"UPS 供电 + 电量 + 配置保存结果与时间"
-	void updateUpsState(bool onBattery, int batteryPercent, bool saveOk);
-
 	void onUpdateStatisticalInfoUI();
 
 	void onUpdatePLCWarnningInfoUI(uint16_t warnningInfo);

@@ -9,7 +9,6 @@
 #include "ui_EdgeWidthDetection.h"
 #include <QPushButton>
 #include <QButtonGroup>
-#include <QTime>
 #include <fmt/ranges.h>
 
 #include "DlgLicense.h"
@@ -259,31 +258,6 @@ void EdgeWidthDetection::build_plcController()
 	auto& plcController = Modules::getInstance().plcController;
 	auto build_Result = plcController.getBuildResult();
 	updateCameraLabelState(0, build_Result);
-}
-
-void EdgeWidthDetection::updateUpsState(bool onBattery, int batteryPercent, bool saveOk)
-{
-	if (onBattery)
-	{
-		const QString timeStr = QTime::currentTime().toString("HH:mm:ss");
-		const QString batteryStr = (batteryPercent >= 0 && batteryPercent <= 100)
-			? QString(" 电量%1%").arg(batteryPercent) : QString();
-		if (saveOk)
-		{
-			ui->label_upsState->setText(QString("UPS供电%1 已保存 %2").arg(batteryStr, timeStr));
-			ui->label_upsState->setStyleSheet(QString("QLabel{color:rgb(255, 170, 0);font-size: 18px;font-weight: bold;padding: 5px 5px;} "));
-		}
-		else
-		{
-			ui->label_upsState->setText(QString("UPS供电%1 保存失败!").arg(batteryStr));
-			ui->label_upsState->setStyleSheet(QString("QLabel{color:rgb(230, 0, 0);font-size: 18px;font-weight: bold;padding: 5px 5px;} "));
-		}
-	}
-	else
-	{
-		ui->label_upsState->setText("市电正常");
-		ui->label_upsState->setStyleSheet(QString("QLabel{color:rgb(0, 230, 0);font-size: 18px;font-weight: bold;padding: 5px 5px;} "));
-	}
 }
 
 void EdgeWidthDetection::updateCameraLabelState(int cameraIndex, bool state)

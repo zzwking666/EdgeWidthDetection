@@ -60,9 +60,6 @@ bool Modules::build()
 	// 构建PLC控制模块
 	plcController.build();
 
-	// 构建 UPS 电源监控模块
-	upsMonitorModule.build();
-
 #ifdef BUILD_WITHOUT_HARDWARE
 	test_module.build();
 #endif
@@ -84,7 +81,6 @@ void Modules::destroy()
 	reconnectModule.destroy();
 	eliminateModule.destroy();
 	imgSaveModule.destroy();
-	upsMonitorModule.destroy();
 }
 
 void Modules::start()
@@ -207,34 +203,6 @@ void Modules::connect()
 #pragma region connect UIModule and RuntimeInfoModule
 	QObject::connect(plcController.plcListenThread.get(), &DetachPLCListenThread::updatePLCInfo,
 		uiModule._dlgProductSet, &DlgProductSet::onUpdatePLCInfo);
-#pragma endregion
-
-#pragma region connect UpsMonitorModule
-	// 市电中断（切换到 UPS 电池供电）的瞬间：立即保存配置、写凭证文件、更新界面 UPS 状态，
-	// 不等 WinPower 触发系统关机，即使关机流程异常配置也已落盘
-	QObject::connect(&upsMonitorModule, &UpsMonitorModule::acPowerLost,
-		uiModule._edgeWidthDetection, [this](int batteryPercent) {
-			bool saveOk = configManagerModule.saveEdgeWidthDetectionConfigSafe()
-				&& configManagerModule.saveConfigSafe();
-			writeUpsRecord(QString("市电中断，UPS 电池供电（剩余电量 %1%），配置保存%2")
-				.arg(batteryPercent).arg(saveOk ? "成功" : "失败"));
-			LOG_WARN("市电中断：已保存配置（{}）", saveOk ? "成功" : "失败");
-			LOG_FLUSH();
-			if (uiModule._edgeWidthDetection)
-			{
-				uiModule._edgeWidthDetection->updateUpsState(true, batteryPercent, saveOk);
-			}
-		}, Qt::QueuedConnection);
-
-	// 市电恢复：界面状态恢复为市电正常
-	QObject::connect(&upsMonitorModule, &UpsMonitorModule::acPowerRestored,
-		uiModule._edgeWidthDetection, [this]() {
-			writeUpsRecord("市电恢复正常供电");
-			if (uiModule._edgeWidthDetection)
-			{
-				uiModule._edgeWidthDetection->updateUpsState(false, -1, true);
-			}
-		}, Qt::QueuedConnection);
 #pragma endregion
 
 #ifdef BUILD_WITHOUT_HARDWARE

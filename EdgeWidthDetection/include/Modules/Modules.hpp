@@ -11,7 +11,6 @@
 #include "oso_func.hpp"
 #include "RuntimeInfoModule.hpp"
 #include "UIModule.hpp"
-#include "UpsMonitorModule.hpp"
 #include "ReconnectModule.hpp"
 #include "rqw_RunEnvCheck.hpp"
 #include "TestModule.hpp"
@@ -64,7 +63,6 @@ public:
 	ImgProModule imgProModule;
 	EliminateModule eliminateModule;
 	PlcController plcController;
-	UpsMonitorModule upsMonitorModule;
 #ifdef BUILD_WITHOUT_HARDWARE
 public:
 	TestModule test_module;
