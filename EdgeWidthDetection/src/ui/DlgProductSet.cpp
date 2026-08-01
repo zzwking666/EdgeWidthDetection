@@ -1,12 +1,9 @@
 #include "DlgProductSet.h"
 #include "ui_DlgProductSet.h"
 
-#include <QGridLayout>
 #include <QGroupBox>
-#include <QLabel>
 #include <QMessageBox>
 #include <QTabWidget>
-#include <QVBoxLayout>
 #include <QtConcurrent/qtconcurrentrun.h>
 #include "Modules.hpp"
 #include "NumberKeyboard.h"
@@ -131,61 +128,27 @@ void DlgProductSet::save_config()
 
 void DlgProductSet::buildCircularWriteUi()
 {
-	// 三个功能固定各占 60 个 Modbus 地址（仅写偶数地址），每个地址一个显示按钮，按钮上方标签显示地址号
+	// 三个功能固定各占 60 个 Modbus 地址（仅写偶数地址）。
+	// 显示区分组框与 60 个按钮已在 DlgProductSet.ui 中静态布局，这里按 objectName 查找并缓存，
+	// 下标 i 对应功能块内第 i 个地址（基地址 = funcIndex * 60）
 	struct FuncUiInfo
 	{
-		QString title;		// 分组标题
-		int funcIndex;		// 功能下标（对应 _plcCircularButtons）
-		int baseAddress;	// 起始地址
-		QWidget* tab;		// 所在标签页
+		QGroupBox* groupBox;	// 分组框（按钮的查找父对象）
+		QString prefix;			// 按钮 objectName 前缀
 	};
 	const FuncUiInfo funcs[] = {
-		{ QStringLiteral("冷刀压痕（地址 0~59）"),     0,   0, ui->tab_11 },
-		{ QStringLiteral("中心偏移值（地址 60~119）"), 1,  60, ui->tab_11 },
-		{ QStringLiteral("切刀压痕（地址 120~179）"),  2, 120, ui->tab_12 },
+		{ ui->groupBox_lengdaoyahen,      QStringLiteral("btn_lengdaoyahen_") },		// 0=冷刀压痕 0~59
+		{ ui->groupBox_zhongxinpianyizhi, QStringLiteral("btn_zhongxinpianyizhi_") },	// 1=中心偏移值 60~119
+		{ ui->groupBox_qiedaoyahen,       QStringLiteral("btn_qiedaoyahen_") },		// 2=切刀压痕 120~179
 	};
 
-	for (const auto& func : funcs)
+	for (int f = 0; f < 3; ++f)
 	{
-		auto* groupBox = new QGroupBox(func.title, func.tab);
-		groupBox->setStyleSheet(
-			"QGroupBox { border: 1px solid #DDD; border-radius: 4px; font: bold 14px; color: #666; background-color: #F8F8F8; }"
-			"QGroupBox::title { subcontrol-origin: margin; subcontrol-position: top left; left: 10px; padding: 0 5px; }");
-		auto* grid = new QGridLayout(groupBox);
-		grid->setSpacing(4);
-
-		_plcCircularButtons[func.funcIndex].resize(60);
+		_plcCircularButtons[f].resize(60);
 		for (int i = 0; i < 60; ++i)
 		{
-			const int address = func.baseAddress + i;
-
-			auto* addrLabel = new QLabel(QString::number(address), groupBox);
-			addrLabel->setAlignment(Qt::AlignCenter);
-			addrLabel->setStyleSheet("QLabel { color: #666; font-size: 12px; background: transparent; }");
-
-			auto* btn = new QPushButton(groupBox);
-			btn->setFixedSize(64, 28);
-			btn->setStyleSheet(
-				"QPushButton { border: 1px solid #CCC; border-radius: 3px; background-color: white; color: #444; font-size: 13px; }"
-				"QPushButton:disabled { background-color: #F0F0F0; color: #BBB; }");
-
-			if (address % 2 != 0)
-			{
-				// 奇数地址不进行写入，按钮置灰留空
-				btn->setEnabled(false);
-			}
-
-			auto* cellLayout = new QVBoxLayout();
-			cellLayout->setSpacing(1);
-			cellLayout->setContentsMargins(0, 0, 0, 0);
-			cellLayout->addWidget(addrLabel);
-			cellLayout->addWidget(btn);
-			grid->addLayout(cellLayout, i / 10, i % 10);
-
-			_plcCircularButtons[func.funcIndex][i] = btn;
+			_plcCircularButtons[f][i] = funcs[f].groupBox->findChild<QPushButton*>(funcs[f].prefix + QString::number(i));
 		}
-
-		func.tab->layout()->addWidget(groupBox);
 	}
 }
 
@@ -200,12 +163,12 @@ void DlgProductSet::onPlcCircularWrite(int funcIndex, int writeAddress, double v
 
 	// 先清零旧槽位再显示新写入值（与 PLC 侧先清后写顺序一致，两槽相同时保证显示的是写入值）
 	const int clearIndex = clearAddress - baseAddress;
-	if (clearIndex >= 0 && clearIndex < buttons.size())
+	if (clearIndex >= 0 && clearIndex < buttons.size() && buttons[clearIndex])
 	{
 		buttons[clearIndex]->setText("");
 	}
 	const int writeIndex = writeAddress - baseAddress;
-	if (writeIndex >= 0 && writeIndex < buttons.size())
+	if (writeIndex >= 0 && writeIndex < buttons.size() && buttons[writeIndex])
 	{
 		buttons[writeIndex]->setText(QString::number(value, 'f', 2));
 	}
