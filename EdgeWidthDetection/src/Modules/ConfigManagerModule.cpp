@@ -20,6 +20,10 @@ bool ConfigManagerModule::build()
         qWarning() << "使用默认 SetConfig";
     }
 
+    // 程序开机默认开启两个相机的自动曝光，用户仍可在界面上手动切换到弱光/中光/强光固定档位
+    setConfig.autoExposureEnabled1 = true;
+    setConfig.autoExposureEnabled2 = true;
+
 	return true;
 }
 
