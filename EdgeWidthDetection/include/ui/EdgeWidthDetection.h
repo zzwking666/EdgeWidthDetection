@@ -83,6 +83,14 @@ private:
 	void refreshExposureInfo();
 	void updateExposureInfoVisibility();
 
+	// 根据相机/PLC连接状态刷新标题栏背景色（任一未连接则置红）
+	void updateHeadBackground();
+
+	// 各设备连接状态缓存，用于决定标题栏背景色
+	bool _camera1Connected{ true };
+	bool _camera2Connected{ true };
+	bool _plcConnected{ true };
+
 	rw::rqw::ClickableLabel* clickableTitle = nullptr;
 	DlgCloseForm* _dlgCloseForm = nullptr;
 	PictureViewerThumbnails* _picturesViewer = nullptr;

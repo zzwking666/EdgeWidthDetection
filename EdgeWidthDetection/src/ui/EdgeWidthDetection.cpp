@@ -254,41 +254,54 @@ void EdgeWidthDetection::build_plcController()
 
 void EdgeWidthDetection::updateCameraLabelState(int cameraIndex, bool state)
 {
+	// 连接成功：绿色文字；连接失败：白色文字 + 橙色背景
+	//（连接失败时标题栏背景会变红，红字会重叠看不清，故失败项改用橙色底白字）
+	const QString successStyle = "QLabel{color:rgb(0, 230, 0);font-size: 18px;font-weight: bold;padding: 5px 5px;}";
+	const QString failStyle = "QLabel{color:rgb(255, 255, 255);background-color:rgb(255, 165, 0);font-size: 18px;font-weight: bold;padding: 5px 5px;}";
+
 	switch (cameraIndex)
 	{
 	case 0:
-		if (state) {
-			ui->label_plc1State->setText("连接成功");
-			ui->label_plc1State->setStyleSheet(QString("QLabel{color:rgb(0, 230, 0);font-size: 18px;font - weight: bold;padding: 5px 5px;} "));
-		}
-		else {
-			ui->label_plc1State->setText("连接失败");
-			ui->label_plc1State->setStyleSheet(QString("QLabel{color:rgb(230, 0, 0);font-size: 18px;font - weight: bold;padding: 5px 5px;} "));
-		}
+		_plcConnected = state;
+		ui->label_plc1State->setText(state ? "连接成功" : "连接失败");
+		ui->label_plc1State->setStyleSheet(state ? successStyle : failStyle);
 		break;
 	case 1:
-		if (state) {
-			ui->label_camera1State->setText("连接成功");
-			ui->label_camera1State->setStyleSheet(QString("QLabel{color:rgb(0, 230, 0);font-size: 18px;font - weight: bold;padding: 5px 5px;} "));
-		}
-		else {
-			ui->label_camera1State->setText("连接失败");
-			ui->label_camera1State->setStyleSheet(QString("QLabel{color:rgb(230, 0, 0);font-size: 18px;font - weight: bold;padding: 5px 5px;} "));
-		}
+		_camera1Connected = state;
+		ui->label_camera1State->setText(state ? "连接成功" : "连接失败");
+		ui->label_camera1State->setStyleSheet(state ? successStyle : failStyle);
 		break;
 	case 2:
-		if (state) {
-			ui->label_camera2State->setText("连接成功");
-			ui->label_camera2State->setStyleSheet(QString("QLabel{color:rgb(0, 230, 0);font-size: 18px;font - weight: bold;padding: 5px 5px;} "));
-		}
-		else {
-			ui->label_camera2State->setText("连接失败");
-			ui->label_camera2State->setStyleSheet(QString("QLabel{color:rgb(230, 0, 0);font-size: 18px;font - weight: bold;padding: 5px 5px;} "));
-		}
+		_camera2Connected = state;
+		ui->label_camera2State->setText(state ? "连接成功" : "连接失败");
+		ui->label_camera2State->setStyleSheet(state ? successStyle : failStyle);
 		break;
 	default:
-		break;
+		return;
 	}
+
+	updateHeadBackground();
+}
+
+void EdgeWidthDetection::updateHeadBackground()
+{
+	// 任一相机或PLC未连接成功时，标题栏背景置红作醒目提示；全部正常时恢复默认灰色
+	const bool allConnected = _camera1Connected && _camera2Connected && _plcConnected;
+	const QString backgroundColor = allConnected ? "rgb(81, 81, 81)" : "rgb(230, 0, 0)";
+	ui->groupBox_head->setStyleSheet(QString(
+		"QGroupBox {"
+		"font-size: 20px;"
+		"font-weight: bold;"
+		"background-color: %1;"
+		"border: 1px solid #e0e0e0;"
+		"border-radius: 15px;"
+		"}"
+		"QGroupBox::title {"
+		"subcontrol-origin: margin;"
+		"left: 10px;"
+		"padding: 0 5px;"
+		"color: #2c3e50;"
+		"}").arg(backgroundColor));
 }
 
 void EdgeWidthDetection::onUpdateStatisticalInfoUI()
