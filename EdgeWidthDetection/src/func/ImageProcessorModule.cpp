@@ -174,8 +174,13 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	auto defectResult = imgPro.getDefectResultInfo();
 	auto processResult = imgPro.getContext().getProcessResult();
 
+	// 统计：每处理一帧拍照总量 +1（调试模式不进入此函数，不计数）
+	auto& statisticalInfo = Modules::getInstance().runtimeInfoModule.statisticalInfo;
+	++statisticalInfo.camera1PhotoCount;
+
 	double width = 0.0;
 	double centerDiffMm = 0.0;
+	bool recognized = false;	// 本帧是否向 PLC 写入有效压痕宽度，未写入（写 0）则计入未识别总量
 
 	// 计算识别中心点与图像中心点差值
 	if (processResult.size() == 1)
@@ -207,7 +212,14 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 			width = std::any_cast<int>(imgPro.context().customFields["width"]) * pixToWorld;
 
 			drawImg(maskImg, processResult, centerDiffMm);
+			recognized = true;
 		}
+	}
+
+	// 本帧未向 PLC 写入有效值（写 0），计入未识别总量
+	if (!recognized)
+	{
+		++statisticalInfo.camera1UnrecognizedCount;
 	}
 
 	// 每张处理图都向固定地址区间（冷刀压痕：0~59 中的偶数地址）循环写入一次实测压痕宽度并推进槽位，无有效识别时写 0
@@ -257,7 +269,12 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 	auto defectResult = imgPro.getDefectResultInfo();
 	auto processResult = imgPro.getContext().getProcessResult();
 
+	// 统计：每处理一帧拍照总量 +1（调试模式不进入此函数，不计数）
+	auto& statisticalInfo = Modules::getInstance().runtimeInfoModule.statisticalInfo;
+	++statisticalInfo.camera2PhotoCount;
+
 	double width = 0.0;
+	bool recognized = false;	// 本帧是否向 PLC 写入有效压痕宽度，未写入（写 0）则计入未识别总量
 
 	if (defectResult.defects.size() == 1)
 	{
@@ -266,7 +283,14 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 			auto pixToWorld = setConfig.xiangsudangliang2;
 			width = std::any_cast<int>(imgPro.context().customFields["width"]) * pixToWorld;
 			drawImg(maskImg, processResult, 0.0);
+			recognized = true;
 		}
+	}
+
+	// 本帧未向 PLC 写入有效值（写 0），计入未识别总量
+	if (!recognized)
+	{
+		++statisticalInfo.camera2UnrecognizedCount;
 	}
 
 	// 每张处理图都向固定地址区间（切刀压痕：120~179 中的偶数地址）循环写入一次实测压痕宽度并推进槽位，无有效识别时写 0
@@ -299,22 +323,6 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 		{
 			rw::rqw::ImageInfo imageInfo(rw::rqw::cvMatToQImage(frame.image));
 			save_image(imageInfo, maskImg);
-		}
-	}
-}
-
-void ImageProcessor::run_OpenRemoveFunc_emitErrorInfo(bool isbad)
-{
-	if (isbad)
-	{
-		if (1 == imageProcessingModuleIndex)
-		{
-			Modules::getInstance().eliminateModule.productPriorityQueue1->push(true);
-			++Modules::getInstance().runtimeInfoModule.statisticalInfo.wasteCount;
-		}
-		else if (2 == imageProcessingModuleIndex)
-		{
-			++Modules::getInstance().runtimeInfoModule.statisticalInfo.wasteCount;
 		}
 	}
 }

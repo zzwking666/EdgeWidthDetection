@@ -478,9 +478,9 @@ QPushButton:pressed {
               </layout>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="hLayout_wasteProducts" stretch="1,2">
+              <layout class="QHBoxLayout" name="hLayout_camera1Photo" stretch="1,2">
                <item>
-                <widget class="QLabel" name="label_wasteProducts">
+                <widget class="QLabel" name="label_camera1Photo">
                  <property name="styleSheet">
                   <string notr="true">QLabel {
        font-size: 24px;        
@@ -491,7 +491,7 @@ QPushButton:pressed {
     }</string>
                  </property>
                  <property name="text">
-                  <string>废品总量</string>
+                  <string>相机1拍照总量</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
@@ -499,12 +499,12 @@ QPushButton:pressed {
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_wasteProductsValue">
+                <widget class="QLabel" name="label_camera1PhotoValue">
                  <property name="styleSheet">
                   <string notr="true">QLabel {
-       font-size: 24px;        
-       font-weight: bold;        
-       color:   rgb(255, 0, 0);      
+       font-size: 24px;
+       font-weight: bold;
+       color:   rgb(0, 0, 0);
        padding: 5px 5px;     
        border-bottom: 2px solid #cccccc; 
     }</string>
@@ -517,9 +517,9 @@ QPushButton:pressed {
               </layout>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="hLayout_wasteProducts_2" stretch="1,2">
+              <layout class="QHBoxLayout" name="hLayout_camera1Unrecognized" stretch="1,2">
                <item>
-                <widget class="QLabel" name="label_wasteProducts_2">
+                <widget class="QLabel" name="label_camera1Unrecognized">
                  <property name="styleSheet">
                   <string notr="true">QLabel {
        font-size: 24px;        
@@ -530,7 +530,7 @@ QPushButton:pressed {
     }</string>
                  </property>
                  <property name="text">
-                  <string>袋子实测长度</string>
+                  <string>相机1未识别总量</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
@@ -538,14 +538,92 @@ QPushButton:pressed {
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="lb_daizishicechangdu">
+                <widget class="QLabel" name="label_camera1UnrecognizedValue">
                  <property name="styleSheet">
                   <string notr="true">QLabel {
-       font-size: 24px;        
-       font-weight: bold;        
-       color:   rgb(0, 0, 0);      
+       font-size: 24px;
+       font-weight: bold;
+       color:   rgb(255, 0, 0);
        padding: 5px 5px;     
        border-bottom: 2px solid #cccccc; 
+    }</string>
+                 </property>
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="hLayout_camera2Photo" stretch="1,2">
+               <item>
+                <widget class="QLabel" name="label_camera2Photo">
+                 <property name="styleSheet">
+                  <string notr="true">QLabel {
+       font-size: 24px;
+       font-weight: bold;
+       color:  rgb(141, 141, 141);
+       padding: 5px 5px;
+       border-bottom: 2px solid #cccccc;
+    }</string>
+                 </property>
+                 <property name="text">
+                  <string>相机2拍照总量</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_camera2PhotoValue">
+                 <property name="styleSheet">
+                  <string notr="true">QLabel {
+       font-size: 24px;
+       font-weight: bold;
+       color:   rgb(0, 0, 0);
+       padding: 5px 5px;
+       border-bottom: 2px solid #cccccc;
+    }</string>
+                 </property>
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="hLayout_camera2Unrecognized" stretch="1,2">
+               <item>
+                <widget class="QLabel" name="label_camera2Unrecognized">
+                 <property name="styleSheet">
+                  <string notr="true">QLabel {
+       font-size: 24px;
+       font-weight: bold;
+       color:  rgb(141, 141, 141);
+       padding: 5px 5px;
+       border-bottom: 2px solid #cccccc;
+    }</string>
+                 </property>
+                 <property name="text">
+                  <string>相机2未识别总量</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_camera2UnrecognizedValue">
+                 <property name="styleSheet">
+                  <string notr="true">QLabel {
+       font-size: 24px;
+       font-weight: bold;
+       color:   rgb(255, 0, 0);
+       padding: 5px 5px;
+       border-bottom: 2px solid #cccccc;
     }</string>
                  </property>
                  <property name="text">

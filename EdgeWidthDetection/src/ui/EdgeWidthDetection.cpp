@@ -111,7 +111,6 @@ void EdgeWidthDetection::build_EdgeWidthDetectionData()
 	maiLiDingZiConfig.isSaveImg = true;
 	ui->ckb_saveImg->setChecked(true);
 
-	ui->label_wasteProductsValue->setText(QString::number(maiLiDingZiConfig.totalDefectiveVolume));
 	ui->rbtn_removeFunc->setChecked(maiLiDingZiConfig.isDefect);
 
 	rbtn_removeFunc_checked(true);
@@ -295,7 +294,10 @@ void EdgeWidthDetection::updateCameraLabelState(int cameraIndex, bool state)
 void EdgeWidthDetection::onUpdateStatisticalInfoUI()
 {
 	auto& statisticalInfo = Modules::getInstance().runtimeInfoModule.statisticalInfo;
-	ui->label_wasteProductsValue->setText(QString::number(statisticalInfo.wasteCount.load()));
+	ui->label_camera1PhotoValue->setText(QString::number(statisticalInfo.camera1PhotoCount.load()));
+	ui->label_camera1UnrecognizedValue->setText(QString::number(statisticalInfo.camera1UnrecognizedCount.load()));
+	ui->label_camera2PhotoValue->setText(QString::number(statisticalInfo.camera2PhotoCount.load()));
+	ui->label_camera2UnrecognizedValue->setText(QString::number(statisticalInfo.camera2UnrecognizedCount.load()));
 }
 
 void EdgeWidthDetection::onUpdatePLCWarnningInfoUI(uint16_t warnningInfo)
@@ -308,11 +310,6 @@ void EdgeWidthDetection::onUpdatePLCWarnningInfoUI(uint16_t warnningInfo)
 	{
 		ui->label_warnningInfo->setText("到达限位报警");
 	}
-}
-
-void EdgeWidthDetection::onUpdatePLCdaizishicechangduInfoUI(uint16_t warnningInfo)
-{
-	ui->lb_daizishicechangdu->setText(QString::number(warnningInfo));
 }
 
 void EdgeWidthDetection::onCameraDisplay(size_t index, QPixmap image)
@@ -424,9 +421,12 @@ void EdgeWidthDetection::rbtn_removeFunc_checked(bool checked)
 
 void EdgeWidthDetection::pbtn_resetProduct_clicked()
 {
-	auto& maiLiDingZiConfig = Modules::getInstance().configManagerModule.edgeWidthDetectionConfig;
-
-	maiLiDingZiConfig.totalDefectiveVolume = 0;
+	// 产量清零：清空两相机的拍照总量与未识别总量统计
+	auto& statisticalInfo = Modules::getInstance().runtimeInfoModule.statisticalInfo;
+	statisticalInfo.camera1PhotoCount = 0;
+	statisticalInfo.camera1UnrecognizedCount = 0;
+	statisticalInfo.camera2PhotoCount = 0;
+	statisticalInfo.camera2UnrecognizedCount = 0;
 
 	onUpdateStatisticalInfoUI();
 }

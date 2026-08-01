@@ -203,8 +203,6 @@ void Modules::connect()
 	// 原 label_warnningInfo 已改为显示自动曝光信息，PLC 报警信号不再连接到此标签
 	/*QObject::connect(runtimeInfoModule.detachUtiltyThread.get(), &DetachUtiltyThread::updatePLCWarnningInfo,
 		uiModule._edgeWidthDetection, &EdgeWidthDetection::onUpdatePLCWarnningInfoUI, Qt::QueuedConnection);*/
-	QObject::connect(runtimeInfoModule.detachUtiltyThread.get(), &DetachUtiltyThread::updatePLCdaizishicechangduInfo,
-		uiModule._edgeWidthDetection, &EdgeWidthDetection::onUpdatePLCdaizishicechangduInfoUI, Qt::QueuedConnection);
 #pragma endregion
 
 #pragma region connect UIModule and RuntimeInfoModule

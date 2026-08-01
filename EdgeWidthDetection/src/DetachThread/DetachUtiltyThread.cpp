@@ -28,7 +28,6 @@ void DetachUtiltyThread::run()
 	while (running) {
 		QThread::sleep(1);
 		emit updateStatisticalInfo();
-		readPLCdaizishicechangduInfo();
 		readPLCWarnningInfo();
 	}
 }
@@ -53,28 +52,5 @@ void DetachUtiltyThread::readPLCWarnningInfo()
 	else
 	{
 		qDebug() << "读取16位PLC报警信息失败";
-	}
-}
-
-void DetachUtiltyThread::readPLCdaizishicechangduInfo()
-{
-	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
-
-	if (!plcControllerScheduler) {
-		return;
-	}
-
-	auto fut = plcControllerScheduler->readUInt16RegisterAsync(
-		static_cast<uint16_t>(ModBusAddress::readPLCdaizishicechangduAddress)
-	);
-
-	auto result = fut.get();
-	if (result.second)
-	{
-		emit updatePLCdaizishicechangduInfo(static_cast<uint16_t>(result.first));
-	}
-	else
-	{
-		qDebug() << "读取16位PLC袋子实测长度信息失败";
 	}
 }

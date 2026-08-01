@@ -20,10 +20,8 @@ protected:
 signals:
 	void updateStatisticalInfo();
 	void updatePLCWarnningInfo(uint16_t result);
-	void updatePLCdaizishicechangduInfo(uint16_t result);
 private:
 	void readPLCWarnningInfo();
-	void readPLCdaizishicechangduInfo();
 private:
 	std::atomic<bool> running; // 使用原子变量保证线程安全
 };

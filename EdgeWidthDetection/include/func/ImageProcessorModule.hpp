@@ -41,8 +41,6 @@ private:
 private:
 	void run_OpenRemoveFunc(MatInfo& frame);	// 开启剔废功能时的处理模式
 	void run_OpenRemoveFunc2(MatInfo& frame);	// 相机2开启剔废时的处理（识别+算宽度+循环写入PLC，无剔废）
-
-	void run_OpenRemoveFunc_emitErrorInfo(bool isbad);
 signals:
 	void imageReady(size_t index, QPixmap image);
 	// PLC 循环写入回显：funcIndex 0=冷刀压痕 1=中心偏移值 2=切刀压痕
