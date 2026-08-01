@@ -8,6 +8,7 @@
 
 #include <qfuture.h>
 #include <qtconcurrentrun.h>
+#include <QDateTime>
 #include <atomic>
 #include "Utilty.hpp"
 #include <QPainter>
@@ -320,6 +321,11 @@ void ImageProcessor::save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage
 
 	if (config.isSaveImg && imageSaveEngine)
 	{
+		// 文件名格式：时分秒毫秒_年月日
+		imageInfo.time = QDateTime::currentDateTime().toString("hhmmsszzz_yyyyMMdd");
+		// 一相机与二相机的存图分别保存到日期目录下的 Camera1 / Camera2 子文件夹
+		imageInfo.dirName = (2 == imageProcessingModuleIndex) ? "Camera2" : "Camera1";
+
 		if (runningState == RunningState::OpenRemoveFunc)
 		{
 			imageInfo.classify = "OpenRemoveFuncNg";

@@ -107,16 +107,9 @@ void EdgeWidthDetection::build_EdgeWidthDetectionData()
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	maiLiDingZiConfig.isDebug = false;
 	maiLiDingZiConfig.isDefect = true;		// 默认开启剔废
-	if (setConfig.autoSaveImg)
-	{
-		maiLiDingZiConfig.isSaveImg = true;
-		ui->ckb_saveImg->setChecked(true);
-	}
-	else
-	{
-		maiLiDingZiConfig.isSaveImg = false;
-		ui->ckb_saveImg->setChecked(false);
-	}
+	// 程序初始化时默认开启存图，用户仍可在界面上手动关闭
+	maiLiDingZiConfig.isSaveImg = true;
+	ui->ckb_saveImg->setChecked(true);
 
 	ui->label_wasteProductsValue->setText(QString::number(maiLiDingZiConfig.totalDefectiveVolume));
 	ui->rbtn_removeFunc->setChecked(maiLiDingZiConfig.isDefect);
