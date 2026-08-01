@@ -46,42 +46,50 @@ namespace {
 		cv::rotate(image, image, cv::ROTATE_90_CLOCKWISE);
 	}
 
-	// 向 PLC 循环地址区间写入一个值：地址从 start 到 end 步进 2，每调用一次在当前槽位写 value
-	// 并推进一格，写满一轮回绕到起始；同时把"往前数 intervalSlots 格"的旧数据槽位写 0 清零。
-	// 配置三元组（start/end/intervalSlots）变化时槽位自动复位到 0。
-	// 配置非法或 PLC 未连接时不写入也不推进槽位。
-	inline void WritePlcCircular(int start, int end, int intervalSlots, PlcCircularWriteState& state, uint16_t value)
+	// 三个 PLC 循环写入功能的固定配置：每个功能占 60 个连续地址，仅写偶数地址（30 个槽位），
+	// 清旧数据固定间隔 20 格（即写入当前槽位时，把 20 格之前的旧数据写 0 清除）
+	constexpr int PLC_CIRCULAR_SLOT_COUNT = 30;		// 每个功能的写入槽位数（60 地址 / 步进 2）
+	constexpr int PLC_CIRCULAR_CLEAR_INTERVAL = 20;	// 删除旧数据间隔（格数）
+	constexpr int PLC_CIRCULAR_BASE_ADDR[3] = { 0, 60, 120 };	// 0=冷刀压痕 1=中心偏移值 2=切刀压痕
+
+	// 一次循环写入的结果地址（-1 表示本次未写入，如 PLC 未连接）
+	struct PlcCircularWriteResult
 	{
+		int writeAddress = -1;
+		int clearAddress = -1;
+	};
+
+	// 向 PLC 固定地址区间循环写入一个值：从 baseAddress 起按步进 2 共 slotCount 个槽位，
+	// 每调用一次在当前槽位写 value 并推进一格，写满一轮回绕到起始；
+	// 同时把"往前数 intervalSlots 格"的旧数据槽位写 0 清零。
+	// 返回本次写入与清零的地址，PLC 未连接时不写入并返回 -1。
+	inline PlcCircularWriteResult WritePlcCircular(int baseAddress, int slotCount, int intervalSlots, PlcCircularWriteState& state, uint16_t value)
+	{
+		PlcCircularWriteResult result;
 		auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
 		if (!plcControllerScheduler) {
 			qDebug() << "PLC disConnect!";
-			return;
+			return result;
 		}
-		if (start < 0 || end < start || (end - start) % 2 != 0 || intervalSlots < 0) {
-			qWarning() << "PLC 循环写入配置非法，已跳过: start =" << start << ", end =" << end
-				<< ", interval =" << intervalSlots << "（要求 0 <= start <= end，(end-start) 为偶数，interval >= 0）";
-			return;
-		}
-
-		// 配置变化时复位到起始槽位
-		if (state.start != start || state.end != end || state.interval != intervalSlots) {
-			state.slot = 0;
-			state.start = start;
-			state.end = end;
-			state.interval = intervalSlots;
+		if (baseAddress < 0 || slotCount <= 0 || intervalSlots < 0) {
+			qWarning() << "PLC 循环写入参数非法，已跳过: base =" << baseAddress
+				<< ", slotCount =" << slotCount << ", interval =" << intervalSlots;
+			return result;
 		}
 
-		const int totalSlots = (end - start) / 2 + 1;
 		// 清零槽位 = 当前槽位往前数 intervalSlots 格（循环回绕；C++ 负数取模需二次修正）
-		const int clearSlot = ((state.slot - intervalSlots) % totalSlots + totalSlots) % totalSlots;
-		const int clearAddress = start + clearSlot * 2;
-		const int writeAddress = start + state.slot * 2;
+		const int clearSlot = ((state.slot - intervalSlots) % slotCount + slotCount) % slotCount;
+		const int clearAddress = baseAddress + clearSlot * 2;
+		const int writeAddress = baseAddress + state.slot * 2;
 
 		// 先入队清零、再入队写值（调度器同优先级 FIFO）：两槽相同时保证最终留下的是写入值
 		plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(clearAddress), static_cast<uint16_t>(0));
 		plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(writeAddress), value);
 
-		state.slot = (state.slot + 1) % totalSlots;
+		result.writeAddress = writeAddress;
+		result.clearAddress = clearAddress;
+		state.slot = (state.slot + 1) % slotCount;
+		return result;
 	}
 } // namespace
 
@@ -183,12 +191,13 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 		}
 	}
 
-	// 每张处理图都向循环地址区间写入一次中心点偏移值并推进槽位，无有效识别时写 0
-	WritePlcCircular(setConfig.tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixieruqishidizhi1,
-		setConfig.tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixierumoweidizhi1,
-		setConfig.tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhishanchujiushujujiange1,
+	// 每张处理图都向固定地址区间（中心偏移值：60~119 中的偶数地址）循环写入一次中心点偏移值并推进槽位，无有效识别时写 0
+	auto offsetWriteResult = WritePlcCircular(PLC_CIRCULAR_BASE_ADDR[1], PLC_CIRCULAR_SLOT_COUNT, PLC_CIRCULAR_CLEAR_INTERVAL,
 		_plcOffsetWriteState,
 		static_cast<uint16_t>(static_cast<int>(centerDiffMm * 100)));
+	if (offsetWriteResult.writeAddress >= 0) {
+		emit plcCircularWrite(1, offsetWriteResult.writeAddress, centerDiffMm, offsetWriteResult.clearAddress);
+	}
 
 	if (defectResult.defects.size() == 1)
 	{
@@ -201,12 +210,13 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 		}
 	}
 
-	// 每张处理图都向循环地址区间写入一次实测压痕宽度并推进槽位，无有效识别时写 0
-	WritePlcCircular(setConfig.shiceyahenkuanduxieruqishidizhi1,
-		setConfig.shiceyahenkuanduxierumoweidizhi1,
-		setConfig.shiceyahenkuandushanchujiushujujiange1,
+	// 每张处理图都向固定地址区间（冷刀压痕：0~59 中的偶数地址）循环写入一次实测压痕宽度并推进槽位，无有效识别时写 0
+	auto widthWriteResult = WritePlcCircular(PLC_CIRCULAR_BASE_ADDR[0], PLC_CIRCULAR_SLOT_COUNT, PLC_CIRCULAR_CLEAR_INTERVAL,
 		_plcWidthWriteState,
 		static_cast<uint16_t>(static_cast<int>(width * 100)));
+	if (widthWriteResult.writeAddress >= 0) {
+		emit plcCircularWrite(0, widthWriteResult.writeAddress, width, widthWriteResult.clearAddress);
+	}
 
 	QStringList textList;
 	textList.append("实测压痕宽度:" + QString::number(width) + "mm");
@@ -259,12 +269,13 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 		}
 	}
 
-	// 每张处理图都向循环地址区间写入一次实测压痕宽度并推进槽位，无有效识别时写 0
-	WritePlcCircular(setConfig.shiceyahenkuanduxieruqishidizhi2,
-		setConfig.shiceyahenkuanduxierumoweidizhi2,
-		setConfig.shiceyahenkuandushanchujiushujujiange2,
+	// 每张处理图都向固定地址区间（切刀压痕：120~179 中的偶数地址）循环写入一次实测压痕宽度并推进槽位，无有效识别时写 0
+	auto widthWriteResult = WritePlcCircular(PLC_CIRCULAR_BASE_ADDR[2], PLC_CIRCULAR_SLOT_COUNT, PLC_CIRCULAR_CLEAR_INTERVAL,
 		_plcWidthWriteState,
 		static_cast<uint16_t>(static_cast<int>(width * 100)));
+	if (widthWriteResult.writeAddress >= 0) {
+		emit plcCircularWrite(2, widthWriteResult.writeAddress, width, widthWriteResult.clearAddress);
+	}
 
 	QStringList textList;
 	textList.append("实测压痕宽度:" + QString::number(width) + "mm");
@@ -321,17 +332,19 @@ void ImageProcessor::save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage
 
 	if (config.isSaveImg && imageSaveEngine)
 	{
-		// 文件名格式：时分秒毫秒_年月日
+		// 文件名只保留时间戳：时分秒毫秒_年月日（classify 置空，不再拼接分类前缀）
 		imageInfo.time = QDateTime::currentDateTime().toString("hhmmsszzz_yyyyMMdd");
-		// 一相机与二相机的存图分别保存到日期目录下的 Camera1 / Camera2 子文件夹
-		imageInfo.dirName = (2 == imageProcessingModuleIndex) ? "Camera2" : "Camera1";
+		imageInfo.classify = "";
+		// 一相机与二相机的存图分别保存到日期目录下的 Camera1 / Camera2 文件夹，
+		// 其下再按 OK（原图）/ MASK（掩码图）分类
+		const QString cameraDir = (2 == imageProcessingModuleIndex) ? "Camera2" : "Camera1";
 
 		if (runningState == RunningState::OpenRemoveFunc)
 		{
-			imageInfo.classify = "OpenRemoveFuncNg";
+			imageInfo.dirName = cameraDir + "/OK";
 			imageSaveEngine->pushImage(imageInfo);
 
-			imageInfo.classify = "OpenRemoveFuncMask";
+			imageInfo.dirName = cameraDir + "/MASK";
 			imageInfo.image = image;
 			imageSaveEngine->pushImage(imageInfo);
 		}
@@ -432,6 +445,7 @@ void ImageProcessingModule::BuildModule()
 		processor->imageProcessingModuleIndex = index;
 		processor->buildObbModelEngine(modelEnginePath);
 		connect(processor, &ImageProcessor::imageReady, this, &ImageProcessingModule::imageReady, Qt::QueuedConnection);
+		connect(processor, &ImageProcessor::plcCircularWrite, this, &ImageProcessingModule::plcCircularWrite, Qt::QueuedConnection);
 
 		_processors.push_back(processor);
 		processor->start();

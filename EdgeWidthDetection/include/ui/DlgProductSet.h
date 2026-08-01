@@ -2,6 +2,8 @@
 
 #include <QCloseEvent>
 #include <QDialog>
+#include <QPushButton>
+#include <QVector>
 
 #include "Utilty.hpp"
 
@@ -28,6 +30,9 @@ signals:
 	void paramsChanged();
 public slots:
 	void onUpdatePLCInfo(QVector<PlcReadItem> datas);
+	// PLC 循环写入回显：funcIndex 0=冷刀压痕 1=中心偏移值 2=切刀压痕
+	// writeAddress 为本次写入的地址，clearAddress 为本次清零的地址（-1 表示无）
+	void onPlcCircularWrite(int funcIndex, int writeAddress, double value, int clearAddress);
 private slots:
 	void btn_close_clicked();
 
@@ -94,17 +99,6 @@ private slots:
 	void btn_daizishicechangdudizhi_clicked();
 	void btn_shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi_clicked();
 
-	// 循环写入地址（一相机宽度/偏移、二相机宽度：起始/末尾/删除旧数据间隔）
-	void btn_shiceyahenkuanduxieruqishidizhi1_clicked();
-	void btn_shiceyahenkuanduxierumoweidizhi1_clicked();
-	void btn_shiceyahenkuandushanchujiushujujiange1_clicked();
-	void btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixieruqishidizhi1_clicked();
-	void btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixierumoweidizhi1_clicked();
-	void btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhishanchujiushujujiange1_clicked();
-	void btn_shiceyahenkuanduxieruqishidizhi2_clicked();
-	void btn_shiceyahenkuanduxierumoweidizhi2_clicked();
-	void btn_shiceyahenkuandushanchujiushujujiange2_clicked();
-
 	// 写入PLC
 	void btn_shiceyahenkuanduxierushuzhi_clicked();
 	void btn_shedingyahenbiaozhunkuanduzhixierushuzhi_clicked();
@@ -137,6 +131,11 @@ private slots:
 	void tabWidget_indexChanged(int index);
 private:
 	bool checkIsPLCAddressSame(int newAddress, const QString& currentKey);
+	// 在"一相机地址"/"二相机地址"页中构建固定 60 地址的循环写入显示区（按钮 + 地址标签）
+	void buildCircularWriteUi();
+private:
+	// 三个功能的写入值显示按钮：0=冷刀压痕(0~59) 1=中心偏移值(60~119) 2=切刀压痕(120~179)
+	QVector<QPushButton*> _plcCircularButtons[3];
 protected:
 	void closeEvent(QCloseEvent* event) override;
 public:

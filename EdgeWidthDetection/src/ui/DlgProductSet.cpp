@@ -1,8 +1,12 @@
 #include "DlgProductSet.h"
 #include "ui_DlgProductSet.h"
 
+#include <QGridLayout>
+#include <QGroupBox>
+#include <QLabel>
 #include <QMessageBox>
 #include <QTabWidget>
+#include <QVBoxLayout>
 #include <QtConcurrent/qtconcurrentrun.h>
 #include "Modules.hpp"
 #include "NumberKeyboard.h"
@@ -25,6 +29,7 @@ DlgProductSet::~DlgProductSet()
 
 void DlgProductSet::build_ui()
 {
+	buildCircularWriteUi();
 	read_config();
 }
 
@@ -95,17 +100,6 @@ void DlgProductSet::read_config()
 	ui->btn_daizishicechangdudizhi->setText(QString::number(setConfig.daizishicechangdudizhi));
 	ui->btn_shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi->setText(QString::number(setConfig.shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi));
 
-	// 循环写入地址（一相机宽度/偏移、二相机宽度：起始/末尾/删除旧数据间隔）
-	ui->btn_shiceyahenkuanduxieruqishidizhi1->setText(QString::number(setConfig.shiceyahenkuanduxieruqishidizhi1));
-	ui->btn_shiceyahenkuanduxierumoweidizhi1->setText(QString::number(setConfig.shiceyahenkuanduxierumoweidizhi1));
-	ui->btn_shiceyahenkuandushanchujiushujujiange1->setText(QString::number(setConfig.shiceyahenkuandushanchujiushujujiange1));
-	ui->btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixieruqishidizhi1->setText(QString::number(setConfig.tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixieruqishidizhi1));
-	ui->btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixierumoweidizhi1->setText(QString::number(setConfig.tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixierumoweidizhi1));
-	ui->btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhishanchujiushujujiange1->setText(QString::number(setConfig.tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhishanchujiushujujiange1));
-	ui->btn_shiceyahenkuanduxieruqishidizhi2->setText(QString::number(setConfig.shiceyahenkuanduxieruqishidizhi2));
-	ui->btn_shiceyahenkuanduxierumoweidizhi2->setText(QString::number(setConfig.shiceyahenkuanduxierumoweidizhi2));
-	ui->btn_shiceyahenkuandushanchujiushujujiange2->setText(QString::number(setConfig.shiceyahenkuandushanchujiushujujiange2));
-
 	// 同步更新 ModBusAddress 静态变量
 	ModBusAddress::shiceyahenkuanduAddress = setConfig.shiceyahenkuanduduqudizhi;
 	ModBusAddress::shedingyahenbiaozhunkuanduzhiAddress = setConfig.shedingyahenbiaozhunzhiduqudizhi;
@@ -133,6 +127,88 @@ void DlgProductSet::save_config()
 {
 	// 使用多代备份 + 写入后验证的安全保存，防止断电导致配置文件损坏
 	Modules::getInstance().configManagerModule.saveConfigSafe();
+}
+
+void DlgProductSet::buildCircularWriteUi()
+{
+	// 三个功能固定各占 60 个 Modbus 地址（仅写偶数地址），每个地址一个显示按钮，按钮上方标签显示地址号
+	struct FuncUiInfo
+	{
+		QString title;		// 分组标题
+		int funcIndex;		// 功能下标（对应 _plcCircularButtons）
+		int baseAddress;	// 起始地址
+		QWidget* tab;		// 所在标签页
+	};
+	const FuncUiInfo funcs[] = {
+		{ QStringLiteral("冷刀压痕（地址 0~59）"),     0,   0, ui->tab_11 },
+		{ QStringLiteral("中心偏移值（地址 60~119）"), 1,  60, ui->tab_11 },
+		{ QStringLiteral("切刀压痕（地址 120~179）"),  2, 120, ui->tab_12 },
+	};
+
+	for (const auto& func : funcs)
+	{
+		auto* groupBox = new QGroupBox(func.title, func.tab);
+		groupBox->setStyleSheet(
+			"QGroupBox { border: 1px solid #DDD; border-radius: 4px; font: bold 14px; color: #666; background-color: #F8F8F8; }"
+			"QGroupBox::title { subcontrol-origin: margin; subcontrol-position: top left; left: 10px; padding: 0 5px; }");
+		auto* grid = new QGridLayout(groupBox);
+		grid->setSpacing(4);
+
+		_plcCircularButtons[func.funcIndex].resize(60);
+		for (int i = 0; i < 60; ++i)
+		{
+			const int address = func.baseAddress + i;
+
+			auto* addrLabel = new QLabel(QString::number(address), groupBox);
+			addrLabel->setAlignment(Qt::AlignCenter);
+			addrLabel->setStyleSheet("QLabel { color: #666; font-size: 12px; background: transparent; }");
+
+			auto* btn = new QPushButton(groupBox);
+			btn->setFixedSize(64, 28);
+			btn->setStyleSheet(
+				"QPushButton { border: 1px solid #CCC; border-radius: 3px; background-color: white; color: #444; font-size: 13px; }"
+				"QPushButton:disabled { background-color: #F0F0F0; color: #BBB; }");
+
+			if (address % 2 != 0)
+			{
+				// 奇数地址不进行写入，按钮置灰留空
+				btn->setEnabled(false);
+			}
+
+			auto* cellLayout = new QVBoxLayout();
+			cellLayout->setSpacing(1);
+			cellLayout->setContentsMargins(0, 0, 0, 0);
+			cellLayout->addWidget(addrLabel);
+			cellLayout->addWidget(btn);
+			grid->addLayout(cellLayout, i / 10, i % 10);
+
+			_plcCircularButtons[func.funcIndex][i] = btn;
+		}
+
+		func.tab->layout()->addWidget(groupBox);
+	}
+}
+
+void DlgProductSet::onPlcCircularWrite(int funcIndex, int writeAddress, double value, int clearAddress)
+{
+	if (funcIndex < 0 || funcIndex >= 3)
+	{
+		return;
+	}
+	const int baseAddress = funcIndex * 60;
+	auto& buttons = _plcCircularButtons[funcIndex];
+
+	// 先清零旧槽位再显示新写入值（与 PLC 侧先清后写顺序一致，两槽相同时保证显示的是写入值）
+	const int clearIndex = clearAddress - baseAddress;
+	if (clearIndex >= 0 && clearIndex < buttons.size())
+	{
+		buttons[clearIndex]->setText("");
+	}
+	const int writeIndex = writeAddress - baseAddress;
+	if (writeIndex >= 0 && writeIndex < buttons.size())
+	{
+		buttons[writeIndex]->setText(QString::number(value, 'f', 2));
+	}
 }
 
 void DlgProductSet::closeEvent(QCloseEvent* event)
@@ -200,17 +276,6 @@ void DlgProductSet::build_connect()
 	connect(ui->btn_tingzhipaizhaoxinhaodizhi, &QPushButton::clicked, this, &DlgProductSet::btn_tingzhipaizhaoxinhaodizhi_clicked);
 	connect(ui->btn_daizishicechangdudizhi, &QPushButton::clicked, this, &DlgProductSet::btn_daizishicechangdudizhi_clicked);
 	connect(ui->btn_shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi, &QPushButton::clicked, this, &DlgProductSet::btn_shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi_clicked);
-
-	// 循环写入地址（一相机宽度/偏移、二相机宽度：起始/末尾/删除旧数据间隔）
-	connect(ui->btn_shiceyahenkuanduxieruqishidizhi1, &QPushButton::clicked, this, &DlgProductSet::btn_shiceyahenkuanduxieruqishidizhi1_clicked);
-	connect(ui->btn_shiceyahenkuanduxierumoweidizhi1, &QPushButton::clicked, this, &DlgProductSet::btn_shiceyahenkuanduxierumoweidizhi1_clicked);
-	connect(ui->btn_shiceyahenkuandushanchujiushujujiange1, &QPushButton::clicked, this, &DlgProductSet::btn_shiceyahenkuandushanchujiushujujiange1_clicked);
-	connect(ui->btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixieruqishidizhi1, &QPushButton::clicked, this, &DlgProductSet::btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixieruqishidizhi1_clicked);
-	connect(ui->btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixierumoweidizhi1, &QPushButton::clicked, this, &DlgProductSet::btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixierumoweidizhi1_clicked);
-	connect(ui->btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhishanchujiushujujiange1, &QPushButton::clicked, this, &DlgProductSet::btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhishanchujiushujujiange1_clicked);
-	connect(ui->btn_shiceyahenkuanduxieruqishidizhi2, &QPushButton::clicked, this, &DlgProductSet::btn_shiceyahenkuanduxieruqishidizhi2_clicked);
-	connect(ui->btn_shiceyahenkuanduxierumoweidizhi2, &QPushButton::clicked, this, &DlgProductSet::btn_shiceyahenkuanduxierumoweidizhi2_clicked);
-	connect(ui->btn_shiceyahenkuandushanchujiushujujiange2, &QPushButton::clicked, this, &DlgProductSet::btn_shiceyahenkuandushanchujiushujujiange2_clicked);
 
 	// 写入PLC
 	connect(ui->btn_shiceyahenkuanduxierushuzhi, &QPushButton::clicked, this, &DlgProductSet::btn_shiceyahenkuanduxierushuzhi_clicked);
@@ -1061,246 +1126,6 @@ void DlgProductSet::btn_shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi_c
 	}
 }
 
-// 一相机·实测压痕宽度写入起始地址
-void DlgProductSet::btn_shiceyahenkuanduxieruqishidizhi1_clicked()
-{
-	NumberKeyboard numKeyBord;
-	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
-	auto isAccept = numKeyBord.exec();
-	if (isAccept == QDialog::Accepted)
-	{
-		auto value = numKeyBord.getValue();
-		if (value.toDouble() < 0)
-		{
-			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
-			return;
-		}
-		const int newAddress = value.toInt();
-		if (newAddress % 2 != 0)
-		{
-			QMessageBox::warning(this, "提示", "地址必须为偶数（地址步进为2，如0、2、4、6...）");
-			return;
-		}
-		if (!checkIsPLCAddressSame(newAddress, "shiceyahenkuanduxieruqishidizhi1"))
-		{
-			return;
-		}
-		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-		ui->btn_shiceyahenkuanduxieruqishidizhi1->setText(value);
-		setConfig.shiceyahenkuanduxieruqishidizhi1 = newAddress;
-	}
-}
-
-// 一相机·实测压痕宽度写入末尾地址
-void DlgProductSet::btn_shiceyahenkuanduxierumoweidizhi1_clicked()
-{
-	NumberKeyboard numKeyBord;
-	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
-	auto isAccept = numKeyBord.exec();
-	if (isAccept == QDialog::Accepted)
-	{
-		auto value = numKeyBord.getValue();
-		if (value.toDouble() < 0)
-		{
-			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
-			return;
-		}
-		const int newAddress = value.toInt();
-		if (newAddress % 2 != 0)
-		{
-			QMessageBox::warning(this, "提示", "地址必须为偶数（地址步进为2，如0、2、4、6...）");
-			return;
-		}
-		if (!checkIsPLCAddressSame(newAddress, "shiceyahenkuanduxierumoweidizhi1"))
-		{
-			return;
-		}
-		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-		ui->btn_shiceyahenkuanduxierumoweidizhi1->setText(value);
-		setConfig.shiceyahenkuanduxierumoweidizhi1 = newAddress;
-	}
-}
-
-// 一相机·实测压痕宽度删除旧数据间隔（单位：格数，非地址）
-void DlgProductSet::btn_shiceyahenkuandushanchujiushujujiange1_clicked()
-{
-	NumberKeyboard numKeyBord;
-	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
-	auto isAccept = numKeyBord.exec();
-	if (isAccept == QDialog::Accepted)
-	{
-		auto value = numKeyBord.getValue();
-		if (value.toDouble() < 0)
-		{
-			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
-			return;
-		}
-		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-		ui->btn_shiceyahenkuandushanchujiushujujiange1->setText(value);
-		setConfig.shiceyahenkuandushanchujiushujujiange1 = value.toInt();
-	}
-}
-
-// 一相机·图像中心点到压痕宽度中心点偏移值写入起始地址
-void DlgProductSet::btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixieruqishidizhi1_clicked()
-{
-	NumberKeyboard numKeyBord;
-	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
-	auto isAccept = numKeyBord.exec();
-	if (isAccept == QDialog::Accepted)
-	{
-		auto value = numKeyBord.getValue();
-		if (value.toDouble() < 0)
-		{
-			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
-			return;
-		}
-		const int newAddress = value.toInt();
-		if (newAddress % 2 != 0)
-		{
-			QMessageBox::warning(this, "提示", "地址必须为偶数（地址步进为2，如0、2、4、6...）");
-			return;
-		}
-		if (!checkIsPLCAddressSame(newAddress, "tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixieruqishidizhi1"))
-		{
-			return;
-		}
-		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-		ui->btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixieruqishidizhi1->setText(value);
-		setConfig.tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixieruqishidizhi1 = newAddress;
-	}
-}
-
-// 一相机·图像中心点到压痕宽度中心点偏移值写入末尾地址
-void DlgProductSet::btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixierumoweidizhi1_clicked()
-{
-	NumberKeyboard numKeyBord;
-	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
-	auto isAccept = numKeyBord.exec();
-	if (isAccept == QDialog::Accepted)
-	{
-		auto value = numKeyBord.getValue();
-		if (value.toDouble() < 0)
-		{
-			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
-			return;
-		}
-		const int newAddress = value.toInt();
-		if (newAddress % 2 != 0)
-		{
-			QMessageBox::warning(this, "提示", "地址必须为偶数（地址步进为2，如0、2、4、6...）");
-			return;
-		}
-		if (!checkIsPLCAddressSame(newAddress, "tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixierumoweidizhi1"))
-		{
-			return;
-		}
-		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-		ui->btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixierumoweidizhi1->setText(value);
-		setConfig.tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixierumoweidizhi1 = newAddress;
-	}
-}
-
-// 一相机·图像中心点到压痕宽度中心点偏移值删除旧数据间隔（单位：格数，非地址）
-void DlgProductSet::btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhishanchujiushujujiange1_clicked()
-{
-	NumberKeyboard numKeyBord;
-	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
-	auto isAccept = numKeyBord.exec();
-	if (isAccept == QDialog::Accepted)
-	{
-		auto value = numKeyBord.getValue();
-		if (value.toDouble() < 0)
-		{
-			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
-			return;
-		}
-		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-		ui->btn_tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhishanchujiushujujiange1->setText(value);
-		setConfig.tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhishanchujiushujujiange1 = value.toInt();
-	}
-}
-
-// 二相机·实测压痕宽度写入起始地址
-void DlgProductSet::btn_shiceyahenkuanduxieruqishidizhi2_clicked()
-{
-	NumberKeyboard numKeyBord;
-	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
-	auto isAccept = numKeyBord.exec();
-	if (isAccept == QDialog::Accepted)
-	{
-		auto value = numKeyBord.getValue();
-		if (value.toDouble() < 0)
-		{
-			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
-			return;
-		}
-		const int newAddress = value.toInt();
-		if (newAddress % 2 != 0)
-		{
-			QMessageBox::warning(this, "提示", "地址必须为偶数（地址步进为2，如0、2、4、6...）");
-			return;
-		}
-		if (!checkIsPLCAddressSame(newAddress, "shiceyahenkuanduxieruqishidizhi2"))
-		{
-			return;
-		}
-		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-		ui->btn_shiceyahenkuanduxieruqishidizhi2->setText(value);
-		setConfig.shiceyahenkuanduxieruqishidizhi2 = newAddress;
-	}
-}
-
-// 二相机·实测压痕宽度写入末尾地址
-void DlgProductSet::btn_shiceyahenkuanduxierumoweidizhi2_clicked()
-{
-	NumberKeyboard numKeyBord;
-	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
-	auto isAccept = numKeyBord.exec();
-	if (isAccept == QDialog::Accepted)
-	{
-		auto value = numKeyBord.getValue();
-		if (value.toDouble() < 0)
-		{
-			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
-			return;
-		}
-		const int newAddress = value.toInt();
-		if (newAddress % 2 != 0)
-		{
-			QMessageBox::warning(this, "提示", "地址必须为偶数（地址步进为2，如0、2、4、6...）");
-			return;
-		}
-		if (!checkIsPLCAddressSame(newAddress, "shiceyahenkuanduxierumoweidizhi2"))
-		{
-			return;
-		}
-		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-		ui->btn_shiceyahenkuanduxierumoweidizhi2->setText(value);
-		setConfig.shiceyahenkuanduxierumoweidizhi2 = newAddress;
-	}
-}
-
-// 二相机·实测压痕宽度删除旧数据间隔（单位：格数，非地址）
-void DlgProductSet::btn_shiceyahenkuandushanchujiushujujiange2_clicked()
-{
-	NumberKeyboard numKeyBord;
-	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
-	auto isAccept = numKeyBord.exec();
-	if (isAccept == QDialog::Accepted)
-	{
-		auto value = numKeyBord.getValue();
-		if (value.toDouble() < 0)
-		{
-			QMessageBox::warning(this, "提示", "请输入大于等于0的数值");
-			return;
-		}
-		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-		ui->btn_shiceyahenkuandushanchujiushujujiange2->setText(value);
-		setConfig.shiceyahenkuandushanchujiushujujiange2 = value.toInt();
-	}
-}
-
 void DlgProductSet::btn_shiceyahenkuanduxierushuzhi_clicked()
 {
 	NumberKeyboard numKeyBord;
@@ -1873,14 +1698,6 @@ bool DlgProductSet::checkIsPLCAddressSame(int newAddress, const QString& current
 		{ "keyipaizhaoxinhao",			 "可以拍照信号地址",			 setConfig.keyipaizhaoxinhaodizhi },
 		{ "tingzhipaizhaoxinhao",			 "停止拍照信号地址",			 setConfig.tingzhipaizhaoxinhaodizhi },
 		{ "daizishicechangdu",			 "袋子实测长度地址",			 setConfig.daizishicechangdudizhi },
-
-		// 循环写入区间的起/末地址（间隔是格数不是地址，不参与查重；区间重叠无法靠点查重发现，配置时需人工保证）
-		{ "shiceyahenkuanduxieruqishidizhi1",	 "一相机实测压痕宽度写入起始地址",		 setConfig.shiceyahenkuanduxieruqishidizhi1 },
-		{ "shiceyahenkuanduxierumoweidizhi1",	 "一相机实测压痕宽度写入末尾地址",		 setConfig.shiceyahenkuanduxierumoweidizhi1 },
-		{ "tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixieruqishidizhi1",	 "一相机中心点偏移值写入起始地址",		 setConfig.tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixieruqishidizhi1 },
-		{ "tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixierumoweidizhi1",	 "一相机中心点偏移值写入末尾地址",		 setConfig.tuxiangzhongxindiandaoyahenkuanduzhongxindianpianyizhixierumoweidizhi1 },
-		{ "shiceyahenkuanduxieruqishidizhi2",	 "二相机实测压痕宽度写入起始地址",		 setConfig.shiceyahenkuanduxieruqishidizhi2 },
-		{ "shiceyahenkuanduxierumoweidizhi2",	 "二相机实测压痕宽度写入末尾地址",		 setConfig.shiceyahenkuanduxierumoweidizhi2 }
 
 	};
 

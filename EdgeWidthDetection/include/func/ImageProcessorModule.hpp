@@ -16,14 +16,10 @@
 #include "Utilty.hpp"
 
 
-// PLC 循环地址写入状态：slot 为当前写入槽位下标；
-// start/end/interval 为上次使用的配置快照，三者任一变化时 slot 自动复位到起始槽位
+// PLC 循环写入状态：slot 为当前写入槽位下标（仅被所属处理线程访问）
 struct PlcCircularWriteState
 {
 	int slot = 0;
-	int start = -1;
-	int end = -1;
-	int interval = -1;
 };
 
 class ImageProcessor : public QThread
@@ -49,6 +45,9 @@ private:
 	void run_OpenRemoveFunc_emitErrorInfo(bool isbad);
 signals:
 	void imageReady(size_t index, QPixmap image);
+	// PLC 循环写入回显：funcIndex 0=冷刀压痕 1=中心偏移值 2=切刀压痕
+	// writeAddress 为本次写入的地址，clearAddress 为本次清零的地址（-1 表示无）
+	void plcCircularWrite(int funcIndex, int writeAddress, double value, int clearAddress);
 private:
 	// 存图
 	void save_image(rw::rqw::ImageInfo& imageInfo, const QImage& image);
@@ -94,6 +93,8 @@ public slots:
 signals:
 	void imageReady(size_t index, QPixmap image);
 	void exposureStatsReady(double meanIntensity, double overRatio, double underRatio);
+	// 转发自处理线程的 PLC 循环写入回显（供 UI 显示）
+	void plcCircularWrite(int funcIndex, int writeAddress, double value, int clearAddress);
 
 public:
 	std::vector<ImageProcessor*> getProcessors() const {
