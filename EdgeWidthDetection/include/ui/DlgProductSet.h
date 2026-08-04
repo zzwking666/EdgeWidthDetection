@@ -129,6 +129,8 @@ private slots:
 	void btn_writeshibiezhongxindianyutuxiangzhongxindianchazhixierushuzhi_clicked();
 
 	void tabWidget_indexChanged(int index);
+	// 测试写入：向 0~179 每个地址写入其地址值（一相机与二相机地址共用此按钮）
+	void btn_testPlcAddressWrite_clicked();
 private:
 	bool checkIsPLCAddressSame(int newAddress, const QString& currentKey);
 	// 在"一相机地址"/"二相机地址"页中构建固定 60 地址的循环写入显示区（按钮 + 地址标签）

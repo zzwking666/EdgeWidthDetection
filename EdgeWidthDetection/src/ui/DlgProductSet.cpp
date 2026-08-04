@@ -1,10 +1,12 @@
 #include "DlgProductSet.h"
 #include "ui_DlgProductSet.h"
 
+#include <QFutureWatcher>
 #include <QGroupBox>
 #include <QMessageBox>
 #include <QTabWidget>
 #include <QtConcurrent/qtconcurrentrun.h>
+#include <future>
 #include "Modules.hpp"
 #include "NumberKeyboard.h"
 
@@ -271,6 +273,7 @@ void DlgProductSet::build_connect()
 
 
 	connect(ui->ckb_autoSaveImg, &QCheckBox::clicked, this, &DlgProductSet::ckb_autoSaveImg_clicked);
+	connect(ui->btn_testPlcAddressWrite, &QPushButton::clicked, this, &DlgProductSet::btn_testPlcAddressWrite_clicked);
 	connect(ui->ckb_yixiangjishibiezhongxindianyutuxiangzhongxindianchazhishifouqufan, &QCheckBox::clicked, this, &DlgProductSet::ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan_clicked);
 	connect(ui->tabWidget, &QTabWidget::currentChanged, this, &DlgProductSet::tabWidget_indexChanged);
 }
@@ -1628,6 +1631,62 @@ void DlgProductSet::tabWidget_indexChanged(int index)
 			plcListenThread->stopThread();
 		}
 	}
+}
+
+void DlgProductSet::btn_testPlcAddressWrite_clicked()
+{
+	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
+	if (!plcControllerScheduler)
+	{
+		QMessageBox::information(this, "警告", "PLC未连接");
+		return;
+	}
+
+	// 测试写入：向 0~179 每个地址写入其地址值（0 地址写 0，179 地址写 179），
+	// 覆盖一相机（冷刀压痕 0~59、中心偏移值 60~119）与二相机（切刀压痕 120~179）的全部地址
+	std::vector<std::future<bool>> futs;
+	futs.reserve(180);
+	for (int addr = 0; addr < 180; ++addr)
+	{
+		futs.push_back(plcControllerScheduler->writeUInt16RegisterAsync(
+			static_cast<uint16_t>(addr), static_cast<uint16_t>(addr)));
+
+		// 写入值回显到对应地址的按钮上
+		auto* btn = _plcCircularButtons[addr / 60][addr % 60];
+		if (btn)
+		{
+			btn->setText(QString::number(addr));
+		}
+	}
+
+	// 后台等待全部写入完成并统计失败数，避免阻塞 UI 线程
+	auto* watcher = new QFutureWatcher<int>(this);
+	connect(watcher, &QFutureWatcher<int>::finished, this, [this, watcher]()
+		{
+			const int failCount = watcher->result();
+			watcher->deleteLater();
+			if (failCount == 0)
+			{
+				QMessageBox::information(this, "提示", "测试写入完成：0~179 全部写入成功");
+			}
+			else
+			{
+				QMessageBox::warning(this, "警告",
+					QString("测试写入完成：%1 个地址写入失败").arg(failCount));
+			}
+		});
+	watcher->setFuture(QtConcurrent::run([futs = std::move(futs)]() mutable
+		{
+			int failCount = 0;
+			for (auto& fut : futs)
+			{
+				if (!fut.get())
+				{
+					++failCount;
+				}
+			}
+			return failCount;
+		}));
 }
 
 bool DlgProductSet::checkIsPLCAddressSame(int newAddress, const QString& currentKey)
