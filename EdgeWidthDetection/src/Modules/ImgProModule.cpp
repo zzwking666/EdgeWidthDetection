@@ -107,6 +107,10 @@ void ImgProModule::buildImgProContextPreProcess()
 				context.customFields["LimitBottom"] = limitBottom;
 				context.customFields["LimitLeft"] = limitLeft;
 				context.customFields["LimitRight"] = limitRight;
+
+				// 四个限位全为 0 时不启用限位功能，任意一个不为 0 才启用
+				const bool isLimitEnabled = (0 != limitTop || 0 != limitBottom || 0 != limitLeft || 0 != limitRight);
+				context.customFields["IsLimitEnabled"] = isLimitEnabled;
 			}
 
 			// update drawConfig
@@ -154,6 +158,17 @@ void ImgProModule::buildImgProContextPreProcess()
 			}
 			if (context.customFields.find("LimitRight") != context.customFields.end()) {
 				limitRight = std::any_cast<int>(context.customFields["LimitRight"]);
+			}
+
+			bool isLimitEnabled = false;
+			if (context.customFields.find("IsLimitEnabled") != context.customFields.end()) {
+				isLimitEnabled = std::any_cast<bool>(context.customFields["IsLimitEnabled"]);
+			}
+
+			// 限位功能未启用（四个限位全为 0）时不做屏蔽
+			if (!isLimitEnabled)
+			{
+				return false;
 			}
 
 			if (-1 == limitTop || -1 == limitBottom || -1 == limitLeft || -1 == limitRight)
@@ -253,6 +268,17 @@ void ImgProModule::buildImgProContextPreProcess()
 			}
 			if (context.customFields.find("LimitRight") != context.customFields.end()) {
 				limitRight = std::any_cast<int>(context.customFields["LimitRight"]);
+			}
+
+			bool isLimitEnabled = false;
+			if (context.customFields.find("IsLimitEnabled") != context.customFields.end()) {
+				isLimitEnabled = std::any_cast<bool>(context.customFields["IsLimitEnabled"]);
+			}
+
+			// 限位功能未启用（四个限位全为 0）时不绘制限位线
+			if (!isLimitEnabled)
+			{
+				return;
 			}
 
 			rw::imgPro::ConfigDrawLine configDrawLine;

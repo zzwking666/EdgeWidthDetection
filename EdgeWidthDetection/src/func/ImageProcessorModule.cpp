@@ -371,7 +371,7 @@ void ImageProcessor::drawImg(QImage& qimage, const std::vector<rw::DetectionRect
 
 	// 绘制 OBB 矩形长边
 	QPen pen(QColor(0, 255, 0)); // 绿色
-	pen.setWidth(2);
+	pen.setWidth(4);
 	painter.setPen(pen);
 
 	for (const auto& result : processResult)
@@ -405,7 +405,7 @@ void ImageProcessor::drawImg(QImage& qimage, const std::vector<rw::DetectionRect
 	// 绘制图像中心线（黄色虚线）
 	int imageCenterY = qimage.height() / 2;
 	QPen imageCenterPen(QColor(255, 255, 0)); // 黄色
-	imageCenterPen.setWidth(1);
+	imageCenterPen.setWidth(2);
 	imageCenterPen.setStyle(Qt::DashLine);
 	painter.setPen(imageCenterPen);
 	painter.drawLine(0, imageCenterY, qimage.width(), imageCenterY);
@@ -415,7 +415,7 @@ void ImageProcessor::drawImg(QImage& qimage, const std::vector<rw::DetectionRect
 	{
 		int detectionCenterY = processResult[0].center_y;
 		QPen detCenterPen(QColor(255, 0, 0)); // 红色
-		detCenterPen.setWidth(1);
+		detCenterPen.setWidth(2);
 		detCenterPen.setStyle(Qt::DashLine);
 		painter.setPen(detCenterPen);
 		painter.drawLine(0, detectionCenterY, qimage.width(), detectionCenterY);
