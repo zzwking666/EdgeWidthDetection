@@ -1,5 +1,7 @@
 #include "CameraModule.hpp"
 
+#include <algorithm>
+
 #include <QRegularExpression>
 #include "Modules.hpp"
 #include "Utilty.hpp"
@@ -77,7 +79,9 @@ bool CameraModule::build_camera1()
 			camera1->setHeartbeatTime(5000);
 			size_t initExposure = static_cast<size_t>(globalDataSetConfig.ruoguang1);
 			if (globalDataSetConfig.autoExposureEnabled1 && globalDataSetConfig.autoExposureLastExposure1 > 0.0) {
-				initExposure = static_cast<size_t>(globalDataSetConfig.autoExposureLastExposure1);
+				// 上次的自动曝光收敛值同样受硬性阈值约束，防止旧配置中的大值直接下发给相机
+				initExposure = static_cast<size_t>(std::clamp(globalDataSetConfig.autoExposureLastExposure1,
+					kAutoExposureHardMin, kAutoExposureHardMax));
 			}
 			camera1->setExposureTime(initExposure);
 			camera1->setGain(static_cast<size_t>(globalDataSetConfig.zengyi1));
@@ -120,7 +124,9 @@ bool CameraModule::build_camera2()
 			camera2->setHeartbeatTime(5000);
 			size_t initExposure = static_cast<size_t>(globalDataSetConfig.ruoguang2);
 			if (globalDataSetConfig.autoExposureEnabled2 && globalDataSetConfig.autoExposureLastExposure2 > 0.0) {
-				initExposure = static_cast<size_t>(globalDataSetConfig.autoExposureLastExposure2);
+				// 上次的自动曝光收敛值同样受硬性阈值约束，防止旧配置中的大值直接下发给相机
+				initExposure = static_cast<size_t>(std::clamp(globalDataSetConfig.autoExposureLastExposure2,
+					kAutoExposureHardMin, kAutoExposureHardMax));
 			}
 			camera2->setExposureTime(initExposure);
 			camera2->setGain(static_cast<size_t>(globalDataSetConfig.zengyi2));
