@@ -158,6 +158,13 @@ void Modules::connect()
 	QObject::connect(imgProModule.imageProcessingModule2.get(), &ImageProcessingModule::plcCircularWrite,
 		uiModule._dlgProductSet, &DlgProductSet::onPlcCircularWrite, Qt::QueuedConnection);
 
+	// PLC 实时写入值回显到产品设置对话框（跨线程，队列连接）
+	QObject::connect(imgProModule.imageProcessingModule1.get(), &ImageProcessingModule::plcRealtimeWrite,
+		uiModule._dlgProductSet, &DlgProductSet::onPlcRealtimeWrite, Qt::QueuedConnection);
+
+	QObject::connect(imgProModule.imageProcessingModule2.get(), &ImageProcessingModule::plcRealtimeWrite,
+		uiModule._dlgProductSet, &DlgProductSet::onPlcRealtimeWrite, Qt::QueuedConnection);
+
 	QObject::connect(uiModule._dlgProductSet,&DlgProductSet::paramsChanged,
 		&imgProModule, &ImgProModule::onUpdateImgProContext);
 #pragma endregion

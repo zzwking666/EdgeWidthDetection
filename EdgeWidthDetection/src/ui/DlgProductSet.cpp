@@ -176,6 +176,25 @@ void DlgProductSet::onPlcCircularWrite(int funcIndex, int writeAddress, double v
 	}
 }
 
+void DlgProductSet::onPlcRealtimeWrite(int address, double value)
+{
+	QPushButton* button = nullptr;
+	bool isFlag = false;	// 206 为完成标志，按整数显示
+	switch (address)
+	{
+	case 200: button = ui->btn_shishixieru_lengdaoyahen; break;			// 1相机压痕（冷刀）
+	case 202: button = ui->btn_shishixieru_zhongxinpianyizhi; break;	// 1相机中心偏移值
+	case 204: button = ui->btn_shishixieru_qiedaoyahen; break;			// 2相机压痕（切刀）
+	case 206: button = ui->btn_shishixieru_wanchengbiaozhi; isFlag = true; break;	// 写入完成标志
+	default: return;
+	}
+	if (button)
+	{
+		button->setText(isFlag ? QString::number(static_cast<int>(value))
+			: QString::number(value, 'f', 2));
+	}
+}
+
 void DlgProductSet::closeEvent(QCloseEvent* event)
 {
 	// 关闭窗口前保存 SetConfig 参数到本地

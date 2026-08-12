@@ -33,6 +33,8 @@ public slots:
 	// PLC 循环写入回显：funcIndex 0=冷刀压痕 1=中心偏移值 2=切刀压痕
 	// writeAddress 为本次写入的地址，clearAddress 为本次清零的地址（-1 表示无）
 	void onPlcCircularWrite(int funcIndex, int writeAddress, double value, int clearAddress);
+	// PLC 实时写入回显：address 为写入的地址（200/202/204/206），value 为写入值
+	void onPlcRealtimeWrite(int address, double value);
 private slots:
 	void btn_close_clicked();
 

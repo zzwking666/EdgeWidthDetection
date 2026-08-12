@@ -91,6 +91,46 @@ namespace {
 		state.slot = (state.slot + 1) % slotCount;
 		return result;
 	}
+
+	// 实时写入地址（每次拍照图像处理后写入，与上方的循环写入相互独立）
+	constexpr int PLC_REALTIME_ADDR_LENGDAO = 200;		// 1相机压痕值（冷刀压痕）
+	constexpr int PLC_REALTIME_ADDR_PIANYI = 202;		// 1相机中心偏移值
+	constexpr int PLC_REALTIME_ADDR_QIEDAO = 204;		// 2相机压痕值（切刀压痕）
+	constexpr int PLC_REALTIME_ADDR_WANCHENG = 206;		// 写入完成标志（三者写完后写 1，PLC 读取后自行清零）
+
+	// 实时写入完成跟踪位：三者自上一轮完成后都被写过时，向 206 写 1 并清零进入下一轮
+	constexpr int PLC_REALTIME_BIT_LENGDAO = 0x1;
+	constexpr int PLC_REALTIME_BIT_PIANYI = 0x2;
+	constexpr int PLC_REALTIME_BIT_QIEDAO = 0x4;
+	constexpr int PLC_REALTIME_MASK_ALL = PLC_REALTIME_BIT_LENGDAO | PLC_REALTIME_BIT_PIANYI | PLC_REALTIME_BIT_QIEDAO;
+	std::atomic<int> g_plcRealtimeWriteMask{ 0 };	// 两相机处理线程共享
+
+	// 向 PLC 实时写入地址写入一个值，PLC 未连接时不写入并返回 false
+	inline bool WritePlcRealtimeValue(int address, uint16_t value)
+	{
+		auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
+		if (!plcControllerScheduler) {
+			qDebug() << "PLC disConnect!";
+			return false;
+		}
+		plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(address), value);
+		return true;
+	}
+
+	// 标记某项实时数据已写入（须在对应数据写入入队之后调用）；当 200/202/204 三者
+	// 自上一轮完成后都被写过时返回 true，由本次调用方负责向 206 写 1。
+	// CAS 循环保证多线程并发下只有置齐最后一位的线程看到完成态，且标记清零原子完成
+	inline bool MarkRealtimeWrittenAndTryComplete(int bit)
+	{
+		int mask = g_plcRealtimeWriteMask.load(std::memory_order_acquire);
+		while (true) {
+			const int newMask = mask | bit;
+			const bool complete = (newMask == PLC_REALTIME_MASK_ALL);
+			if (g_plcRealtimeWriteMask.compare_exchange_weak(mask, complete ? 0 : newMask, std::memory_order_acq_rel)) {
+				return complete;
+			}
+		}
+	}
 } // namespace
 
 
@@ -230,6 +270,10 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 		emit plcCircularWrite(0, widthWriteResult.writeAddress, width, widthWriteResult.clearAddress);
 	}
 
+	// 实时写入：200=1相机压痕值（冷刀压痕）、202=1相机中心偏移值，未识别时写 0
+	writePlcRealtime(PLC_REALTIME_ADDR_LENGDAO, PLC_REALTIME_BIT_LENGDAO, width);
+	writePlcRealtime(PLC_REALTIME_ADDR_PIANYI, PLC_REALTIME_BIT_PIANYI, centerDiffMm);
+
 	QStringList textList;
 	textList.append("实测压痕宽度:" + QString::number(width) + "mm");
 	textList.append("中心点偏差值:" + QString::number(centerDiffMm, 'f', 2) + "mm");
@@ -301,6 +345,9 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 		emit plcCircularWrite(2, widthWriteResult.writeAddress, width, widthWriteResult.clearAddress);
 	}
 
+	// 实时写入：204=2相机压痕值（切刀压痕），未识别时写 0
+	writePlcRealtime(PLC_REALTIME_ADDR_QIEDAO, PLC_REALTIME_BIT_QIEDAO, width);
+
 	QStringList textList;
 	textList.append("实测压痕宽度:" + QString::number(width) + "mm");
 	std::vector<rw::imgPro::Color> colors;
@@ -324,6 +371,22 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 			rw::rqw::ImageInfo imageInfo(rw::rqw::cvMatToQImage(frame.image));
 			save_image(imageInfo, maskImg);
 		}
+	}
+}
+
+void ImageProcessor::writePlcRealtime(int address, int bit, double valueMm)
+{
+	// 与循环写入同一约定：毫米值 *100 取整后按 uint16 发送（负的中心偏移值按补码环绕）
+	if (!WritePlcRealtimeValue(address, static_cast<uint16_t>(static_cast<int>(valueMm * 100)))) {
+		return;
+	}
+	emit plcRealtimeWrite(address, valueMm);
+
+	// 数据写入已入队后再标记完成位；三者齐后向 206 写 1
+	// （调度器同优先级 FIFO，保证 206 在 200/202/204 三条数据之后到达 PLC）
+	if (MarkRealtimeWrittenAndTryComplete(bit)) {
+		WritePlcRealtimeValue(PLC_REALTIME_ADDR_WANCHENG, 1);
+		emit plcRealtimeWrite(PLC_REALTIME_ADDR_WANCHENG, 1.0);
 	}
 }
 
@@ -454,6 +517,7 @@ void ImageProcessingModule::BuildModule()
 		processor->buildObbModelEngine(modelEnginePath);
 		connect(processor, &ImageProcessor::imageReady, this, &ImageProcessingModule::imageReady, Qt::QueuedConnection);
 		connect(processor, &ImageProcessor::plcCircularWrite, this, &ImageProcessingModule::plcCircularWrite, Qt::QueuedConnection);
+		connect(processor, &ImageProcessor::plcRealtimeWrite, this, &ImageProcessingModule::plcRealtimeWrite, Qt::QueuedConnection);
 
 		_processors.push_back(processor);
 		processor->start();
