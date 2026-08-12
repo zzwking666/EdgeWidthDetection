@@ -5862,7 +5862,7 @@ QPushButton:pressed {
          <item row="0" column="0">
           <widget class="QTabWidget" name="tabWidget_PLC">
            <property name="currentIndex">
-            <number>6</number>
+            <number>7</number>
            </property>
            <widget class="QWidget" name="tab_4">
             <attribute name="title">
@@ -18660,7 +18660,7 @@ QPushButton:pressed {
                 <string notr="true">QGroupBox { border: 1px solid #DDD; border-radius: 4px; font: bold 14px; color: #666; background-color: #F8F8F8; }QGroupBox::title { subcontrol-origin: margin; subcontrol-position: top left; left: 10px; padding: 0 5px; }</string>
                </property>
                <property name="title">
-                <string>每次拍照实时写入（地址 200~206）</string>
+                <string>每次拍照实时写入（地址 200~208）</string>
                </property>
                <layout class="QGridLayout" name="gridLayout_shishixieru">
                 <property name="spacing">
@@ -18807,7 +18807,7 @@ QPushButton:pressed {
                    <string notr="true">QLabel { color: #666; font-size: 13px; background: transparent; }</string>
                   </property>
                   <property name="text">
-                   <string>写入完成标志</string>
+                   <string>1相机写入状态</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -18846,6 +18846,51 @@ QPushButton:pressed {
                   </property>
                  </widget>
                 </item>
+                <item row="0" column="4">
+                 <widget class="QLabel" name="label_shishixieru_wanchengbiaozhi2">
+                  <property name="styleSheet">
+                   <string notr="true">QLabel { color: #666; font-size: 13px; background: transparent; }</string>
+                  </property>
+                  <property name="text">
+                   <string>2相机写入状态</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="4">
+                 <widget class="QLabel" name="label_shishixieru_addr_208">
+                  <property name="styleSheet">
+                   <string notr="true">QLabel { color: #666; font-size: 12px; background: transparent; }</string>
+                  </property>
+                  <property name="text">
+                   <string>208</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="4">
+                 <widget class="QPushButton" name="btn_shishixieru_wanchengbiaozhi2">
+                  <property name="minimumSize">
+                   <size>
+                    <width>90</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>90</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton { border: 1px solid #CCC; border-radius: 3px; background-color: white; color: #444; font-size: 13px; }QPushButton:disabled { background-color: #F0F0F0; color: #BBB; }</string>
+                  </property>
+                 </widget>
+                </item>
                </layout>
               </widget>
              </item>
@@ -18855,7 +18900,7 @@ QPushButton:pressed {
                 <string notr="true">QLabel { color: #999; font-size: 12px; background: transparent; }</string>
                </property>
                <property name="text">
-                <string>每次拍照处理完成后：200=1相机压痕值、202=1相机中心偏移值、204=2相机压痕值（未识别写 0），三者都写入完成后向 206 写入 1（PLC 读取后自行清零）</string>
+                <string>每次拍照处理完成后：200=1相机压痕值、202=1相机中心偏移值、204=2相机压痕值（未识别写 0）；200与202都写入后向 206 写入 1，204写入后向 208 写入 1（PLC 读取后自行清零）</string>
                </property>
               </widget>
              </item>

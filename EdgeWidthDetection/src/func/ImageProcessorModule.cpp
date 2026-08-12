@@ -96,14 +96,14 @@ namespace {
 	constexpr int PLC_REALTIME_ADDR_LENGDAO = 200;		// 1相机压痕值（冷刀压痕）
 	constexpr int PLC_REALTIME_ADDR_PIANYI = 202;		// 1相机中心偏移值
 	constexpr int PLC_REALTIME_ADDR_QIEDAO = 204;		// 2相机压痕值（切刀压痕）
-	constexpr int PLC_REALTIME_ADDR_WANCHENG = 206;		// 写入完成标志（三者写完后写 1，PLC 读取后自行清零）
+	constexpr int PLC_REALTIME_ADDR_WANCHENG = 206;		// 1相机写入完成标志（200与202都写完后写 1，PLC 读取后自行清零）
+	constexpr int PLC_REALTIME_ADDR_WANCHENG2 = 208;	// 2相机写入状态标志（204写完后写 1，PLC 读取后自行清零）
 
-	// 实时写入完成跟踪位：三者自上一轮完成后都被写过时，向 206 写 1 并清零进入下一轮
+	// 实时写入完成跟踪位：仅跟踪一相机的 200/202，两者自上一轮完成后都被写过时，向 206 写 1 并清零进入下一轮
 	constexpr int PLC_REALTIME_BIT_LENGDAO = 0x1;
 	constexpr int PLC_REALTIME_BIT_PIANYI = 0x2;
-	constexpr int PLC_REALTIME_BIT_QIEDAO = 0x4;
-	constexpr int PLC_REALTIME_MASK_ALL = PLC_REALTIME_BIT_LENGDAO | PLC_REALTIME_BIT_PIANYI | PLC_REALTIME_BIT_QIEDAO;
-	std::atomic<int> g_plcRealtimeWriteMask{ 0 };	// 两相机处理线程共享
+	constexpr int PLC_REALTIME_MASK_ALL = PLC_REALTIME_BIT_LENGDAO | PLC_REALTIME_BIT_PIANYI;
+	std::atomic<int> g_plcRealtimeWriteMask{ 0 };	// 一相机多个处理线程共享
 
 	// 向 PLC 实时写入地址写入一个值，PLC 未连接时不写入并返回 false
 	inline bool WritePlcRealtimeValue(int address, uint16_t value)
@@ -117,7 +117,7 @@ namespace {
 		return true;
 	}
 
-	// 标记某项实时数据已写入（须在对应数据写入入队之后调用）；当 200/202/204 三者
+	// 标记一相机某项实时数据已写入（须在对应数据写入入队之后调用）；当 200/202 两者
 	// 自上一轮完成后都被写过时返回 true，由本次调用方负责向 206 写 1。
 	// CAS 循环保证多线程并发下只有置齐最后一位的线程看到完成态，且标记清零原子完成
 	inline bool MarkRealtimeWrittenAndTryComplete(int bit)
@@ -347,8 +347,8 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 		emit plcCircularWrite(2, widthWriteResult.writeAddress, width, widthWriteResult.clearAddress);
 	}
 
-	// 实时写入：204=2相机压痕值（切刀压痕），未识别时写 0
-	writePlcRealtime(PLC_REALTIME_ADDR_QIEDAO, PLC_REALTIME_BIT_QIEDAO, width);
+	// 实时写入：204=2相机压痕值（切刀压痕），未识别时写 0；写入后置位 208 写入状态标志
+	writePlcRealtimeQiedao(width);
 
 	QStringList textList;
 	textList.append("实测压痕宽度:" + QString::number(width) + "mm");
@@ -384,12 +384,25 @@ void ImageProcessor::writePlcRealtime(int address, int bit, double valueMm)
 	}
 	emit plcRealtimeWrite(address, valueMm);
 
-	// 数据写入已入队后再标记完成位；三者齐后向 206 写 1
-	// （调度器同优先级 FIFO，保证 206 在 200/202/204 三条数据之后到达 PLC）
+	// 数据写入已入队后再标记完成位；200/202 两者齐后向 206 写 1
+	// （调度器同优先级 FIFO，保证 206 在 200/202 两条数据之后到达 PLC）
 	if (MarkRealtimeWrittenAndTryComplete(bit)) {
 		WritePlcRealtimeValue(PLC_REALTIME_ADDR_WANCHENG, 1);
 		emit plcRealtimeWrite(PLC_REALTIME_ADDR_WANCHENG, 1.0);
 	}
+}
+
+void ImageProcessor::writePlcRealtimeQiedao(double valueMm)
+{
+	// 204=2相机压痕值（切刀压痕），与循环写入同一约定：毫米值 *100 取整后按 uint16 发送
+	if (!WritePlcRealtimeValue(PLC_REALTIME_ADDR_QIEDAO, static_cast<uint16_t>(static_cast<int>(valueMm * 100)))) {
+		return;
+	}
+	emit plcRealtimeWrite(PLC_REALTIME_ADDR_QIEDAO, valueMm);
+
+	// 204 写入入队后紧跟置位 208 写入状态标志（调度器同优先级 FIFO，保证 208 在 204 之后到达 PLC）
+	WritePlcRealtimeValue(PLC_REALTIME_ADDR_WANCHENG2, 1);
+	emit plcRealtimeWrite(PLC_REALTIME_ADDR_WANCHENG2, 1.0);
 }
 
 void ImageProcessor::save_image(rw::rqw::ImageInfo& imageInfo, const QImage& image, RunningState captureState)
