@@ -413,7 +413,8 @@ void EdgeWidthDetection::rbtn_removeFunc_checked(bool checked)
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	if (checked)
 	{
-		runningState = RunningState::OpenRemoveFunc;
+		// 先切相机到触发模式，再翻转运行状态：
+		// 保证状态翻转前到达的调试连续帧仍被打 Debug 戳走调试分发，不计数、不写PLC
 		if (camera1)
 		{
 			camera1->setTriggerState(true);
@@ -424,6 +425,7 @@ void EdgeWidthDetection::rbtn_removeFunc_checked(bool checked)
 			camera2->setTriggerState(true);
 			camera2->setFrameRate(setConfig.openRemoveFrame2);
 		}
+		runningState = RunningState::OpenRemoveFunc;
 		ui->rbtn_debug->setChecked(false);
 	}
 	else

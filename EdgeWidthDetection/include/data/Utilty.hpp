@@ -91,10 +91,21 @@ struct PlcReadIndex
 	static constexpr int readPLCdaizishicechangdu = 16;      // PLC袋子实测长度
 };
 
+// 运行状态（定义在此供 MatInfo 等基础数据结构使用，RuntimeInfoModule.hpp 直接引用）
+enum class RunningState
+{
+	Debug,
+	OpenRemoveFunc,
+	Stop
+};
+
 // 图片信息
 struct MatInfo {
 	cv::Mat image;	// 图片内容
 	float location;	// 记录拍照瞬间的时间点
 	size_t index;	// 拍照的相机的下标
+	// 帧到达程序瞬间（onFrameCaptured）的运行状态，处理线程按此状态分发，
+	// 避免调试模式切到剔废模式后，切换窗口内到达的调试帧被当作剔废帧计数/写PLC
+	RunningState captureState = RunningState::Stop;
 };
 

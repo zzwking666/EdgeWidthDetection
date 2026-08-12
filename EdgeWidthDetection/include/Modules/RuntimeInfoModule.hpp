@@ -5,13 +5,7 @@
 #include<QObject>
 
 #include "DetachUtiltyThread.h"
-
-enum class RunningState
-{
-	Debug,
-	OpenRemoveFunc,
-	Stop
-};
+#include "Utilty.hpp"
 
 class RuntimeInfoModule : public QObject, public IModule<bool>
 {

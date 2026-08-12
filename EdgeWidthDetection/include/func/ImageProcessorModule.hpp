@@ -51,9 +51,9 @@ signals:
 	// PLC 实时写入回显：address 为写入的地址（200/202/204/206），value 为写入值
 	void plcRealtimeWrite(int address, double value);
 private:
-	// 存图
-	void save_image(rw::rqw::ImageInfo& imageInfo, const QImage& image);
-	void save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage& image);
+	// 存图（captureState 为帧采集时刻的运行状态，决定是否按剔废模式分类保存）
+	void save_image(rw::rqw::ImageInfo& imageInfo, const QImage& image, RunningState captureState);
+	void save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage& image, RunningState captureState);
 private:
 	// 在图像上面绘制短边(宽)
 	void drawImg(QImage& qimage, const std::vector<rw::DetectionRectangleInfo>& processResult, double centerDiffMm);

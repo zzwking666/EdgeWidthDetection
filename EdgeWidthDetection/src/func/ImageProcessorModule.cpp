@@ -165,8 +165,10 @@ void ImageProcessor::run()
 			continue; // 跳过空帧
 		}
 
-		auto currentRunningState = Modules::getInstance().runtimeInfoModule.runningState.load();
-		switch (currentRunningState)
+		// 按帧采集时刻的运行状态分发，而不是处理时刻的全局状态：
+		// 调试切剔废时，切换窗口内到达的调试帧仍走 run_debug，不会被计数/写PLC
+		auto captureState = frame.captureState;
+		switch (captureState)
 		{
 		case RunningState::Debug:
 			run_debug(frame);
@@ -202,7 +204,7 @@ void ImageProcessor::run_debug(MatInfo& frame)
 	emit imageReady(imageProcessingModuleIndex, QPixmap::fromImage(maskImg));
 
 	rw::rqw::ImageInfo imageInfo(rw::rqw::cvMatToQImage(frame.image));
-	save_image(imageInfo, maskImg);
+	save_image(imageInfo, maskImg, frame.captureState);
 }
 
 void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
@@ -288,7 +290,7 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	if (0 == setConfig.saveImgMode)
 	{
 		rw::rqw::ImageInfo imageInfo(rw::rqw::cvMatToQImage(frame.image));
-		save_image(imageInfo, maskImg);
+		save_image(imageInfo, maskImg, frame.captureState);
 	}
 	// 只保存有识别到的
 	else if (1 == setConfig.saveImgMode)
@@ -296,7 +298,7 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 		if (defectResult.disableDefects.size() > 0)
 		{
 			rw::rqw::ImageInfo imageInfo(rw::rqw::cvMatToQImage(frame.image));
-			save_image(imageInfo, maskImg);
+			save_image(imageInfo, maskImg, frame.captureState);
 		}
 	}
 }
@@ -361,7 +363,7 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 	if (0 == setConfig.saveImgMode)
 	{
 		rw::rqw::ImageInfo imageInfo(rw::rqw::cvMatToQImage(frame.image));
-		save_image(imageInfo, maskImg);
+		save_image(imageInfo, maskImg, frame.captureState);
 	}
 	// 只保存有识别到的
 	else if (1 == setConfig.saveImgMode)
@@ -369,7 +371,7 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 		if (defectResult.disableDefects.size() > 0)
 		{
 			rw::rqw::ImageInfo imageInfo(rw::rqw::cvMatToQImage(frame.image));
-			save_image(imageInfo, maskImg);
+			save_image(imageInfo, maskImg, frame.captureState);
 		}
 	}
 }
@@ -390,16 +392,15 @@ void ImageProcessor::writePlcRealtime(int address, int bit, double valueMm)
 	}
 }
 
-void ImageProcessor::save_image(rw::rqw::ImageInfo& imageInfo, const QImage& image)
+void ImageProcessor::save_image(rw::rqw::ImageInfo& imageInfo, const QImage& image, RunningState captureState)
 {
-	save_image_work(imageInfo, image);
+	save_image_work(imageInfo, image, captureState);
 }
 
-void ImageProcessor::save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage& image)
+void ImageProcessor::save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage& image, RunningState captureState)
 {
 	auto& imageSaveEngine = Modules::getInstance().imgSaveModule.imageSaveEngine;
 	auto& config = Modules::getInstance().configManagerModule.edgeWidthDetectionConfig;
-	auto& runningState = Modules::getInstance().runtimeInfoModule.runningState;
 
 	if (config.isSaveImg && imageSaveEngine)
 	{
@@ -410,7 +411,7 @@ void ImageProcessor::save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage
 		// 其下再按 OK（原图）/ MASK（掩码图）分类
 		const QString cameraDir = (2 == imageProcessingModuleIndex) ? "Camera2" : "Camera1";
 
-		if (runningState == RunningState::OpenRemoveFunc)
+		if (captureState == RunningState::OpenRemoveFunc)
 		{
 			imageInfo.dirName = cameraDir + "/OK";
 			imageSaveEngine->pushImage(imageInfo);
@@ -603,6 +604,8 @@ void ImageProcessingModule::onFrameCaptured(rw::rqw::MatInfo matInfo, size_t ind
 	MatInfo mat;
 	mat.image = matInfo.mat;
 	mat.index = index;
+	// 打上帧到达瞬间的运行状态戳，处理线程按此分发（调试帧不会在切模式后被当作剔废帧计数）
+	mat.captureState = Modules::getInstance().runtimeInfoModule.runningState.load();
 
 	_queue.enqueue(mat);
 	_condition.wakeOne();
