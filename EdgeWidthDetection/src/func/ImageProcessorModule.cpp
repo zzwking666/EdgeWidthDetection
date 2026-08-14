@@ -588,6 +588,11 @@ void ImageProcessingModule::onFrameCaptured(rw::rqw::MatInfo matInfo, size_t ind
 		return; // 跳过空帧
 	}
 
+	// 相机1图像在此回调处旋转180度，后续的检测线、文字绘制都基于旋转后的图像，保持正向
+	if (1 == this->index) {
+		cv::rotate(matInfo.mat, matInfo.mat, cv::ROTATE_180);
+	}
+
 	// 计算整图亮度统计，用于自动曝光
 	auto& cfg = Modules::getInstance().configManagerModule.setConfig;
 	bool autoExposureOn = (1 == this->index) ? cfg.autoExposureEnabled1 : cfg.autoExposureEnabled2;
