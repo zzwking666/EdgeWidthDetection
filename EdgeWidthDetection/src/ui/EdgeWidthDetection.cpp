@@ -5,6 +5,7 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QProcess>
+#include <QTransform>
 
 #include "ui_EdgeWidthDetection.h"
 #include <QPushButton>
@@ -329,7 +330,10 @@ void EdgeWidthDetection::onCameraDisplay(size_t index, QPixmap image)
 {
 	if (1 == index)
 	{
-		ui->label_imgDisplay_1->setPixmap(image.scaled(ui->label_imgDisplay_1->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		// 相机1图像旋转180度显示
+		static const QTransform rotate180 = QTransform().rotate(180);
+		QPixmap rotatedImage = image.transformed(rotate180);
+		ui->label_imgDisplay_1->setPixmap(rotatedImage.scaled(ui->label_imgDisplay_1->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 	}
 	else if (2 == index)
 	{
