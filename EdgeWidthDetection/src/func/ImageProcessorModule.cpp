@@ -509,7 +509,7 @@ void ImageProcessor::buildObbModelEngine(const QString& enginePath)
 {
 	rw::ModelEngineConfig modelEngineConfig;
 	modelEngineConfig.conf_threshold = 0.1f;
-	modelEngineConfig.nms_threshold = 0.1f;
+	modelEngineConfig.nms_threshold = 0.01f;
 	modelEngineConfig.imagePretreatmentPolicy = rw::ImagePretreatmentPolicy::LetterBox;
 	modelEngineConfig.letterBoxColor = cv::Scalar(114, 114, 114);
 	modelEngineConfig.modelPath = enginePath.toStdString();
@@ -589,9 +589,9 @@ void ImageProcessingModule::onFrameCaptured(rw::rqw::MatInfo matInfo, size_t ind
 	}
 
 	// 相机1图像在此回调处旋转180度，后续的检测线、文字绘制都基于旋转后的图像，保持正向
-	if (1 == this->index) {
+	/*if (1 == this->index) {
 		cv::rotate(matInfo.mat, matInfo.mat, cv::ROTATE_180);
-	}
+	}*/
 
 	// 计算整图亮度统计，用于自动曝光
 	auto& cfg = Modules::getInstance().configManagerModule.setConfig;
