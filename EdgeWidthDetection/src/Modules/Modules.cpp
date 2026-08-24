@@ -213,8 +213,17 @@ void Modules::connect()
 #pragma endregion
 
 #pragma region connect UIModule and RuntimeInfoModule
-	QObject::connect(plcController.plcListenThread.get(), &DetachPLCListenThread::updatePLCInfo,
-		uiModule._dlgProductSet, &DlgProductSet::onUpdatePLCInfo);
+	// 实机未使用 PLC 轮询监听线程，先整体注释掉（不再创建该线程）
+	/*QObject::connect(plcController.plcListenThread.get(), &DetachPLCListenThread::updatePLCInfo,
+		uiModule._dlgProductSet, &DlgProductSet::onUpdatePLCInfo);*/
+#pragma endregion
+
+#pragma region connect plcController and ReconnectModule
+	// PLC 断连重建/销毁（监测线程 -> 主线程，队列连接）
+	QObject::connect(reconnectModule.monitorCameraAndCardStateThread.get(), &CameraAndCardStateThread::buildPlc,
+		&plcController, &PlcController::onBuildPlc);
+	QObject::connect(reconnectModule.monitorCameraAndCardStateThread.get(), &CameraAndCardStateThread::destroyPlc,
+		&plcController, &PlcController::onDestroyPlc);
 #pragma endregion
 
 #ifdef BUILD_WITHOUT_HARDWARE

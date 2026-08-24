@@ -377,11 +377,12 @@ void DlgProductSet::btn_close_clicked()
 {
 	emit paramsChanged();
 
-	auto& plcListenThread = Modules::getInstance().plcController.plcListenThread;
-	if (plcListenThread)
-	{
-		plcListenThread->stopThread();
-	}
+	// 实机未使用 PLC 轮询监听线程，先整体注释掉（不再创建该线程）
+	//auto& plcListenThread = Modules::getInstance().plcController.plcListenThread;
+	//if (plcListenThread)
+	//{
+	//	plcListenThread->stopThread();
+	//}
 
 	this->close();
 }
@@ -1635,22 +1636,23 @@ void DlgProductSet::btn_writeshibiezhongxindianyutuxiangzhongxindianchazhixierus
 
 void DlgProductSet::tabWidget_indexChanged(int index)
 {
-	if (2 == index)
-	{
-		auto& plcListenThread = Modules::getInstance().plcController.plcListenThread;
-		if (plcListenThread)
-		{
-			plcListenThread->startThread();
-		}
-	}
-	else
-	{
-		auto& plcListenThread = Modules::getInstance().plcController.plcListenThread;
-		if (plcListenThread)
-		{
-			plcListenThread->stopThread();
-		}
-	}
+	// 实机未使用 PLC 轮询监听线程，先整体注释掉（不再创建该线程）
+	//if (2 == index)
+	//{
+	//	auto& plcListenThread = Modules::getInstance().plcController.plcListenThread;
+	//	if (plcListenThread)
+	//	{
+	//		plcListenThread->startThread();
+	//	}
+	//}
+	//else
+	//{
+	//	auto& plcListenThread = Modules::getInstance().plcController.plcListenThread;
+	//	if (plcListenThread)
+	//	{
+	//		plcListenThread->stopThread();
+	//	}
+	//}
 }
 
 void DlgProductSet::btn_testPlcAddressWrite_clicked()

@@ -9,29 +9,31 @@
 void PlcController::build()
 {
 	build_plcController();
-	build_plcListenThread();
+	// 实机未使用 PLC 轮询监听线程，先整体注释掉（不再创建该线程）
+	//build_plcListenThread();
 }
 
 void PlcController::destroy()
 {
-	destroy_plcListenThread();
+	//destroy_plcListenThread();
 	destroy_plcController();
 }
 
 void PlcController::start()
 {
-	if (plcListenThread)
-	{
-		plcListenThread->startThread();
-	}
-}	
+	// 实机未使用 PLC 轮询监听线程，先整体注释掉（不再创建该线程）
+	//if (plcListenThread)
+	//{
+	//	plcListenThread->startThread();
+	//}
+}
 
 void PlcController::stop()
 {
-	if (plcListenThread)
-	{
-		plcListenThread->stopThread();
-	}
+	//if (plcListenThread)
+	//{
+	//	plcListenThread->stopThread();
+	//}
 }
 
 void PlcController::build_plcController()
@@ -66,6 +68,13 @@ void PlcController::build_plcController()
 		std::cout << "PLC connected successfully." << std::endl;
 		_buildResult = true;
 	}
+	else
+	{
+		// 连接失败时不创建调度器，由断连监测线程后续触发 onBuildPlc 重试
+		plcController.reset();
+		_buildResult = false;
+		std::cout << "PLC connect failed." << std::endl;
+	}
 }
 
 void PlcController::destroy_plcController()
@@ -80,17 +89,30 @@ void PlcController::destroy_plcController()
 	}
 }
 
-void PlcController::build_plcListenThread()
+// 实机未使用 PLC 轮询监听线程，先整体注释掉（不再创建该线程）
+//void PlcController::build_plcListenThread()
+//{
+//	plcListenThread = std::make_shared<DetachPLCListenThread>();
+//}
+//
+//void PlcController::destroy_plcListenThread()
+//{
+//	if (plcListenThread)
+//	{
+//		plcListenThread.reset();
+//	}
+//}
+
+void PlcController::onBuildPlc()
 {
-	plcListenThread = std::make_shared<DetachPLCListenThread>();
+	// 断连监测触发的重建：先释放旧连接再重新建立
+	destroy_plcController();
+	build_plcController();
 }
 
-void PlcController::destroy_plcListenThread()
+void PlcController::onDestroyPlc()
 {
-	if (plcListenThread)
-	{
-		plcListenThread.reset();
-	}
+	destroy_plcController();
 }
 
 bool PlcController::loadConfigFromFile(std::string& ip, int& port)

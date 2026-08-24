@@ -1,5 +1,6 @@
 #include "CameraAndCardStateThread.h"
 #include "Modules.hpp"
+#include "Utilty.hpp"
 
 size_t CameraAndCardStateThread::runtimeCounts = 0;
 
@@ -32,6 +33,8 @@ void CameraAndCardStateThread::run()
 		QThread::msleep(2000);
 
 		check_cameraState();
+
+		check_plcState();
 
 		runtimeCounts++;
 		if (runtimeCounts == 4) {
@@ -102,4 +105,45 @@ void CameraAndCardStateThread::check_cameraState2()
 		emit updateCameraLabelState(2, false);
 		isUpdateState = false;
 	}
+}
+
+void CameraAndCardStateThread::check_plcState()
+{
+	auto& plcController = Modules::getInstance().plcController;
+	static bool isUpdateState = false;
+
+	// 每 2 秒探测一次（不随相机按 runtimeCounts 降频）：
+	// 既保证断连能被及时发现，定期读寄存器也顺带充当心跳，避免 TCP 空闲被 PLC 主动 RST
+	if (plcController.plcControllerScheduler) {
+		if (probe_plcConnected()) {
+			if (!isUpdateState) {
+				emit updateCameraLabelState(0, true);
+				isUpdateState = true;
+			}
+		}
+		else {
+			emit destroyPlc();
+			emit updateCameraLabelState(0, false);
+		}
+	}
+	else {
+		emit buildPlc();
+		emit updateCameraLabelState(0, false);
+		isUpdateState = false;
+	}
+}
+
+bool CameraAndCardStateThread::probe_plcConnected()
+{
+	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
+
+	if (!plcControllerScheduler) {
+		return false;
+	}
+
+	// 实际读一次报警信息寄存器，以读写成败判断连接是否存活
+	auto fut = plcControllerScheduler->readUInt16RegisterAsync(
+		static_cast<uint16_t>(ModBusAddress::readPLCbaojingxinxiAddress));
+	auto result = fut.get();
+	return result.second;
 }

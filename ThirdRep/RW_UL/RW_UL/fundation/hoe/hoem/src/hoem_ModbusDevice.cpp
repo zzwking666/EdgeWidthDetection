@@ -23,6 +23,9 @@ namespace rw
 				throw std::runtime_error("Failed to create Modbus context");
 			}
 			modbus_set_slave(_modbusContext, 1); // 设置从站ID为1
+			// 响应超时设为 100ms（libmodbus 默认 500ms）：断连/半开时缩短单次事务的阻塞时间，
+			// 超时设置保存在 context 中，connect/reconnect 后依然生效
+			modbus_set_response_timeout(_modbusContext, 0, 100 * 1000);
 			_checkConnectStatusCoil = cfg.checkConnectStatusCoil;
 		}
 

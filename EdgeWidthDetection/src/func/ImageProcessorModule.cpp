@@ -59,6 +59,11 @@ namespace {
 		int clearAddress = -1;
 	};
 
+	// 每个图像处理线程独立的待检查写入 future 队列与帧计数（thread_local 按线程天然隔离，
+	// 相机1/相机2 各自的多个处理线程互不干扰）
+	thread_local std::vector<std::future<bool>> t_pendingPlcWriteFuts;
+	thread_local int t_frameCountSincePlcCheck = 0;
+
 	// 向 PLC 固定地址区间循环写入一个值：从 baseAddress 起按步进 2 共 slotCount 个槽位，
 	// 每调用一次在当前槽位写 value 并推进一格，写满一轮回绕到起始；
 	// 同时把"往前数 intervalSlots 格"的旧数据槽位写 0 清零。
@@ -83,8 +88,12 @@ namespace {
 		const int writeAddress = baseAddress + state.slot * 2;
 
 		// 先入队清零、再入队写值（调度器同优先级 FIFO）：两槽相同时保证最终留下的是写入值
-		plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(clearAddress), static_cast<uint16_t>(0));
-		plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(writeAddress), value);
+		auto clearFut = plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(clearAddress), static_cast<uint16_t>(0));
+		auto writeFut = plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(writeAddress), value);
+
+		// 不阻塞等待结果，攒入本线程待检查队列，由 MaybeAsyncCheckPlcWrites 每三次识别异步统一校验
+		t_pendingPlcWriteFuts.push_back(std::move(clearFut));
+		t_pendingPlcWriteFuts.push_back(std::move(writeFut));
 
 		result.writeAddress = writeAddress;
 		result.clearAddress = clearAddress;
@@ -105,7 +114,8 @@ namespace {
 	constexpr int PLC_REALTIME_MASK_ALL = PLC_REALTIME_BIT_LENGDAO | PLC_REALTIME_BIT_PIANYI;
 	std::atomic<int> g_plcRealtimeWriteMask{ 0 };	// 一相机多个处理线程共享
 
-	// 向 PLC 实时写入地址写入一个值，PLC 未连接时不写入并返回 false
+	// 向 PLC 实时写入地址写入一个值；返回值表示是否成功入队（PLC 未连接时返回 false），
+	// 实际写入结果由 MaybeAsyncCheckPlcWrites 每三次识别异步统一校验
 	inline bool WritePlcRealtimeValue(int address, uint16_t value)
 	{
 		auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
@@ -113,8 +123,42 @@ namespace {
 			qDebug() << "PLC disConnect!";
 			return false;
 		}
-		plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(address), value);
+		auto fut = plcControllerScheduler->writeUInt16RegisterAsync(static_cast<uint16_t>(address), value);
+
+		// 不阻塞等待结果，攒入本线程待检查队列，由 MaybeAsyncCheckPlcWrites 异步统一校验
+		t_pendingPlcWriteFuts.push_back(std::move(fut));
 		return true;
+	}
+
+	// 每三次图像识别触发一次异步检查：取出本线程累计的写入 future，
+	// 放到后台线程统一等待结果并统计失败数，避免阻塞图像处理线程
+	inline void MaybeAsyncCheckPlcWrites()
+	{
+		++t_frameCountSincePlcCheck;
+		if (t_frameCountSincePlcCheck < 3) {
+			return;
+		}
+		t_frameCountSincePlcCheck = 0;
+
+		if (t_pendingPlcWriteFuts.empty()) {
+			return;
+		}
+
+		std::vector<std::future<bool>> futs;
+		futs.swap(t_pendingPlcWriteFuts);
+
+		QtConcurrent::run([futs = std::move(futs)]() mutable
+			{
+				int failCount = 0;
+				for (auto& fut : futs) {
+					if (!fut.get()) {
+						++failCount;
+					}
+				}
+				if (failCount > 0) {
+					qWarning() << "PLC 写入异步检查:" << failCount << "/" << futs.size() << "条写入失败";
+				}
+			});
 	}
 
 	// 标记一相机某项实时数据已写入（须在对应数据写入入队之后调用）；当 200/202 两者
@@ -276,6 +320,9 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	writePlcRealtime(PLC_REALTIME_ADDR_LENGDAO, PLC_REALTIME_BIT_LENGDAO, width);
 	writePlcRealtime(PLC_REALTIME_ADDR_PIANYI, PLC_REALTIME_BIT_PIANYI, centerDiffMm);
 
+	// 每三次识别异步检查一次本线程累计的 PLC 写入结果
+	MaybeAsyncCheckPlcWrites();
+
 	QStringList textList;
 	textList.append("Z1实测压痕宽度:" + QString::number(width) + "mm");
 	textList.append("Z2中心点偏差值:" + QString::number(centerDiffMm, 'f', 2) + "mm");
@@ -349,6 +396,9 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 
 	// 实时写入：204=2相机压痕值（切刀压痕），未识别时写 0；写入后置位 208 写入状态标志
 	writePlcRealtimeQiedao(width);
+
+	// 每三次识别异步检查一次本线程累计的 PLC 写入结果
+	MaybeAsyncCheckPlcWrites();
 
 	QStringList textList;
 	textList.append("实测压痕宽度:" + QString::number(width) + "mm");
