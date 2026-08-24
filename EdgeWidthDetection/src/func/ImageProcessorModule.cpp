@@ -277,8 +277,8 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	writePlcRealtime(PLC_REALTIME_ADDR_PIANYI, PLC_REALTIME_BIT_PIANYI, centerDiffMm);
 
 	QStringList textList;
-	textList.append("实测压痕宽度:" + QString::number(width) + "mm");
-	textList.append("中心点偏差值:" + QString::number(centerDiffMm, 'f', 2) + "mm");
+	textList.append("Z1实测压痕宽度:" + QString::number(width) + "mm");
+	textList.append("Z2中心点偏差值:" + QString::number(centerDiffMm, 'f', 2) + "mm");
 	std::vector<rw::imgPro::Color> colors;
 	colors.push_back(rw::imgPro::Color::Blue);
 
