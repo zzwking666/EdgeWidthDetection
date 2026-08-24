@@ -34,7 +34,10 @@ void CameraAndCardStateThread::run()
 
 		check_cameraState();
 
+#ifndef BUILD_WITHOUT_HARDWARE
+		// 无硬件模式下没有真实 PLC，跳过断连检测，避免误报与无效重连
 		check_plcState();
+#endif
 
 		runtimeCounts++;
 		if (runtimeCounts == 4) {
