@@ -167,6 +167,12 @@ void Modules::connect()
 
 	QObject::connect(uiModule._dlgProductSet,&DlgProductSet::paramsChanged,
 		&imgProModule, &ImgProModule::onUpdateImgProContext);
+
+	// 修改像素当量等参数后，按新参数重算并重绘最近一次出图的左上角识别文字
+	QObject::connect(uiModule._dlgProductSet, &DlgProductSet::paramsChanged,
+		imgProModule.imageProcessingModule1.get(), &ImageProcessingModule::redrawLastFrameText);
+	QObject::connect(uiModule._dlgProductSet, &DlgProductSet::paramsChanged,
+		imgProModule.imageProcessingModule2.get(), &ImageProcessingModule::redrawLastFrameText);
 #pragma endregion
 
 #pragma region connect UIModules

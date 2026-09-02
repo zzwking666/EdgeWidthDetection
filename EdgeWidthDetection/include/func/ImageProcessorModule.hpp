@@ -10,6 +10,7 @@
 #include <vector>
 #include <QThread>
 #include <QPixmap>
+#include <QImage>
 #include <imgPro_ImageProcess.hpp>
 #include "rqw_CameraObjectCore.hpp"
 #include "rqw_ImageSaveEngine.h"
@@ -20,6 +21,19 @@
 struct PlcCircularWriteState
 {
 	int slot = 0;
+};
+
+// 最近一次出图的显示缓存：保存未绘制识别文字的掩码图与像素级原始结果，
+// 供修改像素当量后按新参数重算毫米值并重绘左上角识别文字
+struct LastFrameDisplayInfo
+{
+	QImage imageWithoutText;	// 未绘制识别文字的掩码图（检测框、中心线已绘制）
+	int widthPixel = 0;			// 识别宽度（像素）
+	int centerDiffPixel = 0;	// 图像中心与识别中心的纵向偏差（像素，仅相机1）
+	bool hasWidth = false;		// 本帧是否识别到有效宽度
+	bool hasCenter = false;		// 本帧是否有有效中心点（仅相机1）
+	bool valid = false;			// 缓存是否可重绘（调试出图后置为 false）
+	size_t frameIndex = 0;		// 画面下标，重绘时随 imageReady 原样发回
 };
 
 class ImageProcessor : public QThread
@@ -93,6 +107,9 @@ public:
 public slots:
 	// 相机回调函数
 	void onFrameCaptured(rw::rqw::MatInfo matInfo, size_t index);
+	// 像素当量等参数修改后调用：按当前配置把缓存的像素结果重算为毫米值，
+	// 并在最近一次出图上重绘左上角识别文字（仅重绘剔废运行帧，调试帧不重绘）
+	void redrawLastFrameText();
 
 signals:
 	void imageReady(size_t index, QPixmap image);
@@ -107,6 +124,11 @@ public:
 		return _processors;
 	}
 
+	// 处理线程调用：更新最近一次出图的显示缓存（线程安全）
+	void updateLastFrameInfo(const LastFrameDisplayInfo& info);
+	// 处理线程调用：使显示缓存失效（调试模式出图时调用，避免旧运行帧文字覆盖调试画面）
+	void invalidateLastFrameInfo();
+
 private:
 	QQueue<MatInfo> _queue;
 	QMutex _mutex;
@@ -114,6 +136,8 @@ private:
 	std::vector<ImageProcessor*> _processors;
 	int _numConsumers;
 	std::atomic<long long> _lastCamNs{ 0 };	// 防抖动时间戳（每模块独立，避免跨相机误丢帧）
+	QMutex _lastFrameMutex;					// 保护 _lastFrameInfo（处理线程写、UI 线程读）
+	LastFrameDisplayInfo _lastFrameInfo;
 public:
 	size_t index;
 };

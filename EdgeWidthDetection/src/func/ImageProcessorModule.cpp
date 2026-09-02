@@ -175,6 +175,37 @@ namespace {
 			}
 		}
 	}
+
+	// 按当前像素当量把像素级结果换算成毫米，并在图像左上角绘制识别文字
+	// （出图时与修改像素当量后的重绘共用此函数，保证两处文字格式一致）
+	inline void DrawResultTextOnImage(QImage& img, int cameraIndex, bool hasWidth, int widthPixel, bool hasCenter, int centerDiffPixel)
+	{
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		const double pixToWorld = (2 == cameraIndex) ? setConfig.xiangsudangliang2 : setConfig.xiangsudangliang1;
+
+		const double width = hasWidth ? widthPixel * pixToWorld : 0.0;
+
+		QStringList textList;
+		std::vector<rw::imgPro::Color> colors;
+		colors.push_back(rw::imgPro::Color::Blue);
+
+		if (2 == cameraIndex) {
+			textList.append("实测压痕宽度:" + QString::number(width) + "mm");
+		}
+		else {
+			double centerDiffMm = 0.0;
+			if (hasCenter) {
+				centerDiffMm = centerDiffPixel * pixToWorld;
+				if (setConfig.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1) {
+					centerDiffMm = -centerDiffMm;
+				}
+			}
+			textList.append("Z1实测压痕宽度:" + QString::number(width) + "mm");
+			textList.append("Z2中心点偏差值:" + QString::number(centerDiffMm, 'f', 2) + "mm");
+		}
+
+		rw::imgPro::ImagePainter::drawTextOnImageWithFontSize(img, textList, colors, 50);
+	}
 } // namespace
 
 
@@ -247,6 +278,11 @@ void ImageProcessor::run_debug(MatInfo& frame)
 
 	emit imageReady(imageProcessingModuleIndex, QPixmap::fromImage(maskImg));
 
+	// 调试帧不带识别文字，使缓存失效，避免后续修改参数时用旧运行帧的文字覆盖调试画面
+	if (auto module = qobject_cast<ImageProcessingModule*>(parent())) {
+		module->invalidateLastFrameInfo();
+	}
+
 	rw::rqw::ImageInfo imageInfo(rw::rqw::cvMatToQImage(frame.image));
 	save_image(imageInfo, maskImg, frame.captureState);
 }
@@ -266,15 +302,18 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 
 	double width = 0.0;
 	double centerDiffMm = 0.0;
+	int widthPixel = 0;			// 识别宽度（像素），供显示缓存重算
+	int centerDiffPixel = 0;	// 图像中心与识别中心纵向偏差（像素），供显示缓存重算
 	bool recognized = false;	// 本帧是否向 PLC 写入有效压痕宽度，未写入（写 0）则计入未识别总量
 
 	// 计算识别中心点与图像中心点差值
-	if (processResult.size() == 1)
+	const bool hasCenter = (processResult.size() == 1);
+	if (hasCenter)
 	{
 		auto pixToWorld = setConfig.xiangsudangliang1;
 		int imageCenterY = frame.image.rows / 2;
 		int detectionCenterY = processResult[0].center_y;
-		double centerDiffPixel = imageCenterY - detectionCenterY;
+		centerDiffPixel = imageCenterY - detectionCenterY;
 		centerDiffMm = centerDiffPixel * pixToWorld;
 		if (setConfig.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1)
 		{
@@ -295,7 +334,8 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 		if (imgPro.context().customFields.find("width") != imgPro.context().customFields.end())
 		{
 			auto pixToWorld = setConfig.xiangsudangliang1;
-			width = std::any_cast<int>(imgPro.context().customFields["width"]) * pixToWorld;
+			widthPixel = std::any_cast<int>(imgPro.context().customFields["width"]);
+			width = widthPixel * pixToWorld;
 
 			drawImg(maskImg, processResult, centerDiffMm);
 			recognized = true;
@@ -323,13 +363,21 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	// 每三次识别异步检查一次本线程累计的 PLC 写入结果
 	MaybeAsyncCheckPlcWrites();
 
-	QStringList textList;
-	textList.append("Z1实测压痕宽度:" + QString::number(width) + "mm");
-	textList.append("Z2中心点偏差值:" + QString::number(centerDiffMm, 'f', 2) + "mm");
-	std::vector<rw::imgPro::Color> colors;
-	colors.push_back(rw::imgPro::Color::Blue);
+	// 缓存未绘制识别文字的掩码图与像素级原始结果，供修改像素当量后按新参数重算重绘
+	// （QImage 隐式共享，下方绘制文字时 maskImg 会 detach，缓存始终保持无文字版本）
+	LastFrameDisplayInfo displayInfo;
+	displayInfo.imageWithoutText = maskImg;
+	displayInfo.widthPixel = widthPixel;
+	displayInfo.centerDiffPixel = centerDiffPixel;
+	displayInfo.hasWidth = recognized;
+	displayInfo.hasCenter = hasCenter;
+	displayInfo.valid = true;
+	displayInfo.frameIndex = frame.index;
+	if (auto module = qobject_cast<ImageProcessingModule*>(parent())) {
+		module->updateLastFrameInfo(displayInfo);
+	}
 
-	rw::imgPro::ImagePainter::drawTextOnImageWithFontSize(maskImg, textList, colors, 50);
+	DrawResultTextOnImage(maskImg, imageProcessingModuleIndex, recognized, widthPixel, hasCenter, centerDiffPixel);
 
 	emit imageReady(frame.index, QPixmap::fromImage(maskImg));
 
@@ -367,6 +415,7 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 	++statisticalInfo.camera2PhotoCount;
 
 	double width = 0.0;
+	int widthPixel = 0;			// 识别宽度（像素），供显示缓存重算
 	bool recognized = false;	// 本帧是否向 PLC 写入有效压痕宽度，未写入（写 0）则计入未识别总量
 
 	if (defectResult.defects.size() == 1)
@@ -374,7 +423,8 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 		if (imgPro.context().customFields.find("width") != imgPro.context().customFields.end())
 		{
 			auto pixToWorld = setConfig.xiangsudangliang2;
-			width = std::any_cast<int>(imgPro.context().customFields["width"]) * pixToWorld;
+			widthPixel = std::any_cast<int>(imgPro.context().customFields["width"]);
+			width = widthPixel * pixToWorld;
 			drawImg(maskImg, processResult, 0.0);
 			recognized = true;
 		}
@@ -400,12 +450,19 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 	// 每三次识别异步检查一次本线程累计的 PLC 写入结果
 	MaybeAsyncCheckPlcWrites();
 
-	QStringList textList;
-	textList.append("实测压痕宽度:" + QString::number(width) + "mm");
-	std::vector<rw::imgPro::Color> colors;
-	colors.push_back(rw::imgPro::Color::Blue);
+	// 缓存未绘制识别文字的掩码图与像素级原始结果，供修改像素当量后按新参数重算重绘
+	// （QImage 隐式共享，下方绘制文字时 maskImg 会 detach，缓存始终保持无文字版本）
+	LastFrameDisplayInfo displayInfo;
+	displayInfo.imageWithoutText = maskImg;
+	displayInfo.widthPixel = widthPixel;
+	displayInfo.hasWidth = recognized;
+	displayInfo.valid = true;
+	displayInfo.frameIndex = frame.index;
+	if (auto module = qobject_cast<ImageProcessingModule*>(parent())) {
+		module->updateLastFrameInfo(displayInfo);
+	}
 
-	rw::imgPro::ImagePainter::drawTextOnImageWithFontSize(maskImg, textList, colors, 50);
+	DrawResultTextOnImage(maskImg, imageProcessingModuleIndex, recognized, widthPixel, false, 0);
 
 	emit imageReady(frame.index, QPixmap::fromImage(maskImg));
 
@@ -677,4 +734,34 @@ void ImageProcessingModule::onFrameCaptured(rw::rqw::MatInfo matInfo, size_t ind
 
 	_queue.enqueue(mat);
 	_condition.wakeOne();
+}
+
+void ImageProcessingModule::updateLastFrameInfo(const LastFrameDisplayInfo& info)
+{
+	QMutexLocker locker(&_lastFrameMutex);
+	_lastFrameInfo = info;
+}
+
+void ImageProcessingModule::invalidateLastFrameInfo()
+{
+	QMutexLocker locker(&_lastFrameMutex);
+	_lastFrameInfo.valid = false;
+}
+
+void ImageProcessingModule::redrawLastFrameText()
+{
+	LastFrameDisplayInfo info;
+	{
+		QMutexLocker locker(&_lastFrameMutex);
+		if (!_lastFrameInfo.valid) {
+			return;
+		}
+		info = _lastFrameInfo;	// QImage 隐式共享，下方绘制文字时会 detach，缓存保持无文字
+	}
+
+	// 按当前配置（可能已修改像素当量）重算毫米值并重绘左上角识别文字
+	DrawResultTextOnImage(info.imageWithoutText, static_cast<int>(index),
+		info.hasWidth, info.widthPixel, info.hasCenter, info.centerDiffPixel);
+
+	emit imageReady(info.frameIndex, QPixmap::fromImage(info.imageWithoutText));
 }
