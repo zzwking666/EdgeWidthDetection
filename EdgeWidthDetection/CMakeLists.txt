@@ -83,6 +83,14 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMENT "Running windeployqt to package Qt dependencies"
 )
 
+# 拷贝版本号文件到 exe 同目录，程序运行时读取显示
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    ${CMAKE_BINARY_DIR}/build.version
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>
+    COMMENT "拷贝版本文件 build.version"
+)
+
 # 显式拷贝 libmodbus DLL（windeployqt 只收集 Qt DLL，不收 vcpkg 三方库；
 # Debug/Release 的 modbus-5.dll 同名但不同内容，按当前配置选择避免拿错）
 set(_modbus_dll "$<IF:$<CONFIG:Debug>,${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug/bin/modbus-5.dll,${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/bin/modbus-5.dll>")

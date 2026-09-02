@@ -18,6 +18,7 @@
 #include "NumberKeyboard.h"
 #include "rqw_RunEnvCheck.hpp"
 #include "Utilty.hpp"
+#include "VersionInfo.hpp"
 
 
 EdgeWidthDetection::EdgeWidthDetection(QWidget* parent)
@@ -209,6 +210,9 @@ void EdgeWidthDetection::ini_clickableTitle()
 	delete ui->label_title;
 	clickableTitle->setText("宽度检测");
 	clickableTitle->setStyleSheet("QLabel {font-size: 30px;font-weight: bold;color: rgb(255, 255, 255);padding: 5px 5px;border-bottom: 2px solid #cccccc;}");
+
+	// 版本号显示（读取 exe 同目录 build.version，缺失时回退到编译期嵌入的版本号）
+	ui->label_VersionInfo->setText(QString("v%1").arg(ewd::getDisplayVersion()));
 }
 
 void EdgeWidthDetection::build_DlgCloseForm()
