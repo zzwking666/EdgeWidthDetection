@@ -1795,6 +1795,11 @@ void DlgProductSet::btn_debugFrame1_clicked()
 			QMessageBox::warning(this, "提示", "请输入大于0的数值");
 			return;
 		}
+		if (value.toDouble() > 3)
+		{
+			QMessageBox::warning(this, "提示", "调试模式帧数最高只能设置为3");
+			return;
+		}
 		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 		ui->btn_debugFrame1->setText(value);
 		setConfig.debugFrame1 = value.toDouble();
@@ -2071,6 +2076,11 @@ void DlgProductSet::btn_debugFrame2_clicked()
 		if (value.toDouble() <= 0)
 		{
 			QMessageBox::warning(this, "提示", "请输入大于0的数值");
+			return;
+		}
+		if (value.toDouble() > 3)
+		{
+			QMessageBox::warning(this, "提示", "调试模式帧数最高只能设置为3");
 			return;
 		}
 		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
