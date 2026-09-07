@@ -205,23 +205,16 @@ void Modules::connect()
 #pragma endregion
 
 #pragma region connect imgProModule and RuntimeInfoModule
-	// 未使用DetachUtiltyThread
-	/*QObject::connect(imgProModule.imageProcessingModule3.get(), &ImageProcessingPackageModule::updateStatisticalInfo,
-		runtimeInfoModule.detachUtiltyThread.get(), &DetachUtiltyThread::updateStatisticalInfo);*/
+	
 #pragma endregion
 
 #pragma region connect UIModule and RuntimeInfoModule
 	QObject::connect(runtimeInfoModule.detachUtiltyThread.get(), &DetachUtiltyThread::updateStatisticalInfo,
 		uiModule._edgeWidthDetection, &EdgeWidthDetection::onUpdateStatisticalInfoUI, Qt::QueuedConnection);
-	// 原 label_warnningInfo 已改为显示自动曝光信息，PLC 报警信号不再连接到此标签
-	/*QObject::connect(runtimeInfoModule.detachUtiltyThread.get(), &DetachUtiltyThread::updatePLCWarnningInfo,
-		uiModule._edgeWidthDetection, &EdgeWidthDetection::onUpdatePLCWarnningInfoUI, Qt::QueuedConnection);*/
 #pragma endregion
 
 #pragma region connect UIModule and RuntimeInfoModule
-	// 实机未使用 PLC 轮询监听线程，先整体注释掉（不再创建该线程）
-	/*QObject::connect(plcController.plcListenThread.get(), &DetachPLCListenThread::updatePLCInfo,
-		uiModule._dlgProductSet, &DlgProductSet::onUpdatePLCInfo);*/
+	
 #pragma endregion
 
 #pragma region connect plcController and ReconnectModule

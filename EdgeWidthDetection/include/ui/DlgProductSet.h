@@ -5,8 +5,6 @@
 #include <QPushButton>
 #include <QVector>
 
-#include "Utilty.hpp"
-
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class DlgProductSetClass; };
@@ -29,7 +27,6 @@ public:
 signals:
 	void paramsChanged();
 public slots:
-	void onUpdatePLCInfo(QVector<PlcReadItem> datas);
 	// PLC 循环写入回显：funcIndex 0=冷刀压痕 1=中心偏移值 2=切刀压痕
 	// writeAddress 为本次写入的地址，clearAddress 为本次清零的地址（-1 表示无）
 	void onPlcCircularWrite(int funcIndex, int writeAddress, double value, int clearAddress);
@@ -80,61 +77,10 @@ private slots:
 
 	void ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2_clicked();
 
-	// 设置与读取地址
-	void btn_shiceyahenkuanduduqudizhi_clicked();
-	void btn_shedingyahenbiaozhunzhiduqudizhi_clicked();
-	void btn_paizhaojiangejuliduqudizhi_clicked();
-	void btn_daizichangdubiaozhunduqudizhi_clicked();
-	void btn_jimiqiyiquanmaichongshuduqudizhi_clicked();
-	void btn_jimiqiyiquanzhouchangduqudizhi_clicked();
-	void btn_bujinyiquanmaichongshuduqudizhi_clicked();
-
-	void btn_bujinluojuduqudizhi_clicked();
-	void btn_daoyidongbuchangduqudizhi_clicked();
-	void btn_zidongdaoyidongzuidajuliduqudizhi_clicked();
-	void btn_daojiakeyidongdezuidajuliduqudizhi_clicked();
-	void btn_daoyidongsudumaichongpinlvduqudizhi_clicked();
-
-	void btn_huodePLCbaojingxinxidizhi_clicked();
-	void btn_keyipaizhaoxinhaodizhi_clicked();
-	void btn_tingzhipaizhaoxinhaodizhi_clicked();
-	void btn_daizishicechangdudizhi_clicked();
-	void btn_shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi_clicked();
-
-	// 写入PLC
-	void btn_shiceyahenkuanduxierushuzhi_clicked();
-	void btn_shedingyahenbiaozhunkuanduzhixierushuzhi_clicked();
-	void btn_paizhaojiangejulixierushuzhi_clicked();
-	void btn_daizichangdubiaozhunxierushuzhi_clicked();
-	void btn_jimiqiyiquanmaichongshuxierushuzhi_clicked();
-	void btn_jimiqiyiquanzhouchangxierushuzhi_clicked();
-	void btn_bujinyiquanmaichongshuxierushuzhi_clicked();
-	void btn_bujinluojuxierushuzhi_clicked();
-	void btn_daoyidongbuchangxierushuzhi_clicked();
-	void btn_zidongdaoyidongzuidajulixierushuzhi_clicked();
-	void btn_daojiakeyidongdezuidajulixierushuzhi_clicked();
-	void btn_daoyidongsudumaichongpinlvxierushuzhi_clicked();
-	void btn_shibiezhongxindianyutuxiangzhongxindianchazhixierushuzhi_clicked();
-
-	void btn_writeshiceyahenkuanduxierushuzhi_clicked();
-	void btn_writeshedingyahenbiaozhunkuanduzhixierushuzhi_clicked();
-	void btn_writepaizhaojiangejulixierushuzhi_clicked();
-	void btn_writedaizichangdubiaozhunxierushuzhi_clicked();
-	void btn_writejimiqiyiquanmaichongshuxierushuzhi_clicked();
-	void btn_writejimiqiyiquanzhouchangxierushuzhi_clicked();
-	void btn_writebujinyiquanmaichongshuxierushuzhi_clicked();
-	void btn_writebujinluojuxierushuzhi_clicked();
-	void btn_writedaoyidongbuchangxierushuzhi_clicked();
-	void btn_writezidongdaoyidongzuidajulixierushuzhi_clicked();
-	void btn_writedaojiakeyidongdezuidajulixierushuzhi_clicked();
-	void btn_writedaoyidongsudumaichongpinlvxierushuzhi_clicked();
-	void btn_writeshibiezhongxindianyutuxiangzhongxindianchazhixierushuzhi_clicked();
-
 	void tabWidget_indexChanged(int index);
 	// 测试写入：向 0~179 每个地址写入其地址值（一相机与二相机地址共用此按钮）
 	void btn_testPlcAddressWrite_clicked();
 private:
-	bool checkIsPLCAddressSame(int newAddress, const QString& currentKey);
 	// 在"一相机地址"/"二相机地址"页中构建固定 60 地址的循环写入显示区（按钮 + 地址标签）
 	void buildCircularWriteUi();
 private:

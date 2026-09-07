@@ -6,6 +6,7 @@
 
 class EdgeWidthDetection;
 class DlgProductSet;
+class DlgModbus;
 
 class UIModule
 	: public QObject, public IModule<void>
@@ -20,5 +21,6 @@ public:
 
 public:
 	DlgProductSet* _dlgProductSet = nullptr;
+	DlgModbus* _dlgModbus = nullptr;
 	EdgeWidthDetection* _edgeWidthDetection = nullptr;
 };

@@ -12,6 +12,8 @@ public:
 	QString modelRootPath = projectHome + R"(model\)";
 	QString EdgeWidthDetectionConfigPath = configRootPath + R"(EdgeWidthDetection.xml)";
 	QString setConfigPath = configRootPath + R"(SetConfig.xml)";
+	/// Modbus 点位名称表（程序只读，仅允许外界手动修改；每行一个名称，逗号分割，按行序对应点位）
+	QString modbusTxtPath = configRootPath + R"(modbus.txt)";
 	QString modelPath = modelRootPath + R"(EdgeWidthDetection.engine)";
 public:
 	QString imageSaveRootPath = projectHome + R"(savedImages\)";

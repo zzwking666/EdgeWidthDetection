@@ -62,6 +62,7 @@ signals:
 private slots:
 	void pbtn_exit_clicked();
 	void pbtn_set_clicked();
+	void pbtn_Modbus_clicked();
 	void rbtn_debug_checked(bool checked);
 	void rbtn_removeFunc_checked(bool checked);
 	void pbtn_resetProduct_clicked();

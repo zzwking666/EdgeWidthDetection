@@ -73,5 +73,12 @@ namespace cdm {
 		autoExposureAdjustIntervalMs : double : default = 500.0;
 		autoExposureLastExposure1 : double : default = 0.0;
 		autoExposureLastExposure2 : double : default = 0.0;
+
+		// Modbus 通讯点位地址表（DlgModbus 用），逗号分隔 25 个地址，顺序固定与点位表一致
+		// 顺序：切刀点动速度,设定拍照长度,自动速度,间隔袋数,当前中心偏移值,实际拍照值,总偏移值,
+		//       编码器当前位置,编码器当前速度,切刀当前位置,切刀回原,切刀补偿开启,系统标志,启动,停止,
+		//       白料长,d1袋长,切刀计算移动量,切刀实际移动量,编码器一圈脉冲数,编码器一圈距离,
+		//       中心偏移最大值,中心偏移最小值,切刀移动最大值,切刀移动最小值
+		modbusAddressList : std::string : default = "1000,1002,1026,1028,214,3000,3052,2000,3058,2004,3000,1000,3004,3002,3003,3040,3030,3042,3060,1006,1008,1030,1032,1034,1036";
 	};
 }

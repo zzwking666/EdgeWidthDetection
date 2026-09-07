@@ -12,6 +12,7 @@
 #include <fmt/ranges.h>
 
 #include "DlgLicense.h"
+#include "DlgModbus.h"
 #include "DlgProductSet.h"
 #include "LicenseManager.hpp"
 #include "Modules.hpp"
@@ -71,6 +72,8 @@ void EdgeWidthDetection::build_connect()
 		this, &EdgeWidthDetection::pbtn_exit_clicked);
 	QObject::connect(ui->pbtn_set, &QPushButton::clicked,
 		this, &EdgeWidthDetection::pbtn_set_clicked);
+	QObject::connect(ui->pbtn_Modbus, &QPushButton::clicked,
+		this, &EdgeWidthDetection::pbtn_Modbus_clicked);
 	QObject::connect(ui->rbtn_debug, &QRadioButton::clicked,
 		this, &EdgeWidthDetection::rbtn_debug_checked);
 	QObject::connect(ui->rbtn_removeFunc, &QRadioButton::clicked,
@@ -376,6 +379,14 @@ void EdgeWidthDetection::pbtn_set_clicked()
 	_dlgProductSet->setFixedSize(this->width(), this->height());
 	_dlgProductSet->setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
 	_dlgProductSet->exec();
+}
+
+void EdgeWidthDetection::pbtn_Modbus_clicked()
+{
+	auto& _dlgModbus = Modules::getInstance().uiModule._dlgModbus;
+	_dlgModbus->setFixedSize(this->width(), this->height());
+	_dlgModbus->setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	_dlgModbus->exec();
 }
 
 void EdgeWidthDetection::rbtn_debug_checked(bool checked)

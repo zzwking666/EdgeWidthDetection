@@ -1,0 +1,1274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DlgModbusClass</class>
+ <widget class="QDialog" name="DlgModbusClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1100</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Modbus 通讯设置</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {&#10;    background-color: rgb(245, 245, 245);&#10;}&#10;&#10;QGroupBox {&#10;    border: 1px solid #DDD;&#10;    border-radius: 4px;&#10;    font: bold 16px;&#10;    color: #666;&#10;    background-color: #F8F8F8;&#10;    margin-top: 12px;&#10;}&#10;&#10;QGroupBox::title {&#10;    subcontrol-origin: margin;&#10;    subcontrol-position: top left;&#10;    left: 10px;&#10;    padding: 0 5px;&#10;}&#10;&#10;QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #CCC;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #444;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #999;&#10;    background-color: #F5F5F5;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #777;&#10;    background-color: #EEE;&#10;}&#10;&#10;QLabel {&#10;    color: #444444;&#10;    font-size: 20px;&#10;    background: transparent;&#10;    padding: 2px 4px;&#10;}&#10;&#10;QTabWidget::pane {&#10;    border: 1px solid #DDD;&#10;    border-radius: 4px;&#10;    background-color: #F8F8F8;&#10;}&#10;&#10;QTabBar::tab {&#10;    padding: 8px 24px;&#10;    font-size: 18px;&#10;    color: #444;&#10;    background: #EDEDED;&#10;    border: 1px solid #DDD;&#10;    border-bottom: none;&#10;    border-top-left-radius: 4px;&#10;    border-top-right-radius: 4px;&#10;}&#10;&#10;QTabBar::tab:selected {&#10;    background: #FFFFFF;&#10;    font-weight: bold;&#10;}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_title">
+     <item>
+      <widget class="QLabel" name="lb_title">
+       <property name="styleSheet">
+        <string notr="true">QLabel {&#10;    color: #2c3e50;&#10;    font-size: 24px;&#10;    font-weight: bold;&#10;    background: transparent;&#10;    padding: 2px 4px;&#10;}</string>
+       </property>
+       <property name="text">
+        <string>Modbus 通讯设置</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_title">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_close">
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>45</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>关闭</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QTabWidget" name="tabWidget_modbus">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+         <widget class="QWidget" name="tab_readWrite">
+                   <attribute name="title">
+                    <string>读写参数</string>
+                   </attribute>
+                   <layout class="QGridLayout" name="gridLayout_rw">
+                       <item row="0" column="0">
+                          <widget class="QLabel" name="lb_head_0_4">
+                          <property name="text">
+                           <string>点位名称</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="0" column="1">
+                          <widget class="QLabel" name="lb_head_1_4">
+                          <property name="text">
+                           <string>地址(点击修改)</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="0" column="2">
+                          <widget class="QLabel" name="lb_head_2_4">
+                          <property name="text">
+                           <string>当前值</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="0" column="3">
+                          <widget class="QLabel" name="lb_head_3_4">
+                          <property name="text">
+                           <string>写入操作</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="1" column="0">
+                          <widget class="QLabel" name="lb_name_rw_0">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>R_切刀点动速度</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="1" column="1">
+                          <widget class="QPushButton" name="btn_addr_rw_0">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>1000</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="1" column="2">
+                          <widget class="QLabel" name="lb_value_rw_0">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="1" column="3">
+                          <widget class="QPushButton" name="btn_write_rw_0">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>写入</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="2" column="0">
+                          <widget class="QLabel" name="lb_name_rw_1">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>R_设定拍照长度</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="2" column="1">
+                          <widget class="QPushButton" name="btn_addr_rw_1">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>1002</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="2" column="2">
+                          <widget class="QLabel" name="lb_value_rw_1">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="2" column="3">
+                          <widget class="QPushButton" name="btn_write_rw_1">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>写入</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="3" column="0">
+                          <widget class="QLabel" name="lb_name_rw_2">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>R_自动速度</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="3" column="1">
+                          <widget class="QPushButton" name="btn_addr_rw_2">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>1026</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="3" column="2">
+                          <widget class="QLabel" name="lb_value_rw_2">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="3" column="3">
+                          <widget class="QPushButton" name="btn_write_rw_2">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>写入</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="4" column="0">
+                          <widget class="QLabel" name="lb_name_rw_3">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>D_间隔袋数</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="4" column="1">
+                          <widget class="QPushButton" name="btn_addr_rw_3">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>1028</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="4" column="2">
+                          <widget class="QLabel" name="lb_value_rw_3">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="4" column="3">
+                          <widget class="QPushButton" name="btn_write_rw_3">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>写入</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="5" column="0">
+                          <widget class="QLabel" name="lb_name_rw_4">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>R_编码器一圈脉冲数</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="5" column="1">
+                          <widget class="QPushButton" name="btn_addr_rw_4">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>1006</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="5" column="2">
+                          <widget class="QLabel" name="lb_value_rw_4">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="5" column="3">
+                          <widget class="QPushButton" name="btn_write_rw_4">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>写入</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="6" column="0">
+                          <widget class="QLabel" name="lb_name_rw_5">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>R_编码器一圈距离</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="6" column="1">
+                          <widget class="QPushButton" name="btn_addr_rw_5">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>1008</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="6" column="2">
+                          <widget class="QLabel" name="lb_value_rw_5">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="6" column="3">
+                          <widget class="QPushButton" name="btn_write_rw_5">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>写入</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="7" column="0">
+                          <widget class="QLabel" name="lb_name_rw_6">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>R_中心偏移最大值</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="7" column="1">
+                          <widget class="QPushButton" name="btn_addr_rw_6">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>1030</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="7" column="2">
+                          <widget class="QLabel" name="lb_value_rw_6">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="7" column="3">
+                          <widget class="QPushButton" name="btn_write_rw_6">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>写入</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="8" column="0">
+                          <widget class="QLabel" name="lb_name_rw_7">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>R_中心偏移最小值</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="8" column="1">
+                          <widget class="QPushButton" name="btn_addr_rw_7">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>1032</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="8" column="2">
+                          <widget class="QLabel" name="lb_value_rw_7">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="8" column="3">
+                          <widget class="QPushButton" name="btn_write_rw_7">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>写入</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="9" column="0">
+                          <widget class="QLabel" name="lb_name_rw_8">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>切刀移动最大值</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="9" column="1">
+                          <widget class="QPushButton" name="btn_addr_rw_8">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>1034</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="9" column="2">
+                          <widget class="QLabel" name="lb_value_rw_8">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="9" column="3">
+                          <widget class="QPushButton" name="btn_write_rw_8">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>写入</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="10" column="0">
+                          <widget class="QLabel" name="lb_name_rw_9">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>切刀移动最小值</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="10" column="1">
+                          <widget class="QPushButton" name="btn_addr_rw_9">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>1036</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="10" column="2">
+                          <widget class="QLabel" name="lb_value_rw_9">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="10" column="3">
+                          <widget class="QPushButton" name="btn_write_rw_9">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>写入</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="11" column="0">
+                        <spacer name="verticalSpacer_rw">
+                         <property name="orientation"><enum>Qt::Vertical</enum></property>
+                         <property name="sizeHint" stdset="0"><size><width>20</width><height>40</height></size></property>
+                        </spacer>
+                       </item>
+                   </layout>
+                  </widget>
+         <widget class="QWidget" name="tab_readOnly">
+                   <attribute name="title">
+                    <string>只读数据</string>
+                   </attribute>
+                   <layout class="QGridLayout" name="gridLayout_ro">
+                       <item row="0" column="0">
+                          <widget class="QLabel" name="lb_head_0_3">
+                          <property name="text">
+                           <string>点位名称</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="0" column="1">
+                          <widget class="QLabel" name="lb_head_1_3">
+                          <property name="text">
+                           <string>地址(点击修改)</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="0" column="2">
+                          <widget class="QLabel" name="lb_head_2_3">
+                          <property name="text">
+                           <string>当前值</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="1" column="0">
+                          <widget class="QLabel" name="lb_name_ro_0">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>R_当前中心偏移值</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="1" column="1">
+                          <widget class="QPushButton" name="btn_addr_ro_0">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>214</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="1" column="2">
+                          <widget class="QLabel" name="lb_value_ro_0">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="2" column="0">
+                          <widget class="QLabel" name="lb_name_ro_1">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>实际拍照值</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="2" column="1">
+                          <widget class="QPushButton" name="btn_addr_ro_1">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>3000</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="2" column="2">
+                          <widget class="QLabel" name="lb_value_ro_1">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="3" column="0">
+                          <widget class="QLabel" name="lb_name_ro_2">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>总偏移值</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="3" column="1">
+                          <widget class="QPushButton" name="btn_addr_ro_2">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>3052</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="3" column="2">
+                          <widget class="QLabel" name="lb_value_ro_2">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="4" column="0">
+                          <widget class="QLabel" name="lb_name_ro_3">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>编码器当前位置</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="4" column="1">
+                          <widget class="QPushButton" name="btn_addr_ro_3">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>2000</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="4" column="2">
+                          <widget class="QLabel" name="lb_value_ro_3">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="5" column="0">
+                          <widget class="QLabel" name="lb_name_ro_4">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>编码器当前速度</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="5" column="1">
+                          <widget class="QPushButton" name="btn_addr_ro_4">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>3058</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="5" column="2">
+                          <widget class="QLabel" name="lb_value_ro_4">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="6" column="0">
+                          <widget class="QLabel" name="lb_name_ro_5">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>R_切刀当前位置</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="6" column="1">
+                          <widget class="QPushButton" name="btn_addr_ro_5">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>2004</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="6" column="2">
+                          <widget class="QLabel" name="lb_value_ro_5">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="7" column="0">
+                          <widget class="QLabel" name="lb_name_ro_6">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>R_白料长</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="7" column="1">
+                          <widget class="QPushButton" name="btn_addr_ro_6">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>3040</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="7" column="2">
+                          <widget class="QLabel" name="lb_value_ro_6">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="8" column="0">
+                          <widget class="QLabel" name="lb_name_ro_7">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>R_d1袋长</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="8" column="1">
+                          <widget class="QPushButton" name="btn_addr_ro_7">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>3030</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="8" column="2">
+                          <widget class="QLabel" name="lb_value_ro_7">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="9" column="0">
+                          <widget class="QLabel" name="lb_name_ro_8">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>切刀计算移动量</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="9" column="1">
+                          <widget class="QPushButton" name="btn_addr_ro_8">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>3042</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="9" column="2">
+                          <widget class="QLabel" name="lb_value_ro_8">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="10" column="0">
+                          <widget class="QLabel" name="lb_name_ro_9">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>切刀实际移动量</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="10" column="1">
+                          <widget class="QPushButton" name="btn_addr_ro_9">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>3060</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="10" column="2">
+                          <widget class="QLabel" name="lb_value_ro_9">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="11" column="0">
+                          <widget class="QLabel" name="lb_name_ro_10">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>系统标志</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="11" column="1">
+                          <widget class="QPushButton" name="btn_addr_ro_10">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>3004</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="11" column="2">
+                          <widget class="QLabel" name="lb_value_ro_10">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="12" column="0">
+                        <spacer name="verticalSpacer_ro">
+                         <property name="orientation"><enum>Qt::Vertical</enum></property>
+                         <property name="sizeHint" stdset="0"><size><width>20</width><height>40</height></size></property>
+                        </spacer>
+                       </item>
+                   </layout>
+                  </widget>
+         <widget class="QWidget" name="tab_boolControl">
+                   <attribute name="title">
+                    <string>BOOL控制</string>
+                   </attribute>
+                   <layout class="QGridLayout" name="gridLayout_bool">
+                       <item row="0" column="0">
+                          <widget class="QLabel" name="lb_head_0_5">
+                          <property name="text">
+                           <string>点位名称</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="0" column="1">
+                          <widget class="QLabel" name="lb_head_1_5">
+                          <property name="text">
+                           <string>地址(点击修改)</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="0" column="2">
+                          <widget class="QLabel" name="lb_head_2_5">
+                          <property name="text">
+                           <string>当前状态</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="0" column="3">
+                          <widget class="QLabel" name="lb_head_3_5">
+                          <property name="text">
+                           <string>操作</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="0" column="4">
+                          <widget class="QLabel" name="lb_head_4_5">
+                          <property name="text">
+                           <string></string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="1" column="0">
+                          <widget class="QLabel" name="lb_name_bool_0">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>切刀回原</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="1" column="1">
+                          <widget class="QPushButton" name="btn_addr_bool_0">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>3000</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="1" column="2">
+                          <widget class="QLabel" name="lb_value_bool_0">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="1" column="3">
+                          <widget class="QPushButton" name="btn_set1_bool_0">
+                          <property name="minimumSize">
+                           <size><width>90</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>置1</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="1" column="4">
+                          <widget class="QPushButton" name="btn_set0_bool_0">
+                          <property name="minimumSize">
+                           <size><width>90</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>置0</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="2" column="0">
+                          <widget class="QLabel" name="lb_name_bool_1">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>切刀补偿开启</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="2" column="1">
+                          <widget class="QPushButton" name="btn_addr_bool_1">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>1000</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="2" column="2">
+                          <widget class="QLabel" name="lb_value_bool_1">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="2" column="3">
+                          <widget class="QPushButton" name="btn_set1_bool_1">
+                          <property name="minimumSize">
+                           <size><width>90</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>置1</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="2" column="4">
+                          <widget class="QPushButton" name="btn_set0_bool_1">
+                          <property name="minimumSize">
+                           <size><width>90</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>置0</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="3" column="0">
+                          <widget class="QLabel" name="lb_name_bool_2">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>启动</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="3" column="1">
+                          <widget class="QPushButton" name="btn_addr_bool_2">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>3002</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="3" column="2">
+                          <widget class="QLabel" name="lb_value_bool_2">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="3" column="3">
+                          <widget class="QPushButton" name="btn_set1_bool_2">
+                          <property name="minimumSize">
+                           <size><width>90</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>置1</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="3" column="4">
+                          <widget class="QPushButton" name="btn_set0_bool_2">
+                          <property name="minimumSize">
+                           <size><width>90</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>置0</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="4" column="0">
+                          <widget class="QLabel" name="lb_name_bool_3">
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>停止</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="4" column="1">
+                          <widget class="QPushButton" name="btn_addr_bool_3">
+                          <property name="minimumSize">
+                           <size><width>120</width><height>40</height></size>
+                          </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {&#10;    padding: 6px 14px;&#10;    border: 2px solid #87CEEB;&#10;    border-radius: 4px;&#10;    background-color: white;&#10;    color: #2c3e50;&#10;    font-size: 20px;&#10;}&#10;&#10;QPushButton:hover {&#10;    border-color: #4682B4;&#10;    background-color: #F0F8FF;&#10;}&#10;&#10;QPushButton:pressed {&#10;    border-color: #2F4F4F;&#10;    background-color: #E0F0F8;&#10;}</string>
+                        </property>
+                          <property name="text">
+                           <string>3003</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="4" column="2">
+                          <widget class="QLabel" name="lb_value_bool_3">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {&#10;    color: #2F4F4F;&#10;    border: 1px solid #E0E0E0;&#10;    background-color: #FFFFFF;&#10;    padding: 6px 12px;&#10;    border-radius: 4px;&#10;}</string>
+                        </property>
+                          <property name="minimumSize">
+                           <size><width>0</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>--</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="4" column="3">
+                          <widget class="QPushButton" name="btn_set1_bool_3">
+                          <property name="minimumSize">
+                           <size><width>90</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>置1</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="4" column="4">
+                          <widget class="QPushButton" name="btn_set0_bool_3">
+                          <property name="minimumSize">
+                           <size><width>90</width><height>40</height></size>
+                          </property>
+                          <property name="text">
+                           <string>置0</string>
+                          </property>
+                          </widget>
+                       </item>
+                       <item row="5" column="0">
+                        <spacer name="verticalSpacer_bool">
+                         <property name="orientation"><enum>Qt::Vertical</enum></property>
+                         <property name="sizeHint" stdset="0"><size><width>20</width><height>40</height></size></property>
+                        </spacer>
+                       </item>
+                   </layout>
+                  </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
