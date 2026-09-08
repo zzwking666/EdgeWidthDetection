@@ -11,6 +11,7 @@
 #include <QStringConverter>
 #include <QTextStream>
 #include <QtConcurrent/qtconcurrentrun.h>
+#include <cstdlib>
 #include <functional>
 
 #include "Modules.hpp"
@@ -55,19 +56,26 @@ namespace
 	// CSV 表头（首行与此一致时跳过）
 	const char* kCsvHeader = "名称,地址,类型,读写";
 
-	// 解析类型列，宽容大小写；无法识别时按 float 处理
-	DlgModbus::PointType parsePointType(const QString& text)
+	// 解析类型列，宽容大小写；返回 false 表示无法识别（严格校验，非法值会导致启动失败）
+	bool parsePointType(const QString& text, DlgModbus::PointType& out)
 	{
 		const QString s = text.trimmed().toLower();
+		if (s == "float" || s == "real")
+		{
+			out = DlgModbus::PointType::Float;
+			return true;
+		}
 		if (s == "dint" || s == "int32" || s == "dword")
 		{
-			return DlgModbus::PointType::Dint;
+			out = DlgModbus::PointType::Dint;
+			return true;
 		}
 		if (s == "bool" || s == "bit" || s == "coil")
 		{
-			return DlgModbus::PointType::Bool;
+			out = DlgModbus::PointType::Bool;
+			return true;
 		}
-		return DlgModbus::PointType::Float;
+		return false;
 	}
 
 	QString pointTypeToString(DlgModbus::PointType type)
@@ -80,11 +88,21 @@ namespace
 		}
 	}
 
-	// 解析读写列：读写/rw/write 视为可写，其余（只读/ro/read 等）视为只读
-	bool parseWritable(const QString& text)
+	// 解析读写列：返回 false 表示无法识别（严格校验，如误写成「写入」会导致启动失败）
+	bool parseWritable(const QString& text, bool& out)
 	{
 		const QString s = text.trimmed().toLower();
-		return s == QStringLiteral("读写") || s == "rw" || s == "write" || s == "w";
+		if (s == QStringLiteral("读写") || s == "rw" || s == "write" || s == "w")
+		{
+			out = true;
+			return true;
+		}
+		if (s == QStringLiteral("只读") || s == "ro" || s == "read" || s == "r")
+		{
+			out = false;
+			return true;
+		}
+		return false;
 	}
 
 	// 解析地址列，允许 D/M 前缀（如 D1000、M3000），与《通讯地址.xlsx》写法一致
@@ -190,6 +208,7 @@ void DlgModbus::loadPoints()
 {
 	// modbus.csv 为外部维护文件，每行：名称,地址,类型,读写
 	// 顺序即点位顺序，可随意调整；新增/删除点位直接增删行即可
+	// 严格校验：任何一行格式非法都会弹窗提示并退出程序，防止错误配置静默生效
 	QFile file(globalPath.modbusCsvPath);
 	if (!file.exists())
 	{
@@ -201,8 +220,7 @@ void DlgModbus::loadPoints()
 
 	if (!file.open(QIODevice::ReadOnly))
 	{
-		qDebug() << "modbus.csv 无法打开，使用内置默认点位表:" << globalPath.modbusCsvPath;
-		_points = defaultPoints();
+		abortOnLoadErrors({ QStringLiteral("modbus.csv 无法打开（可能被占用或无权限）") });
 		return;
 	}
 
@@ -216,12 +234,18 @@ void DlgModbus::loadPoints()
 		QStringDecoder decoder(QStringConverter::System);
 		text = decoder.decode(raw);
 	}
+	// 去掉 BOM（trimmed() 不会去掉 U+FEFF，否则会污染首行首列）
+	if (text.startsWith(QChar(0xFEFF)))
+	{
+		text.remove(0, 1);
+	}
 
 	_points.clear();
+	QStringList errors;
 	const QStringList lines = text.split('\n');
-	for (const QString& rawLine : lines)
+	for (int lineNo = 0; lineNo < lines.size(); ++lineNo)
 	{
-		const QString line = rawLine.trimmed();
+		const QString line = lines[lineNo].trimmed();
 		if (line.isEmpty())
 		{
 			continue;
@@ -229,29 +253,76 @@ void DlgModbus::loadPoints()
 
 		const QStringList fields = line.split(',');
 		const QString name = fields.value(0).trimmed();
-		if (name.isEmpty() || name == QStringLiteral("名称"))	// 跳过表头
+		if (name == QStringLiteral("名称"))	// 跳过表头
 		{
+			continue;
+		}
+
+		auto addError = [&](const QString& reason)
+		{
+			errors << QStringLiteral("第 %1 行「%2」：%3").arg(lineNo + 1).arg(line, reason);
+		};
+
+		if (fields.size() != 4)
+		{
+			addError(QStringLiteral("应为 4 列（名称,地址,类型,读写），实际为 %1 列").arg(fields.size()));
+			continue;
+		}
+		if (name.isEmpty())
+		{
+			addError(QStringLiteral("名称列为空"));
 			continue;
 		}
 
 		PointInfo info;
 		info.name = name;
-		info.address = parseAddress(fields.value(1));
-		info.type = parsePointType(fields.value(2));
-		info.writable = parseWritable(fields.value(3));
+		info.address = parseAddress(fields[1]);
 		if (info.address < 0)
 		{
-			qDebug() << "modbus.csv 地址无效，已跳过该行:" << line;
+			addError(QStringLiteral("地址「%1」无效，应为非负整数（允许 D/M 前缀）").arg(fields[1].trimmed()));
+			continue;
+		}
+		if (!parsePointType(fields[2], info.type))
+		{
+			addError(QStringLiteral("类型「%1」无法识别，应为 float / DINT / BOOL").arg(fields[2].trimmed()));
+			continue;
+		}
+		if (!parseWritable(fields[3], info.writable))
+		{
+			addError(QStringLiteral("读写列「%1」无法识别，应为「读写」或「只读」").arg(fields[3].trimmed()));
 			continue;
 		}
 		_points.push_back(info);
 	}
 
-	if (_points.isEmpty())
+	if (_points.isEmpty() && errors.isEmpty())
 	{
-		qDebug() << "modbus.csv 无有效点位行，使用内置默认点位表:" << globalPath.modbusCsvPath;
-		_points = defaultPoints();
+		errors << QStringLiteral("文件中没有任何点位行");
 	}
+
+	if (!errors.isEmpty())
+	{
+		_points.clear();
+		abortOnLoadErrors(errors);
+	}
+}
+
+void DlgModbus::abortOnLoadErrors(const QStringList& errors)
+{
+	qWarning() << "modbus.csv 配置错误，程序退出:\n" << errors.join('\n');
+
+	// 最多展示前 10 条，避免弹窗过长
+	QStringList shown = errors.mid(0, 10);
+	QString detail = shown.join('\n');
+	if (errors.size() > shown.size())
+	{
+		detail += QStringLiteral("\n……共 %1 处错误").arg(errors.size());
+	}
+
+	QMessageBox::critical(nullptr, QStringLiteral("Modbus 配置错误"),
+		QStringLiteral("%1 配置存在以下错误：\n\n%2\n\n请修正该文件后重新启动程序，程序即将退出。")
+		.arg(globalPath.modbusCsvPath, detail));
+	std::exit(EXIT_FAILURE);
 }
 
 void DlgModbus::savePoints()

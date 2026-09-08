@@ -3,6 +3,7 @@
 #include <QCloseEvent>
 #include <QDialog>
 #include <QShowEvent>
+#include <QStringList>
 #include <QTimer>
 #include <QVector>
 
@@ -18,6 +19,8 @@ class QPushButton;
 ///   每行格式：名称,地址,类型,读写 —— 类型 float/DINT/BOOL，读写列填 读写/只读，地址允许 D/M 前缀（如 D1000、M3000）
 /// - CSV 用 UTF-8 带 BOM 保存（Excel 打开不乱码）；读取时自动兼容 Excel 另存的 GBK CSV
 /// - CSV 不存在时按内置默认表（与《通讯地址.xlsx》一致）生成一份，之后只改 CSV 即可维护点位
+/// - 严格校验：CSV 中任何一行列数不对、地址/类型/读写列无法识别，都会弹窗列出全部错误并退出程序，
+///   防止错误配置（如「只读」误写成「写入」）被静默忽略后带病运行
 /// - 页签归属按 类型+读写 自动推导：BOOL+读写 → BOOL控制页；数值+读写 → 读写参数页；其余 → 只读数据页
 /// - 点位地址在界面上点击修改，关闭对话框时整体写回 CSV
 /// - 打开对话框后定时自动刷新所有点位当前值（float/DINT 小端，BOOL 为线圈）
@@ -55,7 +58,8 @@ private:
 
 private:
 	static QVector<PointInfo> defaultPoints();	// 内置默认点位表（与《通讯地址.xlsx》一致）
-	void loadPoints();		// 从 modbus.csv 加载点位；文件缺失/无有效行时用默认表并生成 CSV
+	void loadPoints();		// 从 modbus.csv 加载点位；文件缺失时按默认表生成，内容非法时弹窗并退出程序
+	[[noreturn]] void abortOnLoadErrors(const QStringList& errors);	// 弹窗列出 CSV 错误并退出程序
 	void savePoints();		// 将当前点位（含界面上修改的地址）整体写回 modbus.csv
 	void buildRows();		// 按点位 类型+读写 动态生成三个页签的行控件
 
