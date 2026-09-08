@@ -5,6 +5,7 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QProcess>
+#include <QTimer>
 
 #include "ui_EdgeWidthDetection.h"
 #include <QPushButton>
@@ -82,6 +83,10 @@ void EdgeWidthDetection::build_connect()
 		this, &EdgeWidthDetection::pbtn_resetProduct_clicked);
 	QObject::connect(ui->pbtn_openSaveLocation, &QPushButton::clicked,
 		this, &EdgeWidthDetection::pbtn_openSaveLocation_clicked);
+	QObject::connect(ui->pbtn_test1, &QPushButton::clicked,
+		this, &EdgeWidthDetection::pbtn_test1_clicked);
+	QObject::connect(ui->pbtn_test2, &QPushButton::clicked,
+		this, &EdgeWidthDetection::pbtn_test2_clicked);
 	QObject::connect(ui->ckb_saveImg, &QCheckBox::clicked,
 		this, &EdgeWidthDetection::ckb_saveImg_checked);
 	QObject::connect(ui->ckb_autoExposure, &QCheckBox::clicked,
@@ -474,6 +479,42 @@ void EdgeWidthDetection::pbtn_openSaveLocation_clicked()
 	_picturesViewer->setRootPath(parentPath);
 	_picturesViewer->setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
 	_picturesViewer->show();
+}
+
+void EdgeWidthDetection::pulseCoil(int address)
+{
+	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
+	if (!plcControllerScheduler)
+	{
+		QMessageBox::information(this, "警告", "PLC未连接");
+		return;
+	}
+
+	const auto addr = static_cast<rw::hoem::Address16>(address);
+	if (!plcControllerScheduler->writeCoilAsync(addr, true).get())
+	{
+		QMessageBox::warning(this, "警告", QString("线圈 %1 写1失败").arg(address));
+		return;
+	}
+
+	// 50ms 后复位为 0；复位失败仅记录日志，避免重复弹窗
+	QTimer::singleShot(50, this, [this, addr, address]() {
+		auto& scheduler = Modules::getInstance().plcController.plcControllerScheduler;
+		if (scheduler && !scheduler->writeCoilAsync(addr, false).get())
+		{
+			qWarning() << "线圈" << address << "复位为0失败";
+		}
+		});
+}
+
+void EdgeWidthDetection::pbtn_test1_clicked()
+{
+	pulseCoil(3);
+}
+
+void EdgeWidthDetection::pbtn_test2_clicked()
+{
+	pulseCoil(4);
 }
 
 void EdgeWidthDetection::rbtn_ruoguang_checked(bool checked)

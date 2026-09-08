@@ -68,6 +68,10 @@ private slots:
 	void pbtn_resetProduct_clicked();
 	void pbtn_openSaveLocation_clicked();
 
+	// 测试按钮：向指定线圈写 1，50ms 后自动复位为 0
+	void pbtn_test1_clicked();
+	void pbtn_test2_clicked();
+
 	void rbtn_ruoguang_checked(bool checked);
 	void rbtn_zhongguang_checked(bool checked);
 	void rbtn_qiangguang_checked(bool checked);
@@ -83,6 +87,9 @@ private slots:
 private:
 	void refreshExposureInfo();
 	void updateExposureInfoVisibility();
+
+	// 向指定线圈地址写 1，持续 50ms 后复位为 0（测试按钮用）
+	void pulseCoil(int address);
 
 	// 根据相机/PLC连接状态刷新标题栏背景色（任一未连接则置红）
 	void updateHeadBackground();
