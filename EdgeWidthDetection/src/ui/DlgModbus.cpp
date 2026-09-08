@@ -3,9 +3,12 @@
 
 #include <QFile>
 #include <QFutureWatcher>
+#include <QGridLayout>
 #include <QLabel>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QSpacerItem>
+#include <QStringConverter>
 #include <QTextStream>
 #include <QtConcurrent/qtconcurrentrun.h>
 #include <functional>
@@ -13,10 +16,90 @@
 #include "Modules.hpp"
 #include "NumberKeyboard.h"
 
-// 三个选项卡行号 -> 点位序号（0~24）映射，顺序与 DlgModbus.ui 布局一致
-static constexpr int TAB_RW[] = { 0, 1, 2, 3, 19, 20, 21, 22, 23, 24 };	// 读写参数（数值）
-static constexpr int TAB_RO[] = { 4, 5, 6, 7, 8, 9, 15, 16, 17, 18, 12 };	// 只读数据（10数值 + 系统标志）
-static constexpr int TAB_BOOL[] = { 10, 11, 13, 14 };						// BOOL 控制（读写）
+namespace
+{
+	// 行控件样式（与原 DlgModbus.ui 中的行样式一致，现由代码动态生成）
+	const char* kAddrButtonStyle =
+		"QPushButton {"
+		"    padding: 6px 14px;"
+		"    border: 2px solid #87CEEB;"
+		"    border-radius: 4px;"
+		"    background-color: white;"
+		"    color: #2c3e50;"
+		"    font-size: 20px;"
+		"}"
+		"QPushButton:hover {"
+		"    border-color: #4682B4;"
+		"    background-color: #F0F8FF;"
+		"}"
+		"QPushButton:pressed {"
+		"    border-color: #2F4F4F;"
+		"    background-color: #E0F0F8;"
+		"}";
+
+	const char* kValueLabelStyle =
+		"QLabel {"
+		"    color: #2F4F4F;"
+		"    border: 1px solid #E0E0E0;"
+		"    background-color: #FFFFFF;"
+		"    padding: 6px 12px;"
+		"    border-radius: 4px;"
+		"}";
+
+	const char* kHeaderLabelStyle =
+		"QLabel {"
+		"    color: #2c3e50;"
+		"    font-weight: bold;"
+		"}";
+
+	// CSV 表头（首行与此一致时跳过）
+	const char* kCsvHeader = "名称,地址,类型,读写";
+
+	// 解析类型列，宽容大小写；无法识别时按 float 处理
+	DlgModbus::PointType parsePointType(const QString& text)
+	{
+		const QString s = text.trimmed().toLower();
+		if (s == "dint" || s == "int32" || s == "dword")
+		{
+			return DlgModbus::PointType::Dint;
+		}
+		if (s == "bool" || s == "bit" || s == "coil")
+		{
+			return DlgModbus::PointType::Bool;
+		}
+		return DlgModbus::PointType::Float;
+	}
+
+	QString pointTypeToString(DlgModbus::PointType type)
+	{
+		switch (type)
+		{
+		case DlgModbus::PointType::Dint: return QStringLiteral("DINT");
+		case DlgModbus::PointType::Bool: return QStringLiteral("BOOL");
+		default: return QStringLiteral("float");
+		}
+	}
+
+	// 解析读写列：读写/rw/write 视为可写，其余（只读/ro/read 等）视为只读
+	bool parseWritable(const QString& text)
+	{
+		const QString s = text.trimmed().toLower();
+		return s == QStringLiteral("读写") || s == "rw" || s == "write" || s == "w";
+	}
+
+	// 解析地址列，允许 D/M 前缀（如 D1000、M3000），与《通讯地址.xlsx》写法一致
+	int parseAddress(const QString& text)
+	{
+		QString s = text.trimmed();
+		if (!s.isEmpty() && (s.startsWith('D') || s.startsWith('d') || s.startsWith('M') || s.startsWith('m')))
+		{
+			s.remove(0, 1);
+		}
+		bool ok = false;
+		const int addr = s.toInt(&ok);
+		return (ok && addr >= 0) ? addr : -1;
+	}
+}
 
 DlgModbus::DlgModbus(QWidget* parent)
 	: QDialog(parent)
@@ -36,10 +119,8 @@ DlgModbus::~DlgModbus()
 
 void DlgModbus::build_ui()
 {
-	initPoints();
-	bindRowWidgets();
-	loadPointNames();
-	loadPointAddresses();
+	loadPoints();
+	buildRows();
 
 	_refreshTimer.setInterval(500);
 	_refreshTimer.setSingleShot(false);
@@ -49,206 +130,263 @@ void DlgModbus::build_connect()
 {
 	connect(ui->btn_close, &QPushButton::clicked, this, &DlgModbus::btn_close_clicked);
 	connect(&_refreshTimer, &QTimer::timeout, this, &DlgModbus::onRefreshTimeout);
-
-	// 地址按钮：所有点位均可点击修改
-	for (const auto& point : _points)
-	{
-		if (point.btnAddr)
-		{
-			connect(point.btnAddr, &QPushButton::clicked, this, [this, idx = point.index]()
-				{
-					onAddrClicked(idx);
-				});
-		}
-	}
-
-	// 读写参数页：写入按钮
-	for (int i = 0; i < static_cast<int>(std::size(TAB_RW)); ++i)
-	{
-		auto* btn = findChild<QPushButton*>(QStringLiteral("btn_write_rw_%1").arg(i));
-		if (btn)
-		{
-			connect(btn, &QPushButton::clicked, this, [this, i]()
-				{
-					onWriteClicked(i);
-				});
-		}
-	}
-
-	// BOOL 控制页：置1 / 置0 按钮
-	for (int i = 0; i < static_cast<int>(std::size(TAB_BOOL)); ++i)
-	{
-		auto* btnSet1 = findChild<QPushButton*>(QStringLiteral("btn_set1_bool_%1").arg(i));
-		auto* btnSet0 = findChild<QPushButton*>(QStringLiteral("btn_set0_bool_%1").arg(i));
-		if (btnSet1)
-		{
-			connect(btnSet1, &QPushButton::clicked, this, [this, i]()
-				{
-					onBoolWriteClicked(i, true);
-				});
-		}
-		if (btnSet0)
-		{
-			connect(btnSet0, &QPushButton::clicked, this, [this, i]()
-				{
-					onBoolWriteClicked(i, false);
-				});
-		}
-	}
+	// 行内按钮在 buildRows() 生成时即完成连接
 }
 
-void DlgModbus::initPoints()
+QVector<DlgModbus::PointInfo> DlgModbus::defaultPoints()
 {
 	struct PointDefault
 	{
-		const char* name;		// 默认名称（modbus.txt 缺失行时的兜底）
-		int address;			// 默认地址（SetConfig 缺失时的兜底，来自《通讯地址.xlsx》）
+		const char* name;
+		int address;
 		PointType type;
 		bool writable;
 	};
 
-	// 顺序固定，与 modbus.txt 行序、SetConfig.modbusAddressList 逗号顺序一一对应
+	// 内置默认表，与《通讯地址.xlsx》一致；仅在 modbus.csv 缺失/无有效行时使用
 	const PointDefault defaults[] = {
-		{ "R_切刀点动速度",		1000,	PointType::Float,	true  },	// 0
-		{ "R_设定拍照长度",		1002,	PointType::Float,	true  },	// 1
-		{ "R_自动速度",			1026,	PointType::Float,	true  },	// 2
-		{ "D_间隔袋数",			1028,	PointType::Dint,	true  },	// 3
-		{ "R_当前中心偏移值",	214,		PointType::Float,	false },	// 4
-		{ "实际拍照值",			3000,	PointType::Float,	false },	// 5
-		{ "总偏移值",			3052,	PointType::Float,	false },	// 6
-		{ "编码器当前位置",		2000,	PointType::Float,	false },	// 7
-		{ "编码器当前速度",		3058,	PointType::Dint,	false },	// 8
-		{ "R_切刀当前位置",		2004,	PointType::Float,	false },	// 9
-		{ "切刀回原",			3000,	PointType::Bool,	true  },	// 10
-		{ "切刀补偿开启",		1000,	PointType::Bool,	true  },	// 11
-		{ "系统标志",			3004,	PointType::Bool,	false },	// 12
-		{ "启动",				3002,	PointType::Bool,	true  },	// 13
-		{ "停止",				3003,	PointType::Bool,	true  },	// 14
-		{ "R_白料长",			3040,	PointType::Float,	false },	// 15
-		{ "R_d1袋长",			3030,	PointType::Float,	false },	// 16
-		{ "切刀计算移动量",		3042,	PointType::Float,	false },	// 17
-		{ "切刀实际移动量",		3060,	PointType::Float,	false },	// 18
-		{ "R_编码器一圈脉冲数",	1006,	PointType::Float,	true  },	// 19
-		{ "R_编码器一圈距离",	1008,	PointType::Float,	true  },	// 20
-		{ "R_中心偏移最大值",	1030,	PointType::Float,	true  },	// 21
-		{ "R_中心偏移最小值",	1032,	PointType::Float,	true  },	// 22
-		{ "切刀移动最大值",		1034,	PointType::Float,	true  },	// 23
-		{ "切刀移动最小值",		1036,	PointType::Float,	true  },	// 24
+		{ "R_切刀点动速度",		1000,	PointType::Float,	true  },
+		{ "R_设定拍照长度",		1002,	PointType::Float,	true  },
+		{ "R_自动速度",			1026,	PointType::Float,	true  },
+		{ "D_间隔袋数",			1028,	PointType::Dint,	true  },
+		{ "R_当前中心偏移值",	214,	PointType::Float,	false },
+		{ "实际拍照值",			3000,	PointType::Float,	false },
+		{ "总偏移值",			3052,	PointType::Float,	false },
+		{ "编码器当前位置",		2000,	PointType::Float,	false },
+		{ "编码器当前速度",		3058,	PointType::Dint,	false },
+		{ "R_切刀当前位置",		2004,	PointType::Float,	false },
+		{ "切刀回原",			3000,	PointType::Bool,	true  },
+		{ "切刀补偿开启",		1000,	PointType::Bool,	true  },
+		{ "系统标志",			3004,	PointType::Bool,	false },
+		{ "启动",				3002,	PointType::Bool,	true  },
+		{ "停止",				3003,	PointType::Bool,	true  },
+		{ "R_白料长",			3040,	PointType::Float,	false },
+		{ "R_d1袋长",			3030,	PointType::Float,	false },
+		{ "切刀计算移动量",		3042,	PointType::Float,	false },
+		{ "切刀实际移动量",		3060,	PointType::Float,	false },
+		{ "R_编码器一圈脉冲数",	1006,	PointType::Float,	true  },
+		{ "R_编码器一圈距离",	1008,	PointType::Float,	true  },
+		{ "R_中心偏移最大值",	1030,	PointType::Float,	true  },
+		{ "R_中心偏移最小值",	1032,	PointType::Float,	true  },
+		{ "切刀移动最大值",		1034,	PointType::Float,	true  },
+		{ "切刀移动最小值",		1036,	PointType::Float,	true  },
 	};
 
-	_points.clear();
-	_points.reserve(static_cast<int>(std::size(defaults)));
-	for (int i = 0; i < static_cast<int>(std::size(defaults)); ++i)
+	QVector<PointInfo> points;
+	points.reserve(static_cast<int>(std::size(defaults)));
+	for (const auto& d : defaults)
 	{
 		PointInfo info;
-		info.index = i;
-		info.name = QString::fromUtf8(defaults[i].name);
-		info.address = defaults[i].address;
-		info.type = defaults[i].type;
-		info.writable = defaults[i].writable;
-		_points.push_back(info);
+		info.name = QString::fromUtf8(d.name);
+		info.address = d.address;
+		info.type = d.type;
+		info.writable = d.writable;
+		points.push_back(info);
 	}
+	return points;
 }
 
-void DlgModbus::bindRowWidgets()
+void DlgModbus::loadPoints()
 {
-	auto bind = [this](const char* prefix, int row, int pointIndex)
-		{
-			auto& point = _points[pointIndex];
-			point.lbName = findChild<QLabel*>(QStringLiteral("lb_name_%1_%2").arg(prefix).arg(row));
-			point.btnAddr = findChild<QPushButton*>(QStringLiteral("btn_addr_%1_%2").arg(prefix).arg(row));
-			point.lbValue = findChild<QLabel*>(QStringLiteral("lb_value_%1_%2").arg(prefix).arg(row));
-		};
-
-	for (int i = 0; i < static_cast<int>(std::size(TAB_RW)); ++i)
+	// modbus.csv 为外部维护文件，每行：名称,地址,类型,读写
+	// 顺序即点位顺序，可随意调整；新增/删除点位直接增删行即可
+	QFile file(globalPath.modbusCsvPath);
+	if (!file.exists())
 	{
-		bind("rw", i, TAB_RW[i]);
-	}
-	for (int i = 0; i < static_cast<int>(std::size(TAB_RO)); ++i)
-	{
-		bind("ro", i, TAB_RO[i]);
-	}
-	for (int i = 0; i < static_cast<int>(std::size(TAB_BOOL)); ++i)
-	{
-		bind("bool", i, TAB_BOOL[i]);
-	}
-}
-
-void DlgModbus::loadPointNames()
-{
-	// modbus.txt 为外部维护文件，程序只读不写；每行一个名称，逗号分割，按行序对应点位
-	QFile file(globalPath.modbusTxtPath);
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-	{
-		qDebug() << "modbus.txt 不存在或无法打开，使用默认点位名称:" << globalPath.modbusTxtPath;
+		qDebug() << "modbus.csv 不存在，按内置默认表生成:" << globalPath.modbusCsvPath;
+		_points = defaultPoints();
+		savePoints();
 		return;
 	}
 
-	QTextStream in(&file);
-	in.setEncoding(QStringConverter::Utf8);
-
-	int lineIndex = 0;
-	while (!in.atEnd() && lineIndex < _points.size())
+	if (!file.open(QIODevice::ReadOnly))
 	{
-		const QString line = in.readLine();
-		// 逗号分割，取第一段作为点位名称
-		const QString name = line.split(',').first().trimmed();
-		if (!name.isEmpty())
-		{
-			_points[lineIndex].name = name;
-		}
-		++lineIndex;
+		qDebug() << "modbus.csv 无法打开，使用内置默认点位表:" << globalPath.modbusCsvPath;
+		_points = defaultPoints();
+		return;
 	}
 
-	// 应用到名称标签
-	for (const auto& point : _points)
+	const QByteArray raw = file.readAll();
+	file.close();
+
+	// 编码自动识别：UTF-8（带/不带 BOM），含非法 UTF-8 序列时按系统编码（GBK，兼容 Excel 另存的 CSV）
+	QString text = QString::fromUtf8(raw);
+	if (text.contains(QChar::ReplacementCharacter))
 	{
-		if (point.lbName)
+		QStringDecoder decoder(QStringConverter::System);
+		text = decoder.decode(raw);
+	}
+
+	_points.clear();
+	const QStringList lines = text.split('\n');
+	for (const QString& rawLine : lines)
+	{
+		const QString line = rawLine.trimmed();
+		if (line.isEmpty())
 		{
-			point.lbName->setText(point.name);
+			continue;
 		}
+
+		const QStringList fields = line.split(',');
+		const QString name = fields.value(0).trimmed();
+		if (name.isEmpty() || name == QStringLiteral("名称"))	// 跳过表头
+		{
+			continue;
+		}
+
+		PointInfo info;
+		info.name = name;
+		info.address = parseAddress(fields.value(1));
+		info.type = parsePointType(fields.value(2));
+		info.writable = parseWritable(fields.value(3));
+		if (info.address < 0)
+		{
+			qDebug() << "modbus.csv 地址无效，已跳过该行:" << line;
+			continue;
+		}
+		_points.push_back(info);
+	}
+
+	if (_points.isEmpty())
+	{
+		qDebug() << "modbus.csv 无有效点位行，使用内置默认点位表:" << globalPath.modbusCsvPath;
+		_points = defaultPoints();
 	}
 }
 
-void DlgModbus::loadPointAddresses()
+void DlgModbus::savePoints()
 {
-	const auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-	const QStringList parts = QString::fromStdString(setConfig.modbusAddressList).split(',');
-
-	for (int i = 0; i < _points.size() && i < parts.size(); ++i)
+	QFile file(globalPath.modbusCsvPath);
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
 	{
-		bool ok = false;
-		const int addr = parts[i].toInt(&ok);
-		if (ok && addr >= 0)
-		{
-			_points[i].address = addr;
-		}
+		qDebug() << "modbus.csv 写入失败:" << globalPath.modbusCsvPath;
+		return;
 	}
 
-	// 应用到地址按钮
+	// UTF-8 带 BOM，保证 Excel 直接打开不乱码
+	QTextStream out(&file);
+	out.setEncoding(QStringConverter::Utf8);
+	out.setGenerateByteOrderMark(true);
+
+	out << QString::fromUtf8(kCsvHeader) << '\n';
 	for (const auto& point : _points)
 	{
-		if (point.btnAddr)
-		{
-			point.btnAddr->setText(QString::number(point.address));
-		}
+		out << point.name << ','
+			<< point.address << ','
+			<< pointTypeToString(point.type) << ','
+			<< (point.writable ? QStringLiteral("读写") : QStringLiteral("只读")) << '\n';
 	}
 }
 
-void DlgModbus::savePointAddresses()
+void DlgModbus::buildRows()
 {
-	QStringList parts;
-	parts.reserve(_points.size());
-	for (const auto& point : _points)
+	struct TabDef
 	{
-		parts << QString::number(point.address);
+		QGridLayout* grid;
+		const char* valueHeader;	// “当前值”列标题（BOOL 页为“当前状态”）
+		bool hasWrite;				// 是否有“写入”按钮列（读写参数页）
+		bool hasBoolOps;			// 是否有“置1/置0”按钮列（BOOL 控制页）
+	};
+
+	const TabDef tabs[] = {
+		{ ui->gridLayout_rw,	"当前值",	true,	false },	// 读写参数：数值 + 读写
+		{ ui->gridLayout_ro,	"当前值",	false,	false },	// 只读数据：只读数值 + 只读 BOOL
+		{ ui->gridLayout_bool,	"当前状态",	false,	true  },	// BOOL 控制：BOOL + 读写
+	};
+
+	for (const auto& tab : tabs)
+	{
+		auto* grid = tab.grid;
+
+		// 表头行
+		const QStringList headers = tab.hasBoolOps
+			? QStringList{ "点位名称", "地址(点击修改)", QString::fromUtf8(tab.valueHeader), "操作", "" }
+			: (tab.hasWrite
+				? QStringList{ "点位名称", "地址(点击修改)", QString::fromUtf8(tab.valueHeader), "操作" }
+				: QStringList{ "点位名称", "地址(点击修改)", QString::fromUtf8(tab.valueHeader) });
+		for (int col = 0; col < headers.size(); ++col)
+		{
+			auto* lb = new QLabel(headers[col]);
+			lb->setStyleSheet(kHeaderLabelStyle);
+			grid->addWidget(lb, 0, col);
+		}
+
+		// 数据行：按 类型+读写 归页，保持 _points 中的顺序
+		int row = 1;
+		for (int i = 0; i < _points.size(); ++i)
+		{
+			auto& point = _points[i];
+			const bool isBoolTab = (point.type == PointType::Bool && point.writable);
+			const bool isRwTab = (point.type != PointType::Bool && point.writable);
+			const bool belongsHere = tab.hasBoolOps ? isBoolTab : (tab.hasWrite ? isRwTab : (!isBoolTab && !isRwTab));
+			if (!belongsHere)
+			{
+				continue;
+			}
+
+			auto* lbName = new QLabel(point.name);
+			lbName->setMinimumHeight(40);
+
+			auto* btnAddr = new QPushButton(QString::number(point.address));
+			btnAddr->setMinimumSize(120, 40);
+			btnAddr->setStyleSheet(kAddrButtonStyle);
+
+			auto* lbValue = new QLabel(QStringLiteral("--"));
+			lbValue->setMinimumHeight(40);
+			lbValue->setStyleSheet(kValueLabelStyle);
+
+			point.lbName = lbName;
+			point.btnAddr = btnAddr;
+			point.lbValue = lbValue;
+
+			grid->addWidget(lbName, row, 0);
+			grid->addWidget(btnAddr, row, 1);
+			grid->addWidget(lbValue, row, 2);
+
+			connect(btnAddr, &QPushButton::clicked, this, [this, i]()
+				{
+					onAddrClicked(i);
+				});
+
+			if (tab.hasWrite)
+			{
+				auto* btnWrite = new QPushButton(QStringLiteral("写入"));
+				btnWrite->setMinimumSize(90, 40);
+				point.btnWrite = btnWrite;
+				grid->addWidget(btnWrite, row, 3);
+				connect(btnWrite, &QPushButton::clicked, this, [this, i]()
+					{
+						onWriteClicked(i);
+					});
+			}
+
+			if (tab.hasBoolOps)
+			{
+				auto* btnSet1 = new QPushButton(QStringLiteral("置1"));
+				btnSet1->setMinimumSize(90, 40);
+				auto* btnSet0 = new QPushButton(QStringLiteral("置0"));
+				btnSet0->setMinimumSize(90, 40);
+				point.btnSet1 = btnSet1;
+				point.btnSet0 = btnSet0;
+				grid->addWidget(btnSet1, row, 3);
+				grid->addWidget(btnSet0, row, 4);
+				connect(btnSet1, &QPushButton::clicked, this, [this, i]()
+					{
+						onBoolWriteClicked(i, true);
+					});
+				connect(btnSet0, &QPushButton::clicked, this, [this, i]()
+					{
+						onBoolWriteClicked(i, false);
+					});
+			}
+
+			++row;
+		}
+
+		// 底部弹簧，让数据行靠上排列
+		grid->addItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding), row, 0);
+		grid->setRowStretch(row, 1);
 	}
-
-	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-	setConfig.modbusAddressList = parts.join(',').toStdString();
-
-	// 使用多代备份 + 写入后验证的安全保存，防止断电导致配置文件损坏
-	Modules::getInstance().configManagerModule.saveConfigSafe();
 }
 
 void DlgModbus::btn_close_clicked()
@@ -377,13 +515,13 @@ void DlgModbus::onAddrClicked(int pointIndex)
 	}
 }
 
-void DlgModbus::onWriteClicked(int rwRow)
+void DlgModbus::onWriteClicked(int pointIndex)
 {
-	if (rwRow < 0 || rwRow >= static_cast<int>(std::size(TAB_RW)))
+	if (pointIndex < 0 || pointIndex >= _points.size())
 	{
 		return;
 	}
-	auto& point = _points[TAB_RW[rwRow]];
+	auto& point = _points[pointIndex];
 
 	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
 	if (!plcControllerScheduler)
@@ -428,13 +566,13 @@ void DlgModbus::onWriteClicked(int rwRow)
 	}
 }
 
-void DlgModbus::onBoolWriteClicked(int boolRow, bool state)
+void DlgModbus::onBoolWriteClicked(int pointIndex, bool state)
 {
-	if (boolRow < 0 || boolRow >= static_cast<int>(std::size(TAB_BOOL)))
+	if (pointIndex < 0 || pointIndex >= _points.size())
 	{
 		return;
 	}
-	auto& point = _points[TAB_BOOL[boolRow]];
+	auto& point = _points[pointIndex];
 
 	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
 	if (!plcControllerScheduler)
@@ -479,7 +617,7 @@ void DlgModbus::hideEvent(QHideEvent* event)
 
 void DlgModbus::closeEvent(QCloseEvent* event)
 {
-	// 关闭窗口前将界面上修改的地址持久化到 SetConfig
-	savePointAddresses();
+	// 关闭窗口前将界面上修改的地址随点位表整体写回 modbus.csv
+	savePoints();
 	QDialog::closeEvent(event);
 }

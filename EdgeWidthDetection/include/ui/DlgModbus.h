@@ -14,9 +14,12 @@ class QLabel;
 class QPushButton;
 
 /// Modbus 通讯点位对话框：
-/// - 点位共 25 个，顺序固定（与《通讯地址.xlsx》一致）
-/// - 点位名称来自外部配置文件 modbus.txt（程序只读，仅允许外界手动修改，按行序逗号分割）
-/// - 点位地址在界面上点击修改，关闭对话框时持久化到 SetConfig.modbusAddressList
+/// - 点位完全由外部 CSV 文件定义（modbus.csv），程序启动时加载；
+///   每行格式：名称,地址,类型,读写 —— 类型 float/DINT/BOOL，读写列填 读写/只读，地址允许 D/M 前缀（如 D1000、M3000）
+/// - CSV 用 UTF-8 带 BOM 保存（Excel 打开不乱码）；读取时自动兼容 Excel 另存的 GBK CSV
+/// - CSV 不存在时按内置默认表（与《通讯地址.xlsx》一致）生成一份，之后只改 CSV 即可维护点位
+/// - 页签归属按 类型+读写 自动推导：BOOL+读写 → BOOL控制页；数值+读写 → 读写参数页；其余 → 只读数据页
+/// - 点位地址在界面上点击修改，关闭对话框时整体写回 CSV
 /// - 打开对话框后定时自动刷新所有点位当前值（float/DINT 小端，BOOL 为线圈）
 class DlgModbus : public QDialog
 {
@@ -30,35 +33,38 @@ public:
 	void build_ui();
 	void build_connect();
 
-private:
+public:
+	// 公开给 CSV 解析辅助函数使用
 	enum class PointType { Float, Dint, Bool };
 
+private:
 	struct PointInfo
 	{
-		int index{ 0 };					// 点位序号（0~24）
-		QString name;					// 显示名称（modbus.txt 按行序覆盖默认值）
+		QString name;					// 显示名称
 		int address{ 0 };				// 当前地址（界面可改）
 		PointType type{ PointType::Float };
 		bool writable{ false };
 
-		QLabel* lbName{ nullptr };		// 名称标签
-		QPushButton* btnAddr{ nullptr };// 地址按钮（点击修改）
-		QLabel* lbValue{ nullptr };		// 当前值标签（定时刷新）
+		QLabel* lbName{ nullptr };			// 名称标签
+		QPushButton* btnAddr{ nullptr };	// 地址按钮（点击修改）
+		QLabel* lbValue{ nullptr };			// 当前值标签（定时刷新）
+		QPushButton* btnWrite{ nullptr };	// 读写参数页“写入”按钮（仅数值读写点位）
+		QPushButton* btnSet1{ nullptr };	// BOOL 控制页“置1”按钮
+		QPushButton* btnSet0{ nullptr };	// BOOL 控制页“置0”按钮
 	};
 
 private:
-	void initPoints();			// 初始化 25 个固定点位（默认名称/地址/类型）
-	void bindRowWidgets();		// 按 objectName 查找各行控件并缓存到 _points
-	void loadPointNames();		// 从 modbus.txt 读取点位名称（只读，不写入）
-	void loadPointAddresses();	// 从 SetConfig.modbusAddressList 读取地址
-	void savePointAddresses();	// 将当前地址写回 SetConfig 并安全保存到本地
+	static QVector<PointInfo> defaultPoints();	// 内置默认点位表（与《通讯地址.xlsx》一致）
+	void loadPoints();		// 从 modbus.csv 加载点位；文件缺失/无有效行时用默认表并生成 CSV
+	void savePoints();		// 将当前点位（含界面上修改的地址）整体写回 modbus.csv
+	void buildRows();		// 按点位 类型+读写 动态生成三个页签的行控件
 
 private slots:
 	void btn_close_clicked();
-	void onRefreshTimeout();					// 定时轮询所有点位当前值
-	void onAddrClicked(int pointIndex);			// 点击地址按钮，数字键盘修改地址
-	void onWriteClicked(int rwRow);				// 读写参数页“写入”按钮
-	void onBoolWriteClicked(int boolRow, bool state);	// BOOL 控制页“置1/置0”按钮
+	void onRefreshTimeout();							// 定时轮询所有点位当前值
+	void onAddrClicked(int pointIndex);					// 点击地址按钮，数字键盘修改地址
+	void onWriteClicked(int pointIndex);				// 读写参数页“写入”按钮
+	void onBoolWriteClicked(int pointIndex, bool state);	// BOOL 控制页“置1/置0”按钮
 
 protected:
 	void showEvent(QShowEvent* event) override;
@@ -68,7 +74,7 @@ protected:
 private:
 	Ui::DlgModbusClass* ui;
 
-	QVector<PointInfo> _points;			// 25 个点位，顺序固定
+	QVector<PointInfo> _points;			// 点位列表，由 modbus.csv 定义
 	QTimer _refreshTimer;				// 当前值自动刷新定时器
 	bool _refreshInFlight{ false };		// 上一次刷新未结束时跳过本次，避免堆积
 };
