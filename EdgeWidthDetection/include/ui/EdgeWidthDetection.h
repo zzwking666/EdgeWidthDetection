@@ -86,8 +86,8 @@ private slots:
 	void ckb_autoExposure_2_checked(bool checked);
 
 	// 主界面拍照面板按钮（点位地址以 modbus_main.csv 为准）
-	void pbtn_start_clicked();			// 启动：向「启动」点位线圈写 1（不自动复位）
-	void pbtn_stop_clicked();			// 停止：向「停止」点位线圈写 1（不自动复位）
+	void pbtn_start_clicked();			// 启动：开关式点动，写 1 置绿 / 再点写 0 恢复原样式
+	void pbtn_stop_clicked();			// 停止：同上
 	void pbtn_cutCompensate_clicked();	// 切刀补偿切换：按当前状态取反写入
 	void onMainUiRefreshTimeout();		// 定时轮询主界面面板全部点位并刷新显示
 
@@ -116,7 +116,7 @@ private:
 
 	const MainUiPoint* findMainUiPoint(const QString& name) const;
 	bool checkManualWriteReady();	// 手动写入前置检查：总开关已开 + PLC 已连接，不满足时弹窗并返回 false
-	void writeMainCoil(const QString& pointName, bool value);		// 按点位名写线圈（启动/停止/切刀补偿）
+	bool writeMainCoil(const QString& pointName, bool value);		// 按点位名写线圈（启动/停止/切刀补偿），返回是否写入成功
 	void writeMainValue(const QString& pointName);					// 按点位名弹数字键盘写数值（四个可写速度/长度）
 
 	// 将普通 QLabel 原位替换为可点击标签（点击写数值用），样式与 replaceWidget 用法同 ini_clickableTitle
@@ -141,6 +141,10 @@ private:
 	QTimer _mainUiRefreshTimer;						// 面板点位轮询定时器
 	bool _mainUiRefreshInFlight{ false };			// 上一次轮询未结束时跳过本次
 	bool _cutCompensateOn{ false };					// 切刀补偿当前状态（轮询更新，切换按钮据此取反）
+	bool _startOn{ false };							// 「启动」按钮当前状态（本地记录，点击时取反写入）
+	bool _stopOn{ false };							// 「停止」按钮当前状态
+	QString _pbtnStartDefaultStyle;					// 启动按钮在 .ui 中的原始样式表（关状态时恢复）
+	QString _pbtnStopDefaultStyle;					// 停止按钮在 .ui 中的原始样式表
 
 	// 四个可写数值行的可点击标签（点击弹出数字键盘写入）
 	rw::rqw::ClickableLabel* clk_setPhotoLength{ nullptr };

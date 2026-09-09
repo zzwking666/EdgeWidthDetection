@@ -68,6 +68,19 @@ namespace
 		"    text-decoration: underline;"
 		"}";
 
+	// 启动/停止按钮「已写入 1」状态的样式（绿底）；关状态直接用 .ui 中的原始样式表
+	const char* kToggleBtnOnStyle =
+		"QPushButton {"
+		"    padding: 4px 8px;"
+		"    border: 1px solid #00a040;"
+		"    border-radius: 3px;"
+		"    background-color: #00e060;"
+		"    color: #003300;"
+		"    font-size: 16px;"
+		"    font-weight: bold;"
+		"}"
+		"QPushButton:pressed { background-color: #00b050; }";
+
 	// 切刀补偿按钮两种状态的样式（开=绿底，关=红底）
 	const char* kCutCompensateOnStyle =
 		"QPushButton {"
@@ -666,6 +679,10 @@ void EdgeWidthDetection::build_mainUiModbus()
 	_mainUiValueLabels.insert(QStringLiteral("切刀实际移动量"), ui->label_cutActualMoveValue);
 	_mainUiValueLabels.insert(QStringLiteral("切刀当前位置"), ui->label_cutPosValue);
 
+	// 记录启动/停止按钮在 .ui 中定义的原始样式表，关状态时恢复用
+	_pbtnStartDefaultStyle = ui->pbtn_start->styleSheet();
+	_pbtnStopDefaultStyle = ui->pbtn_stop->styleSheet();
+
 	QObject::connect(ui->pbtn_start, &QPushButton::clicked,
 		this, &EdgeWidthDetection::pbtn_start_clicked);
 	QObject::connect(ui->pbtn_stop, &QPushButton::clicked,
@@ -895,11 +912,11 @@ bool EdgeWidthDetection::checkManualWriteReady()
 	return true;
 }
 
-void EdgeWidthDetection::writeMainCoil(const QString& pointName, bool value)
+bool EdgeWidthDetection::writeMainCoil(const QString& pointName, bool value)
 {
 	if (!checkManualWriteReady())
 	{
-		return;
+		return false;
 	}
 
 	const auto* point = findMainUiPoint(pointName);
@@ -907,7 +924,7 @@ void EdgeWidthDetection::writeMainCoil(const QString& pointName, bool value)
 	{
 		QMessageBox::warning(this, QStringLiteral("警告"),
 			QStringLiteral("modbus_main.csv 中未找到可写 BOOL 点位「%1」，请检查点位表").arg(pointName));
-		return;
+		return false;
 	}
 
 	auto& scheduler = Modules::getInstance().plcController.plcControllerScheduler;
@@ -916,7 +933,9 @@ void EdgeWidthDetection::writeMainCoil(const QString& pointName, bool value)
 	{
 		QMessageBox::warning(this, QStringLiteral("警告"),
 			pointName + (value ? QStringLiteral(" 置1失败") : QStringLiteral(" 置0失败")));
+		return false;
 	}
+	return true;
 }
 
 void EdgeWidthDetection::writeMainValue(const QString& pointName)
@@ -999,13 +1018,28 @@ void EdgeWidthDetection::updateCutCompensateButton()
 
 void EdgeWidthDetection::pbtn_start_clicked()
 {
-	// 只写入 1，不自动复位（复位由 PLC 侧处理）
-	writeMainCoil(QStringLiteral("启动"), true);
+	// 开关式点动：第一次点击写 1 并置绿，再次点击写 0 并恢复 .ui 原始样式；
+	// 仅写入成功后才切换状态与颜色
+	const bool newValue = !_startOn;
+	if (writeMainCoil(QStringLiteral("启动"), newValue))
+	{
+		_startOn = newValue;
+		ui->pbtn_start->setStyleSheet(_startOn
+			? QString::fromUtf8(kToggleBtnOnStyle)
+			: _pbtnStartDefaultStyle);
+	}
 }
 
 void EdgeWidthDetection::pbtn_stop_clicked()
 {
-	writeMainCoil(QStringLiteral("停止"), true);
+	const bool newValue = !_stopOn;
+	if (writeMainCoil(QStringLiteral("停止"), newValue))
+	{
+		_stopOn = newValue;
+		ui->pbtn_stop->setStyleSheet(_stopOn
+			? QString::fromUtf8(kToggleBtnOnStyle)
+			: _pbtnStopDefaultStyle);
+	}
 }
 
 void EdgeWidthDetection::pbtn_cutCompensate_clicked()
