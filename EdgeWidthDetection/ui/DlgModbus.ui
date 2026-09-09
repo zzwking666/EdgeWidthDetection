@@ -62,23 +62,41 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tab_readWrite">
+     <widget class="QWidget" name="tab_dRw">
       <attribute name="title">
-       <string>读写参数</string>
+       <string>D寄存器读写</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_rw"/>
+      <layout class="QGridLayout" name="gridLayout_dRw"/>
      </widget>
-     <widget class="QWidget" name="tab_readOnly">
+     <widget class="QWidget" name="tab_dRo">
       <attribute name="title">
-       <string>只读数据</string>
+       <string>D寄存器只读</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_ro"/>
+      <layout class="QGridLayout" name="gridLayout_dRo"/>
      </widget>
-     <widget class="QWidget" name="tab_boolControl">
+     <widget class="QWidget" name="tab_mRw">
       <attribute name="title">
-       <string>BOOL控制</string>
+       <string>M寄存器读写</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_bool"/>
+      <layout class="QGridLayout" name="gridLayout_mRw"/>
+     </widget>
+     <widget class="QWidget" name="tab_mRo">
+      <attribute name="title">
+       <string>M寄存器只读</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_mRo"/>
+     </widget>
+     <widget class="QWidget" name="tab_xRo">
+      <attribute name="title">
+       <string>X寄存器只读</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_xRo"/>
+     </widget>
+     <widget class="QWidget" name="tab_yRw">
+      <attribute name="title">
+       <string>Y寄存器读写</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_yRw"/>
      </widget>
     </widget>
    </item>

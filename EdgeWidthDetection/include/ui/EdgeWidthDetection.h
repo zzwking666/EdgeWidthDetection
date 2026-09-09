@@ -91,6 +91,9 @@ private:
 	// 向指定线圈地址写 1，持续 50ms 后复位为 0（测试按钮用）
 	void pulseCoil(int address);
 
+	// 按 CSV 点位名查找线圈协议地址后脉冲写入（找不到点位时弹窗提示）
+	void pulsePointCoil(const QString& pointName);
+
 	// 根据相机/PLC连接状态刷新标题栏背景色（任一未连接则置红）
 	void updateHeadBackground();
 

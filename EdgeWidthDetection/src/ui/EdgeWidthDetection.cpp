@@ -507,14 +507,30 @@ void EdgeWidthDetection::pulseCoil(int address)
 		});
 }
 
+void EdgeWidthDetection::pulsePointCoil(const QString& pointName)
+{
+	auto* dlgModbus = Modules::getInstance().uiModule._dlgModbus;
+	int address = 0;
+	if (!dlgModbus || !dlgModbus->findCoilProtocolAddress(pointName, address))
+	{
+		QMessageBox::warning(this, "警告",
+			QString("modbus.csv 中未找到可写 BOOL 点位「%1」，请检查点位表").arg(pointName));
+		return;
+	}
+
+	pulseCoil(address);
+}
+
 void EdgeWidthDetection::pbtn_test1_clicked()
 {
-	pulseCoil(3);
+	// 压痕拍照输出（Y3，协议地址以 modbus.csv 为准）
+	pulsePointCoil(QStringLiteral("压痕拍照输出"));
 }
 
 void EdgeWidthDetection::pbtn_test2_clicked()
 {
-	pulseCoil(4);
+	// 切刀拍照输出（Y4，协议地址以 modbus.csv 为准）
+	pulsePointCoil(QStringLiteral("切刀拍照输出"));
 }
 
 void EdgeWidthDetection::rbtn_ruoguang_checked(bool checked)
