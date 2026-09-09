@@ -43,6 +43,44 @@
       </spacer>
      </item>
      <item>
+      <widget class="QCheckBox" name="ckb_enableWrite">
+       <property name="styleSheet">
+        <string notr="true">QCheckBox {
+    spacing: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #c0392b;
+}
+
+QCheckBox::indicator {
+    width: 22px;
+    height: 22px;
+    border: 2px solid #999;
+    border-radius: 4px;
+    background: #ffffff;
+}
+
+QCheckBox::indicator:checked {
+    border: 2px solid #2196F3;
+    background-color: #2196F3;
+}
+
+QCheckBox:checked {
+    color: #2196F3;
+}</string>
+       </property>
+       <property name="toolTip">
+        <string>关闭后，本通讯界面与主界面面板的所有手动写入均被禁用（读取不受影响）</string>
+       </property>
+       <property name="text">
+        <string>允许写入</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="btn_close">
        <property name="minimumSize">
         <size>

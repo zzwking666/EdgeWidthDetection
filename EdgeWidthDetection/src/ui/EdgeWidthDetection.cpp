@@ -1,11 +1,19 @@
 #include "EdgeWidthDetection.h"
 
 #include <QDir>
+#include <QFile>
+#include <QFutureWatcher>
+#include <QLabel>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QProcess>
+#include <QStringConverter>
+#include <QTextStream>
 #include <QTimer>
+#include <QtConcurrent/qtconcurrentrun.h>
+#include <cstdlib>
+#include <functional>
 
 #include "ui_EdgeWidthDetection.h"
 #include <QPushButton>
@@ -21,6 +29,163 @@
 #include "rqw_RunEnvCheck.hpp"
 #include "Utilty.hpp"
 #include "VersionInfo.hpp"
+
+namespace
+{
+	// ================= 主界面拍照/切刀面板点位（modbus_main.csv）================
+
+	// CSV 表头（首行与此一致时跳过）
+	const char* kMainUiCsvHeader = "名称,类型,协议地址,读写";
+
+	// 约定的 17 个面板点位名，CSV 名称列必须在此列表中且各出现一次（严格校验）
+	const QStringList kMainUiPointNames = {
+		QStringLiteral("设定拍照长度"),
+		QStringLiteral("实际拍照值"),
+		QStringLiteral("白料长"),
+		QStringLiteral("袋长"),
+		QStringLiteral("编码器当前位置"),
+		QStringLiteral("启动"),
+		QStringLiteral("停止"),
+		QStringLiteral("系统标志"),
+		QStringLiteral("切刀一直点动速度"),
+		QStringLiteral("切刀单次点动速度"),
+		QStringLiteral("自动速度"),
+		QStringLiteral("切刀计算移动量"),
+		QStringLiteral("切刀实际移动量"),
+		QStringLiteral("切刀当前位置"),
+		QStringLiteral("切刀补偿"),
+		QStringLiteral("切刀正限位"),
+		QStringLiteral("切刀负限位"),
+	};
+
+	// 可点击（可写数值）标签样式：蓝色加粗下划线 + 手型光标，提示可点击
+	const char* kMainClickableValueStyle =
+		"QLabel {"
+		"    font-size: 16px;"
+		"    font-weight: bold;"
+		"    color: #1565C0;"
+		"    border: none;"
+		"    text-decoration: underline;"
+		"}";
+
+	// 切刀补偿按钮两种状态的样式（开=绿底，关=红底）
+	const char* kCutCompensateOnStyle =
+		"QPushButton {"
+		"    padding: 6px 10px;"
+		"    border: 1px solid #00a040;"
+		"    border-radius: 3px;"
+		"    background-color: #00e060;"
+		"    color: #003300;"
+		"    font-size: 16px;"
+		"    font-weight: bold;"
+		"}"
+		"QPushButton:pressed { background-color: #00b050; }";
+	const char* kCutCompensateOffStyle =
+		"QPushButton {"
+		"    padding: 6px 10px;"
+		"    border: 1px solid #a03030;"
+		"    border-radius: 3px;"
+		"    background-color: #e05050;"
+		"    color: #ffffff;"
+		"    font-size: 16px;"
+		"    font-weight: bold;"
+		"}"
+		"QPushButton:pressed { background-color: #b04040; }";
+
+	// 解析类型列，宽容大小写；返回 false 表示无法识别（严格校验，非法值会导致启动失败）
+	bool parseMainPointType(const QString& text, EdgeWidthDetection::MainPointType& out)
+	{
+		const QString s = text.trimmed().toLower();
+		if (s == "float" || s == "real")
+		{
+			out = EdgeWidthDetection::MainPointType::Float;
+			return true;
+		}
+		if (s == "dint" || s == "int32" || s == "dword")
+		{
+			out = EdgeWidthDetection::MainPointType::Dint;
+			return true;
+		}
+		if (s == "bool" || s == "bit" || s == "coil")
+		{
+			out = EdgeWidthDetection::MainPointType::Bool;
+			return true;
+		}
+		return false;
+	}
+
+	QString mainPointTypeToString(EdgeWidthDetection::MainPointType type)
+	{
+		switch (type)
+		{
+		case EdgeWidthDetection::MainPointType::Dint: return QStringLiteral("DINT");
+		case EdgeWidthDetection::MainPointType::Bool: return QStringLiteral("BOOL");
+		default: return QStringLiteral("float");
+		}
+	}
+
+	// 解析读写列：返回 false 表示无法识别（严格校验）
+	bool parseMainWritable(const QString& text, bool& out)
+	{
+		const QString s = text.trimmed().toLower();
+		if (s == QStringLiteral("读写") || s == "rw" || s == "write" || s == "w")
+		{
+			out = true;
+			return true;
+		}
+		if (s == QStringLiteral("只读") || s == "ro" || s == "read" || s == "r")
+		{
+			out = false;
+			return true;
+		}
+		return false;
+	}
+
+	// 解析协议地址列（实际读写 Modbus 的地址），必须是非负整数
+	int parseMainProtocolAddress(const QString& text)
+	{
+		bool ok = false;
+		const int addr = text.trimmed().toInt(&ok);
+		return (ok && addr >= 0) ? addr : -1;
+	}
+
+	struct MainPointDefault
+	{
+		const char* name;
+		EdgeWidthDetection::MainPointType type;
+		int protocolAddress;
+		bool writable;
+	};
+
+	// 内置默认表，协议地址与《通讯地址》约定一致；仅在 modbus_main.csv 缺失时使用
+	const MainPointDefault kMainUiDefaults[] = {
+		{ "设定拍照长度",		EdgeWidthDetection::MainPointType::Float,	1002,	true  },
+		{ "实际拍照值",			EdgeWidthDetection::MainPointType::Float,	3000,	false },
+		{ "白料长",				EdgeWidthDetection::MainPointType::Float,	3040,	false },
+		{ "袋长",				EdgeWidthDetection::MainPointType::Float,	3030,	false },
+		{ "编码器当前位置",		EdgeWidthDetection::MainPointType::Float,	2000,	false },
+		{ "启动",				EdgeWidthDetection::MainPointType::Bool,	12954,	true  },
+		{ "停止",				EdgeWidthDetection::MainPointType::Bool,	12955,	true  },
+		{ "系统标志",			EdgeWidthDetection::MainPointType::Bool,	12956,	false },
+		{ "切刀一直点动速度",	EdgeWidthDetection::MainPointType::Float,	1000,	true  },
+		{ "切刀单次点动速度",	EdgeWidthDetection::MainPointType::Float,	1038,	true  },
+		{ "自动速度",			EdgeWidthDetection::MainPointType::Float,	1026,	true  },
+		{ "切刀计算移动量",		EdgeWidthDetection::MainPointType::Float,	3042,	false },
+		{ "切刀实际移动量",		EdgeWidthDetection::MainPointType::Float,	3060,	false },
+		{ "切刀当前位置",		EdgeWidthDetection::MainPointType::Float,	2004,	false },
+		{ "切刀补偿",			EdgeWidthDetection::MainPointType::Bool,	3000,	true  },
+		{ "切刀正限位",			EdgeWidthDetection::MainPointType::Bool,	1207,	false },
+		{ "切刀负限位",			EdgeWidthDetection::MainPointType::Bool,	1204,	false },
+	};
+
+	// 设置圆形指示灯颜色：onColor/offColor 为状态色，读取失败时置灰
+	void setLampColor(QLabel* lamp, bool readOk, bool on, const QString& onColor, const QString& offColor)
+	{
+		const QString color = !readOk ? QStringLiteral("#9e9e9e") : (on ? onColor : offColor);
+		lamp->setStyleSheet(QStringLiteral(
+			"QLabel { background-color: %1; border: 1px solid #7a7a7a; border-radius: 15px; }").arg(color));
+	}
+}
 
 
 EdgeWidthDetection::EdgeWidthDetection(QWidget* parent)
@@ -57,6 +222,7 @@ void EdgeWidthDetection::build_ui()
 {
 	build_EdgeWidthDetectionData();
 	build_DlgCloseForm();
+	build_mainUiModbus();
 
 #ifdef BUILD_WITHOUT_HARDWARE
 	cBox_testPushImg = new QCheckBox(this);
@@ -83,10 +249,6 @@ void EdgeWidthDetection::build_connect()
 		this, &EdgeWidthDetection::pbtn_resetProduct_clicked);
 	QObject::connect(ui->pbtn_openSaveLocation, &QPushButton::clicked,
 		this, &EdgeWidthDetection::pbtn_openSaveLocation_clicked);
-	QObject::connect(ui->pbtn_test1, &QPushButton::clicked,
-		this, &EdgeWidthDetection::pbtn_test1_clicked);
-	QObject::connect(ui->pbtn_test2, &QPushButton::clicked,
-		this, &EdgeWidthDetection::pbtn_test2_clicked);
 	QObject::connect(ui->ckb_saveImg, &QCheckBox::clicked,
 		this, &EdgeWidthDetection::ckb_saveImg_checked);
 	QObject::connect(ui->ckb_autoExposure, &QCheckBox::clicked,
@@ -481,56 +643,510 @@ void EdgeWidthDetection::pbtn_openSaveLocation_clicked()
 	_picturesViewer->show();
 }
 
-void EdgeWidthDetection::pulseCoil(int address)
+void EdgeWidthDetection::build_mainUiModbus()
 {
-	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
-	if (!plcControllerScheduler)
-	{
-		QMessageBox::information(this, "警告", "PLC未连接");
-		return;
-	}
+	loadMainUiPoints();
 
-	const auto addr = static_cast<rw::hoem::Address16>(address);
-	if (!plcControllerScheduler->writeCoilAsync(addr, true).get())
-	{
-		QMessageBox::warning(this, "警告", QString("线圈 %1 写1失败").arg(address));
-		return;
-	}
+	// 四个可写数值行替换为可点击标签（点击弹出数字键盘写入）
+	clk_setPhotoLength = replaceWithClickableValue(ui->label_setPhotoLengthValue);
+	clk_cutJogContSpeed = replaceWithClickableValue(ui->label_cutJogContSpeedValue);
+	clk_cutJogOnceSpeed = replaceWithClickableValue(ui->label_cutJogOnceSpeedValue);
+	clk_autoSpeed = replaceWithClickableValue(ui->label_autoSpeedValue);
 
-	// 50ms 后复位为 0；复位失败仅记录日志，避免重复弹窗
-	QTimer::singleShot(50, this, [this, addr, address]() {
-		auto& scheduler = Modules::getInstance().plcController.plcControllerScheduler;
-		if (scheduler && !scheduler->writeCoilAsync(addr, false).get())
+	// 数值行：点位名 -> 当前值标签（轮询刷新时按名更新）
+	_mainUiValueLabels.insert(QStringLiteral("设定拍照长度"), clk_setPhotoLength);
+	_mainUiValueLabels.insert(QStringLiteral("实际拍照值"), ui->label_actualPhotoValue);
+	_mainUiValueLabels.insert(QStringLiteral("白料长"), ui->label_whiteLengthValue);
+	_mainUiValueLabels.insert(QStringLiteral("袋长"), ui->label_bagLengthValue);
+	_mainUiValueLabels.insert(QStringLiteral("编码器当前位置"), ui->label_encoderPosValue);
+	_mainUiValueLabels.insert(QStringLiteral("切刀一直点动速度"), clk_cutJogContSpeed);
+	_mainUiValueLabels.insert(QStringLiteral("切刀单次点动速度"), clk_cutJogOnceSpeed);
+	_mainUiValueLabels.insert(QStringLiteral("自动速度"), clk_autoSpeed);
+	_mainUiValueLabels.insert(QStringLiteral("切刀计算移动量"), ui->label_cutCalcMoveValue);
+	_mainUiValueLabels.insert(QStringLiteral("切刀实际移动量"), ui->label_cutActualMoveValue);
+	_mainUiValueLabels.insert(QStringLiteral("切刀当前位置"), ui->label_cutPosValue);
+
+	QObject::connect(ui->pbtn_start, &QPushButton::clicked,
+		this, &EdgeWidthDetection::pbtn_start_clicked);
+	QObject::connect(ui->pbtn_stop, &QPushButton::clicked,
+		this, &EdgeWidthDetection::pbtn_stop_clicked);
+	QObject::connect(ui->pbtn_cutCompensate, &QPushButton::clicked,
+		this, &EdgeWidthDetection::pbtn_cutCompensate_clicked);
+	QObject::connect(clk_setPhotoLength, &rw::rqw::ClickableLabel::clicked, this, [this]()
 		{
-			qWarning() << "线圈" << address << "复位为0失败";
-		}
+			writeMainValue(QStringLiteral("设定拍照长度"));
 		});
+	QObject::connect(clk_cutJogContSpeed, &rw::rqw::ClickableLabel::clicked, this, [this]()
+		{
+			writeMainValue(QStringLiteral("切刀一直点动速度"));
+		});
+	QObject::connect(clk_cutJogOnceSpeed, &rw::rqw::ClickableLabel::clicked, this, [this]()
+		{
+			writeMainValue(QStringLiteral("切刀单次点动速度"));
+		});
+	QObject::connect(clk_autoSpeed, &rw::rqw::ClickableLabel::clicked, this, [this]()
+		{
+			writeMainValue(QStringLiteral("自动速度"));
+		});
+
+	QObject::connect(&_mainUiRefreshTimer, &QTimer::timeout,
+		this, &EdgeWidthDetection::onMainUiRefreshTimeout);
+	_mainUiRefreshTimer.setInterval(500);
+	_mainUiRefreshTimer.start();
+
+	// 初始按补偿关闭显示，首次轮询后校正为真实状态
+	updateCutCompensateButton();
 }
 
-void EdgeWidthDetection::pulsePointCoil(const QString& pointName)
+void EdgeWidthDetection::loadMainUiPoints()
 {
-	auto* dlgModbus = Modules::getInstance().uiModule._dlgModbus;
-	int address = 0;
-	if (!dlgModbus || !dlgModbus->findCoilProtocolAddress(pointName, address))
+	// modbus_main.csv 每行：名称,类型,协议地址,读写
+	// 与 DlgModbus 的 modbus.csv 相互独立；名称必须是约定的 17 个点位名且各出现一次
+	// 严格校验：任何一行格式非法都会弹窗提示并退出程序，防止错误配置静默生效
+	QFile file(globalPath.modbusMainCsvPath);
+	if (!file.exists())
 	{
-		QMessageBox::warning(this, "警告",
-			QString("modbus.csv 中未找到可写 BOOL 点位「%1」，请检查点位表").arg(pointName));
+		qDebug() << "modbus_main.csv 不存在，按内置默认表生成:" << globalPath.modbusMainCsvPath;
+		_mainUiPoints.clear();
+		for (const auto& d : kMainUiDefaults)
+		{
+			MainUiPoint info;
+			info.name = QString::fromUtf8(d.name);
+			info.type = d.type;
+			info.protocolAddress = d.protocolAddress;
+			info.writable = d.writable;
+			_mainUiPoints.push_back(info);
+		}
+		saveMainUiPoints();
 		return;
 	}
 
-	pulseCoil(address);
+	if (!file.open(QIODevice::ReadOnly))
+	{
+		abortOnMainUiLoadErrors({ QStringLiteral("modbus_main.csv 无法打开（可能被占用或无权限）") });
+		return;
+	}
+
+	const QByteArray raw = file.readAll();
+	file.close();
+
+	// 编码自动识别：UTF-8（带/不带 BOM），含非法 UTF-8 序列时按系统编码（GBK，兼容 Excel 另存的 CSV）
+	QString text = QString::fromUtf8(raw);
+	if (text.contains(QChar::ReplacementCharacter))
+	{
+		QStringDecoder decoder(QStringConverter::System);
+		text = decoder.decode(raw);
+	}
+	// 去掉 BOM（trimmed() 不会去掉 U+FEFF，否则会污染首行首列）
+	if (text.startsWith(QChar(0xFEFF)))
+	{
+		text.remove(0, 1);
+	}
+
+	_mainUiPoints.clear();
+	QStringList errors;
+	QStringList seenNames;
+	const QStringList lines = text.split('\n');
+	for (int lineNo = 0; lineNo < lines.size(); ++lineNo)
+	{
+		const QString line = lines[lineNo].trimmed();
+		if (line.isEmpty())
+		{
+			continue;
+		}
+
+		const QStringList fields = line.split(',');
+		if (fields.value(0).trimmed() == QStringLiteral("名称"))	// 跳过表头
+		{
+			continue;
+		}
+
+		auto addError = [&](const QString& reason)
+		{
+			errors << QStringLiteral("第 %1 行「%2」：%3").arg(lineNo + 1).arg(line, reason);
+		};
+
+		if (fields.size() != 4)
+		{
+			addError(QStringLiteral("应为 4 列（名称,类型,协议地址,读写），实际为 %1 列").arg(fields.size()));
+			continue;
+		}
+
+		MainUiPoint info;
+		info.name = fields[0].trimmed();
+		if (!kMainUiPointNames.contains(info.name))
+		{
+			addError(QStringLiteral("名称「%1」无法识别，应为约定的面板点位名之一：%2")
+				.arg(info.name, kMainUiPointNames.join(QStringLiteral("、"))));
+			continue;
+		}
+		if (seenNames.contains(info.name))
+		{
+			addError(QStringLiteral("名称「%1」重复出现").arg(info.name));
+			continue;
+		}
+		seenNames << info.name;
+
+		if (!parseMainPointType(fields[1], info.type))
+		{
+			addError(QStringLiteral("类型「%1」无法识别，应为 float / DINT / BOOL").arg(fields[1].trimmed()));
+			continue;
+		}
+
+		info.protocolAddress = parseMainProtocolAddress(fields[2]);
+		if (info.protocolAddress < 0)
+		{
+			addError(QStringLiteral("协议地址「%1」无效，应为非负整数").arg(fields[2].trimmed()));
+			continue;
+		}
+
+		if (!parseMainWritable(fields[3], info.writable))
+		{
+			addError(QStringLiteral("读写列「%1」无法识别，应为「读写」或「只读」").arg(fields[3].trimmed()));
+			continue;
+		}
+
+		_mainUiPoints.push_back(info);
+	}
+
+	// 完整性校验：约定的点位必须全部出现（防止漏行导致面板某行永远不刷新）
+	for (const auto& name : kMainUiPointNames)
+	{
+		if (!seenNames.contains(name))
+		{
+			errors << QStringLiteral("缺少点位「%1」").arg(name);
+		}
+	}
+
+	if (!errors.isEmpty())
+	{
+		_mainUiPoints.clear();
+		abortOnMainUiLoadErrors(errors);
+	}
 }
 
-void EdgeWidthDetection::pbtn_test1_clicked()
+void EdgeWidthDetection::abortOnMainUiLoadErrors(const QStringList& errors)
 {
-	// 压痕拍照输出（Y3，协议地址以 modbus.csv 为准）
-	pulsePointCoil(QStringLiteral("压痕拍照输出"));
+	qWarning() << "modbus_main.csv 配置错误，程序退出:\n" << errors.join('\n');
+
+	// 最多展示前 10 条，避免弹窗过长
+	QStringList shown = errors.mid(0, 10);
+	QString detail = shown.join('\n');
+	if (errors.size() > shown.size())
+	{
+		detail += QStringLiteral("\n……共 %1 处错误").arg(errors.size());
+	}
+
+	QMessageBox::critical(nullptr, QStringLiteral("Modbus 配置错误"),
+		QStringLiteral("%1 配置存在以下错误：\n\n%2\n\n请修正该文件后重新启动程序，程序即将退出。")
+		.arg(globalPath.modbusMainCsvPath, detail));
+	std::exit(EXIT_FAILURE);
 }
 
-void EdgeWidthDetection::pbtn_test2_clicked()
+void EdgeWidthDetection::saveMainUiPoints()
 {
-	// 切刀拍照输出（Y4，协议地址以 modbus.csv 为准）
-	pulsePointCoil(QStringLiteral("切刀拍照输出"));
+	QFile file(globalPath.modbusMainCsvPath);
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
+	{
+		qDebug() << "modbus_main.csv 写入失败:" << globalPath.modbusMainCsvPath;
+		return;
+	}
+
+	// UTF-8 带 BOM，保证 Excel 直接打开不乱码
+	QTextStream out(&file);
+	out.setEncoding(QStringConverter::Utf8);
+	out.setGenerateByteOrderMark(true);
+
+	out << QString::fromUtf8(kMainUiCsvHeader) << '\n';
+	for (const auto& point : _mainUiPoints)
+	{
+		out << point.name << ','
+			<< mainPointTypeToString(point.type) << ','
+			<< point.protocolAddress << ','
+			<< (point.writable ? QStringLiteral("读写") : QStringLiteral("只读")) << '\n';
+	}
+}
+
+const EdgeWidthDetection::MainUiPoint* EdgeWidthDetection::findMainUiPoint(const QString& name) const
+{
+	for (const auto& point : _mainUiPoints)
+	{
+		if (point.name == name)
+		{
+			return &point;
+		}
+	}
+	return nullptr;
+}
+
+bool EdgeWidthDetection::checkManualWriteReady()
+{
+	if (!Modules::getInstance().plcController.manualWriteEnabled.load())
+	{
+		QMessageBox::information(this, QStringLiteral("提示"),
+			QStringLiteral("Modbus 手动写入已被禁用（可在「通讯」界面右上角勾选「允许写入」开启）"));
+		return false;
+	}
+	if (!Modules::getInstance().plcController.plcControllerScheduler)
+	{
+		QMessageBox::information(this, QStringLiteral("警告"), QStringLiteral("PLC未连接"));
+		return false;
+	}
+	return true;
+}
+
+void EdgeWidthDetection::writeMainCoil(const QString& pointName, bool value)
+{
+	if (!checkManualWriteReady())
+	{
+		return;
+	}
+
+	const auto* point = findMainUiPoint(pointName);
+	if (!point || point->type != MainPointType::Bool || !point->writable)
+	{
+		QMessageBox::warning(this, QStringLiteral("警告"),
+			QStringLiteral("modbus_main.csv 中未找到可写 BOOL 点位「%1」，请检查点位表").arg(pointName));
+		return;
+	}
+
+	auto& scheduler = Modules::getInstance().plcController.plcControllerScheduler;
+	const auto addr = static_cast<rw::hoem::Address16>(point->protocolAddress);
+	if (!scheduler->writeCoilAsync(addr, value).get())
+	{
+		QMessageBox::warning(this, QStringLiteral("警告"),
+			pointName + (value ? QStringLiteral(" 置1失败") : QStringLiteral(" 置0失败")));
+	}
+}
+
+void EdgeWidthDetection::writeMainValue(const QString& pointName)
+{
+	if (!checkManualWriteReady())
+	{
+		return;
+	}
+
+	const auto* point = findMainUiPoint(pointName);
+	if (!point || point->type == MainPointType::Bool || !point->writable)
+	{
+		QMessageBox::warning(this, QStringLiteral("警告"),
+			QStringLiteral("modbus_main.csv 中未找到可写数值点位「%1」，请检查点位表").arg(pointName));
+		return;
+	}
+
+	NumberKeyboard numKeyBord;
+	numKeyBord.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+	auto isAccept = numKeyBord.exec();
+	if (isAccept != QDialog::Accepted)
+	{
+		return;
+	}
+
+	const auto value = numKeyBord.getValue();
+	const auto addr = static_cast<rw::hoem::Address16>(point->protocolAddress);
+	auto& scheduler = Modules::getInstance().plcController.plcControllerScheduler;
+
+	bool success = false;
+	if (point->type == MainPointType::Float)
+	{
+		success = scheduler->writeFloatRegisterAsync(
+			addr, value.toFloat(), rw::hoem::Endianness::LittleEndian).get();
+	}
+	else if (point->type == MainPointType::Dint)
+	{
+		success = scheduler->writeUInt32RegisterAsync(
+			addr, static_cast<rw::hoem::UInt32>(static_cast<int32_t>(value.toInt())),
+			rw::hoem::Endianness::LittleEndian).get();
+	}
+
+	if (success)
+	{
+		// 写入成功后立即刷新一次显示
+		onMainUiRefreshTimeout();
+	}
+	else
+	{
+		QMessageBox::warning(this, QStringLiteral("警告"), pointName + QStringLiteral(" 写入失败"));
+	}
+}
+
+rw::rqw::ClickableLabel* EdgeWidthDetection::replaceWithClickableValue(QLabel* oldLabel)
+{
+	auto* clickable = new rw::rqw::ClickableLabel(this);
+	clickable->setText(oldLabel->text());
+	clickable->setAlignment(oldLabel->alignment());
+	clickable->setCursor(Qt::PointingHandCursor);
+	clickable->setStyleSheet(QString::fromUtf8(kMainClickableValueStyle));
+	// replaceWidget 会递归查找子布局（与 ini_clickableTitle 中标题标签的替换方式相同）
+	oldLabel->parentWidget()->layout()->replaceWidget(oldLabel, clickable);
+	delete oldLabel;
+	return clickable;
+}
+
+void EdgeWidthDetection::updateCutCompensateButton()
+{
+	if (_cutCompensateOn)
+	{
+		ui->pbtn_cutCompensate->setText(QStringLiteral("切刀补偿开启"));
+		ui->pbtn_cutCompensate->setStyleSheet(QString::fromUtf8(kCutCompensateOnStyle));
+	}
+	else
+	{
+		ui->pbtn_cutCompensate->setText(QStringLiteral("切刀补偿关闭"));
+		ui->pbtn_cutCompensate->setStyleSheet(QString::fromUtf8(kCutCompensateOffStyle));
+	}
+}
+
+void EdgeWidthDetection::pbtn_start_clicked()
+{
+	// 只写入 1，不自动复位（复位由 PLC 侧处理）
+	writeMainCoil(QStringLiteral("启动"), true);
+}
+
+void EdgeWidthDetection::pbtn_stop_clicked()
+{
+	writeMainCoil(QStringLiteral("停止"), true);
+}
+
+void EdgeWidthDetection::pbtn_cutCompensate_clicked()
+{
+	// 切换开关：按当前状态取反写入；按钮文字/颜色由轮询读到的新状态刷新
+	writeMainCoil(QStringLiteral("切刀补偿"), !_cutCompensateOn);
+	onMainUiRefreshTimeout();
+}
+
+void EdgeWidthDetection::onMainUiRefreshTimeout()
+{
+	auto& scheduler = Modules::getInstance().plcController.plcControllerScheduler;
+	if (!scheduler)
+	{
+		// PLC 未连接时数值行显示 --，指示灯置灰
+		for (auto* lb : _mainUiValueLabels)
+		{
+			lb->setText(QStringLiteral("--"));
+		}
+		setLampColor(ui->label_systemFlag, false, false, QString(), QString());
+		setLampColor(ui->label_cutPosLimit, false, false, QString(), QString());
+		setLampColor(ui->label_cutNegLimit, false, false, QString(), QString());
+		return;
+	}
+
+	if (_mainUiRefreshInFlight)
+	{
+		return;
+	}
+	_mainUiRefreshInFlight = true;
+
+	struct PointResult
+	{
+		QString text;				// 数值行显示文本（读取失败时为空）
+		bool ok{ false };			// 读取是否成功
+		bool boolValue{ false };	// BOOL 点位当前值
+	};
+
+	// 发起全部点位的异步读取（float/DINT 小端，BOOL 读线圈），future 移到后台线程统一等待
+	// std::function 要求可拷贝，future 为移动语义，故用 shared_ptr 包一层
+	std::vector<std::function<PointResult()>> tasks;
+	tasks.reserve(_mainUiPoints.size());
+	for (const auto& point : _mainUiPoints)
+	{
+		const auto addr = static_cast<rw::hoem::Address16>(point.protocolAddress);
+		switch (point.type)
+		{
+		case MainPointType::Float:
+		{
+			auto fut = std::make_shared<std::future<std::pair<float, bool>>>(
+				scheduler->readFloatRegisterAsync(addr, rw::hoem::Endianness::LittleEndian));
+			tasks.push_back([fut]() mutable
+				{
+					auto result = fut->get();
+					return PointResult{
+						result.second ? QString::number(result.first, 'f', 2) : QString(),
+						result.second, false };
+				});
+			break;
+		}
+		case MainPointType::Dint:
+		{
+			auto fut = std::make_shared<std::future<std::pair<rw::hoem::UInt32, bool>>>(
+				scheduler->readUInt32RegisterAsync(addr, rw::hoem::Endianness::LittleEndian));
+			tasks.push_back([fut]() mutable
+				{
+					auto result = fut->get();
+					return PointResult{
+						result.second ? QString::number(static_cast<int32_t>(result.first)) : QString(),
+						result.second, false };
+				});
+			break;
+		}
+		case MainPointType::Bool:
+		{
+			auto fut = std::make_shared<std::future<std::pair<bool, bool>>>(
+				scheduler->readCoilAsync(addr));
+			tasks.push_back([fut]() mutable
+				{
+					auto result = fut->get();
+					return PointResult{ QString(), result.second, result.second && result.first };
+				});
+			break;
+		}
+		}
+	}
+
+	auto* watcher = new QFutureWatcher<QVector<PointResult>>(this);
+	connect(watcher, &QFutureWatcher<QVector<PointResult>>::finished, this, [this, watcher]()
+		{
+			const auto results = watcher->result();
+			watcher->deleteLater();
+			_mainUiRefreshInFlight = false;
+
+			for (int i = 0; i < results.size() && i < _mainUiPoints.size(); ++i)
+			{
+				const auto& point = _mainUiPoints[i];
+				const auto& res = results[i];
+
+				if (auto* lb = _mainUiValueLabels.value(point.name, nullptr))
+				{
+					lb->setText(res.ok ? res.text : QStringLiteral("--"));
+				}
+				else if (point.name == QStringLiteral("系统标志"))
+				{
+					// 系统标志：1 绿、0 红，读取失败置灰
+					setLampColor(ui->label_systemFlag, res.ok, res.boolValue,
+						QStringLiteral("#00c853"), QStringLiteral("red"));
+				}
+				else if (point.name == QStringLiteral("切刀正限位"))
+				{
+					// 限位灯：触发(1)亮绿，未触发(0)灰
+					setLampColor(ui->label_cutPosLimit, res.ok, res.boolValue,
+						QStringLiteral("#00e000"), QStringLiteral("#9e9e9e"));
+				}
+				else if (point.name == QStringLiteral("切刀负限位"))
+				{
+					setLampColor(ui->label_cutNegLimit, res.ok, res.boolValue,
+						QStringLiteral("#00e000"), QStringLiteral("#9e9e9e"));
+				}
+				else if (point.name == QStringLiteral("切刀补偿"))
+				{
+					if (res.ok)
+					{
+						_cutCompensateOn = res.boolValue;
+						updateCutCompensateButton();
+					}
+				}
+				// 启动/停止点位无需显示，读取结果忽略
+			}
+		});
+	watcher->setFuture(QtConcurrent::run([tasks = std::move(tasks)]() mutable
+		{
+			QVector<PointResult> results;
+			results.reserve(static_cast<int>(tasks.size()));
+			for (auto& task : tasks)
+			{
+				results.push_back(task());
+			}
+			return results;
+		}));
 }
 
 void EdgeWidthDetection::rbtn_ruoguang_checked(bool checked)

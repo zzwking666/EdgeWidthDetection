@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <memory>
 #include <QObject>
 
@@ -21,6 +22,10 @@ public:
 public:
 	std::shared_ptr<rw::hoem::ModbusDevice> plcController{};
 	std::shared_ptr<rw::hoem::ModbusDeviceScheduler> plcControllerScheduler{};
+
+	// 手动写入总开关（由 DlgModbus 的「允许写入」复选框控制）：
+	// 关闭后通讯界面与主界面面板的所有手动写入均被拦截并弹窗提示，所有读取不受影响
+	std::atomic<bool> manualWriteEnabled{ true };
 
 	void build_plcController();
 	void destroy_plcController();

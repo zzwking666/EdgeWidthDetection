@@ -27,6 +27,8 @@ class QPushButton;
 /// - 页签归属由「页签」列直接决定，与六个 sheet 一一对应
 /// - 界面上不提供地址修改功能，一切以 CSV 文件为准；读写页签提供“写入/置1/置0”操作按钮
 /// - 打开对话框后定时自动刷新所有点位当前值（float/DINT 小端，BOOL 为线圈）
+/// - 右上角「允许写入」复选框是全局手动写入总开关（状态存于 PlcController::manualWriteEnabled）：
+///   取消勾选后本对话框与主界面面板的所有手动写入均被拦截，读取不受影响
 class DlgModbus : public QDialog
 {
 	Q_OBJECT
@@ -38,10 +40,6 @@ public:
 public:
 	void build_ui();
 	void build_connect();
-
-	// 按点位名称查询可写 BOOL 点位（线圈）的协议地址；未找到或该点位不是可写 BOOL 时返回 false。
-	// 供主界面测试按钮等按 CSV 点位名写线圈的场景使用，地址以 modbus.csv 为准
-	bool findCoilProtocolAddress(const QString& name, int& outProtocolAddress) const;
 
 public:
 	// 公开给 CSV 解析辅助函数使用
@@ -71,6 +69,7 @@ private:
 	[[noreturn]] void abortOnLoadErrors(const QStringList& errors);	// 弹窗列出 CSV 错误并退出程序
 	void savePoints();		// 将点位表整体写入 modbus.csv（仅文件缺失生成默认表时调用）
 	void buildRows();		// 按点位的页签列动态生成六个页签的行控件
+	void applyWriteEnabled(bool enabled);	// 按「允许写入」开关状态启停各行写入按钮
 
 private slots:
 	void btn_close_clicked();

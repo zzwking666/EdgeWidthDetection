@@ -4,6 +4,9 @@
 #include <memory>
 #include <atomic>
 #include <QCheckBox>
+#include <QHash>
+#include <QTimer>
+#include <QVector>
 
 #include "rqw_LabelClickable.h"
 #include "DlgCloseForm.h"
@@ -14,6 +17,8 @@
 QT_BEGIN_NAMESPACE
 namespace Ui { class EdgeWidthDetectionClass; };
 QT_END_NAMESPACE
+
+class QLabel;
 
 class EdgeWidthDetection : public QMainWindow
 {
@@ -68,10 +73,6 @@ private slots:
 	void pbtn_resetProduct_clicked();
 	void pbtn_openSaveLocation_clicked();
 
-	// 测试按钮：向指定线圈写 1，50ms 后自动复位为 0
-	void pbtn_test1_clicked();
-	void pbtn_test2_clicked();
-
 	void rbtn_ruoguang_checked(bool checked);
 	void rbtn_zhongguang_checked(bool checked);
 	void rbtn_qiangguang_checked(bool checked);
@@ -84,15 +85,43 @@ private slots:
 	void rbtn_qiangguang_2_checked(bool checked);
 	void ckb_autoExposure_2_checked(bool checked);
 
+	// 主界面拍照面板按钮（点位地址以 modbus_main.csv 为准）
+	void pbtn_start_clicked();			// 启动：向「启动」点位线圈写 1（不自动复位）
+	void pbtn_stop_clicked();			// 停止：向「停止」点位线圈写 1（不自动复位）
+	void pbtn_cutCompensate_clicked();	// 切刀补偿切换：按当前状态取反写入
+	void onMainUiRefreshTimeout();		// 定时轮询主界面面板全部点位并刷新显示
+
+public:
+	// 公开给 CSV 解析辅助函数使用
+	enum class MainPointType { Float, Dint, Bool };
+
 private:
 	void refreshExposureInfo();
 	void updateExposureInfoVisibility();
 
-	// 向指定线圈地址写 1，持续 50ms 后复位为 0（测试按钮用）
-	void pulseCoil(int address);
+	// 主界面拍照/切刀面板点位：由 config/modbus_main.csv 定义（名称,类型,协议地址,读写），
+	// 与 DlgModbus 使用的 modbus.csv 相互独立（相当于单独的 sheet），名称列必须是约定的点位名
+	struct MainUiPoint
+	{
+		QString name;				// 点位名（与面板上哪一行对应由名称决定）
+		MainPointType type{ MainPointType::Float };
+		int protocolAddress{ 0 };	// Modbus 协议地址（实际读写报文使用）
+		bool writable{ false };
+	};
 
-	// 按 CSV 点位名查找线圈协议地址后脉冲写入（找不到点位时弹窗提示）
-	void pulsePointCoil(const QString& pointName);
+	void build_mainUiModbus();		// 加载面板点位、改造可点击数值标签、连接按钮、启动轮询
+	void loadMainUiPoints();		// 从 modbus_main.csv 加载；文件缺失时生成默认表，非法时弹窗并退出程序
+	[[noreturn]] void abortOnMainUiLoadErrors(const QStringList& errors);
+	void saveMainUiPoints();		// 将默认点位表写入 modbus_main.csv（仅文件缺失时调用）
+
+	const MainUiPoint* findMainUiPoint(const QString& name) const;
+	bool checkManualWriteReady();	// 手动写入前置检查：总开关已开 + PLC 已连接，不满足时弹窗并返回 false
+	void writeMainCoil(const QString& pointName, bool value);		// 按点位名写线圈（启动/停止/切刀补偿）
+	void writeMainValue(const QString& pointName);					// 按点位名弹数字键盘写数值（四个可写速度/长度）
+
+	// 将普通 QLabel 原位替换为可点击标签（点击写数值用），样式与 replaceWidget 用法同 ini_clickableTitle
+	rw::rqw::ClickableLabel* replaceWithClickableValue(QLabel* oldLabel);
+	void updateCutCompensateButton();	// 按 _cutCompensateOn 刷新补偿按钮的文字与背景色（开=绿/关=红）
 
 	// 根据相机/PLC连接状态刷新标题栏背景色（任一未连接则置红）
 	void updateHeadBackground();
@@ -105,6 +134,19 @@ private:
 	rw::rqw::ClickableLabel* clickableTitle = nullptr;
 	DlgCloseForm* _dlgCloseForm = nullptr;
 	PictureViewerThumbnails* _picturesViewer = nullptr;
+
+	// 主界面面板点位数据与控件映射
+	QVector<MainUiPoint> _mainUiPoints;
+	QHash<QString, QLabel*> _mainUiValueLabels;		// 数值行：点位名 -> 当前值标签
+	QTimer _mainUiRefreshTimer;						// 面板点位轮询定时器
+	bool _mainUiRefreshInFlight{ false };			// 上一次轮询未结束时跳过本次
+	bool _cutCompensateOn{ false };					// 切刀补偿当前状态（轮询更新，切换按钮据此取反）
+
+	// 四个可写数值行的可点击标签（点击弹出数字键盘写入）
+	rw::rqw::ClickableLabel* clk_setPhotoLength{ nullptr };
+	rw::rqw::ClickableLabel* clk_cutJogContSpeed{ nullptr };
+	rw::rqw::ClickableLabel* clk_cutJogOnceSpeed{ nullptr };
+	rw::rqw::ClickableLabel* clk_autoSpeed{ nullptr };
 private:
 	Ui::EdgeWidthDetectionClass* ui;
 	int minimizeCount{ 3 };

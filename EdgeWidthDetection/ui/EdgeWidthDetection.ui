@@ -76,36 +76,338 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pbtn_test1">
+              <widget class="QWidget" name="widget_panelPhoto" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="minimumSize">
+                <size>
+                 <width>230</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="styleSheet">
-                <string notr="true">QPushButton {
-    padding: 6px 14px;
-    border: 2px solid #CCC;
-    border-radius: 4px;
+                <string notr="true">QWidget#widget_panelPhoto {
     background-color: white;
-    color: #444;
-    font-size: 24px; 
-}
-
-QPushButton:hover {
-    border-color: #999;
-    background-color: #F5F5F5;
+    border: 1px solid #c8c8c8;
+    border-radius: 4px;
+}</string>
+               </property>
+               <layout class="QVBoxLayout" name="vLayout_panelPhoto">
+                <property name="spacing">
+                 <number>4</number>
+                </property>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_setPhotoLength">
+                  <item>
+                   <widget class="QLabel" name="label_setPhotoLength">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    color: #333333;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>设定拍照长度</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_setPhotoLengthValue">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>0.00</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_actualPhotoValue">
+                  <item>
+                   <widget class="QLabel" name="label_actualPhoto">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    color: #333333;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>实际拍照值</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_actualPhotoValue">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>0.00</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_encoderPos">
+                  <item>
+                   <widget class="QLabel" name="label_encoderPos">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    color: #333333;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>编码器当前位置</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_encoderPosValue">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>0.00</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_whiteLength">
+                  <item>
+                   <widget class="QLabel" name="label_whiteLength">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    color: #333333;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>白料长</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_whiteLengthValue">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>0.00</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_bagLength">
+                  <item>
+                   <widget class="QLabel" name="label_bagLength">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    color: #333333;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>袋长</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_bagLengthValue">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>0.00</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="Line" name="line_photo">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_photoCtrl" stretch="1,1,1">
+                  <item>
+                   <widget class="QPushButton" name="pbtn_start">
+                    <property name="styleSheet">
+                     <string notr="true">QPushButton {
+    padding: 4px 8px;
+    border: 1px solid #999;
+    border-radius: 3px;
+    background-color: white;
+    color: #333;
+    font-size: 16px;
 }
 
 QPushButton:pressed {
-    border-color: #777;
     background-color: #EEE;
 }</string>
-               </property>
-               <property name="text">
-                <string>测试</string>
-               </property>
+                    </property>
+                    <property name="text">
+                     <string>启动</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pbtn_stop">
+                    <property name="styleSheet">
+                     <string notr="true">QPushButton {
+    padding: 4px 8px;
+    border: 1px solid #999;
+    border-radius: 3px;
+    background-color: white;
+    color: #333;
+    font-size: 16px;
+}
+
+QPushButton:pressed {
+    background-color: #EEE;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>停止</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <layout class="QVBoxLayout" name="vLayout_systemFlag">
+                    <property name="spacing">
+                     <number>2</number>
+                    </property>
+                    <item>
+                     <widget class="QLabel" name="label_systemFlagTitle">
+                      <property name="styleSheet">
+                       <string notr="true">QLabel {
+    font-size: 14px;
+    color: #333333;
+    border: none;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>系统标志</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignmentFlag::AlignCenter</set>
+                      </property>
+                     </widget>
+                    </item>
+                    <item alignment="Qt::AlignmentFlag::AlignHCenter">
+                     <widget class="QLabel" name="label_systemFlag">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>30</width>
+                        <height>30</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>30</width>
+                        <height>30</height>
+                       </size>
+                      </property>
+                      <property name="layoutDirection">
+                       <enum>Qt::LayoutDirection::LeftToRight</enum>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QLabel {
+    background-color: red;
+    border: 1px solid #7a7a7a;
+    border-radius: 15px;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
               </widget>
              </item>
             </layout>
@@ -161,36 +463,391 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pbtn_test2">
+              <widget class="QWidget" name="widget_panelCutter" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="minimumSize">
+                <size>
+                 <width>230</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="styleSheet">
-                <string notr="true">QPushButton {
-    padding: 6px 14px;
-    border: 2px solid #CCC;
-    border-radius: 4px;
+                <string notr="true">QWidget#widget_panelCutter {
     background-color: white;
-    color: #444;
-    font-size: 24px; 
-}
-
-QPushButton:hover {
-    border-color: #999;
-    background-color: #F5F5F5;
+    border: 1px solid #c8c8c8;
+    border-radius: 4px;
+}</string>
+               </property>
+               <layout class="QVBoxLayout" name="vLayout_panelCutter">
+                <property name="spacing">
+                 <number>4</number>
+                </property>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_cutJogContSpeed">
+                  <item>
+                   <widget class="QLabel" name="label_cutJogContSpeed">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    color: #333333;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>切刀一直点动速度</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_cutJogContSpeedValue">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>0.00</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_cutJogOnceSpeed">
+                  <item>
+                   <widget class="QLabel" name="label_cutJogOnceSpeed">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    color: #333333;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>切刀单次点动速度</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_cutJogOnceSpeedValue">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>0.00</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_autoSpeed">
+                  <item>
+                   <widget class="QLabel" name="label_autoSpeed">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    color: #333333;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>自动速度</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_autoSpeedValue">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>0.00</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_cutCalcMove">
+                  <item>
+                   <widget class="QLabel" name="label_cutCalcMove">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    color: #333333;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>切刀计算移动量</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_cutCalcMoveValue">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>0.00</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_cutActualMove">
+                  <item>
+                   <widget class="QLabel" name="label_cutActualMove">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    color: #333333;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>切刀实际移动量</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_cutActualMoveValue">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>0.00</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_cutPos">
+                  <item>
+                   <widget class="QLabel" name="label_cutPos">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    color: #333333;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>切刀当前位置</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_cutPosValue">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>0.00</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pbtn_cutCompensate">
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+    padding: 6px 10px;
+    border: 1px solid #00a040;
+    border-radius: 3px;
+    background-color: #00e060;
+    color: #003300;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 QPushButton:pressed {
-    border-color: #777;
-    background-color: #EEE;
+    background-color: #00b050;
 }</string>
-               </property>
-               <property name="text">
-                <string>测试</string>
-               </property>
+                  </property>
+                  <property name="text">
+                   <string>切刀补偿开启</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_cutLimits" stretch="1,1">
+                  <item>
+                   <layout class="QVBoxLayout" name="vLayout_cutPosLimit">
+                    <property name="spacing">
+                     <number>2</number>
+                    </property>
+                    <item>
+                     <widget class="QLabel" name="label_cutPosLimitTitle">
+                      <property name="styleSheet">
+                       <string notr="true">QLabel {
+    font-size: 14px;
+    color: #333333;
+    border: none;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>切刀正限位</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignmentFlag::AlignCenter</set>
+                      </property>
+                     </widget>
+                    </item>
+                    <item alignment="Qt::AlignmentFlag::AlignHCenter">
+                     <widget class="QLabel" name="label_cutPosLimit">
+                      <property name="minimumSize">
+                       <size>
+                        <width>30</width>
+                        <height>30</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>30</width>
+                        <height>30</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QLabel {
+    background-color: #00e000;
+    border: 1px solid #7a7a7a;
+    border-radius: 15px;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QVBoxLayout" name="vLayout_cutNegLimit">
+                    <property name="spacing">
+                     <number>2</number>
+                    </property>
+                    <item>
+                     <widget class="QLabel" name="label_cutNegLimitTitle">
+                      <property name="styleSheet">
+                       <string notr="true">QLabel {
+    font-size: 14px;
+    color: #333333;
+    border: none;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>切刀负限位</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignmentFlag::AlignCenter</set>
+                      </property>
+                     </widget>
+                    </item>
+                    <item alignment="Qt::AlignmentFlag::AlignHCenter">
+                     <widget class="QLabel" name="label_cutNegLimit">
+                      <property name="minimumSize">
+                       <size>
+                        <width>30</width>
+                        <height>30</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>30</width>
+                        <height>30</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QLabel {
+    background-color: #00e000;
+    border: 1px solid #7a7a7a;
+    border-radius: 15px;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
               </widget>
              </item>
             </layout>

@@ -14,6 +14,9 @@ public:
 	QString setConfigPath = configRootPath + R"(SetConfig.xml)";
 	/// Modbus 点位表（CSV：名称,地址,类型,读写；UTF-8 带 BOM，读取时兼容 Excel 另存的 GBK；不存在时程序按内置默认表生成）
 	QString modbusCsvPath = configRootPath + R"(modbus.csv)";
+	/// 主界面拍照/切刀面板点位表（CSV：名称,类型,协议地址,读写；与 DlgModbus 的 modbus.csv 相互独立，
+	/// 相当于单独的 sheet；不存在时按内置默认表生成，严格校验，名称列必须是约定的 17 个点位名之一）
+	QString modbusMainCsvPath = configRootPath + R"(modbus_main.csv)";
 	QString modelPath = modelRootPath + R"(EdgeWidthDetection.engine)";
 public:
 	QString imageSaveRootPath = projectHome + R"(savedImages\)";

@@ -2,6 +2,7 @@
 #include "ui_DlgModbus.h"
 
 #include <QFile>
+#include <QCheckBox>
 #include <QFutureWatcher>
 #include <QGridLayout>
 #include <QLabel>
@@ -158,20 +159,32 @@ void DlgModbus::build_connect()
 {
 	connect(ui->btn_close, &QPushButton::clicked, this, &DlgModbus::btn_close_clicked);
 	connect(&_refreshTimer, &QTimer::timeout, this, &DlgModbus::onRefreshTimeout);
+	// 「允许写入」总开关：状态写入 PlcController，主界面面板共用；同时启停本对话框各行写入按钮
+	connect(ui->ckb_enableWrite, &QCheckBox::toggled, this, [this](bool checked)
+		{
+			Modules::getInstance().plcController.manualWriteEnabled.store(checked);
+			applyWriteEnabled(checked);
+		});
 	// 行内按钮在 buildRows() 生成时即完成连接
 }
 
-bool DlgModbus::findCoilProtocolAddress(const QString& name, int& outProtocolAddress) const
+void DlgModbus::applyWriteEnabled(bool enabled)
 {
 	for (const auto& point : _points)
 	{
-		if (point.name == name && point.type == PointType::Bool && point.writable)
+		if (point.btnWrite)
 		{
-			outProtocolAddress = point.protocolAddress;
-			return true;
+			point.btnWrite->setEnabled(enabled);
+		}
+		if (point.btnSet1)
+		{
+			point.btnSet1->setEnabled(enabled);
+		}
+		if (point.btnSet0)
+		{
+			point.btnSet0->setEnabled(enabled);
 		}
 	}
-	return false;
 }
 
 QVector<DlgModbus::PointInfo> DlgModbus::defaultPoints()
@@ -620,6 +633,12 @@ void DlgModbus::onWriteClicked(int pointIndex)
 	}
 	auto& point = _points[pointIndex];
 
+	if (!Modules::getInstance().plcController.manualWriteEnabled.load())
+	{
+		QMessageBox::information(this, "提示", "Modbus 手动写入已被禁用，如需写入请先勾选右上角「允许写入」");
+		return;
+	}
+
 	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
 	if (!plcControllerScheduler)
 	{
@@ -671,6 +690,12 @@ void DlgModbus::onBoolWriteClicked(int pointIndex, bool state)
 	}
 	auto& point = _points[pointIndex];
 
+	if (!Modules::getInstance().plcController.manualWriteEnabled.load())
+	{
+		QMessageBox::information(this, "提示", "Modbus 手动写入已被禁用，如需写入请先勾选右上角「允许写入」");
+		return;
+	}
+
 	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
 	if (!plcControllerScheduler)
 	{
@@ -697,6 +722,8 @@ void DlgModbus::onBoolWriteClicked(int pointIndex, bool state)
 void DlgModbus::showEvent(QShowEvent* event)
 {
 	QDialog::showEvent(event);
+	// 同步「允许写入」总开关显示状态（setChecked 会触发 toggled，顺带刷新各行写入按钮可用性）
+	ui->ckb_enableWrite->setChecked(Modules::getInstance().plcController.manualWriteEnabled.load());
 	// 打开对话框时立即刷新一次，并启动定时自动刷新
 	onRefreshTimeout();
 	if (!_refreshTimer.isActive())
