@@ -190,7 +190,7 @@ namespace {
 		colors.push_back(rw::imgPro::Color::Blue);
 
 		if (2 == cameraIndex) {
-			textList.append("实测压痕宽度:" + QString::number(width) + "mm");
+			textList.append("Z3:" + QString::number(width) + "mm");
 		}
 		else {
 			double centerDiffMm = 0.0;
@@ -200,8 +200,8 @@ namespace {
 					centerDiffMm = -centerDiffMm;
 				}
 			}
-			textList.append("Z1实测压痕宽度:" + QString::number(width) + "mm");
-			textList.append("Z2中心点偏差值:" + QString::number(centerDiffMm, 'f', 2) + "mm");
+			textList.append("Z1:" + QString::number(width) + "mm");
+			textList.append("Z2:" + QString::number(centerDiffMm, 'f', 2) + "mm");
 		}
 
 		rw::imgPro::ImagePainter::drawTextOnImageWithFontSize(img, textList, colors, 50);
