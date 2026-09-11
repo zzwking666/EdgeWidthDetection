@@ -309,15 +309,15 @@
                     <property name="styleSheet">
                      <string notr="true">QPushButton {
     padding: 4px 8px;
-    border: 1px solid #999;
+    border: 1px solid #2e7d32;
     border-radius: 3px;
-    background-color: white;
-    color: #333;
+    background-color: #4CAF50;
+    color: white;
     font-size: 16px;
 }
 
 QPushButton:pressed {
-    background-color: #EEE;
+    background-color: #388E3C;
 }</string>
                     </property>
                     <property name="text">
@@ -330,15 +330,15 @@ QPushButton:pressed {
                     <property name="styleSheet">
                      <string notr="true">QPushButton {
     padding: 4px 8px;
-    border: 1px solid #999;
+    border: 1px solid #c62828;
     border-radius: 3px;
-    background-color: white;
-    color: #333;
+    background-color: #F44336;
+    color: white;
     font-size: 16px;
 }
 
 QPushButton:pressed {
-    background-color: #EEE;
+    background-color: #D32F2F;
 }</string>
                     </property>
                     <property name="text">

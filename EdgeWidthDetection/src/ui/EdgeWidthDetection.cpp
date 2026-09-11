@@ -679,10 +679,6 @@ void EdgeWidthDetection::build_mainUiModbus()
 	_mainUiValueLabels.insert(QStringLiteral("切刀实际移动量"), ui->label_cutActualMoveValue);
 	_mainUiValueLabels.insert(QStringLiteral("切刀当前位置"), ui->label_cutPosValue);
 
-	// 记录启动/停止按钮在 .ui 中定义的原始样式表，关状态时恢复用
-	_pbtnStartDefaultStyle = ui->pbtn_start->styleSheet();
-	_pbtnStopDefaultStyle = ui->pbtn_stop->styleSheet();
-
 	QObject::connect(ui->pbtn_start, &QPushButton::clicked,
 		this, &EdgeWidthDetection::pbtn_start_clicked);
 	QObject::connect(ui->pbtn_stop, &QPushButton::clicked,
@@ -1018,27 +1014,25 @@ void EdgeWidthDetection::updateCutCompensateButton()
 
 void EdgeWidthDetection::pbtn_start_clicked()
 {
-	// 开关式点动：第一次点击写 1 并置绿，再次点击写 0 并恢复 .ui 原始样式；
-	// 仅写入成功后才切换状态与颜色
-	const bool newValue = !_startOn;
-	if (writeMainCoil(QStringLiteral("启动"), newValue))
+	// 点动：点击向「启动」线圈写 1，50ms 后自动复位为 0；
+	// 按钮颜色固定（.ui 中启动绿/停止红），运行状态以旁边的系统标志位灯为准
+	if (writeMainCoil(QStringLiteral("启动"), true))
 	{
-		_startOn = newValue;
-		ui->pbtn_start->setStyleSheet(_startOn
-			? QString::fromUtf8(kToggleBtnOnStyle)
-			: _pbtnStartDefaultStyle);
+		QTimer::singleShot(50, this, [this]()
+			{
+				writeMainCoil(QStringLiteral("启动"), false);
+			});
 	}
 }
 
 void EdgeWidthDetection::pbtn_stop_clicked()
 {
-	const bool newValue = !_stopOn;
-	if (writeMainCoil(QStringLiteral("停止"), newValue))
+	if (writeMainCoil(QStringLiteral("停止"), true))
 	{
-		_stopOn = newValue;
-		ui->pbtn_stop->setStyleSheet(_stopOn
-			? QString::fromUtf8(kToggleBtnOnStyle)
-			: _pbtnStopDefaultStyle);
+		QTimer::singleShot(50, this, [this]()
+			{
+				writeMainCoil(QStringLiteral("停止"), false);
+			});
 	}
 }
 

@@ -141,10 +141,6 @@ private:
 	QTimer _mainUiRefreshTimer;						// 面板点位轮询定时器
 	bool _mainUiRefreshInFlight{ false };			// 上一次轮询未结束时跳过本次
 	bool _cutCompensateOn{ false };					// 切刀补偿当前状态（轮询更新，切换按钮据此取反）
-	bool _startOn{ false };							// 「启动」按钮当前状态（本地记录，点击时取反写入）
-	bool _stopOn{ false };							// 「停止」按钮当前状态
-	QString _pbtnStartDefaultStyle;					// 启动按钮在 .ui 中的原始样式表（关状态时恢复）
-	QString _pbtnStopDefaultStyle;					// 停止按钮在 .ui 中的原始样式表
 
 	// 四个可写数值行的可点击标签（点击弹出数字键盘写入）
 	rw::rqw::ClickableLabel* clk_setPhotoLength{ nullptr };
