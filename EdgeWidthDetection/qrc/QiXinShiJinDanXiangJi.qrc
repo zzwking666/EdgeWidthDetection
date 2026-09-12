@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>icons/closeBlack.png</file>
         <file>icons/closeGray.png</file>
+        <file>icons/kakajixie.jpg</file>
     </qresource>
 </RCC>
