@@ -2,6 +2,8 @@
 
 #include <QDate>
 #include <QDir>
+#include <QStorageInfo>
+#include <QTimer>
 #include <QtConcurrent/QtConcurrent>
 
 #include "Utilty.hpp"
@@ -24,10 +26,21 @@ void ImgSaveModule::build()
 	QString imagesFilePathFilePathFull = dir.absoluteFilePath(imageSaveEnginePath);
 	imageSaveEngine->setRootPath(imagesFilePathFilePathFull);
 	imageSaveEngine->setSavePolicy(rw::rqw::ImageSaveEnginePolicy::Normal);
+
+	// 启动时先立即检测一次磁盘空间，之后每 10 分钟定时检测
+	checkDiskSpace();
+	_diskCheckTimer = new QTimer(this);
+	connect(_diskCheckTimer, &QTimer::timeout, this, &ImgSaveModule::checkDiskSpace);
+	_diskCheckTimer->start(cdiskCheckIntervalMs);
 }
 
 void ImgSaveModule::destroy()
 {
+	// 停止磁盘空间定时检测
+	if (_diskCheckTimer) {
+		_diskCheckTimer->stop();
+	}
+
 	// 取消后台清理并等待其退出（取消以单个文件夹为粒度生效，正在删除的文件夹会删完才退出）
 	_cleanupCancel->store(true);
 	if (_cleanupFuture.isStarted() && !_cleanupFuture.isFinished()) {
@@ -89,6 +102,39 @@ void ImgSaveModule::startCleanupOldFoldersAsync()
 		}
 		qInfo() << "[ImgSave] 历史图像清理完成";
 	});
+}
+
+void ImgSaveModule::checkDiskSpace()
+{
+	QString rootPath;
+	if (imageSaveEngine) {
+		rootPath = imageSaveEngine->getRootPath();
+	}
+	if (rootPath.isEmpty()) {
+		rootPath = globalPath.imageSaveRootPath;
+	}
+
+	QStorageInfo storage(rootPath);
+	if (!storage.isValid() || !storage.isReady()) {
+		// 磁盘信息暂不可用时保持当前状态，下次检测再更新
+		return;
+	}
+
+	const qint64 freeBytes = storage.bytesAvailable();
+	const bool enough = freeBytes >= cminFreeDiskBytes;
+	const double freeGB = static_cast<double>(freeBytes) / (1024.0 * 1024.0 * 1024.0);
+
+	// 仅在状态发生变化时输出日志，避免每 10 分钟刷屏
+	if (_diskSpaceEnough.exchange(enough) != enough) {
+		if (enough) {
+			qInfo() << "[ImgSave] 存图磁盘剩余空间恢复:" << QString::number(freeGB, 'f', 2)
+				<< "GB，已恢复存图";
+		}
+		else {
+			qWarning() << "[ImgSave] 存图磁盘剩余空间不足:" << QString::number(freeGB, 'f', 2)
+				<< "GB（低于 10GB），已暂停存图";
+		}
+	}
 }
 
 void ImgSaveModule::start()

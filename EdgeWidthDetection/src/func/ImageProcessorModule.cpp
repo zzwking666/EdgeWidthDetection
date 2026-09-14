@@ -519,10 +519,12 @@ void ImageProcessor::save_image(rw::rqw::ImageInfo& imageInfo, const QImage& ima
 
 void ImageProcessor::save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage& image, RunningState captureState)
 {
-	auto& imageSaveEngine = Modules::getInstance().imgSaveModule.imageSaveEngine;
+	auto& imgSaveModule = Modules::getInstance().imgSaveModule;
+	auto& imageSaveEngine = imgSaveModule.imageSaveEngine;
 	auto& config = Modules::getInstance().configManagerModule.edgeWidthDetectionConfig;
 
-	if (config.isSaveImg && imageSaveEngine)
+	// 磁盘剩余空间不足（低于 10GB）时不再存图，标志位由 ImgSaveModule 后台定时检测更新
+	if (config.isSaveImg && imageSaveEngine && imgSaveModule.isDiskSpaceEnough())
 	{
 		// 文件名只保留时间戳：时分秒毫秒_年月日（classify 置空，不再拼接分类前缀）
 		imageInfo.time = QDateTime::currentDateTime().toString("hhmmsszzz_yyyyMMdd");
