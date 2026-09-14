@@ -52,6 +52,9 @@ public slots:
 
 	void onUpdatePLCWarnningInfoUI(uint16_t warnningInfo);
 
+	// 存图磁盘空间状态变化提示（不足时弹窗警告，恢复时弹窗提示）
+	void onDiskSpaceStateChanged(bool enough, double freeGB);
+
 	void onCameraDisplay(size_t index, QPixmap image);
 
 	void onAutoExposureInfo(double targetExposure, double meanIntensity,

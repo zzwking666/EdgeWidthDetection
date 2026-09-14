@@ -123,8 +123,9 @@ void ImgSaveModule::checkDiskSpace()
 	const qint64 freeBytes = storage.bytesAvailable();
 	const bool enough = freeBytes >= cminFreeDiskBytes;
 	const double freeGB = static_cast<double>(freeBytes) / (1024.0 * 1024.0 * 1024.0);
+	_lastFreeGB.store(freeGB);
 
-	// 仅在状态发生变化时输出日志，避免每 10 分钟刷屏
+	// 仅在状态发生变化时输出日志并通知 UI，避免每 10 分钟刷屏/弹窗
 	if (_diskSpaceEnough.exchange(enough) != enough) {
 		if (enough) {
 			qInfo() << "[ImgSave] 存图磁盘剩余空间恢复:" << QString::number(freeGB, 'f', 2)
@@ -134,6 +135,7 @@ void ImgSaveModule::checkDiskSpace()
 			qWarning() << "[ImgSave] 存图磁盘剩余空间不足:" << QString::number(freeGB, 'f', 2)
 				<< "GB（低于 10GB），已暂停存图";
 		}
+		emit diskSpaceStateChanged(enough, freeGB);
 	}
 }
 

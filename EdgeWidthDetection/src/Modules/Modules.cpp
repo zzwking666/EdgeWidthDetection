@@ -213,6 +213,17 @@ void Modules::connect()
 		uiModule._edgeWidthDetection, &EdgeWidthDetection::onUpdateStatisticalInfoUI, Qt::QueuedConnection);
 #pragma endregion
 
+#pragma region connect UIModule and ImgSaveModule
+	// 存图磁盘空间不足/恢复时弹窗提示操作员
+	QObject::connect(&imgSaveModule, &ImgSaveModule::diskSpaceStateChanged,
+		uiModule._edgeWidthDetection, &EdgeWidthDetection::onDiskSpaceStateChanged, Qt::QueuedConnection);
+
+	// build() 阶段的首次磁盘检测早于窗口创建与信号连接，若启动时空间已不足需显式补一次提示
+	if (!imgSaveModule.isDiskSpaceEnough()) {
+		uiModule._edgeWidthDetection->onDiskSpaceStateChanged(false, imgSaveModule.lastFreeGB());
+	}
+#pragma endregion
+
 #pragma region connect UIModule and RuntimeInfoModule
 	
 #pragma endregion

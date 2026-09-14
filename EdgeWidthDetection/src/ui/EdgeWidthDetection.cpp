@@ -512,6 +512,22 @@ void EdgeWidthDetection::onUpdatePLCWarnningInfoUI(uint16_t warnningInfo)
 	}
 }
 
+void EdgeWidthDetection::onDiskSpaceStateChanged(bool enough, double freeGB)
+{
+	if (enough)
+	{
+		QMessageBox::information(this, QStringLiteral("提示"),
+			QStringLiteral("存图磁盘剩余空间已恢复至 %1 GB，存图功能已自动恢复。")
+			.arg(QString::number(freeGB, 'f', 2)));
+	}
+	else
+	{
+		QMessageBox::warning(this, QStringLiteral("磁盘空间不足"),
+			QStringLiteral("存图磁盘剩余空间不足（仅剩 %1 GB，低于 10GB），已自动暂停存图！\n请及时清理磁盘或转移历史图像，空间恢复后将自动恢复存图。")
+			.arg(QString::number(freeGB, 'f', 2)));
+	}
+}
+
 void EdgeWidthDetection::onCameraDisplay(size_t index, QPixmap image)
 {
 	if (1 == index)
