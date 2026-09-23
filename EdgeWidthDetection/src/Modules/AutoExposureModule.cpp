@@ -102,7 +102,7 @@ void AutoExposureModule::onExposureStats(double meanIntensity, double overRatio,
 		}
 		newExposure = currentExposure + delta;
 	}
-	// 配置中的上下限先压进硬性阈值 [1, 800] 内，
+	// 配置中的上下限先压进硬性阈值 [1, 2500] 内，
 	// 避免旧配置文件中残留的大值（如默认 50000）使曝光设置突破限制
 	double minExposure = std::clamp(setConfig.autoExposureMinExposure,
 		kAutoExposureHardMin, kAutoExposureHardMax);

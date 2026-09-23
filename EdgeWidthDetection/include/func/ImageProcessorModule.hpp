@@ -71,6 +71,8 @@ private:
 	// recognized 区分识别/未识别，未识别帧单独存入 Unrecognized 文件夹供后期收集标注）
 	void save_image(rw::rqw::ImageInfo& imageInfo, const QImage& image, RunningState captureState, bool recognized);
 	void save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage& image, RunningState captureState, bool recognized);
+	// 在 YoloSeg 掩膜范围内统计亮度并转发给自动曝光模块（自动曝光关闭时直接返回）
+	void reportExposureStats(const cv::Mat& image);
 private:
 	// 在图像上面绘制短边(宽)
 	void drawImg(QImage& qimage, const std::vector<rw::DetectionRectangleInfo>& processResult, double centerDiffMm);
@@ -129,6 +131,8 @@ public:
 	void updateLastFrameInfo(const LastFrameDisplayInfo& info);
 	// 处理线程调用：使显示缓存失效（调试模式出图时调用，避免旧运行帧文字覆盖调试画面）
 	void invalidateLastFrameInfo();
+	// 处理线程调用：转发自动曝光亮度统计（掩膜范围内统计，跨线程队列连接到自动曝光模块）
+	void emitExposureStats(double meanIntensity, double overRatio, double underRatio);
 
 private:
 	QQueue<MatInfo> _queue;

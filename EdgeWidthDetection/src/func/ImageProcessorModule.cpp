@@ -167,6 +167,69 @@ namespace {
 		return true;
 	}
 
+	// 在 YoloSeg 掩膜范围内统计亮度，用于自动曝光：只统计识别到的目标掩膜区域内的
+	// 平均亮度与过曝/欠曝像素比例；无任何有效掩膜（未识别帧）时回退为整图统计，
+	// 避免冷启动黑图一直无识别导致曝光无法拉亮
+	inline void ComputeExposureStatsByMask(const cv::Mat& image,
+		const std::vector<rw::DetectionRectangleInfo>& processResult,
+		double& meanIntensity, double& overRatio, double& underRatio)
+	{
+		auto& cfg = Modules::getInstance().configManagerModule.setConfig;
+
+		cv::Mat gray;
+		cv::cvtColor(image, gray, cv::COLOR_BGR2GRAY);
+
+		cv::Mat overMask;
+		cv::Mat underMask;
+		cv::threshold(gray, overMask, cfg.autoExposureOverExposeThreshold, 255, cv::THRESH_BINARY);
+		cv::threshold(gray, underMask, cfg.autoExposureUnderExposeThreshold, 255, cv::THRESH_BINARY_INV);
+
+		// 合并所有有效分割掩膜到整图尺寸的掩膜图（mask_roi 是检测框 ROI 内的局部坐标）
+		cv::Mat regionMask = cv::Mat::zeros(gray.size(), CV_8U);
+		for (const auto& result : processResult)
+		{
+			if (!result.segMaskValid || result.mask_roi.empty()) {
+				continue;
+			}
+			double maxVal = 0.0;
+			cv::minMaxLoc(result.mask_roi, nullptr, &maxVal);
+			if (maxVal <= 0.0) {
+				continue;
+			}
+			cv::Mat mask8;
+			result.mask_roi.convertTo(mask8, CV_8U, 255.0 / maxVal);
+			cv::threshold(mask8, mask8, 127, 255, cv::THRESH_BINARY);
+
+			const cv::Rect roi = result.roi & cv::Rect(0, 0, gray.cols, gray.rows);
+			if (roi.empty()) {
+				continue;
+			}
+			if (mask8.size() != roi.size()) {
+				cv::resize(mask8, mask8, roi.size(), 0, 0, cv::INTER_NEAREST);
+			}
+			cv::bitwise_or(regionMask(roi), mask8, regionMask(roi));
+		}
+
+		const double regionPixels = static_cast<double>(cv::countNonZero(regionMask));
+		if (regionPixels > 0.0)
+		{
+			// 识别到目标：只统计掩膜区域内的亮度
+			meanIntensity = cv::mean(gray, regionMask)[0];
+			cv::bitwise_and(overMask, regionMask, overMask);
+			cv::bitwise_and(underMask, regionMask, underMask);
+			overRatio = cv::countNonZero(overMask) / regionPixels;
+			underRatio = cv::countNonZero(underMask) / regionPixels;
+		}
+		else
+		{
+			// 未识别到目标：回退为整图统计
+			const double totalPixels = static_cast<double>(gray.total());
+			meanIntensity = cv::mean(gray)[0];
+			overRatio = (totalPixels > 0.0) ? (cv::countNonZero(overMask) / totalPixels) : 0.0;
+			underRatio = (totalPixels > 0.0) ? (cv::countNonZero(underMask) / totalPixels) : 0.0;
+		}
+	}
+
 	// 三个 PLC 循环写入功能的固定配置：每个功能占 60 个连续地址，仅写偶数地址（30 个槽位），
 	// 清旧数据固定间隔 20 格（即写入当前槽位时，把 20 格之前的旧数据写 0 清除）
 	constexpr int PLC_CIRCULAR_SLOT_COUNT = 30;		// 每个功能的写入槽位数（60 地址 / 步进 2）
@@ -385,6 +448,23 @@ void ImageProcessor::run()
 	}
 }
 
+void ImageProcessor::reportExposureStats(const cv::Mat& image)
+{
+	auto& cfg = Modules::getInstance().configManagerModule.setConfig;
+	const bool autoExposureOn = (2 == imageProcessingModuleIndex) ? cfg.autoExposureEnabled2 : cfg.autoExposureEnabled1;
+	if (!autoExposureOn) {
+		return;
+	}
+	double meanIntensity = 0.0;
+	double overRatio = 0.0;
+	double underRatio = 0.0;
+	ComputeExposureStatsByMask(image, _imgProcess->getContext().getProcessResult(),
+		meanIntensity, overRatio, underRatio);
+	if (auto module = qobject_cast<ImageProcessingModule*>(parent())) {
+		module->emitExposureStats(meanIntensity, overRatio, underRatio);
+	}
+}
+
 void ImageProcessor::run_debug(MatInfo& frame)
 {
 	// 相机 2 在 Debug 模式下同样先转正，保持与运行模式一致的画面方向与坐标系
@@ -396,6 +476,9 @@ void ImageProcessor::run_debug(MatInfo& frame)
 	imgPro(frame.image);
 	auto maskImg = imgPro.getMaskImg(frame.image);
 	auto defectResult = imgPro.getDefectResultInfo();
+
+	// 自动曝光亮度统计：在 YoloSeg 掩膜范围内统计（未识别帧回退整图统计）
+	reportExposureStats(frame.image);
 
 	emit imageReady(imageProcessingModuleIndex, QPixmap::fromImage(maskImg));
 
@@ -417,6 +500,9 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	auto maskImg = imgPro.getMaskImg(frame.image);
 	auto defectResult = imgPro.getDefectResultInfo();
 	auto processResult = imgPro.getContext().getProcessResult();
+
+	// 自动曝光亮度统计：在 YoloSeg 掩膜范围内统计（未识别帧回退整图统计）
+	reportExposureStats(frame.image);
 
 	// 统计：每处理一帧拍照总量 +1（调试模式不进入此函数，不计数）
 	auto& statisticalInfo = Modules::getInstance().runtimeInfoModule.statisticalInfo;
@@ -531,6 +617,9 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 	auto maskImg = imgPro.getMaskImg(frame.image);
 	auto defectResult = imgPro.getDefectResultInfo();
 	auto processResult = imgPro.getContext().getProcessResult();
+
+	// 自动曝光亮度统计：在 YoloSeg 掩膜范围内统计（未识别帧回退整图统计）
+	reportExposureStats(frame.image);
 
 	// 统计：每处理一帧拍照总量 +1（调试模式不进入此函数，不计数）
 	auto& statisticalInfo = Modules::getInstance().runtimeInfoModule.statisticalInfo;
@@ -815,25 +904,8 @@ void ImageProcessingModule::onFrameCaptured(rw::rqw::MatInfo matInfo, size_t ind
 		cv::rotate(matInfo.mat, matInfo.mat, cv::ROTATE_180);
 	}
 
-	// 计算整图亮度统计，用于自动曝光
-	auto& cfg = Modules::getInstance().configManagerModule.setConfig;
-	bool autoExposureOn = (1 == this->index) ? cfg.autoExposureEnabled1 : cfg.autoExposureEnabled2;
-	if (autoExposureOn) {
-		cv::Mat gray;
-		cv::cvtColor(matInfo.mat, gray, cv::COLOR_BGR2GRAY);
-		double meanIntensity = cv::mean(gray)[0];
-
-		cv::Mat overMask;
-		cv::Mat underMask;
-		cv::threshold(gray, overMask, cfg.autoExposureOverExposeThreshold, 255, cv::THRESH_BINARY);
-		cv::threshold(gray, underMask, cfg.autoExposureUnderExposeThreshold, 255, cv::THRESH_BINARY_INV);
-
-		double totalPixels = static_cast<double>(gray.total());
-		double overRatio = (totalPixels > 0.0) ? (cv::countNonZero(overMask) / totalPixels) : 0.0;
-		double underRatio = (totalPixels > 0.0) ? (cv::countNonZero(underMask) / totalPixels) : 0.0;
-
-		emit exposureStatsReady(meanIntensity, overRatio, underRatio);
-	}
+	// 自动曝光亮度统计已移至处理线程：YoloSeg 识别完成后在掩膜范围内统计，
+	// 此回调不再做整图统计
 
 	QMutexLocker locker(&_mutex);
 	// 队列最多只有一张
@@ -849,6 +921,12 @@ void ImageProcessingModule::onFrameCaptured(rw::rqw::MatInfo matInfo, size_t ind
 
 	_queue.enqueue(mat);
 	_condition.wakeOne();
+}
+
+void ImageProcessingModule::emitExposureStats(double meanIntensity, double overRatio, double underRatio)
+{
+	// 由处理线程调用，信号经 QueuedConnection 到达自动曝光模块所在的主线程
+	emit exposureStatsReady(meanIntensity, overRatio, underRatio);
 }
 
 void ImageProcessingModule::updateLastFrameInfo(const LastFrameDisplayInfo& info)
