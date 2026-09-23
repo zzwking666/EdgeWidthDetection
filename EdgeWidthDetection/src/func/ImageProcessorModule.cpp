@@ -15,6 +15,8 @@
 #include <QPen>
 #include <cmath>
 #include <algorithm>
+#include <limits>
+#include <map>
 
 #include "Modules.hpp"
 #include "EdgeWidthDetection.h"
@@ -44,6 +46,125 @@ namespace {
 		}
 		// cv::rotate 内部为 transpose + flip，支持原地操作，无插值开销
 		cv::rotate(image, image, cv::ROTATE_90_CLOCKWISE);
+	}
+
+	// 基于 YoloSeg 分割掩膜，用类 Halcon 卡尺的方式提取目标的两条长边直线（端点已换算到整图坐标）。
+	// 思路：mask_roi 二值化 → 最大外轮廓 → PCA 求主轴 → 沿主轴每 1 像素放一个垂直截面（卡尺），
+	// 每个截面取掩膜两侧的边缘点 → 两组边缘点分别用 fitLine（Huber 鲁棒核）拟合直线，
+	// 端点取目标在主轴方向上的投影范围。掩膜无效或拟合失败时返回 false，调用方跳过该目标的绘制
+	inline bool ExtractMaskLongEdges(const rw::DetectionRectangleInfo& result,
+		QPoint& edge1Start, QPoint& edge1End, QPoint& edge2Start, QPoint& edge2End)
+	{
+		if (!result.segMaskValid || result.mask_roi.empty()) {
+			return false;
+		}
+
+		// 掩膜统一转为 8 位二值图（YoloSeg 输出的 mask_roi 可能是 0~1 浮点或 0~255/0~1 整型，
+		// 按实际最大值缩放后固定阈值 127 二值化）
+		double maxVal = 0.0;
+		cv::minMaxLoc(result.mask_roi, nullptr, &maxVal);
+		if (maxVal <= 0.0) {
+			return false;
+		}
+		cv::Mat mask8;
+		result.mask_roi.convertTo(mask8, CV_8U, 255.0 / maxVal);
+		cv::threshold(mask8, mask8, 127, 255, cv::THRESH_BINARY);
+
+		// 取面积最大的外轮廓（目标本体），对轮廓点做 PCA 求主轴方向
+		std::vector<std::vector<cv::Point>> contours;
+		cv::findContours(mask8, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+		if (contours.empty()) {
+			return false;
+		}
+		auto largestIt = std::max_element(contours.begin(), contours.end(),
+			[](const auto& a, const auto& b) { return cv::contourArea(a) < cv::contourArea(b); });
+		if (largestIt->size() < 5) {
+			return false;	// 点太少无法有效估计主轴
+		}
+
+		cv::Mat contourPts(static_cast<int>(largestIt->size()), 2, CV_64F);
+		for (size_t i = 0; i < largestIt->size(); ++i) {
+			contourPts.at<double>(static_cast<int>(i), 0) = (*largestIt)[i].x;
+			contourPts.at<double>(static_cast<int>(i), 1) = (*largestIt)[i].y;
+		}
+		cv::PCA pca(contourPts, cv::Mat(), cv::PCA::DATA_AS_ROW);
+		const cv::Point2d axis(pca.eigenvectors.at<double>(0, 0), pca.eigenvectors.at<double>(0, 1));	// 主轴（长边方向）
+		const cv::Point2d perp(-axis.y, axis.x);														// 卡尺扫描方向
+		const cv::Point2d centroid(pca.mean.at<double>(0, 0), pca.mean.at<double>(0, 1));
+
+		// 卡尺扫描：掩膜前景像素投影到主轴坐标系，沿主轴每个整数截面取垂直方向上的两侧边缘点
+		std::vector<cv::Point> fgPixels;
+		cv::findNonZero(mask8, fgPixels);
+		if (fgPixels.size() < 10) {
+			return false;
+		}
+
+		struct CaliperSample
+		{
+			cv::Point2d minVPoint;	// 截面内垂直方向最小侧边缘点
+			cv::Point2d maxVPoint;	// 截面内垂直方向最大侧边缘点
+			double minV;
+			double maxV;
+		};
+		std::map<int, CaliperSample> calipers;	// key: 主轴方向截面下标（1 像素一个卡尺）
+		double uMin = std::numeric_limits<double>::max();
+		double uMax = std::numeric_limits<double>::lowest();
+		for (const auto& p : fgPixels) {
+			const cv::Point2d rel(p.x - centroid.x, p.y - centroid.y);
+			const double u = rel.dot(axis);
+			const double v = rel.dot(perp);
+			uMin = std::min(uMin, u);
+			uMax = std::max(uMax, u);
+			const int bin = static_cast<int>(std::lround(u));
+			auto [it, inserted] = calipers.try_emplace(bin, CaliperSample{ cv::Point2d(p), cv::Point2d(p), v, v });
+			if (!inserted) {
+				if (v < it->second.minV) { it->second.minV = v; it->second.minVPoint = p; }
+				if (v > it->second.maxV) { it->second.maxV = v; it->second.maxVPoint = p; }
+			}
+		}
+		if (calipers.size() < 5) {
+			return false;
+		}
+
+		// 首尾各去掉 5% 截面（目标端部掩膜往往不规则，剔除后拟合更稳），
+		// 其余截面的两侧边缘点分别送入鲁棒直线拟合
+		std::vector<cv::Point2d> edgePointsSide1, edgePointsSide2;
+		const size_t trimCount = calipers.size() / 20;
+		size_t idx = 0;
+		for (const auto& [bin, sample] : calipers) {
+			if (idx >= trimCount && idx < calipers.size() - trimCount) {
+				edgePointsSide1.push_back(sample.minVPoint);
+				edgePointsSide2.push_back(sample.maxVPoint);
+			}
+			++idx;
+		}
+		if (edgePointsSide1.size() < 2) {
+			return false;
+		}
+
+		cv::Vec4d line1, line2;
+		cv::fitLine(edgePointsSide1, line1, cv::DIST_HUBER, 0, 0.01, 0.01);
+		cv::fitLine(edgePointsSide2, line2, cv::DIST_HUBER, 0, 0.01, 0.01);
+
+		// 端点：把主轴投影范围 [uMin, uMax] 上的位置正交投影到拟合直线上
+		auto projectOnLine = [&centroid, &axis](const cv::Vec4d& line, double u) {
+			const cv::Point2d dir(line[0], line[1]);
+			const cv::Point2d p0(line[2], line[3]);
+			const cv::Point2d q = centroid + u * axis;
+			const double t = (q - p0).dot(dir);
+			return p0 + t * dir;
+		};
+		// mask_roi 是检测框 ROI 内的局部坐标，端点需加上 ROI 偏移换算到整图
+		auto toImagePoint = [&](const cv::Point2d& p) {
+			return QPoint(static_cast<int>(std::lround(p.x)) + result.roi.x,
+				static_cast<int>(std::lround(p.y)) + result.roi.y);
+		};
+
+		edge1Start = toImagePoint(projectOnLine(line1, uMin));
+		edge1End = toImagePoint(projectOnLine(line1, uMax));
+		edge2Start = toImagePoint(projectOnLine(line2, uMin));
+		edge2End = toImagePoint(projectOnLine(line2, uMax));
+		return true;
 	}
 
 	// 三个 PLC 循环写入功能的固定配置：每个功能占 60 个连续地址，仅写偶数地址（30 个槽位），
@@ -555,37 +676,19 @@ void ImageProcessor::drawImg(QImage& qimage, const std::vector<rw::DetectionRect
 	QPainter painter(&qimage);
 	painter.setRenderHint(QPainter::Antialiasing, true);
 
-	// 绘制 OBB 矩形长边
+	// 绘制分割掩膜的两条长边（类 Halcon 卡尺：PCA 主轴 + 垂直截面边缘点 + fitLine 鲁棒拟合）
 	QPen pen(QColor(0, 255, 0)); // 绿色
 	pen.setWidth(4);
 	painter.setPen(pen);
 
 	for (const auto& result : processResult)
 	{
-		const QPoint lt(result.leftTop.first, result.leftTop.second);
-		const QPoint rt(result.rightTop.first, result.rightTop.second);
-		const QPoint lb(result.leftBottom.first, result.leftBottom.second);
-		const QPoint rb(result.rightBottom.first, result.rightBottom.second);
-
-		const double topLen = QLineF(lt, rt).length();
-		const double bottomLen = QLineF(lb, rb).length();
-		const double leftLen = QLineF(lt, lb).length();
-		const double rightLen = QLineF(rt, rb).length();
-
-		// 两组对边平均长度
-		const double groupA = (topLen + bottomLen) * 0.5; // 上下
-		const double groupB = (leftLen + rightLen) * 0.5; // 左右
-
-		if (groupA >= groupB) {
-			// 画长边：上、下
-			painter.drawLine(lt, rt);
-			painter.drawLine(lb, rb);
+		QPoint edge1Start, edge1End, edge2Start, edge2End;
+		if (!ExtractMaskLongEdges(result, edge1Start, edge1End, edge2Start, edge2End)) {
+			continue;	// 掩膜无效或轮廓提取失败时跳过该目标
 		}
-		else {
-			// 画长边：左、右
-			painter.drawLine(lt, lb);
-			painter.drawLine(rt, rb);
-		}
+		painter.drawLine(edge1Start, edge1End);
+		painter.drawLine(edge2Start, edge2End);
 	}
 
 	// 绘制图像中心线（黄色虚线）
@@ -622,7 +725,7 @@ void ImageProcessor::buildObbModelEngine(const QString& enginePath)
 	modelEngineConfig.imagePretreatmentPolicy = rw::ImagePretreatmentPolicy::LetterBox;
 	modelEngineConfig.letterBoxColor = cv::Scalar(114, 114, 114);
 	modelEngineConfig.modelPath = enginePath.toStdString();
-	auto engine = rw::ModelEngineFactory::createModelEngine(modelEngineConfig, rw::ModelType::Yolov11_Obb, rw::ModelEngineDeployType::TensorRT);
+	auto engine = rw::ModelEngineFactory::createModelEngine(modelEngineConfig, rw::ModelType::Yolov11_Seg_Mask, rw::ModelEngineDeployType::TensorRT);
 
 	_imgProcess = std::make_unique<rw::imgPro::ImageProcess>(engine);
 	_imgProcess->context() = Modules::getInstance().imgProModule.imageProcessContext_PreProcess;

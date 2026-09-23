@@ -102,15 +102,16 @@ namespace rw
 
 		void ModelEngine_yolov11_seg_mask_cudaAcc::init_buffer()
 		{
-			/*cudaMalloc(reinterpret_cast<void**>(&_deviceInputBuffer), _inputSize * sizeof(float));
+			cudaMalloc(reinterpret_cast<void**>(&_deviceInputBuffer), _inputSize * sizeof(float));
 			cudaMalloc(reinterpret_cast<void**>(&_deviceOutputBuffer1), _outputSize1 * sizeof(float));
 			cudaMalloc(reinterpret_cast<void**>(&_deviceOutputBuffer2), _outputSize2 * sizeof(float));
 			cudaMalloc(reinterpret_cast<void**>(&_deviceTransposeBuffer), _outputSize1 * sizeof(float));
 			cudaMalloc(reinterpret_cast<void**>(&_deviceDecodeBuffer), (1 + kMaxNumOutputBbox * kNumBoxElement) * sizeof(float));
 			_context->setInputTensorAddress(_engine->getIOTensorName(InputShapeIndexForYolov11), _deviceInputBuffer);
-			_context->setOutputTensorAddress(_engine->getIOTensorName(OutputShapeIndexForYolov11), _deviceOutputBuffer1);
-			_context->setOutputTensorAddress(_engine->getIOTensorName(OutputShapeIndexForYolov11 + 1), _deviceOutputBuffer2);
-			_hostOutputBuffer = new float[1 + kMaxNumOutputBbox * kNumBoxElement];*/
+			// TRT 8.6 没有 setOutputTensorAddress，输出地址统一用 setTensorAddress
+			_context->setTensorAddress(_engine->getIOTensorName(OutputShapeIndexForYolov11), _deviceOutputBuffer1);
+			_context->setTensorAddress(_engine->getIOTensorName(OutputShapeIndexForYolov11 + 1), _deviceOutputBuffer2);
+			_hostOutputBuffer = new float[1 + kMaxNumOutputBbox * kNumBoxElement];
 		}
 
 		void ModelEngine_yolov11_seg_mask_cudaAcc::destroy_buffer()

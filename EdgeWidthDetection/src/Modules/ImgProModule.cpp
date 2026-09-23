@@ -124,7 +124,8 @@ void ImgProModule::buildImgProContextPreProcess()
 					
 				}
 
-				context.defectDrawCfg.isDrawDefects = false;
+				// 开启缺陷绘制，配合 isDrawMask 在 getMaskImg 中叠加分割掩膜
+				context.defectDrawCfg.isDrawDefects = true;
 				context.defectDrawCfg.isDrawDisableDefects = false;
 				context.defectDrawCfg.isDisAreaText = false;
 				context.defectDrawCfg.isDisScoreText = true;
@@ -241,7 +242,8 @@ void ImgProModule::buildImgProContextPreProcess()
 
 	drawItemConfig.fontSize = 50;
 	drawItemConfig.textLocate = rw::imgPro::ConfigDrawRect::TextLocate::LeftTopIn;
-	drawItemConfig.isDrawMask = false;
+	drawItemConfig.isDrawMask = true;	// YoloSeg：绘制分割掩膜（半透明叠加），替代多边形框
+	drawItemConfig.hasFrame = false;
 
 	for (size_t i = ClassId::minNum; i <= ClassId::maxNum; i++)
 	{
