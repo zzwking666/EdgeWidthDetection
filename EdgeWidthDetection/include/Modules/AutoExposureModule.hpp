@@ -6,8 +6,8 @@
 #include <chrono>
 
 // 自动曝光硬性阈值：自动曝光设置的曝光值不允许超出 [kAutoExposureHardMin, kAutoExposureHardMax]
-inline constexpr double kAutoExposureHardMin = 1.0;
-inline constexpr double kAutoExposureHardMax = 2500.0;
+inline constexpr double kAutoExposureHardMin = 100.0;
+inline constexpr double kAutoExposureHardMax = 1000.0;
 
 class AutoExposureModule : public QObject, public IModule<bool>
 {
