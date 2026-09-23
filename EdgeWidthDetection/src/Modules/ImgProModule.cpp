@@ -1,5 +1,7 @@
 #include "ImgProModule.hpp"
 
+#include <limits>
+
 #include "Modules.hpp"
 #include "osoFIleUtiltyFunc.hpp"
 #include "Utilty.hpp"
@@ -178,9 +180,14 @@ void ImgProModule::buildImgProContextPreProcess()
 			}
 			// 判断缺陷框中心点是否在屏蔽线区域内
 
-			if (info.center_y > limitTop && info.center_y < limitBottom)
+			// 某一边限位为 0 表示该边不限制：下/右限位按最大边界处理，上/左限位天然为图像起点，
+			// 避免只设置部分限位时（其余为 0）有效区域被夹成空、所有识别都被过滤
+			const int effectiveBottom = (limitBottom > 0) ? limitBottom : std::numeric_limits<int>::max();
+			const int effectiveRight = (limitRight > 0) ? limitRight : std::numeric_limits<int>::max();
+
+			if (info.center_y > limitTop && info.center_y < effectiveBottom)
 			{
-				if (info.center_x > limitLeft && info.center_x < limitRight)
+				if (info.center_x > limitLeft && info.center_x < effectiveRight)
 				{
 					isInShieldWires = true;
 				}
@@ -242,7 +249,7 @@ void ImgProModule::buildImgProContextPreProcess()
 
 	drawItemConfig.fontSize = 50;
 	drawItemConfig.textLocate = rw::imgPro::ConfigDrawRect::TextLocate::LeftTopIn;
-	drawItemConfig.isDrawMask = true;	// YoloSeg：绘制分割掩膜（半透明叠加），替代多边形框
+	drawItemConfig.isDrawMask = false;	// YoloSeg：绘制分割掩膜（半透明叠加），替代多边形框
 	drawItemConfig.hasFrame = false;
 
 	for (size_t i = ClassId::minNum; i <= ClassId::maxNum; i++)
@@ -287,14 +294,27 @@ void ImgProModule::buildImgProContextPreProcess()
 			configDrawLine.color = rw::imgPro::Color::Red;
 			configDrawLine.thickness = 5;
 
-			configDrawLine.position = limitTop;
-			rw::imgPro::ImagePainter::drawHorizontalLine(img, configDrawLine);
-			configDrawLine.position = limitBottom;
-			rw::imgPro::ImagePainter::drawHorizontalLine(img, configDrawLine);
-			configDrawLine.position = limitLeft;
-			rw::imgPro::ImagePainter::drawVerticalLine(img, configDrawLine);
-			configDrawLine.position = limitRight;
-			rw::imgPro::ImagePainter::drawVerticalLine(img, configDrawLine);
+			// 限位为 0 表示该边不限制，不绘制对应限位线（否则会误在图像顶边/左边画线）
+			if (limitTop > 0)
+			{
+				configDrawLine.position = limitTop;
+				rw::imgPro::ImagePainter::drawHorizontalLine(img, configDrawLine);
+			}
+			if (limitBottom > 0)
+			{
+				configDrawLine.position = limitBottom;
+				rw::imgPro::ImagePainter::drawHorizontalLine(img, configDrawLine);
+			}
+			if (limitLeft > 0)
+			{
+				configDrawLine.position = limitLeft;
+				rw::imgPro::ImagePainter::drawVerticalLine(img, configDrawLine);
+			}
+			if (limitRight > 0)
+			{
+				configDrawLine.position = limitRight;
+				rw::imgPro::ImagePainter::drawVerticalLine(img, configDrawLine);
+			}
 		};
 #pragma endregion
 
