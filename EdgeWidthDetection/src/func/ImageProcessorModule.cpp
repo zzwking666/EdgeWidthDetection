@@ -405,7 +405,8 @@ void ImageProcessor::run_debug(MatInfo& frame)
 	}
 
 	rw::rqw::ImageInfo imageInfo(rw::rqw::cvMatToQImage(frame.image));
-	save_image(imageInfo, maskImg, frame.captureState);
+	// 调试帧不参与识别/未识别分类（当前调试存图分支本身也是关闭的）
+	save_image(imageInfo, maskImg, frame.captureState, false);
 }
 
 void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
@@ -506,7 +507,7 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	if (0 == setConfig.saveImgMode)
 	{
 		rw::rqw::ImageInfo imageInfo(rw::rqw::cvMatToQImage(frame.image));
-		save_image(imageInfo, maskImg, frame.captureState);
+		save_image(imageInfo, maskImg, frame.captureState, recognized);
 	}
 	// 只保存有识别到的
 	else if (1 == setConfig.saveImgMode)
@@ -514,7 +515,7 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 		if (defectResult.disableDefects.size() > 0)
 		{
 			rw::rqw::ImageInfo imageInfo(rw::rqw::cvMatToQImage(frame.image));
-			save_image(imageInfo, maskImg, frame.captureState);
+			save_image(imageInfo, maskImg, frame.captureState, recognized);
 		}
 	}
 }
@@ -591,7 +592,7 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 	if (0 == setConfig.saveImgMode)
 	{
 		rw::rqw::ImageInfo imageInfo(rw::rqw::cvMatToQImage(frame.image));
-		save_image(imageInfo, maskImg, frame.captureState);
+		save_image(imageInfo, maskImg, frame.captureState, recognized);
 	}
 	// 只保存有识别到的
 	else if (1 == setConfig.saveImgMode)
@@ -599,7 +600,7 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 		if (defectResult.disableDefects.size() > 0)
 		{
 			rw::rqw::ImageInfo imageInfo(rw::rqw::cvMatToQImage(frame.image));
-			save_image(imageInfo, maskImg, frame.captureState);
+			save_image(imageInfo, maskImg, frame.captureState, recognized);
 		}
 	}
 }
@@ -633,12 +634,12 @@ void ImageProcessor::writePlcRealtimeQiedao(double valueMm)
 	emit plcRealtimeWrite(PLC_REALTIME_ADDR_WANCHENG2, 1.0);
 }
 
-void ImageProcessor::save_image(rw::rqw::ImageInfo& imageInfo, const QImage& image, RunningState captureState)
+void ImageProcessor::save_image(rw::rqw::ImageInfo& imageInfo, const QImage& image, RunningState captureState, bool recognized)
 {
-	save_image_work(imageInfo, image, captureState);
+	save_image_work(imageInfo, image, captureState, recognized);
 }
 
-void ImageProcessor::save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage& image, RunningState captureState)
+void ImageProcessor::save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage& image, RunningState captureState, bool recognized)
 {
 	auto& imgSaveModule = Modules::getInstance().imgSaveModule;
 	auto& imageSaveEngine = imgSaveModule.imageSaveEngine;
@@ -651,17 +652,26 @@ void ImageProcessor::save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage
 		imageInfo.time = QDateTime::currentDateTime().toString("hhmmsszzz_yyyyMMdd");
 		imageInfo.classify = "";
 		// 一相机与二相机的存图分别保存到日期目录下的 Camera1 / Camera2 文件夹，
-		// 其下再按 OK（原图）/ MASK（掩码图）分类
+		// 其下再按 OK（原图）/ MASK（掩码图）/ Unrecognized（未识别原图）分类
 		const QString cameraDir = (2 == imageProcessingModuleIndex) ? "Camera2" : "Camera1";
 
 		if (captureState == RunningState::OpenRemoveFunc)
 		{
-			imageInfo.dirName = cameraDir + "/OK";
-			imageSaveEngine->pushImage(imageInfo);
+			if (recognized)
+			{
+				imageInfo.dirName = cameraDir + "/OK";
+				imageSaveEngine->pushImage(imageInfo);
 
-			imageInfo.dirName = cameraDir + "/MASK";
-			imageInfo.image = image;
-			imageSaveEngine->pushImage(imageInfo);
+				imageInfo.dirName = cameraDir + "/MASK";
+				imageInfo.image = image;
+				imageSaveEngine->pushImage(imageInfo);
+			}
+			else
+			{
+				// 未识别帧只存原图到 Unrecognized 文件夹，供后期收集数据进行标注
+				imageInfo.dirName = cameraDir + "/Unrecognized";
+				imageSaveEngine->pushImage(imageInfo);
+			}
 		}
 		//else if (runningState == RunningState::Debug)
 		//{

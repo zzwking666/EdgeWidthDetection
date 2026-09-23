@@ -139,6 +139,14 @@ void Modules::connect()
 		&cameraModule, &CameraModule::onSetExposureTime2, Qt::QueuedConnection);
 #pragma endregion
 
+#pragma region connect camera and ImgSaveModule
+	// 相机每出一帧刷新存图模块的出图时间戳，用于检测"设备停机（10 秒无出图）"后的磁盘清理
+	QObject::connect(&cameraModule, &CameraModule::frameCaptured1,
+		&imgSaveModule, &ImgSaveModule::notifyFrameActivity, Qt::DirectConnection);
+	QObject::connect(&cameraModule, &CameraModule::frameCaptured2,
+		&imgSaveModule, &ImgSaveModule::notifyFrameActivity, Qt::DirectConnection);
+#pragma endregion
+
 #pragma region connect UIModule and ReconnectModule
 	QObject::connect(reconnectModule.monitorCameraAndCardStateThread.get(), &CameraAndCardStateThread::updateCameraLabelState,
 		uiModule._edgeWidthDetection, &EdgeWidthDetection::updateCameraLabelState);
