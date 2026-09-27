@@ -25,7 +25,7 @@ public slots:
 
 signals:
 	void requestSetExposureTime(size_t exposureTime);
-	void autoExposureInfoReady(double targetExposure, double meanIntensity,
+	void autoExposureInfoReady(double currentExposure, double targetExposure, double meanIntensity,
 		double overRatio, double underRatio);
 
 private:

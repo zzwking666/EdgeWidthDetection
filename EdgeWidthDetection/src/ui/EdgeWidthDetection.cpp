@@ -1266,24 +1266,26 @@ void EdgeWidthDetection::ckb_autoExposure_checked(bool checked)
 	emit autoExposureToggled(checked);
 }
 
-void EdgeWidthDetection::onAutoExposureInfo(double targetExposure, double meanIntensity,
+void EdgeWidthDetection::onAutoExposureInfo(double currentExposure, double targetExposure, double meanIntensity,
 	double overRatio, double underRatio)
 {
-	_cam1ExposureInfo = QString("相机1 均值:%1 过曝:%2% 欠曝:%3% 目标曝光:%4")
+	_cam1ExposureInfo = QString("相机1 均值:%1 过曝:%2% 欠曝:%3% 当前曝光:%4 目标曝光:%5")
 		.arg(meanIntensity, 0, 'f', 1)
 		.arg(overRatio * 100.0, 0, 'f', 1)
 		.arg(underRatio * 100.0, 0, 'f', 1)
+		.arg(currentExposure, 0, 'f', 0)
 		.arg(targetExposure, 0, 'f', 0);
 	refreshExposureInfo();
 }
 
-void EdgeWidthDetection::onAutoExposureInfo2(double targetExposure, double meanIntensity,
+void EdgeWidthDetection::onAutoExposureInfo2(double currentExposure, double targetExposure, double meanIntensity,
 	double overRatio, double underRatio)
 {
-	_cam2ExposureInfo = QString("相机2 均值:%1 过曝:%2% 欠曝:%3% 目标曝光:%4")
+	_cam2ExposureInfo = QString("相机2 均值:%1 过曝:%2% 欠曝:%3% 当前曝光:%4 目标曝光:%5")
 		.arg(meanIntensity, 0, 'f', 1)
 		.arg(overRatio * 100.0, 0, 'f', 1)
 		.arg(underRatio * 100.0, 0, 'f', 1)
+		.arg(currentExposure, 0, 'f', 0)
 		.arg(targetExposure, 0, 'f', 0);
 	refreshExposureInfo();
 }

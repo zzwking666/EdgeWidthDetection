@@ -57,10 +57,10 @@ public slots:
 
 	void onCameraDisplay(size_t index, QPixmap image);
 
-	void onAutoExposureInfo(double targetExposure, double meanIntensity,
+	void onAutoExposureInfo(double currentExposure, double targetExposure, double meanIntensity,
 		double overRatio, double underRatio);
 
-	void onAutoExposureInfo2(double targetExposure, double meanIntensity,
+	void onAutoExposureInfo2(double currentExposure, double targetExposure, double meanIntensity,
 		double overRatio, double underRatio);
 
 	void lb_title_clicked();

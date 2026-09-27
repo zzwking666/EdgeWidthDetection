@@ -128,7 +128,7 @@ void AutoExposureModule::onExposureStats(double meanIntensity, double overRatio,
 
 	persistLastExposureThrottled(newExposure, now);
 
-	emit autoExposureInfoReady(newExposure, meanIntensity, overRatio, underRatio);
+	emit autoExposureInfoReady(currentExposure, newExposure, meanIntensity, overRatio, underRatio);
 }
 
 void AutoExposureModule::persistLastExposureThrottled(double newExposure, std::chrono::steady_clock::time_point now)
