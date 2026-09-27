@@ -20,6 +20,12 @@
 
 #include "Modules.hpp"
 #include "EdgeWidthDetection.h"
+#include "lgm_PreDef.hpp"
+
+// 诊断日志统一走同步落盘（LOG_FLUSH）：异步日志在进程崩溃时缓冲区会丢失，
+// 闪退后只有落盘的最后一条日志能指示程序死在哪一步
+#define IMGPRO_DIAG_LOG(...) do { LOG_INFO(__VA_ARGS__); LOG_FLUSH(); } while (0)
+#define IMGPRO_DIAG_ERR(...) do { LOG_ERROR(__VA_ARGS__); LOG_FLUSH(); } while (0)
 
 namespace {
 	// 在给定最小间隔内只放行一次调用：成功返回 true，其他并发/过快的调用返回 false
@@ -248,6 +254,19 @@ namespace {
 	thread_local std::vector<std::future<bool>> t_pendingPlcWriteFuts;
 	thread_local int t_frameCountSincePlcCheck = 0;
 
+	// 诊断：每处理线程的已处理帧计数，前 kDiagLogFirstFrames 帧输出详细检查点日志，
+	// 之后的帧只在异常时输出，避免每帧刷日志拖慢处理线程
+	thread_local int t_processedFrameCount = 0;
+	constexpr int kDiagLogFirstFrames = 3;
+
+	// 处理流程检查点日志：仅前若干帧输出，崩溃后看日志最后一条即可定位死在哪一步
+	inline void DiagCheckpoint(const char* tag, int moduleIndex, size_t frameIndex)
+	{
+		if (t_processedFrameCount < kDiagLogFirstFrames) {
+			IMGPRO_DIAG_LOG("[诊断] 相机{} 帧{}: {}", moduleIndex, frameIndex, tag);
+		}
+	}
+
 	// 向 PLC 固定地址区间循环写入一个值：从 baseAddress 起按步进 2 共 slotCount 个槽位，
 	// 每调用一次在当前槽位写 value 并推进一格，写满一轮回绕到起始；
 	// 同时把"往前数 intervalSlots 格"的旧数据槽位写 0 清零。
@@ -427,23 +446,43 @@ void ImageProcessor::run()
 		// 按帧采集时刻的运行状态分发，而不是处理时刻的全局状态：
 		// 调试切剔废时，切换窗口内到达的调试帧仍走 run_debug，不会被计数/写PLC
 		auto captureState = frame.captureState;
-		switch (captureState)
+		// 处理线程内任何未捕获异常都会传播出 QThread::run 导致 std::terminate 闪退，
+		// 这里统一捕获并落盘（含异常内容），既保住进程也能定位部署机的闪退原因
+		try
 		{
-		case RunningState::Debug:
-			run_debug(frame);
-			break;
-		case RunningState::OpenRemoveFunc:
-			if (2 == imageProcessingModuleIndex)
+			switch (captureState)
 			{
-				run_OpenRemoveFunc2(frame);
+			case RunningState::Debug:
+				run_debug(frame);
+				break;
+			case RunningState::OpenRemoveFunc:
+				if (2 == imageProcessingModuleIndex)
+				{
+					run_OpenRemoveFunc2(frame);
+				}
+				else
+				{
+					run_OpenRemoveFunc(frame);
+				}
+				break;
+			default:
+				break;
 			}
-			else
-			{
-				run_OpenRemoveFunc(frame);
-			}
-			break;
-		default:
-			break;
+		}
+		catch (const cv::Exception& e)
+		{
+			IMGPRO_DIAG_ERR("[诊断] 相机{} 帧{} 图像处理 OpenCV 异常: {}",
+				imageProcessingModuleIndex, frame.index, e.what());
+		}
+		catch (const std::exception& e)
+		{
+			IMGPRO_DIAG_ERR("[诊断] 相机{} 帧{} 图像处理异常: {}",
+				imageProcessingModuleIndex, frame.index, e.what());
+		}
+		catch (...)
+		{
+			IMGPRO_DIAG_ERR("[诊断] 相机{} 帧{} 图像处理未知异常",
+				imageProcessingModuleIndex, frame.index);
 		}
 	}
 }
@@ -467,6 +506,9 @@ void ImageProcessor::reportExposureStats(const cv::Mat& image)
 
 void ImageProcessor::run_debug(MatInfo& frame)
 {
+	++t_processedFrameCount;
+	DiagCheckpoint("进入调试处理", imageProcessingModuleIndex, frame.index);
+
 	// 相机 2 在 Debug 模式下同样先转正，保持与运行模式一致的画面方向与坐标系
 	if (2 == imageProcessingModuleIndex) {
 		RotateImage90Clockwise(frame.image);
@@ -474,13 +516,16 @@ void ImageProcessor::run_debug(MatInfo& frame)
 
 	auto& imgPro = *_imgProcess;
 	imgPro(frame.image);
+	DiagCheckpoint("模型推理完成", imageProcessingModuleIndex, frame.index);
 	auto maskImg = imgPro.getMaskImg(frame.image);
+	DiagCheckpoint("掩码图生成完成", imageProcessingModuleIndex, frame.index);
 	auto defectResult = imgPro.getDefectResultInfo();
 
 	// 自动曝光亮度统计：在 YoloSeg 掩膜范围内统计（未识别帧回退整图统计）
 	reportExposureStats(frame.image);
 
 	emit imageReady(imageProcessingModuleIndex, QPixmap::fromImage(maskImg));
+	DiagCheckpoint("调试处理完成", imageProcessingModuleIndex, frame.index);
 
 	// 调试帧不带识别文字，使缓存失效，避免后续修改参数时用旧运行帧的文字覆盖调试画面
 	if (auto module = qobject_cast<ImageProcessingModule*>(parent())) {
@@ -494,10 +539,15 @@ void ImageProcessor::run_debug(MatInfo& frame)
 
 void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 {
+	++t_processedFrameCount;
+	DiagCheckpoint("进入剔废处理", imageProcessingModuleIndex, frame.index);
+
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	auto& imgPro = *_imgProcess;
 	imgPro(frame.image);
+	DiagCheckpoint("模型推理完成", imageProcessingModuleIndex, frame.index);
 	auto maskImg = imgPro.getMaskImg(frame.image);
+	DiagCheckpoint("掩码图生成完成", imageProcessingModuleIndex, frame.index);
 	auto defectResult = imgPro.getDefectResultInfo();
 	auto processResult = imgPro.getContext().getProcessResult();
 
@@ -588,6 +638,7 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	DrawResultTextOnImage(maskImg, imageProcessingModuleIndex, recognized, widthPixel, hasCenter, centerDiffPixel);
 
 	emit imageReady(frame.index, QPixmap::fromImage(maskImg));
+	DiagCheckpoint("剔废处理完成", imageProcessingModuleIndex, frame.index);
 
 	// 全部保存
 	if (0 == setConfig.saveImgMode)
@@ -608,13 +659,18 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 
 void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 {
+	++t_processedFrameCount;
+	DiagCheckpoint("进入剔废处理", imageProcessingModuleIndex, frame.index);
+
 	// 相机 2 出图先顺时针旋转 90 度转正，后续处理、绘制与保存均基于转正后的图像
 	RotateImage90Clockwise(frame.image);
 
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	auto& imgPro = *_imgProcess;
 	imgPro(frame.image);
+	DiagCheckpoint("模型推理完成", imageProcessingModuleIndex, frame.index);
 	auto maskImg = imgPro.getMaskImg(frame.image);
+	DiagCheckpoint("掩码图生成完成", imageProcessingModuleIndex, frame.index);
 	auto defectResult = imgPro.getDefectResultInfo();
 	auto processResult = imgPro.getContext().getProcessResult();
 
@@ -676,6 +732,7 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 	DrawResultTextOnImage(maskImg, imageProcessingModuleIndex, recognized, widthPixel, false, 0);
 
 	emit imageReady(frame.index, QPixmap::fromImage(maskImg));
+	DiagCheckpoint("剔废处理完成", imageProcessingModuleIndex, frame.index);
 
 	// 全部保存
 	if (0 == setConfig.saveImgMode)
@@ -818,18 +875,36 @@ void ImageProcessor::drawImg(QImage& qimage, const std::vector<rw::DetectionRect
 
 void ImageProcessor::buildObbModelEngine(const QString& enginePath)
 {
-	rw::ModelEngineConfig modelEngineConfig;
-	modelEngineConfig.conf_threshold = 0.1f;
-	modelEngineConfig.nms_threshold = 0.01f;
-	modelEngineConfig.imagePretreatmentPolicy = rw::ImagePretreatmentPolicy::LetterBox;
-	modelEngineConfig.letterBoxColor = cv::Scalar(114, 114, 114);
-	modelEngineConfig.modelPath = enginePath.toStdString();
-	auto engine = rw::ModelEngineFactory::createModelEngine(modelEngineConfig, rw::ModelType::Yolov11_Seg_Mask, rw::ModelEngineDeployType::TensorRT);
+	IMGPRO_DIAG_LOG("[诊断] 相机{} 开始构建模型引擎: {}", imageProcessingModuleIndex, enginePath.toStdString());
+	try
+	{
+		rw::ModelEngineConfig modelEngineConfig;
+		modelEngineConfig.conf_threshold = 0.1f;
+		modelEngineConfig.nms_threshold = 0.01f;
+		modelEngineConfig.imagePretreatmentPolicy = rw::ImagePretreatmentPolicy::LetterBox;
+		modelEngineConfig.letterBoxColor = cv::Scalar(114, 114, 114);
+		modelEngineConfig.modelPath = enginePath.toStdString();
+		auto engine = rw::ModelEngineFactory::createModelEngine(modelEngineConfig, rw::ModelType::Yolov11_Seg_Mask, rw::ModelEngineDeployType::TensorRT);
+		if (!engine) {
+			IMGPRO_DIAG_ERR("[诊断] 相机{} 模型引擎创建返回空指针: {}", imageProcessingModuleIndex, enginePath.toStdString());
+		}
 
-	_imgProcess = std::make_unique<rw::imgPro::ImageProcess>(engine);
-	_imgProcess->context() = Modules::getInstance().imgProModule.imageProcessContext_PreProcess;
-	_imgProcess->context().customFields["ImgProcessIndex"] = static_cast<int>(imageProcessingModuleIndex);
-	_imgProcess->context().customFields["stationIdx"] = static_cast<int>(imageProcessingModuleIndex);
+		_imgProcess = std::make_unique<rw::imgPro::ImageProcess>(engine);
+		_imgProcess->context() = Modules::getInstance().imgProModule.imageProcessContext_PreProcess;
+		_imgProcess->context().customFields["ImgProcessIndex"] = static_cast<int>(imageProcessingModuleIndex);
+		_imgProcess->context().customFields["stationIdx"] = static_cast<int>(imageProcessingModuleIndex);
+		IMGPRO_DIAG_LOG("[诊断] 相机{} 模型引擎构建完成", imageProcessingModuleIndex);
+	}
+	catch (const std::exception& e)
+	{
+		IMGPRO_DIAG_ERR("[诊断] 相机{} 模型引擎构建异常: {}", imageProcessingModuleIndex, e.what());
+		throw;
+	}
+	catch (...)
+	{
+		IMGPRO_DIAG_ERR("[诊断] 相机{} 模型引擎构建未知异常", imageProcessingModuleIndex);
+		throw;
+	}
 }
 
 void ImageProcessingModule::BuildModule()
@@ -879,48 +954,84 @@ ImageProcessingModule::~ImageProcessingModule()
 
 void ImageProcessingModule::onFrameCaptured(rw::rqw::MatInfo matInfo, size_t index)
 {
-	// 防抖动处理
-	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
-	const long long debounceMs = static_cast<long long>(std::max(0.0, setConfig.xiangjiguangdianpingbishijian));
-	const auto minInterval = std::chrono::milliseconds(debounceMs);
-
-	if (!AllowOncePer(_lastCamNs, minInterval)) {
-		return;
-	}
-
-	if (matInfo.mat.channels() == 4) {
-		cv::cvtColor(matInfo.mat, matInfo.mat, cv::COLOR_BGRA2BGR);
-	}
-	if (matInfo.mat.type() != CV_8UC3) {
-		matInfo.mat.convertTo(matInfo.mat, CV_8UC3);
-	}
-
-	if (matInfo.mat.empty()) {
-		return; // 跳过空帧
-	}
-
-	// 相机1图像在此回调处旋转180度，后续的检测线、文字绘制都基于旋转后的图像，保持正向
-	if (1 == this->index) {
-		cv::rotate(matInfo.mat, matInfo.mat, cv::ROTATE_180);
-	}
-
-	// 自动曝光亮度统计已移至处理线程：YoloSeg 识别完成后在掩膜范围内统计，
-	// 此回调不再做整图统计
-
-	QMutexLocker locker(&_mutex);
-	// 队列最多只有一张
-	if (_queue.size() >= 1)
+	// 本回调以 DirectConnection 跑在相机采集线程上，任何异常逃逸都会导致整个进程 terminate 闪退，
+	// 这里整体捕获并落盘，避免格式异常帧直接打挂程序
+	try
 	{
-		return;
-	}
-	MatInfo mat;
-	mat.image = matInfo.mat;
-	mat.index = index;
-	// 打上帧到达瞬间的运行状态戳，处理线程按此分发（调试帧不会在切模式后被当作剔废帧计数）
-	mat.captureState = Modules::getInstance().runtimeInfoModule.runningState.load();
+		// 防抖动处理
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		const long long debounceMs = static_cast<long long>(std::max(0.0, setConfig.xiangjiguangdianpingbishijian));
+		const auto minInterval = std::chrono::milliseconds(debounceMs);
 
-	_queue.enqueue(mat);
-	_condition.wakeOne();
+		if (!AllowOncePer(_lastCamNs, minInterval)) {
+			return;
+		}
+
+		if (matInfo.mat.empty()) {
+			return; // 跳过空帧
+		}
+
+		// 前几帧记录相机原始帧格式：部署机闪退但开发机测试图正常时，
+		// 首先怀疑真实相机帧格式（如 Mono8 灰度）与磁盘测试图不一致
+		static std::atomic<int> s_formatLogCount[3] = { {0}, {0}, {0} };
+		if (this->index < 3 && s_formatLogCount[this->index].fetch_add(1) < kDiagLogFirstFrames) {
+			IMGPRO_DIAG_LOG("[诊断] 相机{} 收到原始帧: {}x{}, type={}, channels={}, depth={}",
+				this->index, matInfo.mat.cols, matInfo.mat.rows,
+				matInfo.mat.type(), matInfo.mat.channels(), matInfo.mat.depth());
+		}
+
+		// 位深先归一化到 8 位（convertTo 只转位深，不改通道数）
+		if (matInfo.mat.depth() != CV_8U) {
+			matInfo.mat.convertTo(matInfo.mat, CV_8U);
+		}
+		// 通道归一化到 3 通道 BGR：灰度相机（Mono8）必须走 cvtColor，
+		// convertTo 无法改变通道数，直接转 CV_8UC3 会抛 cv::Exception
+		if (matInfo.mat.channels() == 4) {
+			cv::cvtColor(matInfo.mat, matInfo.mat, cv::COLOR_BGRA2BGR);
+		}
+		else if (matInfo.mat.channels() == 1) {
+			cv::cvtColor(matInfo.mat, matInfo.mat, cv::COLOR_GRAY2BGR);
+		}
+		else if (matInfo.mat.channels() != 3) {
+			IMGPRO_DIAG_ERR("[诊断] 相机{} 帧通道数异常: {}，已丢弃该帧", this->index, matInfo.mat.channels());
+			return;
+		}
+
+		// 相机1图像在此回调处旋转180度，后续的检测线、文字绘制都基于旋转后的图像，保持正向
+		if (1 == this->index) {
+			cv::rotate(matInfo.mat, matInfo.mat, cv::ROTATE_180);
+		}
+
+		// 自动曝光亮度统计已移至处理线程：YoloSeg 识别完成后在掩膜范围内统计，
+		// 此回调不再做整图统计
+
+		QMutexLocker locker(&_mutex);
+		// 队列最多只有一张
+		if (_queue.size() >= 1)
+		{
+			return;
+		}
+		MatInfo mat;
+		mat.image = matInfo.mat;
+		mat.index = index;
+		// 打上帧到达瞬间的运行状态戳，处理线程按此分发（调试帧不会在切模式后被当作剔废帧计数）
+		mat.captureState = Modules::getInstance().runtimeInfoModule.runningState.load();
+
+		_queue.enqueue(mat);
+		_condition.wakeOne();
+	}
+	catch (const cv::Exception& e)
+	{
+		IMGPRO_DIAG_ERR("[诊断] 相机{} 帧接收回调 OpenCV 异常: {}", this->index, e.what());
+	}
+	catch (const std::exception& e)
+	{
+		IMGPRO_DIAG_ERR("[诊断] 相机{} 帧接收回调异常: {}", this->index, e.what());
+	}
+	catch (...)
+	{
+		IMGPRO_DIAG_ERR("[诊断] 相机{} 帧接收回调未知异常", this->index);
+	}
 }
 
 void ImageProcessingModule::emitExposureStats(double meanIntensity, double overRatio, double underRatio)
