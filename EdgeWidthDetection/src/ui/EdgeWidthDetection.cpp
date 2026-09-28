@@ -301,6 +301,8 @@ void EdgeWidthDetection::build_EdgeWidthDetectionData()
 
 	// 初始化图像查看器
 	_picturesViewer = new PictureViewerThumbnails(this);
+	// 缩略图内存缓存上限改为 100 张（RW_UL 默认 1000 张），降低开机后的内存占用
+	_picturesViewer->setThumbnailCacheCapacity(100);
 
 	ini_clickableTitle();
 
