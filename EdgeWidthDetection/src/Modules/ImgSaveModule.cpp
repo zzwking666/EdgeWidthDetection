@@ -156,6 +156,25 @@ void ImgSaveModule::checkDiskSpace()
 	}
 }
 
+void ImgSaveModule::refreshSaveRootPathForToday()
+{
+	if (!imageSaveEngine) {
+		return;
+	}
+
+	// 与 build() 相同的路径拼接方式，保证跨天刷新与启动时初始化的目录结构一致
+	QDir dir;
+	const QString todayPath = dir.absoluteFilePath(
+		globalPath.imageSaveRootPath + QDate::currentDate().toString("yyyy_MM_dd"));
+
+	if (imageSaveEngine->getRootPath() == todayPath) {
+		return;	// 日期未变化，无需刷新
+	}
+
+	qInfo() << "[ImgSave] 日期已跨天，存图根目录切换为:" << todayPath;
+	imageSaveEngine->setRootPath(todayPath);
+}
+
 void ImgSaveModule::notifyFrameActivity()
 {
 	_lastFrameMs.store(QDateTime::currentMSecsSinceEpoch());
@@ -178,6 +197,9 @@ void ImgSaveModule::checkIdleCleanup()
 	}
 	_idleCleanupDone.store(true);
 	// 停机后重新开放存图配额：下一轮开机出图可再保存 100 帧
+	// 部署机长时间不关机，重置配额前先按当前日期刷新存图目录，
+	// 防止跨天后新一轮开机的图片继续写入昨天的日期文件夹
+	refreshSaveRootPathForToday();
 	_saveQuotaRemaining.store(csaveQuotaPerRun);
 	qInfo() << "[ImgSave] 检测到设备停机（相机超过 10 秒无出图），已重新开放存图配额"
 		<< csaveQuotaPerRun << "帧，开始检查存图磁盘空间";

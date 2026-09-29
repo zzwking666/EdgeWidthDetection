@@ -62,6 +62,8 @@ private:
 	void startCleanupOldFoldersAsync();
 	/// 检查存图磁盘剩余空间，低于阈值则将 _diskSpaceEnough 置为 false
 	void checkDiskSpace();
+	/// 按当前日期刷新存图根目录：部署机长时间不关机，跨天时防止新图继续写入昨天的日期文件夹
+	void refreshSaveRootPathForToday();
 	/// 定时检测相机是否停机（10 秒无出图），停机后触发一次磁盘清理
 	void checkIdleCleanup();
 	/// 后台异步执行停机清理：循环检测剩余空间，不足 10GB 则删除最早的一个日期存图文件夹
