@@ -177,7 +177,10 @@ void ImgSaveModule::checkIdleCleanup()
 		return;	// 本轮停机已清理过，或上一次清理尚未结束
 	}
 	_idleCleanupDone.store(true);
-	qInfo() << "[ImgSave] 检测到设备停机（相机超过 10 秒无出图），开始检查存图磁盘空间";
+	// 停机后重新开放存图配额：下一轮开机出图可再保存 100 帧
+	_saveQuotaRemaining.store(csaveQuotaPerRun);
+	qInfo() << "[ImgSave] 检测到设备停机（相机超过 10 秒无出图），已重新开放存图配额"
+		<< csaveQuotaPerRun << "帧，开始检查存图磁盘空间";
 	startIdleDiskCleanupAsync();
 }
 
