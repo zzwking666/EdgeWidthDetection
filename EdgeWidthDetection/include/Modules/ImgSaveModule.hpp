@@ -23,8 +23,8 @@ private:
 	static constexpr qint64 ccameraIdleThresholdMs = 10 * 1000;
 	// 停机检测周期：2 秒
 	static constexpr int cidleCheckIntervalMs = 2 * 1000;
-	// 存图配额：每次开机允许保存 100 帧，每次停机（10 秒无出图）后重新开放 100 帧
-	static constexpr int csaveQuotaPerRun = 100;
+	// 存图配额：每次开机每个相机各允许保存 1000 帧，每次停机（10 秒无出图）后重新开放 1000 帧
+	static constexpr int csaveQuotaPerRun = 1000;
 public:
 	void build() override;
 	void destroy() override;
@@ -37,20 +37,22 @@ public:
 	bool isDiskSpaceEnough() const { return _diskSpaceEnough.load(); }
 	/// 最近一次检测到的磁盘剩余空间（GB），未检测过时为 -1
 	double lastFreeGB() const { return _lastFreeGB.load(); }
-	/// 存图前申请一帧的配额：配额用尽返回 false（本轮开机/停机周期内不再存图）
+	/// 存图前申请一帧的配额：配额用尽返回 false（本轮开机/停机周期内该相机不再存图）
 	/// 按帧计算：一帧无论保存几个文件（OK + MASK / Unrecognized）都只消耗 1 配额
-	bool tryAcquireSaveQuota()
+	/// 两个相机的配额相互独立：cameraIndex 1 / 2 分别计数，互不占用
+	bool tryAcquireSaveQuota(int cameraIndex)
 	{
-		int quota = _saveQuotaRemaining.load(std::memory_order_relaxed);
+		auto& quotaRef = _saveQuotaRemaining[cameraIndex == 2 ? 1 : 0];
+		int quota = quotaRef.load(std::memory_order_relaxed);
 		while (quota > 0) {
-			if (_saveQuotaRemaining.compare_exchange_weak(quota, quota - 1, std::memory_order_relaxed)) {
+			if (quotaRef.compare_exchange_weak(quota, quota - 1, std::memory_order_relaxed)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	/// 当前剩余存图配额（帧数，仅供 UI/日志查看）
-	int saveQuotaRemaining() const { return _saveQuotaRemaining.load(); }
+	/// 当前剩余存图配额（帧数，仅供 UI/日志查看），cameraIndex 1 / 2
+	int saveQuotaRemaining(int cameraIndex) const { return _saveQuotaRemaining[cameraIndex == 2 ? 1 : 0].load(); }
 public slots:
 	/// 相机每出一帧调用一次，刷新出图时间戳（DirectConnection，仅原子写，可在相机线程执行）
 	void notifyFrameActivity();
@@ -83,8 +85,9 @@ private:
 	std::atomic<bool> _idleCleanupDone{ false };
 	// 停机磁盘清理是否正在后台执行，防止重入
 	std::atomic<bool> _idleCleanupRunning{ false };
-	// 本轮开机/停机周期剩余存图配额，用尽后暂停存图，下次停机时重置为 csaveQuotaPerRun
-	std::atomic<int> _saveQuotaRemaining{ csaveQuotaPerRun };
+	// 本轮开机/停机周期各相机的剩余存图配额（[0]=相机1，[1]=相机2），
+	// 用尽后该相机暂停存图，下次停机时重置为 csaveQuotaPerRun
+	std::atomic<int> _saveQuotaRemaining[2]{ csaveQuotaPerRun, csaveQuotaPerRun };
 	QTimer* _idleCheckTimer{ nullptr };
 	QFuture<void> _idleCleanupFuture;
 	std::shared_ptr<std::atomic<bool>> _idleCleanupCancel{ std::make_shared<std::atomic<bool>>(false) };

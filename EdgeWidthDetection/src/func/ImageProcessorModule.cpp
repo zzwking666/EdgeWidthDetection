@@ -803,9 +803,9 @@ void ImageProcessor::save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage
 
 		if (captureState == RunningState::OpenRemoveFunc)
 		{
-			// 按帧计算存图配额：每次开机（或停机重启）开放 100 帧，每帧只申请一次，
+			// 按帧计算存图配额：每次开机（或停机重启）每个相机各开放 1000 帧，每帧只申请一次，
 			// 申请成功后该帧的所有图（OK 原图 + MASK 掩码图 / Unrecognized 原图）全部保存
-			if (!imgSaveModule.tryAcquireSaveQuota())
+			if (!imgSaveModule.tryAcquireSaveQuota(imageProcessingModuleIndex))
 			{
 				return;
 			}

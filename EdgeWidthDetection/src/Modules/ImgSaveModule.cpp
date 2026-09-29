@@ -196,13 +196,14 @@ void ImgSaveModule::checkIdleCleanup()
 		return;	// 本轮停机已清理过，或上一次清理尚未结束
 	}
 	_idleCleanupDone.store(true);
-	// 停机后重新开放存图配额：下一轮开机出图可再保存 100 帧
+	// 停机后重新开放存图配额：下一轮开机出图时每个相机可再保存 csaveQuotaPerRun 帧
 	// 部署机长时间不关机，重置配额前先按当前日期刷新存图目录，
 	// 防止跨天后新一轮开机的图片继续写入昨天的日期文件夹
 	refreshSaveRootPathForToday();
-	_saveQuotaRemaining.store(csaveQuotaPerRun);
-	qInfo() << "[ImgSave] 检测到设备停机（相机超过 10 秒无出图），已重新开放存图配额"
-		<< csaveQuotaPerRun << "帧，开始检查存图磁盘空间";
+	_saveQuotaRemaining[0].store(csaveQuotaPerRun);
+	_saveQuotaRemaining[1].store(csaveQuotaPerRun);
+	qInfo() << "[ImgSave] 检测到设备停机（相机超过 10 秒无出图），已重新开放存图配额（每个相机"
+		<< csaveQuotaPerRun << "帧），开始检查存图磁盘空间";
 	startIdleDiskCleanupAsync();
 }
 
