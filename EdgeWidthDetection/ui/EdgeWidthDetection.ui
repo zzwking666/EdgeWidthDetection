@@ -83,10 +83,17 @@
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <!-- 面板宽度定死，防止内部数值变长时挤压图像区 -->
                <property name="minimumSize">
                 <size>
-                 <width>230</width>
+                 <width>260</width>
                  <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>260</width>
+                 <height>16777215</height>
                 </size>
                </property>
                <property name="styleSheet">
@@ -129,6 +136,19 @@
     border: none;
 }</string>
                     </property>
+                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
+                    <property name="minimumSize">
+                     <size>
+                      <width>100</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>100</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
                     <property name="text">
                      <string>0.00</string>
                     </property>
@@ -167,6 +187,19 @@
     color: #000000;
     border: none;
 }</string>
+                    </property>
+                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
+                    <property name="minimumSize">
+                     <size>
+                      <width>100</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>100</width>
+                      <height>16777215</height>
+                     </size>
                     </property>
                     <property name="text">
                      <string>0.00</string>
@@ -207,6 +240,19 @@
     border: none;
 }</string>
                     </property>
+                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
+                    <property name="minimumSize">
+                     <size>
+                      <width>100</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>100</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
                     <property name="text">
                      <string>0.00</string>
                     </property>
@@ -246,6 +292,19 @@
     border: none;
 }</string>
                     </property>
+                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
+                    <property name="minimumSize">
+                     <size>
+                      <width>100</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>100</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
                     <property name="text">
                      <string>0.00</string>
                     </property>
@@ -284,6 +343,19 @@
     color: #000000;
     border: none;
 }</string>
+                    </property>
+                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
+                    <property name="minimumSize">
+                     <size>
+                      <width>100</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>100</width>
+                      <height>16777215</height>
+                     </size>
                     </property>
                     <property name="text">
                      <string>0.00</string>
@@ -470,10 +542,17 @@ QPushButton:pressed {
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <!-- 面板宽度定死，防止内部数值变长时挤压图像区 -->
                <property name="minimumSize">
                 <size>
-                 <width>230</width>
+                 <width>260</width>
                  <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>260</width>
+                 <height>16777215</height>
                 </size>
                </property>
                <property name="styleSheet">
@@ -516,6 +595,19 @@ QPushButton:pressed {
     border: none;
 }</string>
                     </property>
+                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
+                    <property name="minimumSize">
+                     <size>
+                      <width>100</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>100</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
                     <property name="text">
                      <string>0.00</string>
                     </property>
@@ -554,6 +646,19 @@ QPushButton:pressed {
     color: #000000;
     border: none;
 }</string>
+                    </property>
+                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
+                    <property name="minimumSize">
+                     <size>
+                      <width>100</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>100</width>
+                      <height>16777215</height>
+                     </size>
                     </property>
                     <property name="text">
                      <string>0.00</string>
@@ -594,6 +699,19 @@ QPushButton:pressed {
     border: none;
 }</string>
                     </property>
+                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
+                    <property name="minimumSize">
+                     <size>
+                      <width>100</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>100</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
                     <property name="text">
                      <string>0.00</string>
                     </property>
@@ -632,6 +750,19 @@ QPushButton:pressed {
     color: #000000;
     border: none;
 }</string>
+                    </property>
+                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
+                    <property name="minimumSize">
+                     <size>
+                      <width>100</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>100</width>
+                      <height>16777215</height>
+                     </size>
                     </property>
                     <property name="text">
                      <string>0.00</string>
@@ -672,6 +803,19 @@ QPushButton:pressed {
     border: none;
 }</string>
                     </property>
+                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
+                    <property name="minimumSize">
+                     <size>
+                      <width>100</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>100</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
                     <property name="text">
                      <string>0.00</string>
                     </property>
@@ -710,6 +854,19 @@ QPushButton:pressed {
     color: #000000;
     border: none;
 }</string>
+                    </property>
+                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
+                    <property name="minimumSize">
+                     <size>
+                      <width>100</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>100</width>
+                      <height>16777215</height>
+                     </size>
                     </property>
                     <property name="text">
                      <string>0.00</string>
@@ -861,6 +1018,19 @@ QPushButton:pressed {
        <layout class="QVBoxLayout" name="vLayout_SideBar" stretch="8,16,4,2,1">
         <item>
          <widget class="QGroupBox" name="groupBox_head">
+          <!-- 右侧栏宽度定死，防止内部文本变长时整个侧栏撑宽、挤压图像区 -->
+          <property name="minimumSize">
+           <size>
+            <width>400</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>400</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="styleSheet">
            <string notr="true">QGroupBox {
     font-size: 20px;
@@ -1187,6 +1357,19 @@ QPushButton:pressed {
         </item>
         <item>
          <widget class="QGroupBox" name="gBox_infor">
+          <!-- 右侧栏宽度定死，防止内部文本变长时整个侧栏撑宽、挤压图像区 -->
+          <property name="minimumSize">
+           <size>
+            <width>400</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>400</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="styleSheet">
            <string notr="true">QGroupBox {
     font-size: 20px;
@@ -1289,6 +1472,19 @@ QPushButton:pressed {
                </item>
                <item>
                 <widget class="QLabel" name="label_camera1PhotoValue">
+                 <!-- 数值 label 固定宽度，防止数值变长时撑宽右侧栏 -->
+                 <property name="minimumSize">
+                  <size>
+                   <width>120</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>120</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
                  <property name="styleSheet">
                   <string notr="true">QLabel {
        font-size: 24px;
@@ -1328,6 +1524,19 @@ QPushButton:pressed {
                </item>
                <item>
                 <widget class="QLabel" name="label_camera1UnrecognizedValue">
+                 <!-- 数值 label 固定宽度，防止数值变长时撑宽右侧栏 -->
+                 <property name="minimumSize">
+                  <size>
+                   <width>120</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>120</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
                  <property name="styleSheet">
                   <string notr="true">QLabel {
        font-size: 24px;
@@ -1367,6 +1576,19 @@ QPushButton:pressed {
                </item>
                <item>
                 <widget class="QLabel" name="label_camera2PhotoValue">
+                 <!-- 数值 label 固定宽度，防止数值变长时撑宽右侧栏 -->
+                 <property name="minimumSize">
+                  <size>
+                   <width>120</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>120</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
                  <property name="styleSheet">
                   <string notr="true">QLabel {
        font-size: 24px;
@@ -1406,6 +1628,19 @@ QPushButton:pressed {
                </item>
                <item>
                 <widget class="QLabel" name="label_camera2UnrecognizedValue">
+                 <!-- 数值 label 固定宽度，防止数值变长时撑宽右侧栏 -->
+                 <property name="minimumSize">
+                  <size>
+                   <width>120</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>120</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
                  <property name="styleSheet">
                   <string notr="true">QLabel {
        font-size: 24px;
@@ -2205,6 +2440,19 @@ QCheckBox:checked {
         </item>
         <item>
          <widget class="QGroupBox" name="gBox_set">
+          <!-- 右侧栏宽度定死，防止内部文本变长时整个侧栏撑宽、挤压图像区 -->
+          <property name="minimumSize">
+           <size>
+            <width>400</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>400</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="styleSheet">
            <string notr="true">QGroupBox {
     font-size: 20px;
@@ -2301,6 +2549,19 @@ QPushButton:pressed {
         </item>
         <item>
          <widget class="QGroupBox" name="gBox_companyInfo">
+          <!-- 右侧栏宽度定死，防止内部文本变长时整个侧栏撑宽、挤压图像区 -->
+          <property name="minimumSize">
+           <size>
+            <width>400</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>400</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="styleSheet">
            <string notr="true">QGroupBox {
     font-size: 20px;
@@ -2335,6 +2596,10 @@ QGroupBox::title {
              <property name="text">
               <string/>
              </property>
+             <!-- 侧栏宽度已固定，自动曝光长文本换行显示，避免撑宽布局或被裁剪 -->
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
           </layout>
@@ -2342,6 +2607,19 @@ QGroupBox::title {
         </item>
         <item>
          <widget class="QGroupBox" name="gBox_VersionInfo">
+          <!-- 右侧栏宽度定死，防止内部文本变长时整个侧栏撑宽、挤压图像区 -->
+          <property name="minimumSize">
+           <size>
+            <width>400</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>400</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="styleSheet">
            <string notr="true">QGroupBox {
     font-size: 20px;

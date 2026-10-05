@@ -1007,6 +1007,10 @@ rw::rqw::ClickableLabel* EdgeWidthDetection::replaceWithClickableValue(QLabel* o
 	auto* clickable = new rw::rqw::ClickableLabel(this);
 	clickable->setText(oldLabel->text());
 	clickable->setAlignment(oldLabel->alignment());
+	// 复制尺寸策略与固定宽高约束，保持布局锁定（数值 label 定宽）在替换后依然生效
+	clickable->setSizePolicy(oldLabel->sizePolicy());
+	clickable->setMinimumSize(oldLabel->minimumSize());
+	clickable->setMaximumSize(oldLabel->maximumSize());
 	clickable->setCursor(Qt::PointingHandCursor);
 	clickable->setStyleSheet(QString::fromUtf8(kMainClickableValueStyle));
 	// replaceWidget 会递归查找子布局（与 ini_clickableTitle 中标题标签的替换方式相同）
