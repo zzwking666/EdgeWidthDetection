@@ -262,6 +262,7 @@ void PictureViewerThumbnails::loadImageList()
 		{
 			break;
 		}
+		++count;
 		m_imageFiles << imagePath;
 		QFileInfo fileInfo(imagePath);
 		QListWidgetItem* item = new QListWidgetItem();
@@ -277,7 +278,6 @@ void PictureViewerThumbnails::loadImageList()
 			{
 				QMutexLocker locker(&disCacheImageItemMutex);
 				disCacheImageItem.append(item);
-				++count;
 			}
 		}
 		_listWidget->addItem(item);

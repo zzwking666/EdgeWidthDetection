@@ -174,10 +174,12 @@ namespace {
 	}
 
 	// 在 YoloSeg 掩膜范围内统计亮度，用于自动曝光：只统计识别到的目标掩膜区域内的
-	// 平均亮度与过曝/欠曝像素比例；无任何有效掩膜（未识别帧）时回退为整图统计，
+	// 平均亮度与过曝/欠曝像素比例；无任何有效掩膜（未识别帧）时回退为限位线内区域统计，
+	// 避免整图背景干扰曝光调节；限位功能未启用时再回退为整图统计，
 	// 避免冷启动黑图一直无识别导致曝光无法拉亮
 	inline void ComputeExposureStatsByMask(const cv::Mat& image,
 		const std::vector<rw::DetectionRectangleInfo>& processResult,
+		size_t cameraIndex,
 		double& meanIntensity, double& overRatio, double& underRatio)
 	{
 		auto& cfg = Modules::getInstance().configManagerModule.setConfig;
@@ -228,11 +230,51 @@ namespace {
 		}
 		else
 		{
-			// 未识别到目标：回退为整图统计
-			const double totalPixels = static_cast<double>(gray.total());
-			meanIntensity = cv::mean(gray)[0];
-			overRatio = (totalPixels > 0.0) ? (cv::countNonZero(overMask) / totalPixels) : 0.0;
-			underRatio = (totalPixels > 0.0) ? (cv::countNonZero(underMask) / totalPixels) : 0.0;
+			// 未识别到目标：回退为限位线内区域统计
+			// 限位为 0 表示该边不限制：下/右限位按图像最大边界处理，上/左限位天然为图像起点
+			int limitTop{ 0 };
+			int limitBottom{ 0 };
+			int limitLeft{ 0 };
+			int limitRight{ 0 };
+			if (2 == cameraIndex)
+			{
+				limitTop = static_cast<int>(cfg.shangxianwei2);
+				limitBottom = static_cast<int>(cfg.xiaxianwei2);
+				limitLeft = static_cast<int>(cfg.zuoxianwei2);
+				limitRight = static_cast<int>(cfg.youxianwei2);
+			}
+			else
+			{
+				limitTop = static_cast<int>(cfg.shangxianwei1);
+				limitBottom = static_cast<int>(cfg.xiaxianwei1);
+				limitLeft = static_cast<int>(cfg.zuoxianwei1);
+				limitRight = static_cast<int>(cfg.youxianwei1);
+			}
+
+			// 四个限位全为 0 时限位功能未启用，回退为整图统计
+			const bool isLimitEnabled = (0 != limitTop || 0 != limitBottom || 0 != limitLeft || 0 != limitRight);
+			const int left = std::clamp(limitLeft, 0, gray.cols);
+			const int top = std::clamp(limitTop, 0, gray.rows);
+			const int right = (limitRight > 0) ? std::min(limitRight, gray.cols) : gray.cols;
+			const int bottom = (limitBottom > 0) ? std::min(limitBottom, gray.rows) : gray.rows;
+
+			if (isLimitEnabled && right > left && bottom > top)
+			{
+				const cv::Rect limitRect(left, top, right - left, bottom - top);
+				const cv::Mat grayRoi = gray(limitRect);
+				const double totalPixels = static_cast<double>(grayRoi.total());
+				meanIntensity = cv::mean(grayRoi)[0];
+				overRatio = (totalPixels > 0.0) ? (cv::countNonZero(overMask(limitRect)) / totalPixels) : 0.0;
+				underRatio = (totalPixels > 0.0) ? (cv::countNonZero(underMask(limitRect)) / totalPixels) : 0.0;
+			}
+			else
+			{
+				// 限位未启用或限位区域无效：回退为整图统计
+				const double totalPixels = static_cast<double>(gray.total());
+				meanIntensity = cv::mean(gray)[0];
+				overRatio = (totalPixels > 0.0) ? (cv::countNonZero(overMask) / totalPixels) : 0.0;
+				underRatio = (totalPixels > 0.0) ? (cv::countNonZero(underMask) / totalPixels) : 0.0;
+			}
 		}
 	}
 
@@ -498,7 +540,7 @@ void ImageProcessor::reportExposureStats(const cv::Mat& image)
 	double overRatio = 0.0;
 	double underRatio = 0.0;
 	ComputeExposureStatsByMask(image, _imgProcess->getContext().getProcessResult(),
-		meanIntensity, overRatio, underRatio);
+		imageProcessingModuleIndex, meanIntensity, overRatio, underRatio);
 	if (auto module = qobject_cast<ImageProcessingModule*>(parent())) {
 		module->emitExposureStats(meanIntensity, overRatio, underRatio);
 	}
@@ -521,7 +563,7 @@ void ImageProcessor::run_debug(MatInfo& frame)
 	DiagCheckpoint("掩码图生成完成", imageProcessingModuleIndex, frame.index);
 	auto defectResult = imgPro.getDefectResultInfo();
 
-	// 自动曝光亮度统计：在 YoloSeg 掩膜范围内统计（未识别帧回退整图统计）
+	// 自动曝光亮度统计：在 YoloSeg 掩膜范围内统计（未识别帧回退限位线内区域统计）
 	reportExposureStats(frame.image);
 
 	emit imageReady(imageProcessingModuleIndex, QPixmap::fromImage(maskImg));
@@ -551,7 +593,7 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	auto defectResult = imgPro.getDefectResultInfo();
 	auto processResult = imgPro.getContext().getProcessResult();
 
-	// 自动曝光亮度统计：在 YoloSeg 掩膜范围内统计（未识别帧回退整图统计）
+	// 自动曝光亮度统计：在 YoloSeg 掩膜范围内统计（未识别帧回退限位线内区域统计）
 	reportExposureStats(frame.image);
 
 	// 统计：每处理一帧拍照总量 +1（调试模式不进入此函数，不计数）
@@ -674,7 +716,7 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 	auto defectResult = imgPro.getDefectResultInfo();
 	auto processResult = imgPro.getContext().getProcessResult();
 
-	// 自动曝光亮度统计：在 YoloSeg 掩膜范围内统计（未识别帧回退整图统计）
+	// 自动曝光亮度统计：在 YoloSeg 掩膜范围内统计（未识别帧回退限位线内区域统计）
 	reportExposureStats(frame.image);
 
 	// 统计：每处理一帧拍照总量 +1（调试模式不进入此函数，不计数）
