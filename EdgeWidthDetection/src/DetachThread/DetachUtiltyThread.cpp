@@ -26,7 +26,7 @@ void DetachUtiltyThread::stopThread()
 void DetachUtiltyThread::run()
 {
 	while (running) {
-		QThread::sleep(1);
+		QThread::msleep(300);
 		emit updateStatisticalInfo();
 		readPLCWarnningInfo();
 	}

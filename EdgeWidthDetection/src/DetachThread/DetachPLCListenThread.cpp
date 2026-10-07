@@ -30,7 +30,7 @@ void DetachPLCListenThread::run()
 {
 	while (running)
 	{
-		QThread::sleep(1);
+		QThread::msleep(300);
 		readPLCInfo();
 	}
 }
