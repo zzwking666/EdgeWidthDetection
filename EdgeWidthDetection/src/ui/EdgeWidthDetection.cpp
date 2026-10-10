@@ -1271,27 +1271,31 @@ void EdgeWidthDetection::ckb_autoExposure_checked(bool checked)
 	emit autoExposureToggled(checked);
 }
 
+// 自动曝光信息：固定各数值字段宽度，保证每行文本长度恒定，
+// 避免曝光值位数变化导致 label_warnningInfo 随之拉伸/缩短、进而牵动侧栏布局
+static QString formatExposureInfo(const QString& camName, double currentExposure, double targetExposure,
+	double meanIntensity, double overRatio, double underRatio)
+{
+	return QString("%1 均值:%2 过曝:%3% 欠曝:%4% 当前曝光:%5 目标曝光:%6")
+		.arg(camName)
+		.arg(meanIntensity, 5, 'f', 1)       // 0.0 ~ 255.0
+		.arg(overRatio * 100.0, 5, 'f', 1)   // 0.0 ~ 100.0
+		.arg(underRatio * 100.0, 5, 'f', 1)  // 0.0 ~ 100.0
+		.arg(currentExposure, 5, 'f', 0)     // 曝光值，收敛后 100 ~ 1000
+		.arg(targetExposure, 5, 'f', 0);     // 目标曝光 100 ~ 1000
+}
+
 void EdgeWidthDetection::onAutoExposureInfo(double currentExposure, double targetExposure, double meanIntensity,
 	double overRatio, double underRatio)
 {
-	_cam1ExposureInfo = QString("相机1 均值:%1 过曝:%2% 欠曝:%3% 当前曝光:%4 目标曝光:%5")
-		.arg(meanIntensity, 0, 'f', 1)
-		.arg(overRatio * 100.0, 0, 'f', 1)
-		.arg(underRatio * 100.0, 0, 'f', 1)
-		.arg(currentExposure, 0, 'f', 0)
-		.arg(targetExposure, 0, 'f', 0);
+	_cam1ExposureInfo = formatExposureInfo(QStringLiteral("相机1"), currentExposure, targetExposure, meanIntensity, overRatio, underRatio);
 	refreshExposureInfo();
 }
 
 void EdgeWidthDetection::onAutoExposureInfo2(double currentExposure, double targetExposure, double meanIntensity,
 	double overRatio, double underRatio)
 {
-	_cam2ExposureInfo = QString("相机2 均值:%1 过曝:%2% 欠曝:%3% 当前曝光:%4 目标曝光:%5")
-		.arg(meanIntensity, 0, 'f', 1)
-		.arg(overRatio * 100.0, 0, 'f', 1)
-		.arg(underRatio * 100.0, 0, 'f', 1)
-		.arg(currentExposure, 0, 'f', 0)
-		.arg(targetExposure, 0, 'f', 0);
+	_cam2ExposureInfo = formatExposureInfo(QStringLiteral("相机2"), currentExposure, targetExposure, meanIntensity, overRatio, underRatio);
 	refreshExposureInfo();
 }
 
