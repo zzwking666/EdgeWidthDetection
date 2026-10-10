@@ -1,7 +1,54 @@
 #pragma once
 #include <QString>
+#include <any>
+#include <limits>
 
 #include "imgPro_ImageProcessUtilty.hpp"
+#include "imgPro_ImageProcess.hpp"
+
+// 判断识别结果中心点是否在限位线有效区域内（与 ImgProModule 的限位屏蔽逻辑保持一致）。
+// 某一边限位为 0 表示该边不限制；四个限位全为 0（限位功能未启用）时全部视为区域内。
+inline bool IsInLimitRegion(const rw::DetectionRectangleInfo& info, const rw::imgPro::ImageProcessContext& context)
+{
+	int limitTop{ 0 };
+	int limitBottom{ 0 };
+	int limitLeft{ 0 };
+	int limitRight{ 0 };
+	bool isLimitEnabled{ false };
+
+	auto it = context.customFields.find("LimitTop");
+	if (it != context.customFields.end()) {
+		limitTop = std::any_cast<int>(it->second);
+	}
+	it = context.customFields.find("LimitBottom");
+	if (it != context.customFields.end()) {
+		limitBottom = std::any_cast<int>(it->second);
+	}
+	it = context.customFields.find("LimitLeft");
+	if (it != context.customFields.end()) {
+		limitLeft = std::any_cast<int>(it->second);
+	}
+	it = context.customFields.find("LimitRight");
+	if (it != context.customFields.end()) {
+		limitRight = std::any_cast<int>(it->second);
+	}
+	it = context.customFields.find("IsLimitEnabled");
+	if (it != context.customFields.end()) {
+		isLimitEnabled = std::any_cast<bool>(it->second);
+	}
+
+	if (!isLimitEnabled)
+	{
+		return true;
+	}
+
+	// 下/右限位为 0 时按最大边界处理，上/左限位天然为图像起点
+	const int effectiveBottom = (limitBottom > 0) ? limitBottom : std::numeric_limits<int>::max();
+	const int effectiveRight = (limitRight > 0) ? limitRight : std::numeric_limits<int>::max();
+
+	return info.center_y > limitTop && info.center_y < effectiveBottom
+		&& info.center_x > limitLeft && info.center_x < effectiveRight;
+}
 
 inline struct GlobalPath
 {

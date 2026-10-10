@@ -15,6 +15,7 @@
 #include <QPen>
 #include <cmath>
 #include <algorithm>
+#include <iterator>
 #include <limits>
 #include <map>
 
@@ -593,6 +594,11 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	auto defectResult = imgPro.getDefectResultInfo();
 	auto processResult = imgPro.getContext().getProcessResult();
 
+	// 限位屏蔽：绘制与中心点计算只使用限位线内的识别结果，限位外的误识别不绘制、不参与计算
+	std::vector<rw::DetectionRectangleInfo> validResult;
+	std::copy_if(processResult.begin(), processResult.end(), std::back_inserter(validResult),
+		[&](const auto& item) { return IsInLimitRegion(item, imgPro.context()); });
+
 	// 自动曝光亮度统计：在 YoloSeg 掩膜范围内统计（未识别帧回退限位线内区域统计）
 	reportExposureStats(frame.image);
 
@@ -607,12 +613,12 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	bool recognized = false;	// 本帧是否向 PLC 写入有效压痕宽度，未写入（写 0）则计入未识别总量
 
 	// 计算识别中心点与图像中心点差值
-	const bool hasCenter = (processResult.size() == 1);
+	const bool hasCenter = (validResult.size() == 1);
 	if (hasCenter)
 	{
 		auto pixToWorld = setConfig.xiangsudangliang1;
 		int imageCenterY = frame.image.rows / 2;
-		int detectionCenterY = processResult[0].center_y;
+		int detectionCenterY = validResult[0].center_y;
 		centerDiffPixel = imageCenterY - detectionCenterY;
 		centerDiffMm = centerDiffPixel * pixToWorld;
 		if (setConfig.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1)
@@ -637,7 +643,7 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 			widthPixel = std::any_cast<int>(imgPro.context().customFields["width"]);
 			width = widthPixel * pixToWorld;
 
-			drawImg(maskImg, processResult, centerDiffMm);
+			drawImg(maskImg, validResult, centerDiffMm);
 			recognized = true;
 		}
 	}
@@ -716,6 +722,11 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 	auto defectResult = imgPro.getDefectResultInfo();
 	auto processResult = imgPro.getContext().getProcessResult();
 
+	// 限位屏蔽：绘制只使用限位线内的识别结果，限位外的误识别不绘制
+	std::vector<rw::DetectionRectangleInfo> validResult;
+	std::copy_if(processResult.begin(), processResult.end(), std::back_inserter(validResult),
+		[&](const auto& item) { return IsInLimitRegion(item, imgPro.context()); });
+
 	// 自动曝光亮度统计：在 YoloSeg 掩膜范围内统计（未识别帧回退限位线内区域统计）
 	reportExposureStats(frame.image);
 
@@ -734,7 +745,7 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 			auto pixToWorld = setConfig.xiangsudangliang2;
 			widthPixel = std::any_cast<int>(imgPro.context().customFields["width"]);
 			width = widthPixel * pixToWorld;
-			drawImg(maskImg, processResult, 0.0);
+			drawImg(maskImg, validResult, 0.0);
 			recognized = true;
 		}
 	}

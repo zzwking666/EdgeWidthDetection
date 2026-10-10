@@ -145,52 +145,12 @@ void ImgProModule::buildImgProContextPreProcess()
 		, rw::imgPro::ImageProcessContext& context)
 		{
 			bool isInShieldWires = false;
-			int limitTop{ -1 };
-			int limitBottom{ -1 };
-			int limitLeft{ -1 };
-			int limitRight{ -1 };
 
-			if (context.customFields.find("LimitTop") != context.customFields.end()) {
-				limitTop = std::any_cast<int>(context.customFields["LimitTop"]);
-			}
-			if (context.customFields.find("LimitBottom") != context.customFields.end()) {
-				limitBottom = std::any_cast<int>(context.customFields["LimitBottom"]);
-			}
-			if (context.customFields.find("LimitLeft") != context.customFields.end()) {
-				limitLeft = std::any_cast<int>(context.customFields["LimitLeft"]);
-			}
-			if (context.customFields.find("LimitRight") != context.customFields.end()) {
-				limitRight = std::any_cast<int>(context.customFields["LimitRight"]);
-			}
-
-			bool isLimitEnabled = false;
-			if (context.customFields.find("IsLimitEnabled") != context.customFields.end()) {
-				isLimitEnabled = std::any_cast<bool>(context.customFields["IsLimitEnabled"]);
-			}
-
-			// 限位功能未启用（四个限位全为 0）时不做屏蔽
-			if (!isLimitEnabled)
+			// 限位屏蔽：中心点在限位线有效区域外的识别直接移除（不参与剔除判定），
+			// 判断逻辑与绘制/宽度计算共用于 IsInLimitRegion
+			if (IsInLimitRegion(info, context))
 			{
-				return false;
-			}
-
-			if (-1 == limitTop || -1 == limitBottom || -1 == limitLeft || -1 == limitRight)
-			{
-				return false;
-			}
-			// 判断缺陷框中心点是否在屏蔽线区域内
-
-			// 某一边限位为 0 表示该边不限制：下/右限位按最大边界处理，上/左限位天然为图像起点，
-			// 避免只设置部分限位时（其余为 0）有效区域被夹成空、所有识别都被过滤
-			const int effectiveBottom = (limitBottom > 0) ? limitBottom : std::numeric_limits<int>::max();
-			const int effectiveRight = (limitRight > 0) ? limitRight : std::numeric_limits<int>::max();
-
-			if (info.center_y > limitTop && info.center_y < effectiveBottom)
-			{
-				if (info.center_x > limitLeft && info.center_x < effectiveRight)
-				{
-					isInShieldWires = true;
-				}
+				isInShieldWires = true;
 			}
 
 			return !isInShieldWires;
@@ -227,17 +187,22 @@ void ImgProModule::buildImgProContextPreProcess()
 		rw::imgPro::DefectResultInfo& defectResultInfo,
 		rw::imgPro::ImageProcessContext& context)
 		{
-			// 默认只取第一个结果
-			if (!processResult.empty())
+			// 默认只取第一个限位内的结果（限位外的误识别不参与宽度计算）
+			for (const auto& info : processResult)
 			{
-				if (processResult[0].width < processResult[0].height)
+				if (!IsInLimitRegion(info, context))
 				{
-					context.customFields["width"] = processResult[0].width;
+					continue;
+				}
+				if (info.width < info.height)
+				{
+					context.customFields["width"] = info.width;
 				}
 				else
 				{
-					context.customFields["width"] = processResult[0].height;
+					context.customFields["width"] = info.height;
 				}
+				break;
 			}
 		};
 #pragma endregion
