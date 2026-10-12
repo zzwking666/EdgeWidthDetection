@@ -299,9 +299,9 @@ void EdgeWidthDetection::build_EdgeWidthDetectionData()
 
 	rbtn_removeFunc_checked(true);
 
-	// 初始化图像查看器（只显示每个目录的前 100 张图片，避免图片过多时加载过慢、占用内存过大）
+	// 初始化图像查看器（只显示每个目录的前 200 张图片，避免图片过多时加载过慢、占用内存过大）
 	_picturesViewer = new PictureViewerThumbnails(this);
-	_picturesViewer->setViewerNum(100);
+	_picturesViewer->setViewerNum(200);
 
 	ini_clickableTitle();
 
