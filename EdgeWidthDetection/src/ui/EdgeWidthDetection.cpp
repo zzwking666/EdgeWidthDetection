@@ -1,5 +1,6 @@
 #include "EdgeWidthDetection.h"
 
+#include <QDate>
 #include <QDir>
 #include <QFile>
 #include <QFutureWatcher>
@@ -644,15 +645,12 @@ void EdgeWidthDetection::pbtn_resetProduct_clicked()
 
 void EdgeWidthDetection::pbtn_openSaveLocation_clicked()
 {
-	auto& imageSaveEngine = Modules::getInstance().imgSaveModule.imageSaveEngine;
-	QString imageSavePath = imageSaveEngine->getRootPath();
+	// 只查看当天的图片文件夹（与 ImgSaveModule 的日期目录拼接方式保持一致）
+	QDir dir;
+	QString todayPath = dir.absoluteFilePath(
+		globalPath.imageSaveRootPath + QDate::currentDate().toString("yyyy_MM_dd"));
 
-	// 取上一级目录
-	QDir dir(imageSavePath);
-	dir.cdUp();
-	QString parentPath = dir.absolutePath();
-
-	_picturesViewer->setRootPath(parentPath);
+	_picturesViewer->setRootPath(todayPath);
 	_picturesViewer->setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
 	_picturesViewer->show();
 }
