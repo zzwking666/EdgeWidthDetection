@@ -57,7 +57,7 @@ public slots:
 	/// 相机每出一帧调用一次，刷新出图时间戳（DirectConnection，仅原子写，可在相机线程执行）
 	void notifyFrameActivity();
 signals:
-	/// 存图磁盘空间状态变化时发出（enough=false 表示低于阈值已暂停存图），用于 UI 弹窗提示
+	/// 存图磁盘空间状态变化时发出（enough=false 表示低于阈值已暂停存图），当前无 UI 弹窗，仅供日志/调试
 	void diskSpaceStateChanged(bool enough, double freeGB);
 private:
 	/// 后台异步清理超过 7 天的历史图像文件夹，不阻塞启动流程
