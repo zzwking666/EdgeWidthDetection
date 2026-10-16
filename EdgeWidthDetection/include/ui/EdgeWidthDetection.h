@@ -86,13 +86,9 @@ private slots:
 	void rbtn_qiangguang_2_checked(bool checked);
 	void ckb_autoExposure_2_checked(bool checked);
 
-	// 主界面拍照面板按钮（点位地址以 modbus_main.csv 为准）
-	void pbtn_start_clicked();			// 启动：开关式点动，写 1 置绿 / 再点写 0 恢复原样式
-	void pbtn_stop_clicked();			// 停止：同上
-	void pbtn_cutCompensate_clicked();	// 切刀补偿切换：按当前状态取反写入
 	void onMainUiRefreshTimeout();		// 定时轮询主界面面板全部点位并刷新显示
 
-	// 新增 PLC 操作列（拍照/切刀面板左侧）按钮
+	// PLC 操作列（拍照/切刀面板左侧）按钮
 	void pbtn_plcStartCompensate_clicked();	// 开始补偿：与「切刀补偿」同一点位(3000线圈)，取反写入
 	void pbtn_plcAutoRecipe_clicked();		// 配方自动选择：按当前状态取反写入
 	void onPlcRecipeBtn_clicked();			// 9 个配方按钮：按各自线圈当前值取反写入
@@ -127,7 +123,7 @@ private:
 
 	// 将普通 QLabel 原位替换为可点击标签（点击写数值用），样式与 replaceWidget 用法同 ini_clickableTitle
 	rw::rqw::ClickableLabel* replaceWithClickableValue(QLabel* oldLabel);
-	void updateCutCompensateButton();	// 按 _cutCompensateOn 刷新补偿按钮（含新列「开始补偿」）的文字与背景色（开=绿/关=红）
+	void updateCutCompensateButton();	// 按 _cutCompensateOn 刷新「开始补偿」按钮背景色（开=绿/关=红）
 	void updateAutoRecipeButton();		// 按 _autoRecipeOn 刷新「配方自动选择」按钮背景色（开=绿/关=红）
 	void updateRecipeButtons(int recipeNo);	// 按「配方号」点位值刷 9 个配方按钮颜色：等于按钮值=绿，否则=红
 
@@ -145,7 +141,7 @@ private:
 
 	// 主界面面板点位数据与控件映射
 	QVector<MainUiPoint> _mainUiPoints;
-	QHash<QString, QVector<QLabel*>> _mainUiValueLabels;	// 数值行：点位名 -> 当前值标签（同名点位可绑定多个标签，如新列与现有面板同行）
+	QHash<QString, QVector<QLabel*>> _mainUiValueLabels;	// 数值行：点位名 -> 当前值标签
 	QTimer _mainUiRefreshTimer;						// 面板点位轮询定时器
 	bool _mainUiRefreshInFlight{ false };			// 上一次轮询未结束时跳过本次
 	bool _cutCompensateOn{ false };					// 切刀补偿当前状态（轮询更新，切换按钮据此取反）
@@ -153,12 +149,7 @@ private:
 	QVector<QPushButton*> _recipeButtons;			// 9 个配方按钮（顺序对应 150~230）
 	QHash<QString, bool> _mainUiBoolStates;			// BOOL 点位最近一次轮询值（配方按钮取反写入用）
 
-	// 四个可写数值行的可点击标签（点击弹出数字键盘写入）
-	rw::rqw::ClickableLabel* clk_setPhotoLength{ nullptr };
-	rw::rqw::ClickableLabel* clk_cutJogContSpeed{ nullptr };
-	rw::rqw::ClickableLabel* clk_cutJogOnceSpeed{ nullptr };
-	rw::rqw::ClickableLabel* clk_autoSpeed{ nullptr };
-	// 新增 PLC 操作列的可写数值行可点击标签
+	// PLC 操作列的可写数值行可点击标签（点击弹出数字键盘写入）
 	rw::rqw::ClickableLabel* clk_plcSetPhotoLength{ nullptr };
 	rw::rqw::ClickableLabel* clk_plcBagCount{ nullptr };
 private:

@@ -687,60 +687,22 @@ void EdgeWidthDetection::build_mainUiModbus()
 {
 	loadMainUiPoints();
 
-	// 四个可写数值行替换为可点击标签（点击弹出数字键盘写入）
-	clk_setPhotoLength = replaceWithClickableValue(ui->label_setPhotoLengthValue);
-	clk_cutJogContSpeed = replaceWithClickableValue(ui->label_cutJogContSpeedValue);
-	clk_cutJogOnceSpeed = replaceWithClickableValue(ui->label_cutJogOnceSpeedValue);
-	clk_autoSpeed = replaceWithClickableValue(ui->label_autoSpeedValue);
-	// 新增 PLC 操作列的可写数值行同样改造
+	// PLC 操作列的可写数值行替换为可点击标签（点击弹出数字键盘写入）
 	clk_plcSetPhotoLength = replaceWithClickableValue(ui->label_plcSetPhotoLengthValue);
 	clk_plcBagCount = replaceWithClickableValue(ui->label_plcBagCountValue);
 
-	// 数值行：点位名 -> 当前值标签（轮询刷新时按名更新；同名点位可绑定多个标签，如新列与现有面板同行）
+	// 数值行：点位名 -> 当前值标签（轮询刷新时按名更新）
 	auto addValueLabel = [this](const QString& name, QLabel* label)
 	{
 		_mainUiValueLabels[name].append(label);
 	};
-	addValueLabel(QStringLiteral("设定拍照长度"), clk_setPhotoLength);
 	addValueLabel(QStringLiteral("设定拍照长度"), clk_plcSetPhotoLength);
-	addValueLabel(QStringLiteral("实际拍照值"), ui->label_actualPhotoValue);
 	addValueLabel(QStringLiteral("实际拍照值"), ui->label_plcActualPhotoValue);
-	addValueLabel(QStringLiteral("白料长"), ui->label_whiteLengthValue);
 	addValueLabel(QStringLiteral("白料长"), ui->label_plcWhiteLengthValue);
-	addValueLabel(QStringLiteral("袋长"), ui->label_bagLengthValue);
-	addValueLabel(QStringLiteral("编码器当前位置"), ui->label_encoderPosValue);
-	addValueLabel(QStringLiteral("切刀一直点动速度"), clk_cutJogContSpeed);
-	addValueLabel(QStringLiteral("切刀单次点动速度"), clk_cutJogOnceSpeed);
-	addValueLabel(QStringLiteral("自动速度"), clk_autoSpeed);
-	addValueLabel(QStringLiteral("切刀计算移动量"), ui->label_cutCalcMoveValue);
-	addValueLabel(QStringLiteral("切刀实际移动量"), ui->label_cutActualMoveValue);
-	addValueLabel(QStringLiteral("切刀当前位置"), ui->label_cutPosValue);
 	addValueLabel(QStringLiteral("切刀当前位置"), ui->label_plcCutPosValue);
 	addValueLabel(QStringLiteral("间隔袋数"), clk_plcBagCount);
 	addValueLabel(QStringLiteral("切刀移动量"), ui->label_plcCutMoveValue);
 
-	QObject::connect(ui->pbtn_start, &QPushButton::clicked,
-		this, &EdgeWidthDetection::pbtn_start_clicked);
-	QObject::connect(ui->pbtn_stop, &QPushButton::clicked,
-		this, &EdgeWidthDetection::pbtn_stop_clicked);
-	QObject::connect(ui->pbtn_cutCompensate, &QPushButton::clicked,
-		this, &EdgeWidthDetection::pbtn_cutCompensate_clicked);
-	QObject::connect(clk_setPhotoLength, &rw::rqw::ClickableLabel::clicked, this, [this]()
-		{
-			writeMainValue(QStringLiteral("设定拍照长度"));
-		});
-	QObject::connect(clk_cutJogContSpeed, &rw::rqw::ClickableLabel::clicked, this, [this]()
-		{
-			writeMainValue(QStringLiteral("切刀一直点动速度"));
-		});
-	QObject::connect(clk_cutJogOnceSpeed, &rw::rqw::ClickableLabel::clicked, this, [this]()
-		{
-			writeMainValue(QStringLiteral("切刀单次点动速度"));
-		});
-	QObject::connect(clk_autoSpeed, &rw::rqw::ClickableLabel::clicked, this, [this]()
-		{
-			writeMainValue(QStringLiteral("自动速度"));
-		});
 	QObject::connect(clk_plcSetPhotoLength, &rw::rqw::ClickableLabel::clicked, this, [this]()
 		{
 			writeMainValue(QStringLiteral("设定拍照长度"));
@@ -1090,17 +1052,8 @@ rw::rqw::ClickableLabel* EdgeWidthDetection::replaceWithClickableValue(QLabel* o
 
 void EdgeWidthDetection::updateCutCompensateButton()
 {
-	if (_cutCompensateOn)
-	{
-		ui->pbtn_cutCompensate->setText(QStringLiteral("切刀补偿开启"));
-	}
-	else
-	{
-		ui->pbtn_cutCompensate->setText(QStringLiteral("切刀补偿关闭"));
-	}
 	const char* style = _cutCompensateOn ? kCutCompensateOnStyle : kCutCompensateOffStyle;
-	ui->pbtn_cutCompensate->setStyleSheet(QString::fromUtf8(style));
-	// 新 PLC 操作列的「开始补偿」为同一 PLC 点位（3000 线圈），文字固定、仅随状态变色
+	// 「开始补偿」按钮文字固定、仅随状态变色
 	ui->pbtn_plcStartCompensate->setStyleSheet(QString::fromUtf8(style));
 }
 
@@ -1119,37 +1072,6 @@ void EdgeWidthDetection::updateRecipeButtons(int recipeNo)
 		_recipeButtons[i]->setStyleSheet(QString::fromUtf8(
 			on ? kCutCompensateOnStyle : kCutCompensateOffStyle));
 	}
-}
-
-void EdgeWidthDetection::pbtn_start_clicked()
-{
-	// 点动：点击向「启动」线圈写 1，50ms 后自动复位为 0；
-	// 按钮颜色固定（.ui 中启动绿/停止红），运行状态以旁边的系统标志位灯为准
-	if (writeMainCoil(QStringLiteral("启动"), true))
-	{
-		QTimer::singleShot(50, this, [this]()
-			{
-				writeMainCoil(QStringLiteral("启动"), false);
-			});
-	}
-}
-
-void EdgeWidthDetection::pbtn_stop_clicked()
-{
-	if (writeMainCoil(QStringLiteral("停止"), true))
-	{
-		QTimer::singleShot(50, this, [this]()
-			{
-				writeMainCoil(QStringLiteral("停止"), false);
-			});
-	}
-}
-
-void EdgeWidthDetection::pbtn_cutCompensate_clicked()
-{
-	// 切换开关：按当前状态取反写入；按钮文字/颜色由轮询读到的新状态刷新
-	writeMainCoil(QStringLiteral("切刀补偿"), !_cutCompensateOn);
-	onMainUiRefreshTimeout();
 }
 
 void EdgeWidthDetection::pbtn_plcStartCompensate_clicked()
@@ -1193,9 +1115,6 @@ void EdgeWidthDetection::onMainUiRefreshTimeout()
 				lb->setText(QStringLiteral("--"));
 			}
 		}
-		setLampColor(ui->label_systemFlag, false, false, QString(), QString());
-		setLampColor(ui->label_cutPosLimit, false, false, QString(), QString());
-		setLampColor(ui->label_cutNegLimit, false, false, QString(), QString());
 		setLampColor(ui->label_plcCutPosLimit, false, false, QString(), QString());
 		setLampColor(ui->label_plcCutNegLimit, false, false, QString(), QString());
 		return;
@@ -1283,25 +1202,14 @@ void EdgeWidthDetection::onMainUiRefreshTimeout()
 						lb->setText(res.ok ? res.text : QStringLiteral("--"));
 					}
 				}
-				else if (point.name == QStringLiteral("系统标志"))
-				{
-					// 系统标志：1 绿、0 红，读取失败置灰
-					setLampColor(ui->label_systemFlag, res.ok, res.boolValue,
-						QStringLiteral("#00c853"), QStringLiteral("red"));
-				}
 				else if (point.name == QStringLiteral("切刀正限位"))
 				{
-					// 限位灯：触发(1)亮绿，未触发(0)灰
-					setLampColor(ui->label_cutPosLimit, res.ok, res.boolValue,
-						QStringLiteral("#00e000"), QStringLiteral("#9e9e9e"));
-					// 新 PLC 操作列限位灯按客户图要求：0 红、1 绿
+					// PLC 操作列限位灯按客户图要求：0 红、1 绿
 					setLampColor(ui->label_plcCutPosLimit, res.ok, res.boolValue,
 						QStringLiteral("#00e000"), QStringLiteral("red"));
 				}
 				else if (point.name == QStringLiteral("切刀负限位"))
 				{
-					setLampColor(ui->label_cutNegLimit, res.ok, res.boolValue,
-						QStringLiteral("#00e000"), QStringLiteral("#9e9e9e"));
 					setLampColor(ui->label_plcCutNegLimit, res.ok, res.boolValue,
 						QStringLiteral("#00e000"), QStringLiteral("red"));
 				}
