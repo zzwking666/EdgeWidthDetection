@@ -1,6 +1,8 @@
 #include <QMessageBox>
 #include <QSessionManager>
 #include <QtWidgets/QApplication>
+#include <QDebug>
+#include <cstdio>
 #include <windows.h>
 
 #include "Modules.hpp"
@@ -9,12 +11,24 @@
 #include "lgm_Logger.hpp"
 #include "lgm_PreDef.hpp"
 
+// Qt 默认消息处理器把 qDebug/qInfo/qWarning 文本按系统本地编码（中文 Windows 为 GBK）输出，
+// 而本程序控制台已设为 UTF-8（见下方 SetConsoleOutputCP(CP_UTF8)），两者不一致导致中文乱码。
+// 自定义消息处理器统一以 UTF-8 字节输出日志，与控制台编码保持一致。
+static void utf8MessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& message)
+{
+	const QByteArray line = qFormatLogMessage(type, context, message).toUtf8();
+	fwrite(line.constData(), 1, static_cast<size_t>(line.size()), stderr);
+	fputc('\n', stderr);
+	fflush(stderr);
+}
+
 int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
 
 	SetConsoleOutputCP(CP_UTF8);
 	SetConsoleCP(CP_UTF8);
+	qInstallMessageHandler(utf8MessageHandler);
 
 	rw::lgm::LoggerCfg logger;
 	rw::lgm::iniLogger(logger);
