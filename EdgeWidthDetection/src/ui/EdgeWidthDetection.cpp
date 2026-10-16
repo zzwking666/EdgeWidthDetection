@@ -76,25 +76,12 @@ namespace
 	// 可点击（可写数值）标签样式：蓝色加粗下划线 + 手型光标，提示可点击
 	const char* kMainClickableValueStyle =
 		"QLabel {"
-		"    font-size: 16px;"
+		"    font-size: 24px;"
 		"    font-weight: bold;"
 		"    color: #1565C0;"
 		"    border: none;"
 		"    text-decoration: underline;"
 		"}";
-
-	// 启动/停止按钮「已写入 1」状态的样式（绿底）；关状态直接用 .ui 中的原始样式表
-	const char* kToggleBtnOnStyle =
-		"QPushButton {"
-		"    padding: 4px 8px;"
-		"    border: 1px solid #00a040;"
-		"    border-radius: 3px;"
-		"    background-color: #00e060;"
-		"    color: #003300;"
-		"    font-size: 16px;"
-		"    font-weight: bold;"
-		"}"
-		"QPushButton:pressed { background-color: #00b050; }";
 
 	// 切刀补偿按钮两种状态的样式（开=绿底，关=红底）
 	const char* kCutCompensateOnStyle =
@@ -104,7 +91,7 @@ namespace
 		"    border-radius: 3px;"
 		"    background-color: #00e060;"
 		"    color: #003300;"
-		"    font-size: 16px;"
+		"    font-size: 24px;"
 		"    font-weight: bold;"
 		"}"
 		"QPushButton:pressed { background-color: #00b050; }";
@@ -115,10 +102,40 @@ namespace
 		"    border-radius: 3px;"
 		"    background-color: #e05050;"
 		"    color: #ffffff;"
-		"    font-size: 16px;"
+		"    font-size: 24px;"
 		"    font-weight: bold;"
 		"}"
 		"QPushButton:pressed { background-color: #b04040; }";
+
+	// 9 个配方按钮专用样式：按下反馈做得更明显（深色底 + 加粗描边 + 文字变色），方便观察是否按下
+	const char* kRecipeBtnOnStyle =
+		"QPushButton {"
+		"    border: 1px solid #00a040;"
+		"    border-radius: 3px;"
+		"    background-color: #00e060;"
+		"    color: #003300;"
+		"    font-size: 24px;"
+		"    font-weight: bold;"
+		"}"
+		"QPushButton:pressed {"
+		"    background-color: #007a2e;"
+		"    border: 2px solid #004d1d;"
+		"    color: #ffffff;"
+		"}";
+	const char* kRecipeBtnOffStyle =
+		"QPushButton {"
+		"    border: 1px solid #7a7a7a;"
+		"    border-radius: 3px;"
+		"    background-color: #e05050;"
+		"    color: #ffffff;"
+		"    font-size: 24px;"
+		"    font-weight: bold;"
+		"}"
+		"QPushButton:pressed {"
+		"    background-color: #8f2020;"
+		"    border: 2px solid #5a1010;"
+		"    color: #ffe08a;"
+		"}";
 
 	// 解析类型列，宽容大小写；返回 false 表示无法识别（严格校验，非法值会导致启动失败）
 	bool parseMainPointType(const QString& text, EdgeWidthDetection::MainPointType& out)
@@ -1066,11 +1083,12 @@ void EdgeWidthDetection::updateAutoRecipeButton()
 void EdgeWidthDetection::updateRecipeButtons(int recipeNo)
 {
 	// 9 个配方按钮颜色仅由「配方号」点位驱动：等于按钮值=绿，否则=红
+	// 使用配方按钮专用样式（按下反馈更明显）
 	for (int i = 0; i < _recipeButtons.size(); ++i)
 	{
 		const bool on = (recipeNo == 150 + i * 10);
 		_recipeButtons[i]->setStyleSheet(QString::fromUtf8(
-			on ? kCutCompensateOnStyle : kCutCompensateOffStyle));
+			on ? kRecipeBtnOnStyle : kRecipeBtnOffStyle));
 	}
 }
 

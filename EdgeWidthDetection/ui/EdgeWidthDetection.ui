@@ -85,13 +85,13 @@
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>320</width>
+                 <width>440</width>
                  <height>0</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>320</width>
+                 <width>440</width>
                  <height>16777215</height>
                 </size>
                </property>
@@ -110,7 +110,7 @@
                  <widget class="QLabel" name="label_logoPlcPhoto">
                   <property name="maximumSize">
                    <size>
-                    <width>290</width>
+                    <width>400</width>
                     <height>60</height>
                    </size>
                   </property>
@@ -136,7 +136,7 @@
                    <widget class="QLabel" name="label_plcSetPhotoLength">
                     <property name="styleSheet">
                      <string notr="true">QLabel {
-    font-size: 20px;
+    font-size: 24px;
     color: #333333;
     border: none;
 }</string>
@@ -145,7 +145,7 @@
                      <string>设定拍照长度</string>
                     </property>
                     <property name="alignment">
-                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
                     </property>
                    </widget>
                   </item>
@@ -153,19 +153,19 @@
                    <widget class="QLabel" name="label_plcSetPhotoLengthValue">
                     <property name="minimumSize">
                      <size>
-                      <width>100</width>
+                      <width>120</width>
                       <height>0</height>
                      </size>
                     </property>
                     <property name="maximumSize">
                      <size>
-                      <width>100</width>
+                      <width>120</width>
                       <height>16777215</height>
                      </size>
                     </property>
                     <property name="styleSheet">
                      <string notr="true">QLabel {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
     color: #000000;
     border: none;
@@ -187,7 +187,7 @@
                    <widget class="QLabel" name="label_plcActualPhoto">
                     <property name="styleSheet">
                      <string notr="true">QLabel {
-    font-size: 20px;
+    font-size: 24px;
     color: #333333;
     border: none;
 }</string>
@@ -196,7 +196,7 @@
                      <string>实际拍照值</string>
                     </property>
                     <property name="alignment">
-                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
                     </property>
                    </widget>
                   </item>
@@ -204,19 +204,19 @@
                    <widget class="QLabel" name="label_plcActualPhotoValue">
                     <property name="minimumSize">
                      <size>
-                      <width>100</width>
+                      <width>120</width>
                       <height>0</height>
                      </size>
                     </property>
                     <property name="maximumSize">
                      <size>
-                      <width>100</width>
+                      <width>120</width>
                       <height>16777215</height>
                      </size>
                     </property>
                     <property name="styleSheet">
                      <string notr="true">QLabel {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
     color: #000000;
     border: none;
@@ -238,7 +238,7 @@
                    <widget class="QLabel" name="label_plcWhiteLength">
                     <property name="styleSheet">
                      <string notr="true">QLabel {
-    font-size: 20px;
+    font-size: 24px;
     color: #333333;
     border: none;
 }</string>
@@ -247,7 +247,7 @@
                      <string>白料长</string>
                     </property>
                     <property name="alignment">
-                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
                     </property>
                    </widget>
                   </item>
@@ -255,19 +255,19 @@
                    <widget class="QLabel" name="label_plcWhiteLengthValue">
                     <property name="minimumSize">
                      <size>
-                      <width>100</width>
+                      <width>120</width>
                       <height>0</height>
                      </size>
                     </property>
                     <property name="maximumSize">
                      <size>
-                      <width>100</width>
+                      <width>120</width>
                       <height>16777215</height>
                      </size>
                     </property>
                     <property name="styleSheet">
                      <string notr="true">QLabel {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
     color: #000000;
     border: none;
@@ -289,7 +289,7 @@
                    <widget class="QLabel" name="label_plcBagCount">
                     <property name="styleSheet">
                      <string notr="true">QLabel {
-    font-size: 20px;
+    font-size: 24px;
     color: #333333;
     border: none;
 }</string>
@@ -298,7 +298,7 @@
                      <string>间隔袋数</string>
                     </property>
                     <property name="alignment">
-                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
                     </property>
                    </widget>
                   </item>
@@ -306,19 +306,19 @@
                    <widget class="QLabel" name="label_plcBagCountValue">
                     <property name="minimumSize">
                      <size>
-                      <width>100</width>
+                      <width>120</width>
                       <height>0</height>
                      </size>
                     </property>
                     <property name="maximumSize">
                      <size>
-                      <width>100</width>
+                      <width>120</width>
                       <height>16777215</height>
                      </size>
                     </property>
                     <property name="styleSheet">
                      <string notr="true">QLabel {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
     color: #000000;
     border: none;
@@ -399,13 +399,13 @@
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>320</width>
+                 <width>440</width>
                  <height>0</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>320</width>
+                 <width>440</width>
                  <height>16777215</height>
                 </size>
                </property>
@@ -430,7 +430,7 @@
                  <widget class="QLabel" name="label_logoPlcCutter">
                   <property name="maximumSize">
                    <size>
-                    <width>290</width>
+                    <width>400</width>
                     <height>60</height>
                    </size>
                   </property>
@@ -465,7 +465,7 @@
                    <widget class="QLabel" name="label_plcCutMove">
                     <property name="styleSheet">
                      <string notr="true">QLabel {
-    font-size: 18px;
+    font-size: 22px;
     color: #333333;
     border: none;
 }</string>
@@ -474,7 +474,7 @@
                      <string>切刀移动量</string>
                     </property>
                     <property name="alignment">
-                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
                     </property>
                    </widget>
                   </item>
@@ -482,19 +482,19 @@
                    <widget class="QLabel" name="label_plcCutMoveValue">
                     <property name="minimumSize">
                      <size>
-                      <width>50</width>
+                      <width>80</width>
                       <height>0</height>
                      </size>
                     </property>
                     <property name="maximumSize">
                      <size>
-                      <width>50</width>
+                      <width>80</width>
                       <height>16777215</height>
                      </size>
                     </property>
                     <property name="styleSheet">
                      <string notr="true">QLabel {
-    font-size: 18px;
+    font-size: 22px;
     font-weight: bold;
     color: #000000;
     border: none;
@@ -525,7 +525,7 @@
                    <widget class="QLabel" name="label_plcCutPos">
                     <property name="styleSheet">
                      <string notr="true">QLabel {
-    font-size: 18px;
+    font-size: 22px;
     color: #333333;
     border: none;
 }</string>
@@ -534,7 +534,7 @@
                      <string>切刀当前位置</string>
                     </property>
                     <property name="alignment">
-                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
                     </property>
                    </widget>
                   </item>
@@ -542,19 +542,19 @@
                    <widget class="QLabel" name="label_plcCutPosValue">
                     <property name="minimumSize">
                      <size>
-                      <width>50</width>
+                      <width>80</width>
                       <height>0</height>
                      </size>
                     </property>
                     <property name="maximumSize">
                      <size>
-                      <width>50</width>
+                      <width>80</width>
                       <height>16777215</height>
                      </size>
                     </property>
                     <property name="styleSheet">
                      <string notr="true">QLabel {
-    font-size: 18px;
+    font-size: 22px;
     font-weight: bold;
     color: #000000;
     border: none;
@@ -574,7 +574,7 @@
                  <widget class="QLabel" name="label_plcRecipeManual">
                   <property name="styleSheet">
                    <string notr="true">QLabel {
-    font-size: 20px;
+    font-size: 24px;
     color: #333333;
     border: none;
 }</string>
@@ -583,7 +583,7 @@
                    <string>配方手动选择</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignmentFlag::AlignCenter</set>
+                   <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
                   </property>
                  </widget>
                 </item>
@@ -607,8 +607,8 @@
                      <widget class="QPushButton" name="pbtn_plcRecipe150">
                       <property name="minimumSize">
                        <size>
-                        <width>58</width>
-                        <height>38</height>
+                        <width>64</width>
+                        <height>44</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -617,8 +617,14 @@
     border-radius: 3px;
     background-color: #e05050;
     color: #ffffff;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
+}
+
+QPushButton:pressed {
+    background-color: #8f2020;
+    border: 2px solid #5a1010;
+    color: #ffe08a;
 }</string>
                       </property>
                       <property name="text">
@@ -630,8 +636,8 @@
                      <widget class="QPushButton" name="pbtn_plcRecipe160">
                       <property name="minimumSize">
                        <size>
-                        <width>58</width>
-                        <height>38</height>
+                        <width>64</width>
+                        <height>44</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -640,8 +646,14 @@
     border-radius: 3px;
     background-color: #e05050;
     color: #ffffff;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
+}
+
+QPushButton:pressed {
+    background-color: #8f2020;
+    border: 2px solid #5a1010;
+    color: #ffe08a;
 }</string>
                       </property>
                       <property name="text">
@@ -653,8 +665,8 @@
                      <widget class="QPushButton" name="pbtn_plcRecipe170">
                       <property name="minimumSize">
                        <size>
-                        <width>58</width>
-                        <height>38</height>
+                        <width>64</width>
+                        <height>44</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -663,8 +675,14 @@
     border-radius: 3px;
     background-color: #e05050;
     color: #ffffff;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
+}
+
+QPushButton:pressed {
+    background-color: #8f2020;
+    border: 2px solid #5a1010;
+    color: #ffe08a;
 }</string>
                       </property>
                       <property name="text">
@@ -676,8 +694,8 @@
                      <widget class="QPushButton" name="pbtn_plcRecipe180">
                       <property name="minimumSize">
                        <size>
-                        <width>58</width>
-                        <height>38</height>
+                        <width>64</width>
+                        <height>44</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -686,8 +704,14 @@
     border-radius: 3px;
     background-color: #e05050;
     color: #ffffff;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
+}
+
+QPushButton:pressed {
+    background-color: #8f2020;
+    border: 2px solid #5a1010;
+    color: #ffe08a;
 }</string>
                       </property>
                       <property name="text">
@@ -699,8 +723,8 @@
                      <widget class="QPushButton" name="pbtn_plcRecipe190">
                       <property name="minimumSize">
                        <size>
-                        <width>58</width>
-                        <height>38</height>
+                        <width>64</width>
+                        <height>44</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -709,8 +733,14 @@
     border-radius: 3px;
     background-color: #e05050;
     color: #ffffff;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
+}
+
+QPushButton:pressed {
+    background-color: #8f2020;
+    border: 2px solid #5a1010;
+    color: #ffe08a;
 }</string>
                       </property>
                       <property name="text">
@@ -722,8 +752,8 @@
                      <widget class="QPushButton" name="pbtn_plcRecipe200">
                       <property name="minimumSize">
                        <size>
-                        <width>58</width>
-                        <height>38</height>
+                        <width>64</width>
+                        <height>44</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -732,8 +762,14 @@
     border-radius: 3px;
     background-color: #e05050;
     color: #ffffff;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
+}
+
+QPushButton:pressed {
+    background-color: #8f2020;
+    border: 2px solid #5a1010;
+    color: #ffe08a;
 }</string>
                       </property>
                       <property name="text">
@@ -745,8 +781,8 @@
                      <widget class="QPushButton" name="pbtn_plcRecipe210">
                       <property name="minimumSize">
                        <size>
-                        <width>58</width>
-                        <height>38</height>
+                        <width>64</width>
+                        <height>44</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -755,8 +791,14 @@
     border-radius: 3px;
     background-color: #e05050;
     color: #ffffff;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
+}
+
+QPushButton:pressed {
+    background-color: #8f2020;
+    border: 2px solid #5a1010;
+    color: #ffe08a;
 }</string>
                       </property>
                       <property name="text">
@@ -768,8 +810,8 @@
                      <widget class="QPushButton" name="pbtn_plcRecipe220">
                       <property name="minimumSize">
                        <size>
-                        <width>58</width>
-                        <height>38</height>
+                        <width>64</width>
+                        <height>44</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -778,8 +820,14 @@
     border-radius: 3px;
     background-color: #e05050;
     color: #ffffff;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
+}
+
+QPushButton:pressed {
+    background-color: #8f2020;
+    border: 2px solid #5a1010;
+    color: #ffe08a;
 }</string>
                       </property>
                       <property name="text">
@@ -791,8 +839,8 @@
                      <widget class="QPushButton" name="pbtn_plcRecipe230">
                       <property name="minimumSize">
                        <size>
-                        <width>58</width>
-                        <height>38</height>
+                        <width>64</width>
+                        <height>44</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -801,8 +849,14 @@
     border-radius: 3px;
     background-color: #e05050;
     color: #ffffff;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
+}
+
+QPushButton:pressed {
+    background-color: #8f2020;
+    border: 2px solid #5a1010;
+    color: #ffe08a;
 }</string>
                       </property>
                       <property name="text">
@@ -823,7 +877,7 @@
                        <widget class="QLabel" name="label_plcCutPosLimitTitle">
                         <property name="styleSheet">
                          <string notr="true">QLabel {
-    font-size: 17px;
+    font-size: 21px;
     color: #333333;
     border: none;
 }</string>
@@ -886,7 +940,7 @@
                        <widget class="QLabel" name="label_plcCutNegLimitTitle">
                         <property name="styleSheet">
                          <string notr="true">QLabel {
-    font-size: 17px;
+    font-size: 21px;
     color: #333333;
     border: none;
 }</string>
@@ -961,7 +1015,7 @@
     border-radius: 3px;
     background-color: #e05050;
     color: #ffffff;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
 }</string>
                     </property>
@@ -985,7 +1039,7 @@
     border-radius: 3px;
     background-color: #e05050;
     color: #ffffff;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
 }</string>
                     </property>
