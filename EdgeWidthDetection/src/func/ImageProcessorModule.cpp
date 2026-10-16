@@ -44,17 +44,6 @@ namespace {
 		return lastNs.compare_exchange_strong(prev, nowNs, std::memory_order_relaxed);
 	}
 
-	// 将图像顺时针旋转 90 度（相机 2 为竖装，出图需转正后再进入图像处理）
-	// 需要逆时针时将 ROTATE_90_CLOCKWISE 改为 ROTATE_90_COUNTERCLOCKWISE
-	inline void RotateImage90Clockwise(cv::Mat& image)
-	{
-		if (image.empty()) {
-			return;
-		}
-		// cv::rotate 内部为 transpose + flip，支持原地操作，无插值开销
-		cv::rotate(image, image, cv::ROTATE_90_CLOCKWISE);
-	}
-
 	// 基于 YoloSeg 分割掩膜，用类 Halcon 卡尺的方式提取目标的两条长边直线（端点已换算到整图坐标）。
 	// 思路：mask_roi 二值化 → 最大外轮廓 → PCA 求主轴 → 沿主轴每 1 像素放一个垂直截面（卡尺），
 	// 每个截面取掩膜两侧的边缘点 → 两组边缘点分别用 fitLine（Huber 鲁棒核）拟合直线，
@@ -552,11 +541,6 @@ void ImageProcessor::run_debug(MatInfo& frame)
 	++t_processedFrameCount;
 	DiagCheckpoint("进入调试处理", imageProcessingModuleIndex, frame.index);
 
-	// 相机 2 在 Debug 模式下同样先转正，保持与运行模式一致的画面方向与坐标系
-	if (2 == imageProcessingModuleIndex) {
-		RotateImage90Clockwise(frame.image);
-	}
-
 	auto& imgPro = *_imgProcess;
 	imgPro(frame.image);
 	DiagCheckpoint("模型推理完成", imageProcessingModuleIndex, frame.index);
@@ -709,9 +693,6 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 {
 	++t_processedFrameCount;
 	DiagCheckpoint("进入剔废处理", imageProcessingModuleIndex, frame.index);
-
-	// 相机 2 出图先顺时针旋转 90 度转正，后续处理、绘制与保存均基于转正后的图像
-	RotateImage90Clockwise(frame.image);
 
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	auto& imgPro = *_imgProcess;
@@ -1055,11 +1036,6 @@ void ImageProcessingModule::onFrameCaptured(rw::rqw::MatInfo matInfo, size_t ind
 		else if (matInfo.mat.channels() != 3) {
 			IMGPRO_DIAG_ERR("[诊断] 相机{} 帧通道数异常: {}，已丢弃该帧", this->index, matInfo.mat.channels());
 			return;
-		}
-
-		// 相机1图像在此回调处旋转180度，后续的检测线、文字绘制都基于旋转后的图像，保持正向
-		if (1 == this->index) {
-			cv::rotate(matInfo.mat, matInfo.mat, cv::ROTATE_180);
 		}
 
 		// 自动曝光亮度统计已移至处理线程：YoloSeg 识别完成后在掩膜范围内统计，
