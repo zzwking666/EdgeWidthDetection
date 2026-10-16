@@ -672,7 +672,7 @@ QPushButton:pressed {
                       </property>
                      </widget>
                     </item>
-                    <item alignment="">
+                    <item>
                      <widget class="QLabel" name="label_systemFlag">
                       <property name="sizePolicy">
                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -793,7 +793,7 @@ QPushButton:pressed {
     border-radius: 4px;
 }</string>
                </property>
-               <layout class="QVBoxLayout" name="vLayout_panelPlcCutter">
+               <layout class="QVBoxLayout" name="vLayout_panelPlcCutter" stretch="2,2,2,1,2">
                 <property name="spacing">
                  <number>4</number>
                 </property>
@@ -937,8 +937,11 @@ QPushButton:pressed {
                   </property>
                   <item>
                    <layout class="QGridLayout" name="gLayout_plcRecipeBtns">
-                    <property name="spacing">
-                     <number>4</number>
+                    <property name="horizontalSpacing">
+                     <number>0</number>
+                    </property>
+                    <property name="verticalSpacing">
+                     <number>30</number>
                     </property>
                     <item row="0" column="0">
                      <widget class="QPushButton" name="pbtn_plcRecipe150">
@@ -1173,7 +1176,7 @@ QPushButton:pressed {
                         </property>
                        </widget>
                       </item>
-                      <item alignment="">
+                      <item>
                        <widget class="QLabel" name="label_plcCutPosLimit">
                         <property name="minimumSize">
                          <size>
@@ -1236,7 +1239,7 @@ QPushButton:pressed {
                         </property>
                        </widget>
                       </item>
-                      <item alignment="">
+                      <item>
                        <widget class="QLabel" name="label_plcCutNegLimit">
                         <property name="minimumSize">
                          <size>
@@ -1267,6 +1270,19 @@ QPushButton:pressed {
                    </layout>
                   </item>
                  </layout>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_plcLimits_2">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>10</height>
+                   </size>
+                  </property>
+                 </spacer>
                 </item>
                 <item>
                  <layout class="QHBoxLayout" name="hLayout_plcBottom">
@@ -1706,7 +1722,7 @@ QPushButton:pressed {
                       </property>
                      </widget>
                     </item>
-                    <item alignment="">
+                    <item>
                      <widget class="QLabel" name="label_cutPosLimit">
                       <property name="minimumSize">
                        <size>
@@ -1756,7 +1772,7 @@ QPushButton:pressed {
                       </property>
                      </widget>
                     </item>
-                    <item alignment="">
+                    <item>
                      <widget class="QLabel" name="label_cutNegLimit">
                       <property name="minimumSize">
                        <size>
