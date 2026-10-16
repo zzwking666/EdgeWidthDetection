@@ -19,6 +19,7 @@ namespace Ui { class EdgeWidthDetectionClass; };
 QT_END_NAMESPACE
 
 class QLabel;
+class QPushButton;
 
 class EdgeWidthDetection : public QMainWindow
 {
@@ -91,6 +92,11 @@ private slots:
 	void pbtn_cutCompensate_clicked();	// 切刀补偿切换：按当前状态取反写入
 	void onMainUiRefreshTimeout();		// 定时轮询主界面面板全部点位并刷新显示
 
+	// 新增 PLC 操作列（拍照/切刀面板左侧）按钮
+	void pbtn_plcStartCompensate_clicked();	// 开始补偿：与「切刀补偿」同一点位(3000线圈)，取反写入
+	void pbtn_plcAutoRecipe_clicked();		// 配方自动选择：按当前状态取反写入
+	void onPlcRecipeBtn_clicked();			// 9 个配方按钮：按各自线圈当前值取反写入
+
 public:
 	// 公开给 CSV 解析辅助函数使用
 	enum class MainPointType { Float, Dint, Bool };
@@ -117,11 +123,13 @@ private:
 	const MainUiPoint* findMainUiPoint(const QString& name) const;
 	bool checkManualWriteReady();	// 手动写入前置检查：总开关已开 + PLC 已连接，不满足时弹窗并返回 false
 	bool writeMainCoil(const QString& pointName, bool value);		// 按点位名写线圈（启动/停止/切刀补偿），返回是否写入成功
-	void writeMainValue(const QString& pointName);					// 按点位名弹数字键盘写数值（四个可写速度/长度）
+	void writeMainValue(const QString& pointName);					// 按点位名弹数字键盘写数值（可写速度/长度/袋数）
 
 	// 将普通 QLabel 原位替换为可点击标签（点击写数值用），样式与 replaceWidget 用法同 ini_clickableTitle
 	rw::rqw::ClickableLabel* replaceWithClickableValue(QLabel* oldLabel);
-	void updateCutCompensateButton();	// 按 _cutCompensateOn 刷新补偿按钮的文字与背景色（开=绿/关=红）
+	void updateCutCompensateButton();	// 按 _cutCompensateOn 刷新补偿按钮（含新列「开始补偿」）的文字与背景色（开=绿/关=红）
+	void updateAutoRecipeButton();		// 按 _autoRecipeOn 刷新「配方自动选择」按钮背景色（开=绿/关=红）
+	void updateRecipeButtons(int recipeNo);	// 按「配方号」点位值刷 9 个配方按钮颜色：等于按钮值=绿，否则=红
 
 	// 根据相机/PLC连接状态刷新标题栏背景色（任一未连接则置红）
 	void updateHeadBackground();
@@ -137,16 +145,22 @@ private:
 
 	// 主界面面板点位数据与控件映射
 	QVector<MainUiPoint> _mainUiPoints;
-	QHash<QString, QLabel*> _mainUiValueLabels;		// 数值行：点位名 -> 当前值标签
+	QHash<QString, QVector<QLabel*>> _mainUiValueLabels;	// 数值行：点位名 -> 当前值标签（同名点位可绑定多个标签，如新列与现有面板同行）
 	QTimer _mainUiRefreshTimer;						// 面板点位轮询定时器
 	bool _mainUiRefreshInFlight{ false };			// 上一次轮询未结束时跳过本次
 	bool _cutCompensateOn{ false };					// 切刀补偿当前状态（轮询更新，切换按钮据此取反）
+	bool _autoRecipeOn{ false };					// 配方自动选择当前状态（轮询更新，切换按钮据此取反）
+	QVector<QPushButton*> _recipeButtons;			// 9 个配方按钮（顺序对应 150~230）
+	QHash<QString, bool> _mainUiBoolStates;			// BOOL 点位最近一次轮询值（配方按钮取反写入用）
 
 	// 四个可写数值行的可点击标签（点击弹出数字键盘写入）
 	rw::rqw::ClickableLabel* clk_setPhotoLength{ nullptr };
 	rw::rqw::ClickableLabel* clk_cutJogContSpeed{ nullptr };
 	rw::rqw::ClickableLabel* clk_cutJogOnceSpeed{ nullptr };
 	rw::rqw::ClickableLabel* clk_autoSpeed{ nullptr };
+	// 新增 PLC 操作列的可写数值行可点击标签
+	rw::rqw::ClickableLabel* clk_plcSetPhotoLength{ nullptr };
+	rw::rqw::ClickableLabel* clk_plcBagCount{ nullptr };
 private:
 	Ui::EdgeWidthDetectionClass* ui;
 	int minimizeCount{ 3 };

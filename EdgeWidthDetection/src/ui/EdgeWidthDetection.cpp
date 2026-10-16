@@ -38,7 +38,7 @@ namespace
 	// CSV 表头（首行与此一致时跳过）
 	const char* kMainUiCsvHeader = "名称,类型,协议地址,读写";
 
-	// 约定的 17 个面板点位名，CSV 名称列必须在此列表中且各出现一次（严格校验）
+	// 约定的面板点位名，CSV 名称列必须在此列表中且各出现一次（严格校验）
 	const QStringList kMainUiPointNames = {
 		QStringLiteral("设定拍照长度"),
 		QStringLiteral("实际拍照值"),
@@ -57,6 +57,20 @@ namespace
 		QStringLiteral("切刀补偿"),
 		QStringLiteral("切刀正限位"),
 		QStringLiteral("切刀负限位"),
+		// 新增 PLC 操作列点位（拍照/切刀面板左侧）
+		QStringLiteral("间隔袋数"),
+		QStringLiteral("切刀移动量"),
+		QStringLiteral("配方号"),
+		QStringLiteral("配方自动选择"),
+		QStringLiteral("配方150"),
+		QStringLiteral("配方160"),
+		QStringLiteral("配方170"),
+		QStringLiteral("配方180"),
+		QStringLiteral("配方190"),
+		QStringLiteral("配方200"),
+		QStringLiteral("配方210"),
+		QStringLiteral("配方220"),
+		QStringLiteral("配方230"),
 	};
 
 	// 可点击（可写数值）标签样式：蓝色加粗下划线 + 手型光标，提示可点击
@@ -190,6 +204,20 @@ namespace
 		{ "切刀补偿",			EdgeWidthDetection::MainPointType::Bool,	3000,	true  },
 		{ "切刀正限位",			EdgeWidthDetection::MainPointType::Bool,	1207,	false },
 		{ "切刀负限位",			EdgeWidthDetection::MainPointType::Bool,	1204,	false },
+		// 新增 PLC 操作列点位（拍照/切刀面板左侧）
+		{ "间隔袋数",			EdgeWidthDetection::MainPointType::Dint,	1028,	true  },
+		{ "切刀移动量",			EdgeWidthDetection::MainPointType::Float,	3066,	false },
+		{ "配方号",				EdgeWidthDetection::MainPointType::Dint,	1642,	false },
+		{ "配方自动选择",		EdgeWidthDetection::MainPointType::Bool,	3001,	true  },
+		{ "配方150",			EdgeWidthDetection::MainPointType::Bool,	13055,	true  },
+		{ "配方160",			EdgeWidthDetection::MainPointType::Bool,	13056,	true  },
+		{ "配方170",			EdgeWidthDetection::MainPointType::Bool,	13057,	true  },
+		{ "配方180",			EdgeWidthDetection::MainPointType::Bool,	13058,	true  },
+		{ "配方190",			EdgeWidthDetection::MainPointType::Bool,	13059,	true  },
+		{ "配方200",			EdgeWidthDetection::MainPointType::Bool,	13060,	true  },
+		{ "配方210",			EdgeWidthDetection::MainPointType::Bool,	13061,	true  },
+		{ "配方220",			EdgeWidthDetection::MainPointType::Bool,	13062,	true  },
+		{ "配方230",			EdgeWidthDetection::MainPointType::Bool,	13063,	true  },
 	};
 
 	// 设置圆形指示灯颜色：onColor/offColor 为状态色，读取失败时置灰
@@ -664,19 +692,32 @@ void EdgeWidthDetection::build_mainUiModbus()
 	clk_cutJogContSpeed = replaceWithClickableValue(ui->label_cutJogContSpeedValue);
 	clk_cutJogOnceSpeed = replaceWithClickableValue(ui->label_cutJogOnceSpeedValue);
 	clk_autoSpeed = replaceWithClickableValue(ui->label_autoSpeedValue);
+	// 新增 PLC 操作列的可写数值行同样改造
+	clk_plcSetPhotoLength = replaceWithClickableValue(ui->label_plcSetPhotoLengthValue);
+	clk_plcBagCount = replaceWithClickableValue(ui->label_plcBagCountValue);
 
-	// 数值行：点位名 -> 当前值标签（轮询刷新时按名更新）
-	_mainUiValueLabels.insert(QStringLiteral("设定拍照长度"), clk_setPhotoLength);
-	_mainUiValueLabels.insert(QStringLiteral("实际拍照值"), ui->label_actualPhotoValue);
-	_mainUiValueLabels.insert(QStringLiteral("白料长"), ui->label_whiteLengthValue);
-	_mainUiValueLabels.insert(QStringLiteral("袋长"), ui->label_bagLengthValue);
-	_mainUiValueLabels.insert(QStringLiteral("编码器当前位置"), ui->label_encoderPosValue);
-	_mainUiValueLabels.insert(QStringLiteral("切刀一直点动速度"), clk_cutJogContSpeed);
-	_mainUiValueLabels.insert(QStringLiteral("切刀单次点动速度"), clk_cutJogOnceSpeed);
-	_mainUiValueLabels.insert(QStringLiteral("自动速度"), clk_autoSpeed);
-	_mainUiValueLabels.insert(QStringLiteral("切刀计算移动量"), ui->label_cutCalcMoveValue);
-	_mainUiValueLabels.insert(QStringLiteral("切刀实际移动量"), ui->label_cutActualMoveValue);
-	_mainUiValueLabels.insert(QStringLiteral("切刀当前位置"), ui->label_cutPosValue);
+	// 数值行：点位名 -> 当前值标签（轮询刷新时按名更新；同名点位可绑定多个标签，如新列与现有面板同行）
+	auto addValueLabel = [this](const QString& name, QLabel* label)
+	{
+		_mainUiValueLabels[name].append(label);
+	};
+	addValueLabel(QStringLiteral("设定拍照长度"), clk_setPhotoLength);
+	addValueLabel(QStringLiteral("设定拍照长度"), clk_plcSetPhotoLength);
+	addValueLabel(QStringLiteral("实际拍照值"), ui->label_actualPhotoValue);
+	addValueLabel(QStringLiteral("实际拍照值"), ui->label_plcActualPhotoValue);
+	addValueLabel(QStringLiteral("白料长"), ui->label_whiteLengthValue);
+	addValueLabel(QStringLiteral("白料长"), ui->label_plcWhiteLengthValue);
+	addValueLabel(QStringLiteral("袋长"), ui->label_bagLengthValue);
+	addValueLabel(QStringLiteral("编码器当前位置"), ui->label_encoderPosValue);
+	addValueLabel(QStringLiteral("切刀一直点动速度"), clk_cutJogContSpeed);
+	addValueLabel(QStringLiteral("切刀单次点动速度"), clk_cutJogOnceSpeed);
+	addValueLabel(QStringLiteral("自动速度"), clk_autoSpeed);
+	addValueLabel(QStringLiteral("切刀计算移动量"), ui->label_cutCalcMoveValue);
+	addValueLabel(QStringLiteral("切刀实际移动量"), ui->label_cutActualMoveValue);
+	addValueLabel(QStringLiteral("切刀当前位置"), ui->label_cutPosValue);
+	addValueLabel(QStringLiteral("切刀当前位置"), ui->label_plcCutPosValue);
+	addValueLabel(QStringLiteral("间隔袋数"), clk_plcBagCount);
+	addValueLabel(QStringLiteral("切刀移动量"), ui->label_plcCutMoveValue);
 
 	QObject::connect(ui->pbtn_start, &QPushButton::clicked,
 		this, &EdgeWidthDetection::pbtn_start_clicked);
@@ -700,6 +741,30 @@ void EdgeWidthDetection::build_mainUiModbus()
 		{
 			writeMainValue(QStringLiteral("自动速度"));
 		});
+	QObject::connect(clk_plcSetPhotoLength, &rw::rqw::ClickableLabel::clicked, this, [this]()
+		{
+			writeMainValue(QStringLiteral("设定拍照长度"));
+		});
+	QObject::connect(clk_plcBagCount, &rw::rqw::ClickableLabel::clicked, this, [this]()
+		{
+			writeMainValue(QStringLiteral("间隔袋数"));
+		});
+
+	// 9 个配方按钮（150~230）：颜色仅由「配方号」点位驱动，点击按各自线圈当前值取反写入
+	QPushButton* const kRecipeBtns[] = {
+		ui->pbtn_plcRecipe150, ui->pbtn_plcRecipe160, ui->pbtn_plcRecipe170,
+		ui->pbtn_plcRecipe180, ui->pbtn_plcRecipe190, ui->pbtn_plcRecipe200,
+		ui->pbtn_plcRecipe210, ui->pbtn_plcRecipe220, ui->pbtn_plcRecipe230 };
+	for (auto* btn : kRecipeBtns)
+	{
+		_recipeButtons.append(btn);
+		QObject::connect(btn, &QPushButton::clicked,
+			this, &EdgeWidthDetection::onPlcRecipeBtn_clicked);
+	}
+	QObject::connect(ui->pbtn_plcStartCompensate, &QPushButton::clicked,
+		this, &EdgeWidthDetection::pbtn_plcStartCompensate_clicked);
+	QObject::connect(ui->pbtn_plcAutoRecipe, &QPushButton::clicked,
+		this, &EdgeWidthDetection::pbtn_plcAutoRecipe_clicked);
 
 	QObject::connect(&_mainUiRefreshTimer, &QTimer::timeout,
 		this, &EdgeWidthDetection::onMainUiRefreshTimeout);
@@ -708,13 +773,15 @@ void EdgeWidthDetection::build_mainUiModbus()
 
 	// 初始按补偿关闭显示，首次轮询后校正为真实状态
 	updateCutCompensateButton();
+	updateAutoRecipeButton();
 }
 
 void EdgeWidthDetection::loadMainUiPoints()
 {
 	// modbus_main.csv 每行：名称,类型,协议地址,读写
-	// 与 DlgModbus 的 modbus.csv 相互独立；名称必须是约定的 17 个点位名且各出现一次
+	// 与 DlgModbus 的 modbus.csv 相互独立；名称必须是约定的点位名且各出现一次
 	// 严格校验：任何一行格式非法都会弹窗提示并退出程序，防止错误配置静默生效
+	// 向后兼容：老版本 CSV 缺少新增点位时按内置默认表自动补齐并回写，无需现场手工改文件
 	QFile file(globalPath.modbusMainCsvPath);
 	if (!file.exists())
 	{
@@ -821,19 +888,39 @@ void EdgeWidthDetection::loadMainUiPoints()
 		_mainUiPoints.push_back(info);
 	}
 
-	// 完整性校验：约定的点位必须全部出现（防止漏行导致面板某行永远不刷新）
-	for (const auto& name : kMainUiPointNames)
-	{
-		if (!seenNames.contains(name))
-		{
-			errors << QStringLiteral("缺少点位「%1」").arg(name);
-		}
-	}
-
 	if (!errors.isEmpty())
 	{
 		_mainUiPoints.clear();
 		abortOnMainUiLoadErrors(errors);
+	}
+
+	// 缺项补齐：老版本 modbus_main.csv 缺少新增点位（如升级后新增的配方按钮）时，
+	// 按内置默认表追加并回写 CSV，避免现场手工改文件
+	QStringList missingNames;
+	for (const auto& name : kMainUiPointNames)
+	{
+		if (!seenNames.contains(name))
+		{
+			missingNames << name;
+		}
+	}
+	if (!missingNames.isEmpty())
+	{
+		qDebug() << "modbus_main.csv 缺少点位，已按默认表补齐:" << missingNames;
+		for (const auto& d : kMainUiDefaults)
+		{
+			const QString name = QString::fromUtf8(d.name);
+			if (missingNames.contains(name))
+			{
+				MainUiPoint info;
+				info.name = name;
+				info.type = d.type;
+				info.protocolAddress = d.protocolAddress;
+				info.writable = d.writable;
+				_mainUiPoints.push_back(info);
+			}
+		}
+		saveMainUiPoints();
 	}
 }
 
@@ -1006,12 +1093,31 @@ void EdgeWidthDetection::updateCutCompensateButton()
 	if (_cutCompensateOn)
 	{
 		ui->pbtn_cutCompensate->setText(QStringLiteral("切刀补偿开启"));
-		ui->pbtn_cutCompensate->setStyleSheet(QString::fromUtf8(kCutCompensateOnStyle));
 	}
 	else
 	{
 		ui->pbtn_cutCompensate->setText(QStringLiteral("切刀补偿关闭"));
-		ui->pbtn_cutCompensate->setStyleSheet(QString::fromUtf8(kCutCompensateOffStyle));
+	}
+	const char* style = _cutCompensateOn ? kCutCompensateOnStyle : kCutCompensateOffStyle;
+	ui->pbtn_cutCompensate->setStyleSheet(QString::fromUtf8(style));
+	// 新 PLC 操作列的「开始补偿」为同一 PLC 点位（3000 线圈），文字固定、仅随状态变色
+	ui->pbtn_plcStartCompensate->setStyleSheet(QString::fromUtf8(style));
+}
+
+void EdgeWidthDetection::updateAutoRecipeButton()
+{
+	ui->pbtn_plcAutoRecipe->setStyleSheet(QString::fromUtf8(
+		_autoRecipeOn ? kCutCompensateOnStyle : kCutCompensateOffStyle));
+}
+
+void EdgeWidthDetection::updateRecipeButtons(int recipeNo)
+{
+	// 9 个配方按钮颜色仅由「配方号」点位驱动：等于按钮值=绿，否则=红
+	for (int i = 0; i < _recipeButtons.size(); ++i)
+	{
+		const bool on = (recipeNo == 150 + i * 10);
+		_recipeButtons[i]->setStyleSheet(QString::fromUtf8(
+			on ? kCutCompensateOnStyle : kCutCompensateOffStyle));
 	}
 }
 
@@ -1046,19 +1152,52 @@ void EdgeWidthDetection::pbtn_cutCompensate_clicked()
 	onMainUiRefreshTimeout();
 }
 
+void EdgeWidthDetection::pbtn_plcStartCompensate_clicked()
+{
+	// 「开始补偿」与「切刀补偿」是同一 PLC 点位（3000 线圈），取反写入
+	writeMainCoil(QStringLiteral("切刀补偿"), !_cutCompensateOn);
+	onMainUiRefreshTimeout();
+}
+
+void EdgeWidthDetection::pbtn_plcAutoRecipe_clicked()
+{
+	// 切换开关：按当前状态取反写入；按钮颜色由轮询读到的新状态刷新
+	writeMainCoil(QStringLiteral("配方自动选择"), !_autoRecipeOn);
+	onMainUiRefreshTimeout();
+}
+
+void EdgeWidthDetection::onPlcRecipeBtn_clicked()
+{
+	auto* btn = qobject_cast<QPushButton*>(sender());
+	const int idx = _recipeButtons.indexOf(btn);
+	if (idx < 0)
+	{
+		return;
+	}
+	// 按下置 1、再按置 0：按该按钮线圈最近一次轮询值取反写入
+	const QString name = QStringLiteral("配方%1").arg(150 + idx * 10);
+	writeMainCoil(name, !_mainUiBoolStates.value(name, false));
+	onMainUiRefreshTimeout();
+}
+
 void EdgeWidthDetection::onMainUiRefreshTimeout()
 {
 	auto& scheduler = Modules::getInstance().plcController.plcControllerScheduler;
 	if (!scheduler)
 	{
 		// PLC 未连接时数值行显示 --，指示灯置灰
-		for (auto* lb : _mainUiValueLabels)
+		for (const auto& labels : _mainUiValueLabels)
 		{
-			lb->setText(QStringLiteral("--"));
+			for (auto* lb : labels)
+			{
+				lb->setText(QStringLiteral("--"));
+			}
 		}
 		setLampColor(ui->label_systemFlag, false, false, QString(), QString());
 		setLampColor(ui->label_cutPosLimit, false, false, QString(), QString());
 		setLampColor(ui->label_cutNegLimit, false, false, QString(), QString());
+		setLampColor(ui->label_plcCutPosLimit, false, false, QString(), QString());
+		setLampColor(ui->label_plcCutNegLimit, false, false, QString(), QString());
 		return;
 	}
 
@@ -1136,9 +1275,13 @@ void EdgeWidthDetection::onMainUiRefreshTimeout()
 				const auto& point = _mainUiPoints[i];
 				const auto& res = results[i];
 
-				if (auto* lb = _mainUiValueLabels.value(point.name, nullptr))
+				auto labelsIt = _mainUiValueLabels.constFind(point.name);
+				if (labelsIt != _mainUiValueLabels.constEnd())
 				{
-					lb->setText(res.ok ? res.text : QStringLiteral("--"));
+					for (auto* lb : labelsIt.value())
+					{
+						lb->setText(res.ok ? res.text : QStringLiteral("--"));
+					}
 				}
 				else if (point.name == QStringLiteral("系统标志"))
 				{
@@ -1151,11 +1294,16 @@ void EdgeWidthDetection::onMainUiRefreshTimeout()
 					// 限位灯：触发(1)亮绿，未触发(0)灰
 					setLampColor(ui->label_cutPosLimit, res.ok, res.boolValue,
 						QStringLiteral("#00e000"), QStringLiteral("#9e9e9e"));
+					// 新 PLC 操作列限位灯按客户图要求：0 红、1 绿
+					setLampColor(ui->label_plcCutPosLimit, res.ok, res.boolValue,
+						QStringLiteral("#00e000"), QStringLiteral("red"));
 				}
 				else if (point.name == QStringLiteral("切刀负限位"))
 				{
 					setLampColor(ui->label_cutNegLimit, res.ok, res.boolValue,
 						QStringLiteral("#00e000"), QStringLiteral("#9e9e9e"));
+					setLampColor(ui->label_plcCutNegLimit, res.ok, res.boolValue,
+						QStringLiteral("#00e000"), QStringLiteral("red"));
 				}
 				else if (point.name == QStringLiteral("切刀补偿"))
 				{
@@ -1163,6 +1311,30 @@ void EdgeWidthDetection::onMainUiRefreshTimeout()
 					{
 						_cutCompensateOn = res.boolValue;
 						updateCutCompensateButton();
+					}
+				}
+				else if (point.name == QStringLiteral("配方自动选择"))
+				{
+					if (res.ok)
+					{
+						_autoRecipeOn = res.boolValue;
+						updateAutoRecipeButton();
+					}
+				}
+				else if (point.name == QStringLiteral("配方号"))
+				{
+					// 9 个配方按钮颜色仅由配方号驱动（与该按钮自身线圈无关），读取失败保持不变
+					if (res.ok)
+					{
+						updateRecipeButtons(res.text.toInt());
+					}
+				}
+				else if (point.name.startsWith(QStringLiteral("配方")))
+				{
+					// 记录各配方按钮线圈当前值，点击按钮时据此取反写入
+					if (res.ok)
+					{
+						_mainUiBoolStates.insert(point.name, res.boolValue);
 					}
 				}
 				// 启动/停止点位无需显示，读取结果忽略

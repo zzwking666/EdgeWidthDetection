@@ -26,7 +26,7 @@
          <item row="0" column="0">
           <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1">
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_img1" stretch="10,1,1">
+            <layout class="QHBoxLayout" name="horizontalLayout_img1" stretch="10,1,1,1">
              <item>
               <widget class="QLabel" name="label_imgDisplay_1">
                <property name="sizePolicy">
@@ -76,6 +76,244 @@
               </widget>
              </item>
              <item>
+              <widget class="QWidget" name="widget_panelPlcPhoto" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>260</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>260</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QWidget#widget_panelPlcPhoto {
+    background-color: white;
+    border: 1px solid #c8c8c8;
+    border-radius: 4px;
+}</string>
+               </property>
+               <layout class="QVBoxLayout" name="vLayout_panelPlcPhoto">
+                <property name="spacing">
+                 <number>4</number>
+                </property>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_plcSetPhotoLength">
+                  <item>
+                   <widget class="QLabel" name="label_plcSetPhotoLength">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    color: #333333;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>设定拍照长度</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_plcSetPhotoLengthValue">
+                    <property name="minimumSize">
+                     <size>
+                      <width>100</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>100</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>0.00</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_plcActualPhotoValue">
+                  <item>
+                   <widget class="QLabel" name="label_plcActualPhoto">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    color: #333333;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>实际拍照值</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_plcActualPhotoValue">
+                    <property name="minimumSize">
+                     <size>
+                      <width>100</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>100</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>0.00</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_plcWhiteLength">
+                  <item>
+                   <widget class="QLabel" name="label_plcWhiteLength">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    color: #333333;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>白料长</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_plcWhiteLengthValue">
+                    <property name="minimumSize">
+                     <size>
+                      <width>100</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>100</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>0.00</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_plcBagCount">
+                  <item>
+                   <widget class="QLabel" name="label_plcBagCount">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    color: #333333;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>间隔袋数</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_plcBagCountValue">
+                    <property name="minimumSize">
+                     <size>
+                      <width>100</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>100</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>0</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
               <widget class="QWidget" name="widget_panelPhoto" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -83,7 +321,6 @@
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
-               <!-- 面板宽度定死，防止内部数值变长时挤压图像区 -->
                <property name="minimumSize">
                 <size>
                  <width>260</width>
@@ -128,15 +365,6 @@
                   </item>
                   <item>
                    <widget class="QLabel" name="label_setPhotoLengthValue">
-                    <property name="styleSheet">
-                     <string notr="true">QLabel {
-    font-size: 16px;
-    font-weight: bold;
-    color: #000000;
-    border: none;
-}</string>
-                    </property>
-                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
                     <property name="minimumSize">
                      <size>
                       <width>100</width>
@@ -148,6 +376,14 @@
                       <width>100</width>
                       <height>16777215</height>
                      </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
                     </property>
                     <property name="text">
                      <string>0.00</string>
@@ -180,15 +416,6 @@
                   </item>
                   <item>
                    <widget class="QLabel" name="label_actualPhotoValue">
-                    <property name="styleSheet">
-                     <string notr="true">QLabel {
-    font-size: 16px;
-    font-weight: bold;
-    color: #000000;
-    border: none;
-}</string>
-                    </property>
-                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
                     <property name="minimumSize">
                      <size>
                       <width>100</width>
@@ -200,6 +427,14 @@
                       <width>100</width>
                       <height>16777215</height>
                      </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
                     </property>
                     <property name="text">
                      <string>0.00</string>
@@ -232,15 +467,6 @@
                   </item>
                   <item>
                    <widget class="QLabel" name="label_encoderPosValue">
-                    <property name="styleSheet">
-                     <string notr="true">QLabel {
-    font-size: 16px;
-    font-weight: bold;
-    color: #000000;
-    border: none;
-}</string>
-                    </property>
-                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
                     <property name="minimumSize">
                      <size>
                       <width>100</width>
@@ -252,6 +478,14 @@
                       <width>100</width>
                       <height>16777215</height>
                      </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
                     </property>
                     <property name="text">
                      <string>0.00</string>
@@ -284,15 +518,6 @@
                   </item>
                   <item>
                    <widget class="QLabel" name="label_whiteLengthValue">
-                    <property name="styleSheet">
-                     <string notr="true">QLabel {
-    font-size: 16px;
-    font-weight: bold;
-    color: #000000;
-    border: none;
-}</string>
-                    </property>
-                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
                     <property name="minimumSize">
                      <size>
                       <width>100</width>
@@ -304,6 +529,14 @@
                       <width>100</width>
                       <height>16777215</height>
                      </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
                     </property>
                     <property name="text">
                      <string>0.00</string>
@@ -336,15 +569,6 @@
                   </item>
                   <item>
                    <widget class="QLabel" name="label_bagLengthValue">
-                    <property name="styleSheet">
-                     <string notr="true">QLabel {
-    font-size: 16px;
-    font-weight: bold;
-    color: #000000;
-    border: none;
-}</string>
-                    </property>
-                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
                     <property name="minimumSize">
                      <size>
                       <width>100</width>
@@ -356,6 +580,14 @@
                       <width>100</width>
                       <height>16777215</height>
                      </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
                     </property>
                     <property name="text">
                      <string>0.00</string>
@@ -440,7 +672,7 @@ QPushButton:pressed {
                       </property>
                      </widget>
                     </item>
-                    <item alignment="Qt::AlignmentFlag::AlignHCenter">
+                    <item alignment="">
                      <widget class="QLabel" name="label_systemFlag">
                       <property name="sizePolicy">
                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -485,7 +717,7 @@ QPushButton:pressed {
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_img2" stretch="10,1,1">
+            <layout class="QHBoxLayout" name="horizontalLayout_img2" stretch="10,1,1,1">
              <item>
               <widget class="QLabel" name="label_imgDisplay_2">
                <property name="sizePolicy">
@@ -535,6 +767,563 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
+              <widget class="QWidget" name="widget_panelPlcCutter" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>260</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>260</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QWidget#widget_panelPlcCutter {
+    background-color: white;
+    border: 1px solid #c8c8c8;
+    border-radius: 4px;
+}</string>
+               </property>
+               <layout class="QVBoxLayout" name="vLayout_panelPlcCutter">
+                <property name="spacing">
+                 <number>4</number>
+                </property>
+                <property name="leftMargin">
+                 <number>4</number>
+                </property>
+                <property name="rightMargin">
+                 <number>4</number>
+                </property>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_plcCutMove">
+                  <property name="spacing">
+                   <number>2</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>2</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>2</number>
+                  </property>
+                  <item>
+                   <widget class="QLabel" name="label_plcCutMove">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 14px;
+    color: #333333;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>切刀移动量</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_plcCutMoveValue">
+                    <property name="minimumSize">
+                     <size>
+                      <width>50</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>50</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 14px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>0.00</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_plcCutPos">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 14px;
+    color: #333333;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>切刀当前位置</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_plcCutPosValue">
+                    <property name="minimumSize">
+                     <size>
+                      <width>50</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>50</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 14px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>0.00</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_plcRecipeManual">
+                  <property name="styleSheet">
+                   <string notr="true">QLabel {
+    font-size: 16px;
+    color: #333333;
+    border: none;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>配方手动选择</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_plcRecipeMid" stretch="1,0">
+                  <property name="leftMargin">
+                   <number>2</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>2</number>
+                  </property>
+                  <item>
+                   <layout class="QGridLayout" name="gLayout_plcRecipeBtns">
+                    <property name="spacing">
+                     <number>4</number>
+                    </property>
+                    <item row="0" column="0">
+                     <widget class="QPushButton" name="pbtn_plcRecipe150">
+                      <property name="minimumSize">
+                       <size>
+                        <width>58</width>
+                        <height>38</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QPushButton {
+    border: 1px solid #7a7a7a;
+    border-radius: 3px;
+    background-color: #e05050;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>150</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QPushButton" name="pbtn_plcRecipe160">
+                      <property name="minimumSize">
+                       <size>
+                        <width>58</width>
+                        <height>38</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QPushButton {
+    border: 1px solid #7a7a7a;
+    border-radius: 3px;
+    background-color: #e05050;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>160</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="2">
+                     <widget class="QPushButton" name="pbtn_plcRecipe170">
+                      <property name="minimumSize">
+                       <size>
+                        <width>58</width>
+                        <height>38</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QPushButton {
+    border: 1px solid #7a7a7a;
+    border-radius: 3px;
+    background-color: #e05050;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>170</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="QPushButton" name="pbtn_plcRecipe180">
+                      <property name="minimumSize">
+                       <size>
+                        <width>58</width>
+                        <height>38</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QPushButton {
+    border: 1px solid #7a7a7a;
+    border-radius: 3px;
+    background-color: #e05050;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>180</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="1">
+                     <widget class="QPushButton" name="pbtn_plcRecipe190">
+                      <property name="minimumSize">
+                       <size>
+                        <width>58</width>
+                        <height>38</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QPushButton {
+    border: 1px solid #7a7a7a;
+    border-radius: 3px;
+    background-color: #e05050;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>190</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="2">
+                     <widget class="QPushButton" name="pbtn_plcRecipe200">
+                      <property name="minimumSize">
+                       <size>
+                        <width>58</width>
+                        <height>38</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QPushButton {
+    border: 1px solid #7a7a7a;
+    border-radius: 3px;
+    background-color: #e05050;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>200</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="0">
+                     <widget class="QPushButton" name="pbtn_plcRecipe210">
+                      <property name="minimumSize">
+                       <size>
+                        <width>58</width>
+                        <height>38</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QPushButton {
+    border: 1px solid #7a7a7a;
+    border-radius: 3px;
+    background-color: #e05050;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>210</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="1">
+                     <widget class="QPushButton" name="pbtn_plcRecipe220">
+                      <property name="minimumSize">
+                       <size>
+                        <width>58</width>
+                        <height>38</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QPushButton {
+    border: 1px solid #7a7a7a;
+    border-radius: 3px;
+    background-color: #e05050;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>220</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="2">
+                     <widget class="QPushButton" name="pbtn_plcRecipe230">
+                      <property name="minimumSize">
+                       <size>
+                        <width>58</width>
+                        <height>38</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QPushButton {
+    border: 1px solid #7a7a7a;
+    border-radius: 3px;
+    background-color: #e05050;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>230</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QVBoxLayout" name="vLayout_plcCutLimits">
+                    <item>
+                     <layout class="QVBoxLayout" name="vLayout_plcPosLimit">
+                      <property name="spacing">
+                       <number>2</number>
+                      </property>
+                      <item>
+                       <widget class="QLabel" name="label_plcCutPosLimitTitle">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {
+    font-size: 13px;
+    color: #333333;
+    border: none;
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>切刀正限位</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                      <item alignment="">
+                       <widget class="QLabel" name="label_plcCutPosLimit">
+                        <property name="minimumSize">
+                         <size>
+                          <width>30</width>
+                          <height>30</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>30</width>
+                          <height>30</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {
+    background-color: #9e9e9e;
+    border: 1px solid #7a7a7a;
+    border-radius: 15px;
+}</string>
+                        </property>
+                        <property name="text">
+                         <string/>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item>
+                     <spacer name="verticalSpacer_plcLimits">
+                      <property name="orientation">
+                       <enum>Qt::Orientation::Vertical</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>20</width>
+                        <height>10</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                    <item>
+                     <layout class="QVBoxLayout" name="vLayout_plcNegLimit">
+                      <property name="spacing">
+                       <number>2</number>
+                      </property>
+                      <item>
+                       <widget class="QLabel" name="label_plcCutNegLimitTitle">
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {
+    font-size: 13px;
+    color: #333333;
+    border: none;
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>切刀负限位</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                      <item alignment="">
+                       <widget class="QLabel" name="label_plcCutNegLimit">
+                        <property name="minimumSize">
+                         <size>
+                          <width>30</width>
+                          <height>30</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>30</width>
+                          <height>30</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {
+    background-color: #9e9e9e;
+    border: 1px solid #7a7a7a;
+    border-radius: 15px;
+}</string>
+                        </property>
+                        <property name="text">
+                         <string/>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="hLayout_plcBottom">
+                  <item>
+                   <widget class="QPushButton" name="pbtn_plcStartCompensate">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QPushButton {
+    padding: 6px 10px;
+    border: 1px solid #a03030;
+    border-radius: 3px;
+    background-color: #e05050;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>开始补偿</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pbtn_plcAutoRecipe">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QPushButton {
+    padding: 6px 10px;
+    border: 1px solid #a03030;
+    border-radius: 3px;
+    background-color: #e05050;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>配方自动选择</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
               <widget class="QWidget" name="widget_panelCutter" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -542,7 +1331,6 @@ QPushButton:pressed {
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
-               <!-- 面板宽度定死，防止内部数值变长时挤压图像区 -->
                <property name="minimumSize">
                 <size>
                  <width>260</width>
@@ -587,15 +1375,6 @@ QPushButton:pressed {
                   </item>
                   <item>
                    <widget class="QLabel" name="label_cutJogContSpeedValue">
-                    <property name="styleSheet">
-                     <string notr="true">QLabel {
-    font-size: 16px;
-    font-weight: bold;
-    color: #000000;
-    border: none;
-}</string>
-                    </property>
-                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
                     <property name="minimumSize">
                      <size>
                       <width>100</width>
@@ -607,6 +1386,14 @@ QPushButton:pressed {
                       <width>100</width>
                       <height>16777215</height>
                      </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
                     </property>
                     <property name="text">
                      <string>0.00</string>
@@ -639,15 +1426,6 @@ QPushButton:pressed {
                   </item>
                   <item>
                    <widget class="QLabel" name="label_cutJogOnceSpeedValue">
-                    <property name="styleSheet">
-                     <string notr="true">QLabel {
-    font-size: 16px;
-    font-weight: bold;
-    color: #000000;
-    border: none;
-}</string>
-                    </property>
-                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
                     <property name="minimumSize">
                      <size>
                       <width>100</width>
@@ -659,6 +1437,14 @@ QPushButton:pressed {
                       <width>100</width>
                       <height>16777215</height>
                      </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
                     </property>
                     <property name="text">
                      <string>0.00</string>
@@ -691,15 +1477,6 @@ QPushButton:pressed {
                   </item>
                   <item>
                    <widget class="QLabel" name="label_autoSpeedValue">
-                    <property name="styleSheet">
-                     <string notr="true">QLabel {
-    font-size: 16px;
-    font-weight: bold;
-    color: #000000;
-    border: none;
-}</string>
-                    </property>
-                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
                     <property name="minimumSize">
                      <size>
                       <width>100</width>
@@ -711,6 +1488,14 @@ QPushButton:pressed {
                       <width>100</width>
                       <height>16777215</height>
                      </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
                     </property>
                     <property name="text">
                      <string>0.00</string>
@@ -743,15 +1528,6 @@ QPushButton:pressed {
                   </item>
                   <item>
                    <widget class="QLabel" name="label_cutCalcMoveValue">
-                    <property name="styleSheet">
-                     <string notr="true">QLabel {
-    font-size: 16px;
-    font-weight: bold;
-    color: #000000;
-    border: none;
-}</string>
-                    </property>
-                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
                     <property name="minimumSize">
                      <size>
                       <width>100</width>
@@ -763,6 +1539,14 @@ QPushButton:pressed {
                       <width>100</width>
                       <height>16777215</height>
                      </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
                     </property>
                     <property name="text">
                      <string>0.00</string>
@@ -795,15 +1579,6 @@ QPushButton:pressed {
                   </item>
                   <item>
                    <widget class="QLabel" name="label_cutActualMoveValue">
-                    <property name="styleSheet">
-                     <string notr="true">QLabel {
-    font-size: 16px;
-    font-weight: bold;
-    color: #000000;
-    border: none;
-}</string>
-                    </property>
-                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
                     <property name="minimumSize">
                      <size>
                       <width>100</width>
@@ -815,6 +1590,14 @@ QPushButton:pressed {
                       <width>100</width>
                       <height>16777215</height>
                      </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
                     </property>
                     <property name="text">
                      <string>0.00</string>
@@ -847,15 +1630,6 @@ QPushButton:pressed {
                   </item>
                   <item>
                    <widget class="QLabel" name="label_cutPosValue">
-                    <property name="styleSheet">
-                     <string notr="true">QLabel {
-    font-size: 16px;
-    font-weight: bold;
-    color: #000000;
-    border: none;
-}</string>
-                    </property>
-                    <!-- 数值 label 固定宽度，防止数值变长时撑开面板、挤压图像区 -->
                     <property name="minimumSize">
                      <size>
                       <width>100</width>
@@ -867,6 +1641,14 @@ QPushButton:pressed {
                       <width>100</width>
                       <height>16777215</height>
                      </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    border: none;
+}</string>
                     </property>
                     <property name="text">
                      <string>0.00</string>
@@ -924,7 +1706,7 @@ QPushButton:pressed {
                       </property>
                      </widget>
                     </item>
-                    <item alignment="Qt::AlignmentFlag::AlignHCenter">
+                    <item alignment="">
                      <widget class="QLabel" name="label_cutPosLimit">
                       <property name="minimumSize">
                        <size>
@@ -974,7 +1756,7 @@ QPushButton:pressed {
                       </property>
                      </widget>
                     </item>
-                    <item alignment="Qt::AlignmentFlag::AlignHCenter">
+                    <item alignment="">
                      <widget class="QLabel" name="label_cutNegLimit">
                       <property name="minimumSize">
                        <size>
@@ -1018,7 +1800,6 @@ QPushButton:pressed {
        <layout class="QVBoxLayout" name="vLayout_SideBar" stretch="8,16,4,2,1">
         <item>
          <widget class="QGroupBox" name="groupBox_head">
-          <!-- 右侧栏宽度定死，防止内部文本变长时整个侧栏撑宽、挤压图像区 -->
           <property name="minimumSize">
            <size>
             <width>400</width>
@@ -1357,7 +2138,6 @@ QPushButton:pressed {
         </item>
         <item>
          <widget class="QGroupBox" name="gBox_infor">
-          <!-- 右侧栏宽度定死，防止内部文本变长时整个侧栏撑宽、挤压图像区 -->
           <property name="minimumSize">
            <size>
             <width>400</width>
@@ -1472,7 +2252,6 @@ QPushButton:pressed {
                </item>
                <item>
                 <widget class="QLabel" name="label_camera1PhotoValue">
-                 <!-- 数值 label 固定宽度，防止数值变长时撑宽右侧栏 -->
                  <property name="minimumSize">
                   <size>
                    <width>120</width>
@@ -1524,7 +2303,6 @@ QPushButton:pressed {
                </item>
                <item>
                 <widget class="QLabel" name="label_camera1UnrecognizedValue">
-                 <!-- 数值 label 固定宽度，防止数值变长时撑宽右侧栏 -->
                  <property name="minimumSize">
                   <size>
                    <width>120</width>
@@ -1576,7 +2354,6 @@ QPushButton:pressed {
                </item>
                <item>
                 <widget class="QLabel" name="label_camera2PhotoValue">
-                 <!-- 数值 label 固定宽度，防止数值变长时撑宽右侧栏 -->
                  <property name="minimumSize">
                   <size>
                    <width>120</width>
@@ -1628,7 +2405,6 @@ QPushButton:pressed {
                </item>
                <item>
                 <widget class="QLabel" name="label_camera2UnrecognizedValue">
-                 <!-- 数值 label 固定宽度，防止数值变长时撑宽右侧栏 -->
                  <property name="minimumSize">
                   <size>
                    <width>120</width>
@@ -2440,7 +3216,6 @@ QCheckBox:checked {
         </item>
         <item>
          <widget class="QGroupBox" name="gBox_set">
-          <!-- 右侧栏宽度定死，防止内部文本变长时整个侧栏撑宽、挤压图像区 -->
           <property name="minimumSize">
            <size>
             <width>400</width>
@@ -2549,7 +3324,6 @@ QPushButton:pressed {
         </item>
         <item>
          <widget class="QGroupBox" name="gBox_companyInfo">
-          <!-- 右侧栏宽度定死，防止内部文本变长时整个侧栏撑宽、挤压图像区 -->
           <property name="minimumSize">
            <size>
             <width>400</width>
@@ -2596,7 +3370,6 @@ QGroupBox::title {
              <property name="text">
               <string/>
              </property>
-             <!-- 侧栏宽度已固定，自动曝光长文本换行显示，避免撑宽布局或被裁剪 -->
              <property name="wordWrap">
               <bool>true</bool>
              </property>
@@ -2607,7 +3380,6 @@ QGroupBox::title {
         </item>
         <item>
          <widget class="QGroupBox" name="gBox_VersionInfo">
-          <!-- 右侧栏宽度定死，防止内部文本变长时整个侧栏撑宽、挤压图像区 -->
           <property name="minimumSize">
            <size>
             <width>400</width>
