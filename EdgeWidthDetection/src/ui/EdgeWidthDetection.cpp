@@ -975,14 +975,22 @@ bool EdgeWidthDetection::checkManualWriteReady()
 
 bool EdgeWidthDetection::writeMainCoil(const QString& pointName, bool value)
 {
+	qDebug() << "[写入线圈] 请求:" << pointName << "| 目标值:" << value;
 	if (!checkManualWriteReady())
 	{
+		qWarning() << "[写入线圈]" << pointName << "被前置检查拦截: manualWriteEnabled ="
+			<< Modules::getInstance().plcController.manualWriteEnabled.load()
+			<< "| scheduler 存在:" << (Modules::getInstance().plcController.plcControllerScheduler != nullptr);
 		return false;
 	}
 
 	const auto* point = findMainUiPoint(pointName);
 	if (!point || point->type != MainPointType::Bool || !point->writable)
 	{
+		qWarning() << "[写入线圈]" << pointName << "点位检查失败: 找到点位:" << (point != nullptr)
+			<< (point ? QStringLiteral("| 类型:%1 | 可写:%2 | 地址:%3")
+				.arg(static_cast<int>(point->type)).arg(point->writable).arg(point->protocolAddress)
+				: QString());
 		QMessageBox::warning(this, QStringLiteral("警告"),
 			QStringLiteral("modbus_main.csv 中未找到可写 BOOL 点位「%1」，请检查点位表").arg(pointName));
 		return false;
@@ -990,12 +998,22 @@ bool EdgeWidthDetection::writeMainCoil(const QString& pointName, bool value)
 
 	auto& scheduler = Modules::getInstance().plcController.plcControllerScheduler;
 	const auto addr = static_cast<rw::hoem::Address16>(point->protocolAddress);
-	if (!scheduler->writeCoilAsync(addr, value).get())
+	qDebug() << "[写入线圈]" << pointName << "| 协议地址:" << point->protocolAddress << "| 调用 writeCoilAsync";
+	const bool ok = scheduler->writeCoilAsync(addr, value).get();
+	qDebug() << "[写入线圈]" << pointName << "| writeCoilAsync 返回:" << ok;
+	if (!ok)
 	{
 		QMessageBox::warning(this, QStringLiteral("警告"),
 			pointName + (value ? QStringLiteral(" 置1失败") : QStringLiteral(" 置0失败")));
 		return false;
 	}
+
+	// 回读校验：确认 PLC 侧线圈的实际值。
+	// 若写入 1 成功但回读仍为 0，说明 PLC 程序消费后自复位（瞬动设计），属正常现象；
+	// 若回读失败而轮询读取正常，则需对比两者地址是否一致
+	const auto rb = scheduler->readCoilAsync(addr).get();
+	qDebug() << "[写入线圈]" << pointName << "| 回读:"
+		<< (rb.second ? QString::number(rb.first) : QStringLiteral("失败"));
 	return true;
 }
 
@@ -1112,11 +1130,18 @@ void EdgeWidthDetection::onPlcRecipeBtn_clicked()
 	const int idx = _recipeButtons.indexOf(btn);
 	if (idx < 0)
 	{
+		qWarning() << "[配方按钮] sender 不在配方按钮列表中，忽略本次点击";
 		return;
 	}
 	// 按下置 1、再按置 0：按该按钮线圈最近一次轮询值取反写入
 	const QString name = QStringLiteral("配方%1").arg(150 + idx * 10);
-	writeMainCoil(name, !_mainUiBoolStates.value(name, false));
+	const bool polled = _mainUiBoolStates.contains(name);	// 该线圈是否至少成功轮询过一次
+	const bool lastKnown = _mainUiBoolStates.value(name, false);
+	const bool target = !lastKnown;
+	qDebug() << "[配方按钮] 点击:" << name << "| 按钮索引:" << idx
+		<< "| 线圈轮询成功过:" << polled << "| 最近一次轮询值:" << lastKnown
+		<< "| 本次准备写入:" << target;
+	writeMainCoil(name, target);
 	onMainUiRefreshTimeout();
 }
 

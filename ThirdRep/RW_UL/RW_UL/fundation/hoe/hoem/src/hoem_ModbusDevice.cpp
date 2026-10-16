@@ -1,5 +1,6 @@
 #include"hoem_ModbusDevice.hpp"
 
+#include <cerrno>
 #include <iostream>
 #include <modbus.h>
 #include <ostream>
@@ -16,7 +17,8 @@ namespace rw
 			LOG_INFO("Build modbus by tcp, ip \"{}\",port \"{}\" ...", cfg.ip, cfg.port);
 
 			_modbusContext = modbus_new_tcp(cfg.ip.c_str(), cfg.port);
-			modbus_set_debug(_modbusContext, 1);
+			// 不开启 libmodbus 调试打印（开启会向控制台刷 Modbus 收发帧：
+			// "Waiting for a confirmation..." / [EB][89]... 发送帧 / <EB><88>... 接收帧）
 			if (_modbusContext == nullptr) {
 				LOG_ERROR("Failed to create Modbus context");
 
@@ -325,6 +327,10 @@ namespace rw
 		{
 			int result = modbus_write_bit(_modbusContext, address + _baseAddress, state ? 1 : 0);
 			if (result < 0) {
+				// 写入失败时输出底层错误：errno + 描述（如 Illegal data address / 超时 / 连接断开），
+				// 用于定位"读取正常但写入失败"类问题
+				LOG_ERROR("Modbus write coil failed, addr {}(+base {}), value {}, errno {}: {}",
+					address, _baseAddress, state, errno, modbus_strerror(errno));
 				return false;
 			}
 			return true;
