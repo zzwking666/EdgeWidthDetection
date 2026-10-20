@@ -46,10 +46,20 @@ namespace {
 
 	// 基于 YoloSeg 分割掩膜，用类 Halcon 卡尺的方式提取目标的两条长边直线（端点已换算到整图坐标）。
 	// 思路：mask_roi 二值化 → 最大外轮廓 → PCA 求主轴 → 沿主轴每 1 像素放一个垂直截面（卡尺），
+	// 拟合结果：两条长边端点 + 间距测量线段端点 + 间距像素值
+	struct MaskLongEdges
+	{
+		QPoint edge1Start, edge1End, edge2Start, edge2End;	// 两条拟合长边端点（整图坐标）
+		QPoint distStart, distEnd;							// 间距测量线段端点（主轴中点处，整图坐标）
+		double distancePixel{ 0.0 };						// 两条拟合直线的间距（像素）
+	};
+
 	// 每个截面取掩膜两侧的边缘点 → 两组边缘点分别用 fitLine（Huber 鲁棒核）拟合直线，
-	// 端点取目标在主轴方向上的投影范围。掩膜无效或拟合失败时返回 false，调用方跳过该目标的绘制
-	inline bool ExtractMaskLongEdges(const rw::DetectionRectangleInfo& result,
-		QPoint& edge1Start, QPoint& edge1End, QPoint& edge2Start, QPoint& edge2End)
+	// 端点取目标在主轴方向上的投影范围。掩膜无效或拟合失败时返回 false，调用方跳过该目标的绘制。
+	// distancePixel 为两条拟合直线的间距（像素）：取主轴投影中点分别正交投影到两条直线上（distStart/distEnd），
+	// 对称计算点到直线的垂直距离后取平均（两线不完全平行时比单向点线距离更稳）；
+	// 上报宽度与界面绘制的线共用此拟合结果，保证两者数值一致
+	inline bool ExtractMaskLongEdges(const rw::DetectionRectangleInfo& result, MaskLongEdges& edges)
 	{
 		if (!result.segMaskValid || result.mask_roi.empty()) {
 			return false;
@@ -156,10 +166,26 @@ namespace {
 				static_cast<int>(std::lround(p.y)) + result.roi.y);
 		};
 
-		edge1Start = toImagePoint(projectOnLine(line1, uMin));
-		edge1End = toImagePoint(projectOnLine(line1, uMax));
-		edge2Start = toImagePoint(projectOnLine(line2, uMin));
-		edge2End = toImagePoint(projectOnLine(line2, uMax));
+		edges.edge1Start = toImagePoint(projectOnLine(line1, uMin));
+		edges.edge1End = toImagePoint(projectOnLine(line1, uMax));
+		edges.edge2Start = toImagePoint(projectOnLine(line2, uMin));
+		edges.edge2End = toImagePoint(projectOnLine(line2, uMax));
+
+		// 两线间距：fitLine 返回单位方向向量，点到直线距离 = 向量减去其在方向上的投影后的模长。
+		// 距离与 ROI 平移无关，直接在 mask_roi 局部坐标下计算即为原图像素值
+		auto pointLineDist = [](const cv::Point2d& p, const cv::Vec4d& line) {
+			const cv::Point2d dir(line[0], line[1]);
+			const cv::Point2d p0(line[2], line[3]);
+			const cv::Point2d v = p - p0;
+			const cv::Point2d perpPart = v - v.dot(dir) * dir;
+			return std::sqrt(perpPart.x * perpPart.x + perpPart.y * perpPart.y);
+		};
+		const double uMid = (uMin + uMax) * 0.5;
+		const cv::Point2d mid1 = projectOnLine(line1, uMid);
+		const cv::Point2d mid2 = projectOnLine(line2, uMid);
+		edges.distancePixel = (pointLineDist(mid2, line1) + pointLineDist(mid1, line2)) * 0.5;
+		edges.distStart = toImagePoint(mid1);
+		edges.distEnd = toImagePoint(mid2);
 		return true;
 	}
 
@@ -411,6 +437,24 @@ namespace {
 		}
 	}
 
+	// 在间距测量线段旁标注上报宽度（毫米）。此函数绘制在缓存图之外，
+	// 修改像素当量后的重绘路径（redrawLastFrameText）也会调用，保证标注值始终按当前当量计算
+	inline void DrawWidthAnnotationText(QImage& img, const QPoint& distStart, const QPoint& distEnd, double widthMm)
+	{
+		QPainter painter(&img);
+		painter.setRenderHint(QPainter::Antialiasing, true);
+		QPen pen(QColor(255, 0, 255)); // 品红，与测量线段同色
+		painter.setPen(pen);
+		QFont font = painter.font();
+		font.setPixelSize(60);
+		font.setBold(true);
+		painter.setFont(font);
+		const QPoint textPos((distStart.x() + distEnd.x()) / 2 + 12,
+			(distStart.y() + distEnd.y()) / 2 - 12);
+		painter.drawText(textPos, QString::number(widthMm, 'f', 2) + "mm");
+		painter.end();
+	}
+
 	// 按当前像素当量把像素级结果换算成毫米，并在图像左上角绘制识别文字
 	// （出图时与修改像素当量后的重绘共用此函数，保证两处文字格式一致）
 	inline void DrawResultTextOnImage(QImage& img, int cameraIndex, bool hasWidth, int widthPixel, bool hasCenter, int centerDiffPixel)
@@ -594,6 +638,7 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	double centerDiffMm = 0.0;
 	int widthPixel = 0;			// 识别宽度（像素），供显示缓存重算
 	int centerDiffPixel = 0;	// 图像中心与识别中心纵向偏差（像素），供显示缓存重算
+	QPoint distStart, distEnd;	// 间距测量线段端点，供宽度文字标注定位与显示缓存重绘
 	bool recognized = false;	// 本帧是否向 PLC 写入有效压痕宽度，未写入（写 0）则计入未识别总量
 
 	// 计算识别中心点与图像中心点差值
@@ -619,15 +664,17 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 		emit plcCircularWrite(1, offsetWriteResult.writeAddress, centerDiffMm, offsetWriteResult.clearAddress);
 	}
 
-	if (defectResult.defects.size() == 1)
+	if (defectResult.defects.size() == 1 && !validResult.empty())
 	{
-		if (imgPro.context().customFields.find("width") != imgPro.context().customFields.end())
+		// 宽度取绘制所用两条拟合长边的间距，保证上报值与画面线条严格一致；
+		// 拟合失败（距离保持 0）视为未识别，向 PLC 写 0
+		auto pixToWorld = setConfig.xiangsudangliang1;
+		double edgeDistancePixel = 0.0;
+		drawImg(maskImg, validResult, centerDiffMm, &edgeDistancePixel, &distStart, &distEnd);
+		if (edgeDistancePixel > 0.0)
 		{
-			auto pixToWorld = setConfig.xiangsudangliang1;
-			widthPixel = std::any_cast<int>(imgPro.context().customFields["width"]);
+			widthPixel = static_cast<int>(std::lround(edgeDistancePixel));
 			width = widthPixel * pixToWorld;
-
-			drawImg(maskImg, validResult, centerDiffMm);
 			recognized = true;
 		}
 	}
@@ -659,6 +706,8 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	displayInfo.imageWithoutText = maskImg;
 	displayInfo.widthPixel = widthPixel;
 	displayInfo.centerDiffPixel = centerDiffPixel;
+	displayInfo.distStart = distStart;
+	displayInfo.distEnd = distEnd;
 	displayInfo.hasWidth = recognized;
 	displayInfo.hasCenter = hasCenter;
 	displayInfo.valid = true;
@@ -668,6 +717,12 @@ void ImageProcessor::run_OpenRemoveFunc(MatInfo& frame)
 	}
 
 	DrawResultTextOnImage(maskImg, imageProcessingModuleIndex, recognized, widthPixel, hasCenter, centerDiffPixel);
+
+	// 在间距测量线段旁标注上报宽度（与上报值同源同舍入）
+	if (recognized)
+	{
+		DrawWidthAnnotationText(maskImg, distStart, distEnd, width);
+	}
 
 	emit imageReady(frame.index, QPixmap::fromImage(maskImg));
 	DiagCheckpoint("剔废处理完成", imageProcessingModuleIndex, frame.index);
@@ -717,16 +772,20 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 
 	double width = 0.0;
 	int widthPixel = 0;			// 识别宽度（像素），供显示缓存重算
+	QPoint distStart, distEnd;	// 间距测量线段端点，供宽度文字标注定位与显示缓存重绘
 	bool recognized = false;	// 本帧是否向 PLC 写入有效压痕宽度，未写入（写 0）则计入未识别总量
 
-	if (defectResult.defects.size() == 1)
+	if (defectResult.defects.size() == 1 && !validResult.empty())
 	{
-		if (imgPro.context().customFields.find("width") != imgPro.context().customFields.end())
+		// 宽度取绘制所用两条拟合长边的间距，保证上报值与画面线条严格一致；
+		// 拟合失败（距离保持 0）视为未识别，向 PLC 写 0
+		auto pixToWorld = setConfig.xiangsudangliang2;
+		double edgeDistancePixel = 0.0;
+		drawImg(maskImg, validResult, 0.0, &edgeDistancePixel, &distStart, &distEnd);
+		if (edgeDistancePixel > 0.0)
 		{
-			auto pixToWorld = setConfig.xiangsudangliang2;
-			widthPixel = std::any_cast<int>(imgPro.context().customFields["width"]);
+			widthPixel = static_cast<int>(std::lround(edgeDistancePixel));
 			width = widthPixel * pixToWorld;
-			drawImg(maskImg, validResult, 0.0);
 			recognized = true;
 		}
 	}
@@ -756,6 +815,8 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 	LastFrameDisplayInfo displayInfo;
 	displayInfo.imageWithoutText = maskImg;
 	displayInfo.widthPixel = widthPixel;
+	displayInfo.distStart = distStart;
+	displayInfo.distEnd = distEnd;
 	displayInfo.hasWidth = recognized;
 	displayInfo.valid = true;
 	displayInfo.frameIndex = frame.index;
@@ -764,6 +825,12 @@ void ImageProcessor::run_OpenRemoveFunc2(MatInfo& frame)
 	}
 
 	DrawResultTextOnImage(maskImg, imageProcessingModuleIndex, recognized, widthPixel, false, 0);
+
+	// 在间距测量线段旁标注上报宽度（与上报值同源同舍入）
+	if (recognized)
+	{
+		DrawWidthAnnotationText(maskImg, distStart, distEnd, width);
+	}
 
 	emit imageReady(frame.index, QPixmap::fromImage(maskImg));
 	DiagCheckpoint("剔废处理完成", imageProcessingModuleIndex, frame.index);
@@ -868,7 +935,8 @@ void ImageProcessor::save_image_work(rw::rqw::ImageInfo& imageInfo, const QImage
 	}
 }
 
-void ImageProcessor::drawImg(QImage& qimage, const std::vector<rw::DetectionRectangleInfo>& processResult, double centerDiffMm)
+void ImageProcessor::drawImg(QImage& qimage, const std::vector<rw::DetectionRectangleInfo>& processResult, double centerDiffMm,
+	double* firstEdgeDistancePixel, QPoint* firstDistStart, QPoint* firstDistEnd)
 {
 	QPainter painter(&qimage);
 	painter.setRenderHint(QPainter::Antialiasing, true);
@@ -878,14 +946,37 @@ void ImageProcessor::drawImg(QImage& qimage, const std::vector<rw::DetectionRect
 	pen.setWidth(4);
 	painter.setPen(pen);
 
+	bool distanceWritten = false;
 	for (const auto& result : processResult)
 	{
-		QPoint edge1Start, edge1End, edge2Start, edge2End;
-		if (!ExtractMaskLongEdges(result, edge1Start, edge1End, edge2Start, edge2End)) {
+		MaskLongEdges edges;
+		if (!ExtractMaskLongEdges(result, edges)) {
 			continue;	// 掩膜无效或轮廓提取失败时跳过该目标
 		}
-		painter.drawLine(edge1Start, edge1End);
-		painter.drawLine(edge2Start, edge2End);
+		painter.drawLine(edges.edge1Start, edges.edge1End);
+		painter.drawLine(edges.edge2Start, edges.edge2End);
+
+		// 第一个成功提取的目标：绘制间距测量线段并传出间距与线段端点，
+		// 宽度文字标注由调用方在缓存图之外绘制（DrawWidthAnnotationText），
+		// 保证修改像素当量重绘时标注值随当量更新
+		if (!distanceWritten) {
+			distanceWritten = true;
+			if (firstEdgeDistancePixel) {
+				*firstEdgeDistancePixel = edges.distancePixel;
+			}
+			if (firstDistStart) {
+				*firstDistStart = edges.distStart;
+			}
+			if (firstDistEnd) {
+				*firstDistEnd = edges.distEnd;
+			}
+
+			QPen distPen(QColor(255, 0, 255)); // 品红
+			distPen.setWidth(4);
+			painter.setPen(distPen);
+			painter.drawLine(edges.distStart, edges.distEnd);
+			painter.setPen(pen);
+		}
 	}
 
 	// 绘制图像中心线（黄色虚线）
@@ -1102,6 +1193,14 @@ void ImageProcessingModule::redrawLastFrameText()
 	// 按当前配置（可能已修改像素当量）重算毫米值并重绘左上角识别文字
 	DrawResultTextOnImage(info.imageWithoutText, static_cast<int>(index),
 		info.hasWidth, info.widthPixel, info.hasCenter, info.centerDiffPixel);
+
+	// 间距测量线段旁的宽度标注同样按当前像素当量重算重绘
+	if (info.hasWidth)
+	{
+		auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+		const double pixToWorld = (2 == index) ? setConfig.xiangsudangliang2 : setConfig.xiangsudangliang1;
+		DrawWidthAnnotationText(info.imageWithoutText, info.distStart, info.distEnd, info.widthPixel * pixToWorld);
+	}
 
 	emit imageReady(info.frameIndex, QPixmap::fromImage(info.imageWithoutText));
 }

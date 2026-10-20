@@ -11,6 +11,7 @@
 #include <QThread>
 #include <QPixmap>
 #include <QImage>
+#include <QPoint>
 #include <imgPro_ImageProcess.hpp>
 #include "rqw_CameraObjectCore.hpp"
 #include "rqw_ImageSaveEngine.h"
@@ -24,12 +25,14 @@ struct PlcCircularWriteState
 };
 
 // 最近一次出图的显示缓存：保存未绘制识别文字的掩码图与像素级原始结果，
-// 供修改像素当量后按新参数重算毫米值并重绘左上角识别文字
+// 供修改像素当量后按新参数重算毫米值并重绘左上角识别文字与间距标注
 struct LastFrameDisplayInfo
 {
-	QImage imageWithoutText;	// 未绘制识别文字的掩码图（检测框、中心线已绘制）
+	QImage imageWithoutText;	// 未绘制识别文字的掩码图（检测框、中心线、间距测量线段已绘制）
 	int widthPixel = 0;			// 识别宽度（像素）
 	int centerDiffPixel = 0;	// 图像中心与识别中心的纵向偏差（像素，仅相机1）
+	QPoint distStart;			// 间距测量线段起点（hasWidth 时有效，供重绘宽度标注定位）
+	QPoint distEnd;				// 间距测量线段终点（hasWidth 时有效）
 	bool hasWidth = false;		// 本帧是否识别到有效宽度
 	bool hasCenter = false;		// 本帧是否有有效中心点（仅相机1）
 	bool valid = false;			// 缓存是否可重绘（调试出图后置为 false）
@@ -74,8 +77,12 @@ private:
 	// 在 YoloSeg 掩膜范围内统计亮度并转发给自动曝光模块（自动曝光关闭时直接返回）
 	void reportExposureStats(const cv::Mat& image);
 private:
-	// 在图像上面绘制短边(宽)
-	void drawImg(QImage& qimage, const std::vector<rw::DetectionRectangleInfo>& processResult, double centerDiffMm);
+	// 在图像上面绘制短边(宽)的两条拟合长边线、间距测量线段及中心标记；
+	// firstEdgeDistancePixel 非空时输出第一个成功提取目标的拟合线间距（像素），
+	// firstDistStart/firstDistEnd 非空时输出间距测量线段端点（供标注宽度文字用），
+	// 保证上报值与绘制的两条线来自同一次拟合
+	void drawImg(QImage& qimage, const std::vector<rw::DetectionRectangleInfo>& processResult, double centerDiffMm,
+		double* firstEdgeDistancePixel = nullptr, QPoint* firstDistStart = nullptr, QPoint* firstDistEnd = nullptr);
 private:
 	std::unique_ptr<rw::imgPro::ImageProcess> _imgProcess;
 public:

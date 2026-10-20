@@ -187,23 +187,8 @@ void ImgProModule::buildImgProContextPreProcess()
 		rw::imgPro::DefectResultInfo& defectResultInfo,
 		rw::imgPro::ImageProcessContext& context)
 		{
-			// 默认只取第一个限位内的结果（限位外的误识别不参与宽度计算）
-			for (const auto& info : processResult)
-			{
-				if (!IsInLimitRegion(info, context))
-				{
-					continue;
-				}
-				if (info.width < info.height)
-				{
-					context.customFields["width"] = info.width;
-				}
-				else
-				{
-					context.customFields["width"] = info.height;
-				}
-				break;
-			}
+			// 宽度不再由检测框短边提供：上报宽度统一由 ImageProcessor 侧
+			// 按绘制所用两条拟合长边的间距计算（ExtractMaskLongEdges），保证上报值与画面一致
 		};
 #pragma endregion
 
