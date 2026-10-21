@@ -60,9 +60,7 @@ void AutoExposureModule::onExposureStats(double meanIntensity, double overRatio,
 	}
 
 	constexpr double kp = 0.01;
-	constexpr double minStep = 30.0;          // 曝光调整步进，由 10 改为 30，降低灵敏度
 	constexpr double maxStep = 500.0;
-	constexpr double deadBand = 30.0;         // 死区与最小步进对齐，避免小范围来回跳动
 	constexpr double errorThreshold = 0.02;   // 仅对均值误差生效，抑制轻微亮度波动
 	constexpr double fastRampFactor = 1.5;    // 严重欠曝/过曝时的几何爬坡倍率
 	constexpr double fastRampRatio = 0.5;     // 欠曝/过曝像素比例超过该值判定为严重偏离
@@ -82,6 +80,12 @@ void AutoExposureModule::onExposureStats(double meanIntensity, double overRatio,
 	if (currentExposure <= 0.0) {
 		currentExposure = lastExposure > 0.0 ? lastExposure : fallbackExposure;
 	}
+
+	// 步进与死区随当前曝光缩放：同样的曝光步长在低曝光段对应的亮度跳变更大，
+	// 固定步长会在目标亮度附近来回震荡；取 max(10, 当前曝光 × 5%)，
+	// 高曝光段步长变粗保证收敛速度，低曝光段变细保证稳定
+	const double minStep = std::max(10.0, currentExposure * 0.05);
+	const double deadBand = minStep;          // 死区与最小步进对齐，避免小范围来回跳动
 
 	double newExposure = 0.0;
 	if (underRatio > fastRampRatio && overRatio <= setConfig.autoExposureMaxOverRatio) {
