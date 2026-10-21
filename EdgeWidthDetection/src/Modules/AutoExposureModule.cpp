@@ -113,7 +113,12 @@ void AutoExposureModule::onExposureStats(double meanIntensity, double overRatio,
 	}
 	newExposure = std::clamp(newExposure, minExposure, maxExposure);
 
-	if (std::abs(newExposure - currentExposure) < deadBand) {
+	// 死区只抑制中间区间的小步进；若调整被钳到边界（说明按当前误差仍有继续
+	// 调整的需求），即使变化量小于死区也允许下发，否则曝光会卡在
+	// (hardMin, hardMin + deadBand) 区间永远到不了下限（或过曝时对称卡在上限侧）
+	const bool clampedToBoundary = (newExposure == minExposure || newExposure == maxExposure)
+		&& newExposure != currentExposure;
+	if (!clampedToBoundary && std::abs(newExposure - currentExposure) < deadBand) {
 		return;
 	}
 
