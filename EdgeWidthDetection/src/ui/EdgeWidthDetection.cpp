@@ -62,16 +62,21 @@ namespace
 		QStringLiteral("切刀移动量"),
 		QStringLiteral("配方号"),
 		QStringLiteral("配方自动选择"),
-		QStringLiteral("配方150"),
-		QStringLiteral("配方160"),
 		QStringLiteral("配方170"),
 		QStringLiteral("配方180"),
+		QStringLiteral("配方185"),
 		QStringLiteral("配方190"),
+		QStringLiteral("配方195"),
 		QStringLiteral("配方200"),
+		QStringLiteral("配方205"),
 		QStringLiteral("配方210"),
 		QStringLiteral("配方220"),
 		QStringLiteral("配方230"),
 	};
+
+	// 12 个配方按钮对应的配方值（与界面按钮顺序一致；150/160 仅占位、无业务逻辑，不连点击槽）
+	const int kRecipeBtnValues[] = { 150, 160, 170, 180, 185, 190, 195, 200, 205, 210, 220, 230 };
+	const int kRecipeBtnCount = static_cast<int>(sizeof(kRecipeBtnValues) / sizeof(kRecipeBtnValues[0]));
 
 	// 可点击（可写数值）标签样式：蓝色加粗下划线 + 手型光标，提示可点击
 	const char* kMainClickableValueStyle =
@@ -107,7 +112,7 @@ namespace
 		"}"
 		"QPushButton:pressed { background-color: #b04040; }";
 
-	// 9 个配方按钮专用样式：按下反馈做得更明显（深色底 + 加粗描边 + 文字变色），方便观察是否按下
+	// 12 个配方按钮专用样式：按下反馈做得更明显（深色底 + 加粗描边 + 文字变色），方便观察是否按下
 	const char* kRecipeBtnOnStyle =
 		"QPushButton {"
 		"    border: 1px solid #00a040;"
@@ -226,15 +231,16 @@ namespace
 		{ "切刀移动量",			EdgeWidthDetection::MainPointType::Float,	3066,	false },
 		{ "配方号",				EdgeWidthDetection::MainPointType::Dint,	1642,	false },
 		{ "配方自动选择",		EdgeWidthDetection::MainPointType::Bool,	3001,	true  },
-		{ "配方150",			EdgeWidthDetection::MainPointType::Bool,	13055,	true  },
-		{ "配方160",			EdgeWidthDetection::MainPointType::Bool,	13056,	true  },
-		{ "配方170",			EdgeWidthDetection::MainPointType::Bool,	13057,	true  },
-		{ "配方180",			EdgeWidthDetection::MainPointType::Bool,	13058,	true  },
-		{ "配方190",			EdgeWidthDetection::MainPointType::Bool,	13059,	true  },
-		{ "配方200",			EdgeWidthDetection::MainPointType::Bool,	13060,	true  },
-		{ "配方210",			EdgeWidthDetection::MainPointType::Bool,	13061,	true  },
-		{ "配方220",			EdgeWidthDetection::MainPointType::Bool,	13062,	true  },
-		{ "配方230",			EdgeWidthDetection::MainPointType::Bool,	13063,	true  },
+		{ "配方170",			EdgeWidthDetection::MainPointType::Bool,	13053,	true  },
+		{ "配方180",			EdgeWidthDetection::MainPointType::Bool,	13054,	true  },
+		{ "配方185",			EdgeWidthDetection::MainPointType::Bool,	13055,	true  },
+		{ "配方190",			EdgeWidthDetection::MainPointType::Bool,	13056,	true  },
+		{ "配方195",			EdgeWidthDetection::MainPointType::Bool,	13057,	true  },
+		{ "配方200",			EdgeWidthDetection::MainPointType::Bool,	13058,	true  },
+		{ "配方205",			EdgeWidthDetection::MainPointType::Bool,	13059,	true  },
+		{ "配方210",			EdgeWidthDetection::MainPointType::Bool,	13060,	true  },
+		{ "配方220",			EdgeWidthDetection::MainPointType::Bool,	13061,	true  },
+		{ "配方230",			EdgeWidthDetection::MainPointType::Bool,	13062,	true  },
 	};
 
 	// 设置圆形指示灯颜色：onColor/offColor 为状态色，读取失败时置灰
@@ -729,16 +735,22 @@ void EdgeWidthDetection::build_mainUiModbus()
 			writeMainValue(QStringLiteral("间隔袋数"));
 		});
 
-	// 9 个配方按钮（150~230）：颜色仅由「配方号」点位驱动，点击按各自线圈当前值取反写入
+	// 12 个配方按钮（150~230）：颜色仅由「配方号」点位驱动；150/160 仅 UI 占位、不连点击槽，
+	// 其余 10 个按钮点击按各自线圈当前值取反写入
 	QPushButton* const kRecipeBtns[] = {
 		ui->pbtn_plcRecipe150, ui->pbtn_plcRecipe160, ui->pbtn_plcRecipe170,
-		ui->pbtn_plcRecipe180, ui->pbtn_plcRecipe190, ui->pbtn_plcRecipe200,
+		ui->pbtn_plcRecipe180, ui->pbtn_plcRecipe185, ui->pbtn_plcRecipe190,
+		ui->pbtn_plcRecipe195, ui->pbtn_plcRecipe200, ui->pbtn_plcRecipe205,
 		ui->pbtn_plcRecipe210, ui->pbtn_plcRecipe220, ui->pbtn_plcRecipe230 };
 	for (auto* btn : kRecipeBtns)
 	{
 		_recipeButtons.append(btn);
-		QObject::connect(btn, &QPushButton::clicked,
-			this, &EdgeWidthDetection::onPlcRecipeBtn_clicked);
+		// 前两个为 150/160 占位按钮：无任何业务逻辑，跳过槽连接
+		if (_recipeButtons.size() > 2)
+		{
+			QObject::connect(btn, &QPushButton::clicked,
+				this, &EdgeWidthDetection::onPlcRecipeBtn_clicked);
+		}
 	}
 	QObject::connect(ui->pbtn_plcStartCompensate, &QPushButton::clicked,
 		this, &EdgeWidthDetection::pbtn_plcStartCompensate_clicked);
@@ -1100,11 +1112,11 @@ void EdgeWidthDetection::updateAutoRecipeButton()
 
 void EdgeWidthDetection::updateRecipeButtons(int recipeNo)
 {
-	// 9 个配方按钮颜色仅由「配方号」点位驱动：等于按钮值=绿，否则=红
+	// 12 个配方按钮颜色仅由「配方号」点位驱动：等于按钮值=绿，否则=红（150/160 占位按钮同规则变色，但无点击逻辑）
 	// 使用配方按钮专用样式（按下反馈更明显）
-	for (int i = 0; i < _recipeButtons.size(); ++i)
+	for (int i = 0; i < _recipeButtons.size() && i < kRecipeBtnCount; ++i)
 	{
-		const bool on = (recipeNo == 150 + i * 10);
+		const bool on = (recipeNo == kRecipeBtnValues[i]);
 		_recipeButtons[i]->setStyleSheet(QString::fromUtf8(
 			on ? kRecipeBtnOnStyle : kRecipeBtnOffStyle));
 	}
@@ -1128,13 +1140,13 @@ void EdgeWidthDetection::onPlcRecipeBtn_clicked()
 {
 	auto* btn = qobject_cast<QPushButton*>(sender());
 	const int idx = _recipeButtons.indexOf(btn);
-	if (idx < 0)
+	if (idx < 0 || idx >= kRecipeBtnCount)
 	{
 		qWarning() << "[配方按钮] sender 不在配方按钮列表中，忽略本次点击";
 		return;
 	}
 	// 按下置 1、再按置 0：按该按钮线圈最近一次轮询值取反写入
-	const QString name = QStringLiteral("配方%1").arg(150 + idx * 10);
+	const QString name = QStringLiteral("配方%1").arg(kRecipeBtnValues[idx]);
 	const bool polled = _mainUiBoolStates.contains(name);	// 该线圈是否至少成功轮询过一次
 	const bool lastKnown = _mainUiBoolStates.value(name, false);
 	const bool target = !lastKnown;
@@ -1247,14 +1259,14 @@ void EdgeWidthDetection::onMainUiRefreshTimeout()
 				}
 				else if (point.name == QStringLiteral("切刀正限位"))
 				{
-					// PLC 操作列限位灯按客户图要求：0 红、1 绿
+					// PLC 操作列限位灯按客户图要求：0 绿、1 红
 					setLampColor(ui->label_plcCutPosLimit, res.ok, res.boolValue,
-						QStringLiteral("#00e000"), QStringLiteral("red"));
+						QStringLiteral("red"), QStringLiteral("#00e000"));
 				}
 				else if (point.name == QStringLiteral("切刀负限位"))
 				{
 					setLampColor(ui->label_plcCutNegLimit, res.ok, res.boolValue,
-						QStringLiteral("#00e000"), QStringLiteral("red"));
+						QStringLiteral("red"), QStringLiteral("#00e000"));
 				}
 				else if (point.name == QStringLiteral("切刀补偿"))
 				{
@@ -1274,7 +1286,7 @@ void EdgeWidthDetection::onMainUiRefreshTimeout()
 				}
 				else if (point.name == QStringLiteral("配方号"))
 				{
-					// 9 个配方按钮颜色仅由配方号驱动（与该按钮自身线圈无关），读取失败保持不变
+					// 12 个配方按钮颜色仅由配方号驱动（与该按钮自身线圈无关），读取失败保持不变
 					if (res.ok)
 					{
 						updateRecipeButtons(res.text.toInt());
