@@ -1150,9 +1150,9 @@ void EdgeWidthDetection::onPlcRecipeBtn_clicked()
 	const bool polled = _mainUiBoolStates.contains(name);	// 该线圈是否至少成功轮询过一次
 	const bool lastKnown = _mainUiBoolStates.value(name, false);
 	const bool target = !lastKnown;
-	qDebug() << "[配方按钮] 点击:" << name << "| 按钮索引:" << idx
+	/*qDebug() << "[配方按钮] 点击:" << name << "| 按钮索引:" << idx
 		<< "| 线圈轮询成功过:" << polled << "| 最近一次轮询值:" << lastKnown
-		<< "| 本次准备写入:" << target;
+		<< "| 本次准备写入:" << target;*/
 	writeMainCoil(name, target);
 	onMainUiRefreshTimeout();
 }
