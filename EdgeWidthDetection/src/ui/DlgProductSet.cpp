@@ -44,6 +44,7 @@ void DlgProductSet::read_config()
 	ui->cbox_changeSaveImgMode->setCurrentIndex(setConfig.saveImgMode);
 	ui->btn_score->setText(QString::number(setConfig.score));
 	ui->ckb_autoSaveImg->setChecked(setConfig.autoSaveImg);
+	ui->ckb_showSegMask->setChecked(setConfig.showSegMask);
 	ui->ckb_yixiangjishibiezhongxindianyutuxiangzhongxindianchazhishifouqufan->setChecked(setConfig.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1);
 
 	// 相机参数
@@ -224,6 +225,7 @@ void DlgProductSet::build_connect()
 
 
 	connect(ui->ckb_autoSaveImg, &QCheckBox::clicked, this, &DlgProductSet::ckb_autoSaveImg_clicked);
+	connect(ui->ckb_showSegMask, &QCheckBox::clicked, this, &DlgProductSet::ckb_showSegMask_clicked);
 	connect(ui->btn_testPlcAddressWrite, &QPushButton::clicked, this, &DlgProductSet::btn_testPlcAddressWrite_clicked);
 	connect(ui->ckb_yixiangjishibiezhongxindianyutuxiangzhongxindianchazhishifouqufan, &QCheckBox::clicked, this, &DlgProductSet::ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan_clicked);
 	connect(ui->tabWidget, &QTabWidget::currentChanged, this, &DlgProductSet::tabWidget_indexChanged);
@@ -681,6 +683,12 @@ void DlgProductSet::ckb_autoSaveImg_clicked()
 {
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	setConfig.autoSaveImg = ui->ckb_autoSaveImg->isChecked();
+}
+
+void DlgProductSet::ckb_showSegMask_clicked()
+{
+	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
+	setConfig.showSegMask = ui->ckb_showSegMask->isChecked();
 }
 
 void DlgProductSet::ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan_clicked()

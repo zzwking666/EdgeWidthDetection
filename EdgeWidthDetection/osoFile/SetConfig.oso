@@ -11,6 +11,9 @@ namespace cdm {
 		score : int : default = 0;
 		autoSaveImg : bool : default = false;
 
+		// 是否在出图上叠加显示 YOLO Seg 分割掩膜（半透明），用于观察识别效果
+		showSegMask : bool : default = false;
+
 		shangxianwei1 : double : default = 0;
 		xiaxianwei1 : double : default = 0;
 		zuoxianwei1 : double : default = 0;

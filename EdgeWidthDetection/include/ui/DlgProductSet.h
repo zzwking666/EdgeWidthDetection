@@ -41,6 +41,7 @@ private slots:
 	void cbox_changeSaveImgMode_clicked();
 	void btn_score_clicked();
 	void ckb_autoSaveImg_clicked();
+	void ckb_showSegMask_clicked();
 	void ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan_clicked();
 
 	void btn_testTrigger1_1_clicked();

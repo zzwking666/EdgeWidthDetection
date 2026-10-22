@@ -25,6 +25,7 @@ namespace cdm {
         int saveImgMode{ 0 };
         int score{ 0 };
         bool autoSaveImg{ false };
+        bool showSegMask{ false };
         double shangxianwei1{ 0 };
         double xiaxianwei1{ 0 };
         double zuoxianwei1{ 0 };
@@ -120,6 +121,11 @@ namespace cdm {
             throw std::runtime_error("$variable$autoSaveImg is not found");
         }
         autoSaveImg = autoSaveImgItem->getValueAsBool();
+        auto showSegMaskItem = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$showSegMask$"));
+        if (!showSegMaskItem) {
+            throw std::runtime_error("$variable$showSegMask is not found");
+        }
+        showSegMask = showSegMaskItem->getValueAsBool();
         auto shangxianwei1Item = rw::oso::ObjectStoreCoreToItem(assembly.getItem("$variable$shangxianwei1$"));
         if (!shangxianwei1Item) {
             throw std::runtime_error("$variable$shangxianwei1 is not found");
@@ -410,6 +416,7 @@ namespace cdm {
         saveImgMode = obj.saveImgMode;
         score = obj.score;
         autoSaveImg = obj.autoSaveImg;
+        showSegMask = obj.showSegMask;
         shangxianwei1 = obj.shangxianwei1;
         xiaxianwei1 = obj.xiaxianwei1;
         zuoxianwei1 = obj.zuoxianwei1;
@@ -477,6 +484,7 @@ namespace cdm {
             saveImgMode = obj.saveImgMode;
             score = obj.score;
             autoSaveImg = obj.autoSaveImg;
+            showSegMask = obj.showSegMask;
             shangxianwei1 = obj.shangxianwei1;
             xiaxianwei1 = obj.xiaxianwei1;
             zuoxianwei1 = obj.zuoxianwei1;
@@ -565,6 +573,10 @@ namespace cdm {
         autoSaveImgItem->setName("$variable$autoSaveImg$");
         autoSaveImgItem->setValueFromBool(autoSaveImg);
         assembly.addItem(autoSaveImgItem);
+        auto showSegMaskItem = std::make_shared<rw::oso::ObjectStoreItem>();
+        showSegMaskItem->setName("$variable$showSegMask$");
+        showSegMaskItem->setValueFromBool(showSegMask);
+        assembly.addItem(showSegMaskItem);
         auto shangxianwei1Item = std::make_shared<rw::oso::ObjectStoreItem>();
         shangxianwei1Item->setName("$variable$shangxianwei1$");
         shangxianwei1Item->setValueFromDouble(shangxianwei1);
@@ -794,7 +806,7 @@ namespace cdm {
 
     inline bool SetConfig::operator==(const SetConfig& obj) const
     {
-        return xiangjiguangdianpingbishijian == obj.xiangjiguangdianpingbishijian && shuchuxinhaoyanshi == obj.shuchuxinhaoyanshi && shuchuxinhaochixushijian == obj.shuchuxinhaochixushijian && saveImgMode == obj.saveImgMode && score == obj.score && autoSaveImg == obj.autoSaveImg && shangxianwei1 == obj.shangxianwei1 && xiaxianwei1 == obj.xiaxianwei1 && zuoxianwei1 == obj.zuoxianwei1 && youxianwei1 == obj.youxianwei1 && xiangsudangliang1 == obj.xiangsudangliang1 && debugFrame1 == obj.debugFrame1 && openRemoveFrame1 == obj.openRemoveFrame1 && zengyi1 == obj.zengyi1 && qiangguang1 == obj.qiangguang1 && zhongguang1 == obj.zhongguang1 && ruoguang1 == obj.ruoguang1 && shangxianwei2 == obj.shangxianwei2 && xiaxianwei2 == obj.xiaxianwei2 && zuoxianwei2 == obj.zuoxianwei2 && youxianwei2 == obj.youxianwei2 && xiangsudangliang2 == obj.xiangsudangliang2 && debugFrame2 == obj.debugFrame2 && openRemoveFrame2 == obj.openRemoveFrame2 && zengyi2 == obj.zengyi2 && qiangguang2 == obj.qiangguang2 && zhongguang2 == obj.zhongguang2 && ruoguang2 == obj.ruoguang2 && shiceyahenkuanduduqudizhi == obj.shiceyahenkuanduduqudizhi && shedingyahenbiaozhunzhiduqudizhi == obj.shedingyahenbiaozhunzhiduqudizhi && paizhaojiangejuliduqudizhi == obj.paizhaojiangejuliduqudizhi && daizichangdubiaozhunduqudizhi == obj.daizichangdubiaozhunduqudizhi && jimiqiyiquanmaichongshuduqudizhi == obj.jimiqiyiquanmaichongshuduqudizhi && jimiqiyiquanzhouchangduqudizhi == obj.jimiqiyiquanzhouchangduqudizhi && bujinyiquanmaichongshuduqudizhi == obj.bujinyiquanmaichongshuduqudizhi && bujinluojuduqudizhi == obj.bujinluojuduqudizhi && daoyidongbuchangduqudizhi == obj.daoyidongbuchangduqudizhi && zidongdaoyidongzuidajuliduqudizhi == obj.zidongdaoyidongzuidajuliduqudizhi && daojiakeyidongdezuidajuliduqudizhi == obj.daojiakeyidongdezuidajuliduqudizhi && daoyidongsudumaichongpinlvduqudizhi == obj.daoyidongsudumaichongpinlvduqudizhi && shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi == obj.shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi && shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1 == obj.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1 && shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2 == obj.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2 && huodePLCbaojingxinxidizhi == obj.huodePLCbaojingxinxidizhi && keyipaizhaoxinhaodizhi == obj.keyipaizhaoxinhaodizhi && tingzhipaizhaoxinhaodizhi == obj.tingzhipaizhaoxinhaodizhi && daizishicechangdudizhi == obj.daizishicechangdudizhi && lastChooseLight1 == obj.lastChooseLight1 && lastChooseLight2 == obj.lastChooseLight2 && autoExposureEnabled1 == obj.autoExposureEnabled1 && autoExposureEnabled2 == obj.autoExposureEnabled2 && autoExposureTargetMean == obj.autoExposureTargetMean && autoExposureOverExposeThreshold == obj.autoExposureOverExposeThreshold && autoExposureUnderExposeThreshold == obj.autoExposureUnderExposeThreshold && autoExposureMaxOverRatio == obj.autoExposureMaxOverRatio && autoExposureMaxUnderRatio == obj.autoExposureMaxUnderRatio && autoExposureMinExposure == obj.autoExposureMinExposure && autoExposureMaxExposure == obj.autoExposureMaxExposure && autoExposureAdjustIntervalMs == obj.autoExposureAdjustIntervalMs && autoExposureLastExposure1 == obj.autoExposureLastExposure1 && autoExposureLastExposure2 == obj.autoExposureLastExposure2 && modbusAddressList == obj.modbusAddressList;
+        return xiangjiguangdianpingbishijian == obj.xiangjiguangdianpingbishijian && shuchuxinhaoyanshi == obj.shuchuxinhaoyanshi && shuchuxinhaochixushijian == obj.shuchuxinhaochixushijian && saveImgMode == obj.saveImgMode && score == obj.score && autoSaveImg == obj.autoSaveImg && showSegMask == obj.showSegMask && shangxianwei1 == obj.shangxianwei1 && xiaxianwei1 == obj.xiaxianwei1 && zuoxianwei1 == obj.zuoxianwei1 && youxianwei1 == obj.youxianwei1 && xiangsudangliang1 == obj.xiangsudangliang1 && debugFrame1 == obj.debugFrame1 && openRemoveFrame1 == obj.openRemoveFrame1 && zengyi1 == obj.zengyi1 && qiangguang1 == obj.qiangguang1 && zhongguang1 == obj.zhongguang1 && ruoguang1 == obj.ruoguang1 && shangxianwei2 == obj.shangxianwei2 && xiaxianwei2 == obj.xiaxianwei2 && zuoxianwei2 == obj.zuoxianwei2 && youxianwei2 == obj.youxianwei2 && xiangsudangliang2 == obj.xiangsudangliang2 && debugFrame2 == obj.debugFrame2 && openRemoveFrame2 == obj.openRemoveFrame2 && zengyi2 == obj.zengyi2 && qiangguang2 == obj.qiangguang2 && zhongguang2 == obj.zhongguang2 && ruoguang2 == obj.ruoguang2 && shiceyahenkuanduduqudizhi == obj.shiceyahenkuanduduqudizhi && shedingyahenbiaozhunzhiduqudizhi == obj.shedingyahenbiaozhunzhiduqudizhi && paizhaojiangejuliduqudizhi == obj.paizhaojiangejuliduqudizhi && daizichangdubiaozhunduqudizhi == obj.daizichangdubiaozhunduqudizhi && jimiqiyiquanmaichongshuduqudizhi == obj.jimiqiyiquanmaichongshuduqudizhi && jimiqiyiquanzhouchangduqudizhi == obj.jimiqiyiquanzhouchangduqudizhi && bujinyiquanmaichongshuduqudizhi == obj.bujinyiquanmaichongshuduqudizhi && bujinluojuduqudizhi == obj.bujinluojuduqudizhi && daoyidongbuchangduqudizhi == obj.daoyidongbuchangduqudizhi && zidongdaoyidongzuidajuliduqudizhi == obj.zidongdaoyidongzuidajuliduqudizhi && daojiakeyidongdezuidajuliduqudizhi == obj.daojiakeyidongdezuidajuliduqudizhi && daoyidongsudumaichongpinlvduqudizhi == obj.daoyidongsudumaichongpinlvduqudizhi && shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi == obj.shibiezhongxindianyutuxiangzhongxindianchazhiduqudizhi && shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1 == obj.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan1 && shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2 == obj.shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan2 && huodePLCbaojingxinxidizhi == obj.huodePLCbaojingxinxidizhi && keyipaizhaoxinhaodizhi == obj.keyipaizhaoxinhaodizhi && tingzhipaizhaoxinhaodizhi == obj.tingzhipaizhaoxinhaodizhi && daizishicechangdudizhi == obj.daizishicechangdudizhi && lastChooseLight1 == obj.lastChooseLight1 && lastChooseLight2 == obj.lastChooseLight2 && autoExposureEnabled1 == obj.autoExposureEnabled1 && autoExposureEnabled2 == obj.autoExposureEnabled2 && autoExposureTargetMean == obj.autoExposureTargetMean && autoExposureOverExposeThreshold == obj.autoExposureOverExposeThreshold && autoExposureUnderExposeThreshold == obj.autoExposureUnderExposeThreshold && autoExposureMaxOverRatio == obj.autoExposureMaxOverRatio && autoExposureMaxUnderRatio == obj.autoExposureMaxUnderRatio && autoExposureMinExposure == obj.autoExposureMinExposure && autoExposureMaxExposure == obj.autoExposureMaxExposure && autoExposureAdjustIntervalMs == obj.autoExposureAdjustIntervalMs && autoExposureLastExposure1 == obj.autoExposureLastExposure1 && autoExposureLastExposure2 == obj.autoExposureLastExposure2 && modbusAddressList == obj.modbusAddressList;
     }
 
     inline bool SetConfig::operator!=(const SetConfig& obj) const

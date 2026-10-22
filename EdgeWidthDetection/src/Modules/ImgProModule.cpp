@@ -199,7 +199,7 @@ void ImgProModule::buildImgProContextPreProcess()
 
 	drawItemConfig.fontSize = 50;
 	drawItemConfig.textLocate = rw::imgPro::ConfigDrawRect::TextLocate::LeftTopIn;
-	drawItemConfig.isDrawMask = false;	// YoloSeg：绘制分割掩膜（半透明叠加），替代多边形框
+	drawItemConfig.isDrawMask = setConfig.showSegMask;	// YoloSeg：绘制分割掩膜（半透明叠加），替代多边形框
 	drawItemConfig.hasFrame = false;
 
 	for (size_t i = ClassId::minNum; i <= ClassId::maxNum; i++)
