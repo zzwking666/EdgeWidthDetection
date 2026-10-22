@@ -132,6 +132,13 @@ void ImgProModule::buildImgProContextPreProcess()
 				context.defectDrawCfg.isDisAreaText = false;
 				context.defectDrawCfg.isDisScoreText = true;
 
+				// 各处理线程的 context 是启动时的拷贝，paramsChanged 重建原始 context
+				// 不会波及副本，分割掩膜开关必须在这里逐帧同步才能实时生效
+				for (size_t i = ClassId::minNum; i <= ClassId::maxNum; i++)
+				{
+					context.defectDrawCfg.classIdWithConfigMap[i].isDrawMask = setConfig.showSegMask;
+				}
+
 				context.defectDrawCfg.classIdWithConfigMap[0].defectColorBad = rw::rqw::RQWColor::Green;
 				context.defectDrawCfg.classIdWithConfigMap[0].defectColorGood = rw::rqw::RQWColor::Red;
 
