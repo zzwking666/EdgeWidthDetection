@@ -519,12 +519,6 @@ void ImageProcessor::run()
 			continue; // 跳过空帧
 		}
 
-		// 相机2 处理前顺时针旋转 90°，使后续的识别、测量、显示与存图
-		// 全部在旋转后的坐标系下进行
-		if (2 == imageProcessingModuleIndex) {
-			cv::rotate(frame.image, frame.image, cv::ROTATE_90_CLOCKWISE);
-		}
-
 		// 按帧采集时刻的运行状态分发，而不是处理时刻的全局状态：
 		// 调试切剔废时，切换窗口内到达的调试帧仍走 run_debug，不会被计数/写PLC
 		auto captureState = frame.captureState;
