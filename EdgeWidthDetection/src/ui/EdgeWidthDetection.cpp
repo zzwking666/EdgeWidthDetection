@@ -42,7 +42,7 @@ namespace
 	const QStringList kMainUiPointNames = {
 		QStringLiteral("设定拍照长度"),
 		QStringLiteral("实际拍照值"),
-		QStringLiteral("白料长"),
+		QStringLiteral("送料长度"),
 		QStringLiteral("袋长"),
 		QStringLiteral("编码器当前位置"),
 		QStringLiteral("启动"),
@@ -211,7 +211,7 @@ namespace
 	const MainPointDefault kMainUiDefaults[] = {
 		{ "设定拍照长度",		EdgeWidthDetection::MainPointType::Float,	1002,	true  },
 		{ "实际拍照值",			EdgeWidthDetection::MainPointType::Float,	3000,	false },
-		{ "白料长",				EdgeWidthDetection::MainPointType::Float,	3040,	false },
+		{ "送料长度",				EdgeWidthDetection::MainPointType::Float,	1912,	false },
 		{ "袋长",				EdgeWidthDetection::MainPointType::Float,	3030,	false },
 		{ "编码器当前位置",		EdgeWidthDetection::MainPointType::Float,	2000,	false },
 		{ "启动",				EdgeWidthDetection::MainPointType::Bool,	12954,	true  },
@@ -721,7 +721,7 @@ void EdgeWidthDetection::build_mainUiModbus()
 	};
 	addValueLabel(QStringLiteral("设定拍照长度"), clk_plcSetPhotoLength);
 	addValueLabel(QStringLiteral("实际拍照值"), ui->label_plcActualPhotoValue);
-	addValueLabel(QStringLiteral("白料长"), ui->label_plcWhiteLengthValue);
+	addValueLabel(QStringLiteral("送料长度"), ui->label_plcFeedLengthValue);
 	addValueLabel(QStringLiteral("切刀当前位置"), ui->label_plcCutPosValue);
 	addValueLabel(QStringLiteral("间隔袋数"), clk_plcBagCount);
 	addValueLabel(QStringLiteral("切刀移动量"), ui->label_plcCutMoveValue);
@@ -816,6 +816,7 @@ void EdgeWidthDetection::loadMainUiPoints()
 	_mainUiPoints.clear();
 	QStringList errors;
 	QStringList seenNames;
+	bool pointsChanged = false;
 	const QStringList lines = text.split('\n');
 	for (int lineNo = 0; lineNo < lines.size(); ++lineNo)
 	{
@@ -843,7 +844,8 @@ void EdgeWidthDetection::loadMainUiPoints()
 		}
 
 		MainUiPoint info;
-		info.name = fields[0].trimmed();
+		const bool isLegacyFeedLength = fields[0].trimmed() == QStringLiteral("白料长");
+		info.name = isLegacyFeedLength ? QStringLiteral("送料长度") : fields[0].trimmed();
 		if (!kMainUiPointNames.contains(info.name))
 		{
 			addError(QStringLiteral("名称「%1」无法识别，应为约定的面板点位名之一：%2")
@@ -876,6 +878,15 @@ void EdgeWidthDetection::loadMainUiPoints()
 			continue;
 		}
 
+		// 旧版「白料长」迁移为「送料长度」，同时更新点位参数并回写 CSV
+		if (isLegacyFeedLength)
+		{
+			info.type = MainPointType::Float;
+			info.protocolAddress = 1912;
+			info.writable = false;
+			pointsChanged = true;
+		}
+
 		_mainUiPoints.push_back(info);
 	}
 
@@ -898,6 +909,7 @@ void EdgeWidthDetection::loadMainUiPoints()
 	if (!missingNames.isEmpty())
 	{
 		qDebug() << "modbus_main.csv 缺少点位，已按默认表补齐:" << missingNames;
+		pointsChanged = true;
 		for (const auto& d : kMainUiDefaults)
 		{
 			const QString name = QString::fromUtf8(d.name);
@@ -911,6 +923,9 @@ void EdgeWidthDetection::loadMainUiPoints()
 				_mainUiPoints.push_back(info);
 			}
 		}
+	}
+	if (pointsChanged)
+	{
 		saveMainUiPoints();
 	}
 }
