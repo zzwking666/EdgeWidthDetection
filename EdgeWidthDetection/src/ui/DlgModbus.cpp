@@ -633,6 +633,12 @@ void DlgModbus::onWriteClicked(int pointIndex)
 	}
 	auto& point = _points[pointIndex];
 
+	if (!Modules::getInstance().licenseModule.isProductionAllowed())
+	{
+		QMessageBox::information(this, "演示模式", "当前授权不允许生产输出，PLC 手动写入已禁用");
+		return;
+	}
+
 	if (!Modules::getInstance().plcController.manualWriteEnabled.load())
 	{
 		QMessageBox::information(this, "提示", "Modbus 手动写入已被禁用，如需写入请先勾选右上角「允许写入」");
@@ -655,6 +661,11 @@ void DlgModbus::onWriteClicked(int pointIndex)
 	}
 
 	const auto value = numKeyBord.getValue();
+	if (!Modules::getInstance().licenseModule.isProductionAllowed())
+	{
+		QMessageBox::information(this, "演示模式", "输入期间授权状态已变化，本次 PLC 写入已取消");
+		return;
+	}
 	const auto addr = static_cast<rw::hoem::Address16>(point.protocolAddress);
 
 	bool success = false;
@@ -689,6 +700,12 @@ void DlgModbus::onBoolWriteClicked(int pointIndex, bool state)
 		return;
 	}
 	auto& point = _points[pointIndex];
+
+	if (!Modules::getInstance().licenseModule.isProductionAllowed())
+	{
+		QMessageBox::information(this, "演示模式", "当前授权不允许生产输出，PLC 手动写入已禁用");
+		return;
+	}
 
 	if (!Modules::getInstance().plcController.manualWriteEnabled.load())
 	{

@@ -12,7 +12,7 @@ class DlgLicense : public QDialog
 	Q_OBJECT
 
 public:
-	explicit DlgLicense(const QString& machineCode, QWidget* parent = nullptr);
+	explicit DlgLicense(const QString& machineCode, const QString& statusText = {}, QWidget* parent = nullptr);
 	~DlgLicense();
 
 public:

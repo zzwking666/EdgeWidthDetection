@@ -1,22 +1,43 @@
 #pragma once
 
+#include <QDateTime>
 #include <QString>
 
-/// 授权管理器：生成机器码、校验激活状态、应用激活码
 namespace LicenseManager
 {
+	enum class State
+	{
+		Trial,
+		Stage1,
+		Stage2,
+		Permanent,
+		Expired,
+		ClockRollback,
+		InvalidData
+	};
+
+	struct Snapshot
+	{
+		State state{ State::InvalidData };
+		bool productionAllowed{ false };
+		bool permanent{ false };
+		QDateTime expiresAt{};	// UTC
+		QString statusText{};
+	};
+
 	/// 生成当前机器的唯一机器码
 	QString getMachineCode();
 
-	/// 程序启动时的授权校验入口
-	bool verifyAtStartup();
+	/// 根据有效时间、激活码和防回拨状态计算授权快照
+	Snapshot evaluate(const QDateTime& effectiveNowUtc, bool clockRollback, bool stateError);
 
-	/// 校验并保存用户输入的激活码
-	bool applyActivationCode(const QString& activationCode);
+	/// 校验并保存机器码绑定的激活码，不向其他函数弹窗
+	bool applyActivationCode(const QString& activationCode, const QDateTime& effectiveNowUtc, QString& error);
 
-	/// 当前是否已授权（从注册表读取并校验）
-	bool isAuthorized();
+	/// 读取/保存带完整性校验的历史最大可信时间（UTC 毫秒）
+	bool loadLastSeenTime(qint64& lastSeenMs, bool& exists, QString& error);
+	bool saveLastSeenTime(qint64 lastSeenMs, QString& error);
 
-	/// 获取授权状态字符串（当前实现为永久授权）
-	QString getAuthorizationExpiry();
+	/// 供界面显示 UTC 时间对应的本地时间
+	QString formatLocalTime(const QDateTime& utcTime);
 }

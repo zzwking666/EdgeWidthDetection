@@ -30,6 +30,9 @@ bool Modules::build()
 	// 读取配置
 	auto configManagerBuild = configManagerModule.build();
 
+	// 授权状态必须先于相机、图像处理和 UI 构建，确保启动时即具备生产输出门禁
+	licenseModule.build();
+
 	// 构建自动曝光模块
 	autoExposureModule.setCameraIndex(1);
 	auto autoExposureModuleBuild = autoExposureModule.build();
@@ -73,6 +76,7 @@ void Modules::destroy()
 	test_module.destroy();
 #endif
 	plcController.destroy();
+	licenseModule.destroy();
 	runtimeInfoModule.destroy();
 	imgProModule.destroy();
 	cameraModule.destroy();
@@ -85,6 +89,7 @@ void Modules::destroy()
 
 void Modules::start()
 {
+	licenseModule.start();
 	uiModule.start();
 	configManagerModule.start();
 	runtimeInfoModule.start();
@@ -112,11 +117,17 @@ void Modules::stop()
 	imgSaveModule.stop();
 	runtimeInfoModule.stop();
 	configManagerModule.stop();
+	licenseModule.stop();
 	uiModule.stop();
 }
 
 void Modules::connect()
 {
+#pragma region connect UIModule and LicenseModule
+	QObject::connect(&licenseModule, &LicenseModule::stateChanged,
+		uiModule._edgeWidthDetection, &EdgeWidthDetection::onLicenseStateChanged, Qt::QueuedConnection);
+#pragma endregion
+
 #pragma region connect camera and imgProModule
 	QObject::connect(&cameraModule, &CameraModule::frameCaptured1,
 		Modules::getInstance().imgProModule.imageProcessingModule1.get(), &ImageProcessingModule::onFrameCaptured, Qt::DirectConnection);
@@ -293,14 +304,8 @@ bool Modules::check()
 #pragma endregion
 
 //#pragma region check license
-//#ifndef BUILD_WITHOUT_HARDWARE
-//	if (!LicenseManager::verifyAtStartup())
-//	{
-//		return false;
-//	}
-//#else
-//	qDebug() << "[开发模式] 跳过机器码授权校验";
-//#endif
+// 授权到期不阻止程序启动：由 LicenseModule 切换到明确提示的演示模式，
+// 并在自动运行、PLC 写入和剔废输出前执行门禁。
 //#pragma endregion
 
 	return true;

@@ -39,7 +39,16 @@ void DetachDefectThread::processQueue1(std::unique_ptr<rw::dsl::ThreadSafeHeap<b
 			auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 			auto& camera = Modules::getInstance().cameraModule.camera1;
 			queue->tryPopTop(isBad);
+			// 演示模式下丢弃排队的剔废动作，防止激活后执行已经过期的动作
+			if (!Modules::getInstance().licenseModule.isProductionAllowed())
+			{
+				return;
+			}
 			QThread::msleep(static_cast<unsigned long>(setConfig.shuchuxinhaoyanshi));
+			if (!Modules::getInstance().licenseModule.isProductionAllowed())
+			{
+				return;
+			}
 			// 剔废动作
 			rw::rqw::OutTriggerConfig outTriggerConfig;
 			outTriggerConfig.lineSelector = 2;

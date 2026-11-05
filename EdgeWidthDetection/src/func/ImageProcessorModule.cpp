@@ -332,6 +332,9 @@ namespace {
 	inline PlcCircularWriteResult WritePlcCircular(int baseAddress, int slotCount, int intervalSlots, PlcCircularWriteState& state, uint16_t value)
 	{
 		PlcCircularWriteResult result;
+		if (!Modules::getInstance().licenseModule.isProductionAllowed()) {
+			return result;
+		}
 		auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
 		if (!plcControllerScheduler) {
 			qDebug() << "PLC disConnect!";
@@ -379,6 +382,9 @@ namespace {
 	// 实际写入结果由 MaybeAsyncCheckPlcWrites 每三次识别异步统一校验
 	inline bool WritePlcRealtimeValue(int address, uint16_t value)
 	{
+		if (!Modules::getInstance().licenseModule.isProductionAllowed()) {
+			return false;
+		}
 		auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
 		if (!plcControllerScheduler) {
 			qDebug() << "PLC disConnect!";

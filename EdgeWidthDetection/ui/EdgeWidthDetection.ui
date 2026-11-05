@@ -16,6 +16,19 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
+     <widget class="QPushButton" name="pbtn_licenseState">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>38</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>正在读取授权状态</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="5,1">
       <item>
        <widget class="QGroupBox" name="gBoix_ImageDisplay">

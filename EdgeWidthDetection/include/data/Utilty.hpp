@@ -59,6 +59,8 @@ public:
 	QString modelRootPath = projectHome + R"(model\)";
 	QString EdgeWidthDetectionConfigPath = configRootPath + R"(EdgeWidthDetection.xml)";
 	QString setConfigPath = configRootPath + R"(SetConfig.xml)";
+	/// 三期授权节点策略（含机器码绑定的完整性校验）
+	QString licensePolicyPath = configRootPath + R"(LicensePolicy.json)";
 	/// Modbus 点位表（CSV：名称,地址,类型,读写；UTF-8 带 BOM，读取时兼容 Excel 另存的 GBK；不存在时程序按内置默认表生成）
 	QString modbusCsvPath = configRootPath + R"(modbus.csv)";
 	/// 主界面拍照/切刀面板点位表（CSV：名称,类型,协议地址,读写；与 DlgModbus 的 modbus.csv 相互独立，

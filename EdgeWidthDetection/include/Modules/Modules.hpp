@@ -7,6 +7,7 @@
 #include"ConfigManagerModule.hpp"
 #include "EliminateModule.hpp"
 #include "ImgProModule.hpp"
+#include "LicenseModule.hpp"
 #include "ImgSaveModule.hpp"
 #include "oso_func.hpp"
 #include "RuntimeInfoModule.hpp"
@@ -56,6 +57,7 @@ public:
 	ReconnectModule reconnectModule;
 	UIModule uiModule;
 	ConfigManagerModule configManagerModule;
+	LicenseModule licenseModule;
 	AutoExposureModule autoExposureModule;
 	AutoExposureModule autoExposureModule2;
 	RuntimeInfoModule runtimeInfoModule;

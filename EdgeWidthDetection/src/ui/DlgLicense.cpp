@@ -5,13 +5,14 @@
 #include <QGuiApplication>
 #include <QMessageBox>
 
-DlgLicense::DlgLicense(const QString& machineCode, QWidget* parent)
+DlgLicense::DlgLicense(const QString& machineCode, const QString& statusText, QWidget* parent)
 	: QDialog(parent)
 	, ui(new Ui::DlgLicenseClass())
 {
 	ui->setupUi(this);
 
 	ui->lineEdit_machineCode->setText(machineCode);
+	ui->label_status->setText(statusText);
 
 	connect(ui->btn_copyMachineCode, &QPushButton::clicked, this, &DlgLicense::btn_copyMachineCode_clicked);
 	connect(ui->btn_activate, &QPushButton::clicked, this, &DlgLicense::btn_activate_clicked);

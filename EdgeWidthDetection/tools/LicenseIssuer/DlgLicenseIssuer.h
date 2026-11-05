@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QDialog>
+#include <QDate>
+#include <string>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class DlgLicenseIssuerClass; };
@@ -15,8 +17,12 @@ public:
 	explicit DlgLicenseIssuer(QWidget* parent = nullptr);
 	~DlgLicenseIssuer();
 
+	/// 同时供图形界面和命令行测试/签发入口使用
+	static std::string generateActivationCodeForMachine(const std::string& machineCode, const QDate& expiryDate);
+
 private slots:
 	void onGenerate();
+	void onExportPolicy();
 	void onCopyMachineCode();
 	void onCopyActivationCode();
 

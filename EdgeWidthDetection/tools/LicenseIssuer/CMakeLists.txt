@@ -15,11 +15,14 @@ add_executable(${PROJECT_NAME}
     DlgLicenseIssuer.cpp
     DlgLicenseIssuer.h
     DlgLicenseIssuer.ui
+    ../../src/Modules/LicensePolicy.cpp
+    ../../include/Modules/LicensePolicy.hpp
 )
 
 target_include_directories(${PROJECT_NAME}
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
     PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../../include/Modules
 )
 
 target_link_libraries(${PROJECT_NAME}

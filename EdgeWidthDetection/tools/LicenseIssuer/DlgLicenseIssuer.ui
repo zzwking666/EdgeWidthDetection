@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>220</height>
+    <width>720</width>
+    <height>440</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>LicenseIssuer 激活码生成工具</string>
+   <string>LicenseIssuer 三期授权签发工具</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="label_machineCodeTitle">
        <property name="text">
-        <string>需要生成的机器的机器码：</string>
+        <string>客户机器码：</string>
        </property>
       </widget>
      </item>
@@ -35,6 +35,103 @@
        <property name="text">
         <string>复制机器码</string>
        </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_policy">
+     <property name="title">
+      <string>三个锁机节点（当地时间 00:00 到期）</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_policy">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_deadline1">
+        <property name="text">
+         <string>第一节点：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDateEdit" name="dateEdit_deadline1">
+        <property name="displayFormat">
+         <string>yyyy-MM-dd</string>
+        </property>
+        <property name="calendarPopup">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_deadline2">
+        <property name="text">
+         <string>第二节点：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDateEdit" name="dateEdit_deadline2">
+        <property name="displayFormat">
+         <string>yyyy-MM-dd</string>
+        </property>
+        <property name="calendarPopup">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_deadline3">
+        <property name="text">
+         <string>第三节点：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QDateEdit" name="dateEdit_deadline3">
+        <property name="displayFormat">
+         <string>yyyy-MM-dd</string>
+        </property>
+        <property name="calendarPopup">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QPushButton" name="btn_exportPolicy">
+        <property name="text">
+         <string>导出机器绑定的授权策略文件</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutLevel">
+     <item>
+      <widget class="QLabel" name="label_licenseLevel">
+       <property name="text">
+        <string>激活码级别：</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBox_licenseLevel">
+       <item>
+        <property name="text">
+         <string>第一阶段：授权至第二节点</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>第二阶段：授权至第三节点</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>第三阶段：永久授权</string>
+        </property>
+       </item>
       </widget>
      </item>
     </layout>
@@ -66,13 +163,6 @@
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayoutButtons">

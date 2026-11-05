@@ -7,13 +7,26 @@
     <x>0</x>
     <y>0</y>
     <width>560</width>
-    <height>280</height>
+    <height>340</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>授权激活</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label_status">
+     <property name="text">
+      <string>当前授权状态</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel{color:#B3261E;font-size:16px;font-weight:bold;padding:8px;}</string>
+     </property>
+    </widget>
+   </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayoutMachineCode">
      <item>
@@ -83,7 +96,7 @@
      <item>
       <widget class="QPushButton" name="btn_exit">
        <property name="text">
-        <string>退出</string>
+        <string>继续演示</string>
        </property>
       </widget>
      </item>

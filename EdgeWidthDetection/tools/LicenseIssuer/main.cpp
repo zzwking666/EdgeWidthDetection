@@ -12,6 +12,7 @@
 
 #include "hoei_CPUInfo.hpp"
 #include "hoei_MotherBoardInfo.hpp"
+#include "LicensePolicy.hpp"
 
 namespace
 {
@@ -100,6 +101,46 @@ int main(int argc, char* argv[])
 	{
 		QCoreApplication app(argc, argv);
 		std::cout << generateMachineCode() << std::endl;
+		return 0;
+	}
+
+	if (argc == 4 && std::strcmp(argv[1], "--activation-code") == 0)
+	{
+		QCoreApplication app(argc, argv);
+		const QString expiryText = QString::fromLocal8Bit(argv[3]);
+		const QDate expiryDate = expiryText.compare(QStringLiteral("permanent"), Qt::CaseInsensitive) == 0
+			? QDate(2099, 12, 31) : QDate::fromString(expiryText, QStringLiteral("yyyy-MM-dd"));
+		if (!expiryDate.isValid())
+		{
+			std::cerr << "有效期应为 yyyy-MM-dd 或 permanent" << std::endl;
+			return 2;
+		}
+		try
+		{
+			std::cout << DlgLicenseIssuer::generateActivationCodeForMachine(argv[2], expiryDate) << std::endl;
+			return 0;
+		}
+		catch (const std::exception& e)
+		{
+			std::cerr << "生成激活码失败：" << e.what() << std::endl;
+			return 1;
+		}
+	}
+
+	if (argc == 7 && std::strcmp(argv[1], "--export-policy") == 0)
+	{
+		QCoreApplication app(argc, argv);
+		LicensePolicy::Data data;
+		data.firstDeadline = QDate::fromString(QString::fromLocal8Bit(argv[4]), QStringLiteral("yyyy-MM-dd"));
+		data.secondDeadline = QDate::fromString(QString::fromLocal8Bit(argv[5]), QStringLiteral("yyyy-MM-dd"));
+		data.thirdDeadline = QDate::fromString(QString::fromLocal8Bit(argv[6]), QStringLiteral("yyyy-MM-dd"));
+		QString error;
+		if (!LicensePolicy::save(QString::fromLocal8Bit(argv[3]), QString::fromLocal8Bit(argv[2]), data, error))
+		{
+			std::cerr << "导出授权策略失败：" << error.toLocal8Bit().constData() << std::endl;
+			return 1;
+		}
+		std::cout << "授权策略已导出" << std::endl;
 		return 0;
 	}
 

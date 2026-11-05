@@ -306,6 +306,8 @@ void EdgeWidthDetection::build_connect()
 		this, &EdgeWidthDetection::pbtn_set_clicked);
 	QObject::connect(ui->pbtn_Modbus, &QPushButton::clicked,
 		this, &EdgeWidthDetection::pbtn_Modbus_clicked);
+	QObject::connect(ui->pbtn_licenseState, &QPushButton::clicked,
+		this, &EdgeWidthDetection::showLicenseDialog);
 	QObject::connect(ui->rbtn_debug, &QRadioButton::clicked,
 		this, &EdgeWidthDetection::rbtn_debug_checked);
 	QObject::connect(ui->rbtn_removeFunc, &QRadioButton::clicked,
@@ -347,9 +349,20 @@ void EdgeWidthDetection::build_EdgeWidthDetectionData()
 	maiLiDingZiConfig.isSaveImg = true;
 	ui->ckb_saveImg->setChecked(true);
 
-	ui->rbtn_removeFunc->setChecked(maiLiDingZiConfig.isDefect);
+	const bool productionAllowed = Modules::getInstance().licenseModule.isProductionAllowed();
+	ui->rbtn_removeFunc->setChecked(productionAllowed && maiLiDingZiConfig.isDefect);
 
-	rbtn_removeFunc_checked(true);
+	if (productionAllowed && maiLiDingZiConfig.isDefect)
+	{
+		rbtn_removeFunc_checked(true);
+	}
+	else
+	{
+		// 到期后保留调试图像供客户评估，但不进入自动生产和 PLC 输出
+		ui->rbtn_debug->setChecked(true);
+		rbtn_debug_checked(true);
+	}
+	onLicenseStateChanged();
 
 	// 初始化图像查看器（只显示每个目录的前 200 张图片，避免图片过多时加载过慢、占用内存过大）
 	_picturesViewer = new PictureViewerThumbnails(this);
@@ -661,6 +674,14 @@ void EdgeWidthDetection::rbtn_removeFunc_checked(bool checked)
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	if (checked)
 	{
+		if (!Modules::getInstance().licenseModule.isProductionAllowed())
+		{
+			ui->rbtn_removeFunc->setChecked(false);
+			runningState = RunningState::Stop;
+			showLicenseDialog();
+			return;
+		}
+
 		// 先切相机到触发模式，再翻转运行状态：
 		// 保证状态翻转前到达的调试连续帧仍被打 Debug 戳走调试分发，不计数、不写PLC
 		if (camera1)
@@ -680,6 +701,74 @@ void EdgeWidthDetection::rbtn_removeFunc_checked(bool checked)
 	{
 		runningState = RunningState::Stop;
 	}
+}
+
+void EdgeWidthDetection::onLicenseStateChanged()
+{
+	const auto current = Modules::getInstance().licenseModule.snapshot();
+	ui->pbtn_licenseState->setText(current.statusText + QStringLiteral("（点击查看/激活）"));
+	ui->pbtn_licenseState->setToolTip(QStringLiteral("查看机器码、授权有效期或输入激活码"));
+	ui->pbtn_licenseState->setStyleSheet(current.productionAllowed
+		? QStringLiteral("QPushButton{color:#FFFFFF;background-color:#16734A;font-size:16px;font-weight:bold;border:none;padding:6px;}")
+		: QStringLiteral("QPushButton{color:#FFFFFF;background-color:#B3261E;font-size:17px;font-weight:bold;border:none;padding:6px;}"));
+
+	if (current.productionAllowed)
+	{
+		_licensePromptShown = false;
+		return;
+	}
+
+	if (Modules::getInstance().runtimeInfoModule.runningState.load() == RunningState::OpenRemoveFunc)
+	{
+		enterDemoMode();
+	}
+
+	if (!_licensePromptShown)
+	{
+		_licensePromptShown = true;
+		QTimer::singleShot(0, this, [this]()
+			{
+				if (!Modules::getInstance().licenseModule.isProductionAllowed())
+				{
+					showLicenseDialog();
+				}
+			});
+	}
+}
+
+void EdgeWidthDetection::showLicenseDialog()
+{
+	while (true)
+	{
+		auto& licenseModule = Modules::getInstance().licenseModule;
+		DlgLicense dlg(LicenseManager::getMachineCode(), licenseModule.snapshot().statusText, this);
+		if (dlg.exec() != QDialog::Accepted)
+		{
+			return;
+		}
+
+		QString error;
+		if (!licenseModule.applyActivationCode(dlg.activationCode(), error))
+		{
+			QMessageBox::warning(this, QStringLiteral("激活失败"), error);
+			continue;
+		}
+
+		onLicenseStateChanged();
+		const auto current = licenseModule.snapshot();
+		QMessageBox::information(this, QStringLiteral("授权状态"),
+			current.productionAllowed
+			? QStringLiteral("激活成功：%1。请确认现场状态后手动开启自动运行。").arg(current.statusText)
+			: QStringLiteral("激活码已保存，但当前仍为演示模式：%1").arg(current.statusText));
+		return;
+	}
+}
+
+void EdgeWidthDetection::enterDemoMode()
+{
+	// 通过调试单选按钮同步相机采集状态，避免只改 runningState 导致采集模式不一致
+	ui->rbtn_debug->setChecked(true);
+	rbtn_debug_checked(true);
 }
 
 void EdgeWidthDetection::pbtn_resetProduct_clicked()
@@ -986,6 +1075,12 @@ const EdgeWidthDetection::MainUiPoint* EdgeWidthDetection::findMainUiPoint(const
 
 bool EdgeWidthDetection::checkManualWriteReady()
 {
+	if (!Modules::getInstance().licenseModule.isProductionAllowed())
+	{
+		QMessageBox::information(this, QStringLiteral("演示模式"),
+			QStringLiteral("当前授权不允许生产输出，PLC 手动写入已禁用。请点击顶部授权状态栏进行激活。"));
+		return false;
+	}
 	if (!Modules::getInstance().plcController.manualWriteEnabled.load())
 	{
 		QMessageBox::information(this, QStringLiteral("提示"),
@@ -1068,6 +1163,12 @@ void EdgeWidthDetection::writeMainValue(const QString& pointName)
 	}
 
 	const auto value = numKeyBord.getValue();
+	if (!Modules::getInstance().licenseModule.isProductionAllowed())
+	{
+		QMessageBox::information(this, QStringLiteral("演示模式"),
+			QStringLiteral("输入期间授权状态已变化，本次 PLC 写入已取消"));
+		return;
+	}
 	const auto addr = static_cast<rw::hoem::Address16>(point->protocolAddress);
 	auto& scheduler = Modules::getInstance().plcController.plcControllerScheduler;
 

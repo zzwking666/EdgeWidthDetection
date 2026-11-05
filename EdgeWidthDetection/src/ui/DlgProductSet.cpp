@@ -11,6 +11,20 @@
 #include "NumberKeyboard.h"
 #include "Utilty.hpp"
 
+namespace
+{
+	bool ensureProductionOutputAllowed(QWidget* parent)
+	{
+		if (Modules::getInstance().licenseModule.isProductionAllowed())
+		{
+			return true;
+		}
+		QMessageBox::information(parent, QStringLiteral("演示模式"),
+			QStringLiteral("当前授权不允许 PLC 写入或剔废输出，请先完成激活"));
+		return false;
+	}
+}
+
 DlgProductSet::DlgProductSet(QWidget* parent)
 	: QDialog(parent)
 	, ui(new Ui::DlgProductSetClass())
@@ -329,6 +343,10 @@ void DlgProductSet::btn_score_clicked()
 
 void DlgProductSet::btn_testTrigger1_1_clicked()
 {
+	if (!ensureProductionOutputAllowed(this))
+	{
+		return;
+	}
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	auto& camera = Modules::getInstance().cameraModule.camera1;
 	// 剔废动作
@@ -347,6 +365,10 @@ void DlgProductSet::btn_testTrigger1_1_clicked()
 
 void DlgProductSet::btn_testTrigger2_1_clicked()
 {
+	if (!ensureProductionOutputAllowed(this))
+	{
+		return;
+	}
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	auto& camera = Modules::getInstance().cameraModule.camera1;
 	// 剔废动作
@@ -544,6 +566,10 @@ void DlgProductSet::tabWidget_indexChanged(int index)
 
 void DlgProductSet::btn_testPlcAddressWrite_clicked()
 {
+	if (!ensureProductionOutputAllowed(this))
+	{
+		return;
+	}
 	auto& plcControllerScheduler = Modules::getInstance().plcController.plcControllerScheduler;
 	if (!plcControllerScheduler)
 	{
@@ -699,6 +725,10 @@ void DlgProductSet::ckb_shibiezhongxindianyutuxiangzhongxindianchazhishifouqufan
 
 void DlgProductSet::btn_testTrigger1_2_clicked()
 {
+	if (!ensureProductionOutputAllowed(this))
+	{
+		return;
+	}
 	auto& camera = Modules::getInstance().cameraModule.camera2;
 	// 剔废动作
 	rw::rqw::OutTriggerConfig outTriggerConfig;
@@ -716,6 +746,10 @@ void DlgProductSet::btn_testTrigger1_2_clicked()
 
 void DlgProductSet::btn_testTrigger2_2_clicked()
 {
+	if (!ensureProductionOutputAllowed(this))
+	{
+		return;
+	}
 	auto& camera = Modules::getInstance().cameraModule.camera2;
 	// 剔废动作
 	rw::rqw::OutTriggerConfig outTriggerConfig;

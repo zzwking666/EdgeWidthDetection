@@ -3,6 +3,7 @@
 #include <QtWidgets/QApplication>
 #include <QDebug>
 #include <cstdio>
+#include <cstring>
 #include <windows.h>
 
 #include "Modules.hpp"
@@ -29,6 +30,30 @@ int main(int argc, char* argv[])
 	SetConsoleOutputCP(CP_UTF8);
 	SetConsoleCP(CP_UTF8);
 	qInstallMessageHandler(utf8MessageHandler);
+
+#ifdef BUILD_WITHOUT_HARDWARE
+	// 无硬件构建专用：不启动相机和界面，直接验证激活码保存及授权状态计算
+	if (argc >= 2 && std::strcmp(argv[1], "--license-check") == 0)
+	{
+		LicenseModule licenseModule;
+		licenseModule.build();
+		if (argc >= 3)
+		{
+			QString error;
+			if (!licenseModule.applyActivationCode(QString::fromLocal8Bit(argv[2]), error))
+			{
+				qWarning().noquote() << "激活失败:" << error;
+				return 2;
+			}
+		}
+		const auto snapshot = licenseModule.snapshot();
+		qInfo().noquote() << "授权状态:" << snapshot.statusText;
+		std::fprintf(stdout, "ProductionAllowed=%d\nState=%d\n",
+			snapshot.productionAllowed ? 1 : 0, static_cast<int>(snapshot.state));
+		licenseModule.stop();
+		return snapshot.productionAllowed ? 0 : 3;
+	}
+#endif
 
 	rw::lgm::LoggerCfg logger;
 	rw::lgm::iniLogger(logger);
