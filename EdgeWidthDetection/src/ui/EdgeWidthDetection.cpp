@@ -33,6 +33,43 @@
 
 namespace
 {
+	// 授权按钮正常/失效样式；失效时仅作醒目提示，由客户手动点击进入激活界面
+	const char* kLicenseButtonNormalStyle =
+		"QPushButton {"
+		"    padding: 6px 14px;"
+		"    border: 2px solid #CCC;"
+		"    border-radius: 4px;"
+		"    background-color: white;"
+		"    color: #444;"
+		"    font-size: 24px;"
+		"}"
+		"QPushButton:hover {"
+		"    border-color: #999;"
+		"    background-color: #F5F5F5;"
+		"}"
+		"QPushButton:pressed {"
+		"    border-color: #777;"
+		"    background-color: #EEE;"
+		"}";
+	const char* kLicenseButtonExpiredStyle =
+		"QPushButton {"
+		"    padding: 6px 14px;"
+		"    border: 2px solid #a03030;"
+		"    border-radius: 4px;"
+		"    background-color: #e05050;"
+		"    color: #ffffff;"
+		"    font-size: 24px;"
+		"    font-weight: bold;"
+		"}"
+		"QPushButton:hover {"
+		"    border-color: #7a2020;"
+		"    background-color: #d04040;"
+		"}"
+		"QPushButton:pressed {"
+		"    border-color: #5a1010;"
+		"    background-color: #b03030;"
+		"}";
+
 	// ================= 主界面拍照/切刀面板点位（modbus_main.csv）================
 
 	// CSV 表头（首行与此一致时跳过）
@@ -349,16 +386,15 @@ void EdgeWidthDetection::build_EdgeWidthDetectionData()
 	maiLiDingZiConfig.isSaveImg = true;
 	ui->ckb_saveImg->setChecked(true);
 
-	const bool productionAllowed = Modules::getInstance().licenseModule.isProductionAllowed();
-	ui->rbtn_removeFunc->setChecked(productionAllowed && maiLiDingZiConfig.isDefect);
+	ui->rbtn_removeFunc->setChecked(maiLiDingZiConfig.isDefect);
 
-	if (productionAllowed && maiLiDingZiConfig.isDefect)
+	if (maiLiDingZiConfig.isDefect)
 	{
+		// 授权是否到期不影响剔废模式；生产输出由授权门禁自动暂停或恢复
 		rbtn_removeFunc_checked(true);
 	}
 	else
 	{
-		// 到期后保留调试图像供客户评估，但不进入自动生产和 PLC 输出
 		ui->rbtn_debug->setChecked(true);
 		rbtn_debug_checked(true);
 	}
@@ -674,14 +710,6 @@ void EdgeWidthDetection::rbtn_removeFunc_checked(bool checked)
 	auto& setConfig = Modules::getInstance().configManagerModule.setConfig;
 	if (checked)
 	{
-		if (!Modules::getInstance().licenseModule.isProductionAllowed())
-		{
-			ui->rbtn_removeFunc->setChecked(false);
-			runningState = RunningState::Stop;
-			showLicenseDialog();
-			return;
-		}
-
 		// 先切相机到触发模式，再翻转运行状态：
 		// 保证状态翻转前到达的调试连续帧仍被打 Debug 戳走调试分发，不计数、不写PLC
 		if (camera1)
@@ -706,29 +734,8 @@ void EdgeWidthDetection::rbtn_removeFunc_checked(bool checked)
 void EdgeWidthDetection::onLicenseStateChanged()
 {
 	const auto current = Modules::getInstance().licenseModule.snapshot();
-
-	if (current.productionAllowed)
-	{
-		_licensePromptShown = false;
-		return;
-	}
-
-	if (Modules::getInstance().runtimeInfoModule.runningState.load() == RunningState::OpenRemoveFunc)
-	{
-		enterDemoMode();
-	}
-
-	if (!_licensePromptShown)
-	{
-		_licensePromptShown = true;
-		QTimer::singleShot(0, this, [this]()
-			{
-				if (!Modules::getInstance().licenseModule.isProductionAllowed())
-				{
-					showLicenseDialog();
-				}
-			});
-	}
+	ui->pbtn_licenseState->setStyleSheet(QString::fromUtf8(
+		current.productionAllowed ? kLicenseButtonNormalStyle : kLicenseButtonExpiredStyle));
 }
 
 void EdgeWidthDetection::showLicenseDialog()
@@ -753,17 +760,10 @@ void EdgeWidthDetection::showLicenseDialog()
 		const auto current = licenseModule.snapshot();
 		QMessageBox::information(this, QStringLiteral("授权状态"),
 			current.productionAllowed
-			? QStringLiteral("激活成功：%1。请确认现场状态后手动开启自动运行。").arg(current.statusText)
+			? QStringLiteral("激活成功：%1。生产输出门禁已解除。").arg(current.statusText)
 			: QStringLiteral("激活码已保存，但当前仍为演示模式：%1").arg(current.statusText));
 		return;
 	}
-}
-
-void EdgeWidthDetection::enterDemoMode()
-{
-	// 通过调试单选按钮同步相机采集状态，避免只改 runningState 导致采集模式不一致
-	ui->rbtn_debug->setChecked(true);
-	rbtn_debug_checked(true);
 }
 
 void EdgeWidthDetection::pbtn_resetProduct_clicked()

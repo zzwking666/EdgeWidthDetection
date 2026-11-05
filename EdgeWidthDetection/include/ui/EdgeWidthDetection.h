@@ -61,7 +61,7 @@ public slots:
 	void onAutoExposureInfo2(double currentExposure, double targetExposure, double meanIntensity,
 		double overRatio, double underRatio);
 
-	/// 授权状态变化时刷新提示，并在运行中到期时退出生产模式
+	/// 授权状态变化时刷新授权按钮；生产模式保持不变，由输出门禁自动暂停/恢复
 	void onLicenseStateChanged();
 
 	void lb_title_clicked();
@@ -105,7 +105,6 @@ private:
 	void updateExposureInfoVisibility();
 
 	void showLicenseDialog();
-	void enterDemoMode();
 
 	// 主界面拍照/切刀面板点位：由 config/modbus_main.csv 定义（名称,类型,协议地址,读写），
 	// 与 DlgModbus 使用的 modbus.csv 相互独立（相当于单独的 sheet），名称列必须是约定的点位名
@@ -163,5 +162,4 @@ private:
 	int minimizeCount{ 3 };
 	QString _cam1ExposureInfo;
 	QString _cam2ExposureInfo;
-	bool _licensePromptShown{ false };
 };
