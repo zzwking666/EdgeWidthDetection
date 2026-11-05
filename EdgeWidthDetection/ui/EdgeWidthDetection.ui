@@ -16,19 +16,6 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
-     <widget class="QPushButton" name="pbtn_licenseState">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>38</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>正在读取授权状态</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="5,1">
       <item>
        <widget class="QGroupBox" name="gBoix_ImageDisplay">
@@ -2614,7 +2601,7 @@ QGroupBox::title {
           </property>
           <layout class="QGridLayout" name="gridLayout_5">
            <item row="0" column="0">
-            <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1">
+            <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1,1">
              <item>
               <widget class="QPushButton" name="pbtn_set">
                <property name="sizePolicy">
@@ -2645,6 +2632,42 @@ QPushButton:pressed {
                </property>
                <property name="text">
                 <string>设置</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pbtn_licenseState">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    padding: 6px 14px;
+    border: 2px solid #CCC;
+    border-radius: 4px;
+    background-color: white;
+    color: #444;
+    font-size: 24px;
+}
+
+QPushButton:hover {
+    border-color: #999;
+    background-color: #F5F5F5;
+}
+
+QPushButton:pressed {
+    border-color: #777;
+    background-color: #EEE;
+}</string>
+               </property>
+               <property name="text">
+                <string>授权</string>
+               </property>
+               <property name="toolTip">
+                <string>查看授权状态或输入激活码</string>
                </property>
               </widget>
              </item>

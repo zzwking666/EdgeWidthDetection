@@ -706,11 +706,6 @@ void EdgeWidthDetection::rbtn_removeFunc_checked(bool checked)
 void EdgeWidthDetection::onLicenseStateChanged()
 {
 	const auto current = Modules::getInstance().licenseModule.snapshot();
-	ui->pbtn_licenseState->setText(current.statusText + QStringLiteral("（点击查看/激活）"));
-	ui->pbtn_licenseState->setToolTip(QStringLiteral("查看机器码、授权有效期或输入激活码"));
-	ui->pbtn_licenseState->setStyleSheet(current.productionAllowed
-		? QStringLiteral("QPushButton{color:#FFFFFF;background-color:#16734A;font-size:16px;font-weight:bold;border:none;padding:6px;}")
-		: QStringLiteral("QPushButton{color:#FFFFFF;background-color:#B3261E;font-size:17px;font-weight:bold;border:none;padding:6px;}"));
 
 	if (current.productionAllowed)
 	{
