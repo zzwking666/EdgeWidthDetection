@@ -94,7 +94,7 @@ private slots:
 	// PLC 操作列（拍照/切刀面板左侧）按钮
 	void pbtn_plcStartCompensate_clicked();	// 开始补偿：与「切刀补偿」同一点位(3000线圈)，取反写入
 	void pbtn_plcAutoRecipe_clicked();		// 配方自动选择：按当前状态取反写入
-	void onPlcRecipeBtn_clicked();			// 配方按钮（170~230 共 10 个）：按各自线圈当前值取反写入；150/160 占位不连槽
+	void onPlcRecipeBtn_clicked();			// 动态配方按钮：按各自线圈当前值取反写入
 
 public:
 	// 公开给 CSV 解析辅助函数使用
@@ -107,7 +107,8 @@ private:
 	void showLicenseDialog();
 
 	// 主界面拍照/切刀面板点位：由 config/modbus_main.csv 定义（名称,类型,协议地址,读写），
-	// 与 DlgModbus 使用的 modbus.csv 相互独立（相当于单独的 sheet），名称列必须是约定的点位名
+	// 与 DlgModbus 使用的 modbus.csv 相互独立（相当于单独的 sheet），固定名称用于面板点位，
+	// 名称符合「配方+数字」的动态点位用于生成配方按钮
 	struct MainUiPoint
 	{
 		QString name;				// 点位名（与面板上哪一行对应由名称决定）
@@ -130,7 +131,7 @@ private:
 	rw::rqw::ClickableLabel* replaceWithClickableValue(QLabel* oldLabel);
 	void updateCutCompensateButton();	// 按 _cutCompensateOn 刷新「开始补偿」按钮背景色（开=绿/关=红）
 	void updateAutoRecipeButton();		// 按 _autoRecipeOn 刷新「配方自动选择」按钮背景色（开=绿/关=红）
-	void updateRecipeButtons(int recipeNo);	// 按「配方号」点位值刷 12 个配方按钮颜色：等于按钮值=绿，否则=红
+	void updateRecipeButtons(int recipeNo);	// 按「配方号」点位值刷新动态配方按钮颜色：等于按钮值=绿，否则=红
 
 	// 根据相机/PLC连接状态刷新标题栏背景色（任一未连接则置红）
 	void updateHeadBackground();
@@ -151,7 +152,7 @@ private:
 	bool _mainUiRefreshInFlight{ false };			// 上一次轮询未结束时跳过本次
 	bool _cutCompensateOn{ false };					// 切刀补偿当前状态（轮询更新，切换按钮据此取反）
 	bool _autoRecipeOn{ false };					// 配方自动选择当前状态（轮询更新，切换按钮据此取反）
-	QVector<QPushButton*> _recipeButtons;			// 12 个配方按钮（顺序对应 150,160,170,180,185,190,195,200,205,210,220,230）
+	QVector<QPushButton*> _recipeButtons;			// 按 CSV 中的配方点位动态生成，顺序与 CSV 一致
 	QHash<QString, bool> _mainUiBoolStates;			// BOOL 点位最近一次轮询值（配方按钮取反写入用）
 
 	// PLC 操作列的可写数值行可点击标签（点击弹出数字键盘写入）

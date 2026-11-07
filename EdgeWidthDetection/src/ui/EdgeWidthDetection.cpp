@@ -9,6 +9,7 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QProcess>
+#include <QRegularExpression>
 #include <QStringConverter>
 #include <QTextStream>
 #include <QTimer>
@@ -75,7 +76,7 @@ namespace
 	// CSV 表头（首行与此一致时跳过）
 	const char* kMainUiCsvHeader = "名称,类型,协议地址,读写";
 
-	// 约定的面板点位名，CSV 名称列必须在此列表中且各出现一次（严格校验）
+	// 约定的固定面板点位名；配方点位另行按「配方+数字」动态识别
 	const QStringList kMainUiPointNames = {
 		QStringLiteral("设定拍照长度"),
 		QStringLiteral("实际拍照值"),
@@ -99,21 +100,26 @@ namespace
 		QStringLiteral("切刀移动量"),
 		QStringLiteral("配方号"),
 		QStringLiteral("配方自动选择"),
-		QStringLiteral("配方170"),
-		QStringLiteral("配方180"),
-		QStringLiteral("配方185"),
-		QStringLiteral("配方190"),
-		QStringLiteral("配方195"),
-		QStringLiteral("配方200"),
-		QStringLiteral("配方205"),
-		QStringLiteral("配方210"),
-		QStringLiteral("配方220"),
-		QStringLiteral("配方230"),
 	};
 
-	// 12 个配方按钮对应的配方值（与界面按钮顺序一致；150/160 仅占位、无业务逻辑，不连点击槽）
-	const int kRecipeBtnValues[] = { 150, 160, 170, 180, 185, 190, 195, 200, 205, 210, 220, 230 };
-	const int kRecipeBtnCount = static_cast<int>(sizeof(kRecipeBtnValues) / sizeof(kRecipeBtnValues[0]));
+	// 识别动态配方点位并提取配方号；名称必须为「配方+数字」
+	bool parseRecipePointName(const QString& name, int* recipeNo = nullptr)
+	{
+		static const QRegularExpression pattern(QStringLiteral("^配方([0-9]+)$"));
+		const auto match = pattern.match(name);
+		if (!match.hasMatch())
+		{
+			return false;
+		}
+
+		bool ok = false;
+		const int value = match.captured(1).toInt(&ok);
+		if (ok && recipeNo)
+		{
+			*recipeNo = value;
+		}
+		return ok;
+	}
 
 	// 可点击（可写数值）标签样式：蓝色加粗下划线 + 手型光标，提示可点击
 	const char* kMainClickableValueStyle =
@@ -149,7 +155,7 @@ namespace
 		"}"
 		"QPushButton:pressed { background-color: #b04040; }";
 
-	// 12 个配方按钮专用样式：按下反馈做得更明显（深色底 + 加粗描边 + 文字变色），方便观察是否按下
+	// 动态配方按钮专用样式：按下反馈做得更明显（深色底 + 加粗描边 + 文字变色），方便观察是否按下
 	const char* kRecipeBtnOnStyle =
 		"QPushButton {"
 		"    border: 1px solid #00a040;"
@@ -819,22 +825,30 @@ void EdgeWidthDetection::build_mainUiModbus()
 			writeMainValue(QStringLiteral("间隔袋数"));
 		});
 
-	// 12 个配方按钮（150~230）：颜色仅由「配方号」点位驱动；150/160 仅 UI 占位、不连点击槽，
-	// 其余 10 个按钮点击按各自线圈当前值取反写入
-	QPushButton* const kRecipeBtns[] = {
-		ui->pbtn_plcRecipe150, ui->pbtn_plcRecipe160, ui->pbtn_plcRecipe170,
-		ui->pbtn_plcRecipe180, ui->pbtn_plcRecipe185, ui->pbtn_plcRecipe190,
-		ui->pbtn_plcRecipe195, ui->pbtn_plcRecipe200, ui->pbtn_plcRecipe205,
-		ui->pbtn_plcRecipe210, ui->pbtn_plcRecipe220, ui->pbtn_plcRecipe230 };
-	for (auto* btn : kRecipeBtns)
+	// 按 CSV 中的配方点位动态生成按钮：每行 3 个，数量、名称及顺序均由 CSV 决定
+	constexpr int kRecipeColumnCount = 3;
+	int recipeIndex = 0;
+	for (const auto& point : _mainUiPoints)
 	{
-		_recipeButtons.append(btn);
-		// 前两个为 150/160 占位按钮：无任何业务逻辑，跳过槽连接
-		if (_recipeButtons.size() > 2)
+		int recipeNo = 0;
+		if (!parseRecipePointName(point.name, &recipeNo))
 		{
-			QObject::connect(btn, &QPushButton::clicked,
-				this, &EdgeWidthDetection::onPlcRecipeBtn_clicked);
+			continue;
 		}
+
+		const QString recipeText = point.name.mid(2);
+		auto* btn = new QPushButton(recipeText, this);
+		btn->setObjectName(QStringLiteral("pbtn_plcRecipe%1").arg(recipeText));
+		btn->setMinimumSize(64, 44);
+		btn->setStyleSheet(QString::fromUtf8(kRecipeBtnOffStyle));
+		btn->setProperty("mainPointName", point.name);
+		btn->setProperty("recipeNo", recipeNo);
+		ui->gLayout_plcRecipeBtns->addWidget(btn, recipeIndex / kRecipeColumnCount, recipeIndex % kRecipeColumnCount);
+		_recipeButtons.append(btn);
+		++recipeIndex;
+
+		QObject::connect(btn, &QPushButton::clicked,
+			this, &EdgeWidthDetection::onPlcRecipeBtn_clicked);
 	}
 	QObject::connect(ui->pbtn_plcStartCompensate, &QPushButton::clicked,
 		this, &EdgeWidthDetection::pbtn_plcStartCompensate_clicked);
@@ -854,9 +868,9 @@ void EdgeWidthDetection::build_mainUiModbus()
 void EdgeWidthDetection::loadMainUiPoints()
 {
 	// modbus_main.csv 每行：名称,类型,协议地址,读写
-	// 与 DlgModbus 的 modbus.csv 相互独立；名称必须是约定的点位名且各出现一次
+	// 与 DlgModbus 使用的 modbus.csv 相互独立；固定名称用于面板点位，「配方+数字」用于动态按钮
 	// 严格校验：任何一行格式非法都会弹窗提示并退出程序，防止错误配置静默生效
-	// 向后兼容：老版本 CSV 缺少新增点位时按内置默认表自动补齐并回写，无需现场手工改文件
+	// 向后兼容：老版本 CSV 缺少新增固定点位时按内置默认表补齐并回写；动态配方点位不自动补齐
 	QFile file(globalPath.modbusMainCsvPath);
 	if (!file.exists())
 	{
@@ -930,9 +944,9 @@ void EdgeWidthDetection::loadMainUiPoints()
 		MainUiPoint info;
 		const bool isLegacyFeedLength = fields[0].trimmed() == QStringLiteral("白料长");
 		info.name = isLegacyFeedLength ? QStringLiteral("送料长度") : fields[0].trimmed();
-		if (!kMainUiPointNames.contains(info.name))
+		if (!kMainUiPointNames.contains(info.name) && !parseRecipePointName(info.name))
 		{
-			addError(QStringLiteral("名称「%1」无法识别，应为约定的面板点位名之一：%2")
+			addError(QStringLiteral("名称「%1」无法识别，应为固定面板点位名或「配方+数字」：%2")
 				.arg(info.name, kMainUiPointNames.join(QStringLiteral("、"))));
 			continue;
 		}
@@ -980,8 +994,8 @@ void EdgeWidthDetection::loadMainUiPoints()
 		abortOnMainUiLoadErrors(errors);
 	}
 
-	// 缺项补齐：老版本 modbus_main.csv 缺少新增点位（如升级后新增的配方按钮）时，
-	// 按内置默认表追加并回写 CSV，避免现场手工改文件
+	// 缺项补齐：老版本 modbus_main.csv 缺少新增固定点位时按内置默认表追加并回写。
+	// 配方点位由客户自由增删，不参与缺项判断，避免把现场删除的配方重新加回来
 	QStringList missingNames;
 	for (const auto& name : kMainUiPointNames)
 	{
@@ -1223,13 +1237,11 @@ void EdgeWidthDetection::updateAutoRecipeButton()
 
 void EdgeWidthDetection::updateRecipeButtons(int recipeNo)
 {
-	// 12 个配方按钮颜色仅由「配方号」点位驱动：等于按钮值=绿，否则=红（150/160 占位按钮同规则变色，但无点击逻辑）
-	// 使用配方按钮专用样式（按下反馈更明显）
-	for (int i = 0; i < _recipeButtons.size() && i < kRecipeBtnCount; ++i)
+	// 动态配方按钮颜色仅由「配方号」点位驱动：等于按钮值=绿，否则=红
+	for (auto* btn : _recipeButtons)
 	{
-		const bool on = (recipeNo == kRecipeBtnValues[i]);
-		_recipeButtons[i]->setStyleSheet(QString::fromUtf8(
-			on ? kRecipeBtnOnStyle : kRecipeBtnOffStyle));
+		const bool on = (recipeNo == btn->property("recipeNo").toInt());
+		btn->setStyleSheet(QString::fromUtf8(on ? kRecipeBtnOnStyle : kRecipeBtnOffStyle));
 	}
 }
 
@@ -1250,20 +1262,16 @@ void EdgeWidthDetection::pbtn_plcAutoRecipe_clicked()
 void EdgeWidthDetection::onPlcRecipeBtn_clicked()
 {
 	auto* btn = qobject_cast<QPushButton*>(sender());
-	const int idx = _recipeButtons.indexOf(btn);
-	if (idx < 0 || idx >= kRecipeBtnCount)
+	if (!btn || !_recipeButtons.contains(btn))
 	{
 		qWarning() << "[配方按钮] sender 不在配方按钮列表中，忽略本次点击";
 		return;
 	}
+
+	const QString name = btn->property("mainPointName").toString();
 	// 按下置 1、再按置 0：按该按钮线圈最近一次轮询值取反写入
-	const QString name = QStringLiteral("配方%1").arg(kRecipeBtnValues[idx]);
-	const bool polled = _mainUiBoolStates.contains(name);	// 该线圈是否至少成功轮询过一次
 	const bool lastKnown = _mainUiBoolStates.value(name, false);
 	const bool target = !lastKnown;
-	/*qDebug() << "[配方按钮] 点击:" << name << "| 按钮索引:" << idx
-		<< "| 线圈轮询成功过:" << polled << "| 最近一次轮询值:" << lastKnown
-		<< "| 本次准备写入:" << target;*/
 	writeMainCoil(name, target);
 	onMainUiRefreshTimeout();
 }
@@ -1397,7 +1405,7 @@ void EdgeWidthDetection::onMainUiRefreshTimeout()
 				}
 				else if (point.name == QStringLiteral("配方号"))
 				{
-					// 12 个配方按钮颜色仅由配方号驱动（与该按钮自身线圈无关），读取失败保持不变
+					// 动态配方按钮颜色仅由配方号驱动（与该按钮自身线圈无关），读取失败保持不变
 					if (res.ok)
 					{
 						updateRecipeButtons(res.text.toInt());
